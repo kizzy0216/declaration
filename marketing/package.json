@@ -1,0 +1,16 @@
+{
+  "name": "declaration-marketing",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 55001",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "declaration-interface": "file:../interface",
+    "next": "9.3.5",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  }
+}
