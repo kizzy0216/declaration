@@ -28,10 +28,12 @@
     "@storybook/react": "^5.3.19",
     "babel": "^6.23.0",
     "babel-loader": "^8.1.0",
+    "postcss-preset-env": "^6.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup": "^2.18.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^3.1.2",
     "styled-jsx": "^3.3.0"
   },
   "dependencies": {}

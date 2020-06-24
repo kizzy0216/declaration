@@ -10,7 +10,14 @@
   "dependencies": {
     "declaration-interface": "file:../interface",
     "next": "9.3.5",
+    "pure-react-carousel": "^1.27.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "postcss-flexbugs-fixes": "^4.2.1",
+    "postcss-import": "^12.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "styled-jsx-plugin-postcss": "^2.0.1"
   }
 }

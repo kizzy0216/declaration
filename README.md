@@ -16,8 +16,12 @@ devices on hand.
 
 ```bash
 cd backend
-docker-compose up -d
-hasura console
+docker-compose up -d # start services
+hasura console --admin-secret <HASURA_ADMIN_SECRET> # start hasura console
+
+# optionally
+hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
+hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```
 
 ### Run mobile
