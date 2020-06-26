@@ -20,6 +20,10 @@ function Button ({
           border-radius: var(--border-radius);
           cursor: pointer;
           width: 100%;
+
+          &:not(.transparent):hover {
+            box-shadow: var(--box-shadow);
+          }
         }
 
         .medium {

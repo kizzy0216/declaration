@@ -1,7 +1,5 @@
-import {
-  Input,
-  Select,
-} from 'declaration-interface';
+import Input from '~/shared/components/Input';
+import Select from '~/shared/components/Select';
 
 function RequestNetworkForm() {
   return (

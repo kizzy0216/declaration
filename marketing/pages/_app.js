@@ -3,12 +3,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 // import App from 'next/app'
-
-import 'declaration-interface/build/styles/variables.css';
-import 'declaration-interface/build/styles/base.css';
+import '~/shared/styles/variables.css';
+import '~/shared/styles/base.css';
 import 'pure-react-carousel/dist/react-carousel.es.css';
+
+import ActiveLink from '~/shared/components/ActiveLink';
 import TopNavigation from '~/components/TopNavigation';
-import ActiveLink from '~/components/ActiveLink';
 
 function Application({ Component, pageProps }) {
   return (

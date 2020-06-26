@@ -26,7 +26,7 @@ function RequestNetworkPage() {
       <Footer />
 
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .request-network-page {
           display: flex;

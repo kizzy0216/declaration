@@ -15,7 +15,7 @@ function ListSection({
       </div>
 
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .list-section {
           padding-top: 110px;

@@ -20,7 +20,7 @@ function ContactPage() {
       <Footer withLinkToContact={false} />
 
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .contact-page {
           display: flex;

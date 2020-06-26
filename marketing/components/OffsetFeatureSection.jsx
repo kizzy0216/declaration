@@ -19,7 +19,7 @@ function OffsetFeatureSection({
       </div>
 
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .offset-feature-section {
           padding-top: 110px;

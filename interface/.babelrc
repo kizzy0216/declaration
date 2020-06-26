@@ -4,6 +4,10 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    "styled-jsx/babel"
+    ["styled-jsx/babel", {
+      "plugins": [
+        "styled-jsx-plugin-postcss"
+      ]
+    }]
   ]
 }

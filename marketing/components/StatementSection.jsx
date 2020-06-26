@@ -11,7 +11,7 @@ function StatementSection({
         }
       </div>
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .statement-section {
           padding-top: 110px;

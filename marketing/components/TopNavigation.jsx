@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
-import { Button } from 'declaration-interface';
+import Button from '~/shared/components/Button';
 
 function TopNavigation({
   links,
 }) {
   return (
-    <nav>
+    <nav className="top-navigation">
       <span className="logo-wrapper">
         <Link href="/">
           <a>

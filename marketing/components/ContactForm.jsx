@@ -1,4 +1,4 @@
-import { Input } from 'declaration-interface';
+import Input from '~/shared/components/Input';
 
 function ContactForm() {
   return (
@@ -19,7 +19,7 @@ function ContactForm() {
       </div>
       <div className="row">
         <Input
-          label="message"
+          label="Message"
           type="text"
           rows={4}
         />

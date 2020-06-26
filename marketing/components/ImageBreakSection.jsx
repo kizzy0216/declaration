@@ -20,7 +20,7 @@ function ImageBreakSection({
       </div>
 
       <style jsx>{`
-        @import 'declaration-interface/build/styles/media.css';
+        @import 'shared/styles/media.css';
 
         .image-break-section {
           padding-top: 110px;
