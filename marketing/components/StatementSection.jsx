@@ -32,7 +32,19 @@ function StatementSection({
             }
 
             & h2 {
-              max-width: 25ch;
+              max-width: 20ch;
+
+              @media (--small) {
+                max-width: 100%;
+              }
+            }
+          }
+
+          &.one-up {
+            & h2 {
+              @media (--small) {
+                font-size: 40px;
+              }
             }
           }
 
@@ -50,16 +62,22 @@ function StatementSection({
         }
 
         h2 {
+          font-family: var(--font-family-serif-fine);
           font-size: 52px;
           line-height: 1.2;
           width: 100%;
 
-          @media (--medium) {
-            font-size: 26px;
+          @media (--large) {
+            font-size: 40px;
           }
 
           @media (--medium-up) {
             padding-right: 10px;
+          }
+
+          @media (--small) {
+            font-size: 52px;
+            margin-bottom: 30px;
           }
         }
 

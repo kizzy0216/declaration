@@ -7,15 +7,30 @@ import {
   Image,
 } from 'pure-react-carousel';
 
+import useWindowSize from '~/shared/hooks/useWindowSize';
+
 function Carousel({
   items = [],
 }) {
+  const { width } = useWindowSize();
+
+  let visibleSlides = 1;
+  if (width > 0) {
+    if (width < 600) {
+      visibleSlides = 1;
+    } else if (width < 1000) {
+      visibleSlides = 2;
+    } else {
+      visibleSlides = 3;
+    }
+  }
+
   return (
     <CarouselProvider
       naturalSlideWidth={100}
       naturalSlideHeight={100}
       totalSlides={items.length}
-      visibleSlides={2}
+      visibleSlides={visibleSlides}
       infinite={true}
     >
       <Slider>

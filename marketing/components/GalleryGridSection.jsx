@@ -5,7 +5,10 @@ function GalleryGridSection({
     <section className="gallery-grid-section">
       <div className="container">
         {items.map((item) => (
-          <img src={item} key={item} />
+          <img
+            src={item}
+            key={item}
+          />
         ))}
       </div>
 

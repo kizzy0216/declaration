@@ -47,7 +47,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  font-family: Garamond, serif;
+  font-family: var(--font-family-serif);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   position: relative;

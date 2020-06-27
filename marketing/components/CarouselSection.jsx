@@ -27,12 +27,13 @@ function CarouselSection({
           padding-left: 20px;
           padding-right: 20px;
 
-          @media (--small) {
-            font-size: 25px;
-          }
-
           @media (--medium) {
             font-size: 36px;
+          }
+
+          @media (--small) {
+            font-size: 45px;
+            max-width: 20ch;
           }
         }
       `}</style>

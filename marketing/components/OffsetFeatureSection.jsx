@@ -1,14 +1,47 @@
+import { useRef } from 'react';
+
+import useWindowScrollPosition from '~/shared/hooks/useWindowScrollPosition';
+import useIsomorphicLayoutEffect from '~/shared/hooks/useIsomorphicLayoutEffect';
+
 function OffsetFeatureSection({
   imgSrc,
   heading,
   subHeading,
   offsetX = '-100%',
+  parallaxMultiplier = 0.2,
 }) {
+  const transformElementRef = useRef(null);
+  const initialDimensions = useRef(0);
+  const { y } = useWindowScrollPosition();
+
+  useIsomorphicLayoutEffect(() => {
+    initialDimensions.current = transformElementRef.current.getBoundingClientRect();
+  }, []);
+
+  let translateY = 0;
+  if (transformElementRef.current) {
+    const delta = y - initialDimensions.current.top + initialDimensions.current.height;
+    translateY = `-${(delta) * parallaxMultiplier}px`;
+  }
+
+  function handleImageLoad() {
+    initialDimensions.current = transformElementRef.current.getBoundingClientRect();
+  }
+
   return (
     <section className="offset-feature-section">
-      <div className="container">
+      <div
+        className="container"
+        ref={transformElementRef}
+        style={{
+          transform: `translateY(${translateY})`,
+        }}
+      >
         <div className="offset-wrapper">
-          <img src={imgSrc} />
+          <img
+            src={imgSrc}
+            onLoad={handleImageLoad}
+          />
           <p className="sub-heading">
             {subHeading}
           </p>
@@ -39,6 +72,7 @@ function OffsetFeatureSection({
           max-width: var(--max-width);
           margin-left: auto;
           margin-right: auto;
+          will-change: transform;
         }
 
         .offset-wrapper {
@@ -50,12 +84,13 @@ function OffsetFeatureSection({
             margin-bottom: 20px;
             font-size: 18px;
             line-height: 1.5;
-            max-width: 55ch;
+            max-width: 44ch;
           }
 
           & .heading {
-            font-weight: 500;
-            font-size: 21px;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 24px;
             line-height: 1.5;
             max-width: 30ch;
           }

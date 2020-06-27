@@ -42,30 +42,10 @@ function SideNavigation() {
           <li>
             <ActiveLink
               activeClassName="underline"
-              href="/events"
+              href="/content"
             >
               <a>
-                Events
-              </a>
-            </ActiveLink>
-          </li>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/loops"
-            >
-              <a>
-                Loops
-              </a>
-            </ActiveLink>
-          </li>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/categories"
-            >
-              <a>
-                Categories
+                Content
               </a>
             </ActiveLink>
           </li>

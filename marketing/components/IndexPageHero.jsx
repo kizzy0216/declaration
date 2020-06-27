@@ -43,15 +43,29 @@ function IndexPageHero() {
           color: white;
         }
 
+        .container {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+
         h1 {
-          max-width: 44ch;
+          max-width: 40ch;
           font-size: 50px;
           margin-bottom: 20px;
+          font-family: var(--font-family-serif-fine);
+
+          @media (--small) {
+            font-size: 36px;
+          }
         }
 
         h2 {
           max-width: 80ch;
           font-size: 26px;
+
+          @media (--small) {
+            font-size: 21px;
+          }
         }
 
         .background-image {

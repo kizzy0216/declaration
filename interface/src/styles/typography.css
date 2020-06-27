@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'Requiem';
+  src: url('/fonts/Requiem-Text-Roman.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Requiem';
+  src: url('/fonts/Requiem-Text-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}
+
+
+@font-face {
+  font-family: 'Requiem-Display';
+  src: url('/fonts/Requiem-Display-Roman.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Requiem-Display';
+  src: url('/fonts/Requiem-Display-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}
+
+
+@font-face {
+  font-family: 'Requiem-Fine';
+  src: url('/fonts/Requiem-Fine-Roman.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Requiem-Fine';
+  src: url('/fonts/Requiem-Fine-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}

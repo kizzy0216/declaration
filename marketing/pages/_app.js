@@ -1,16 +1,20 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // import App from 'next/app'
 import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
+import '~/shared/styles/typography.css';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import ActiveLink from '~/shared/components/ActiveLink';
 import TopNavigation from '~/components/TopNavigation';
 
 function Application({ Component, pageProps }) {
+  const { pathname } = useRouter();
+
   return (
     <Fragment>
       <Head>
@@ -18,6 +22,7 @@ function Application({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TopNavigation
+        isInitiallyTransparent={pathname === '/'}
         links={[
           <ActiveLink
             activeClassName="underline"
