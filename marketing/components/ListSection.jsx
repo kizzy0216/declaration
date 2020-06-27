@@ -49,6 +49,11 @@ function ListSection({
 
         h3 {
           font-size: 40px;
+
+          @media (--small) {
+            font-size: 24px;
+            margin-bottom: 40px;
+          }
         }
 
         p {
