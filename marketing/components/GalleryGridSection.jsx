@@ -1,5 +1,7 @@
 function GalleryGridSection({
   items = [],
+  expectedWidth = 0,
+  expectedHeight = 0,
 }) {
   return (
     <section className="gallery-grid-section">
@@ -8,6 +10,8 @@ function GalleryGridSection({
           <img
             src={item}
             key={item}
+            width={expectedWidth}
+            height={expectedHeight}
           />
         ))}
       </div>

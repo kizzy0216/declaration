@@ -156,10 +156,13 @@ function TopNavigation({
 
         .logo-wrapper {
           line-height: 0;
-        }
+          display: flex;
+          align-items: flex-start;
 
-        .logo {
-          max-height: 15px;
+          & .logo {
+            height: 15px;
+            width: auto;
+          }
         }
 
         .top-bar-links {

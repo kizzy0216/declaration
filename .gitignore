@@ -20,6 +20,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.vercel
 
 # macOS garbage
 .DS_Store

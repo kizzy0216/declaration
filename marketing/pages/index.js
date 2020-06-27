@@ -45,6 +45,8 @@ function IndexPage() {
             '/images/selling-point-08.jpg',
             '/images/selling-point-09.jpg',
           ]}
+          expectedWidth={500}
+          expectedHeight={750}
         />
         <ImageBreakSection
           imgSrc="/images/venn.jpg"

@@ -1,30 +1,34 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
+import useWindowLoad from '~/shared/hooks/useWindowLoad';
 import useWindowScrollPosition from '~/shared/hooks/useWindowScrollPosition';
 import useIsomorphicLayoutEffect from '~/shared/hooks/useIsomorphicLayoutEffect';
 
 function ImageBreakSection({
   imgSrc,
   maxWidthType = 'inner', // normal, inner, outer
-  parallaxMultiplier = 0.3,
+  parallaxMultiplier = 0.2,
 }) {
-  const transformElementRef = useRef(null);
-  const initialDimensions = useRef(0);
   const { y } = useWindowScrollPosition();
+  const hasWindowLoaded = useWindowLoad();
+
+  const transformElementRef = useRef(null);
+  const [initialY, setInitialY] = useState(0);
+  const [initialHeight, setInitialHeight] = useState(0);
+  const [translateY, setTranslateY] = useState('0px');
 
   useIsomorphicLayoutEffect(() => {
-    initialDimensions.current = transformElementRef.current.getBoundingClientRect();
-  }, []);
+    const dimensions = transformElementRef.current.getBoundingClientRect();
+    setInitialY(dimensions.top + y);
+    setInitialHeight(dimensions.height);
+  }, [hasWindowLoaded]);
 
-  let translateY = 0;
-  if (transformElementRef.current) {
-    const delta = y - initialDimensions.current.top + initialDimensions.current.height;
-    translateY = `-${(delta) * parallaxMultiplier}px`;
-  }
-
-  function handleImageLoad() {
-    initialDimensions.current = transformElementRef.current.getBoundingClientRect();
-  }
+  useEffect(() => {
+    if (hasWindowLoaded) {
+      const delta = y - initialY + initialHeight;
+      setTranslateY(`${(-delta) * parallaxMultiplier}px`);
+    }
+  }, [initialY, hasWindowLoaded, y]);
 
   const maxWidth = (() => {
     switch(maxWidthType) {
@@ -46,10 +50,7 @@ function ImageBreakSection({
           transform: `translateY(${translateY})`,
         }}
       >
-        <img
-          src={imgSrc}
-          onLoad={handleImageLoad}
-        />
+        <img src={imgSrc} />
       </div>
 
       <style jsx>{`
