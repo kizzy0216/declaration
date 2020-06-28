@@ -42,6 +42,7 @@
     "@storybook/react-native": "^5.3.19",
     "@storybook/react-native-server": "^5.3.19",
     "babel-loader": "^8.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-expo": "~8.1.0",
     "jest-expo": "~37.0.0"
   },

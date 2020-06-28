@@ -1,9 +1,11 @@
 import React from 'react';
 
-import StorybookUI from '../storybook';
+import StorybookUI from '~/storybook';
 
-export default function StorybookScreen () {
+function StorybookScreen () {
   return (
     <StorybookUI />
   );
 }
+
+export default StorybookScreen;
