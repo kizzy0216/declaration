@@ -20,7 +20,7 @@ function AuthenticationHomeScreen({ navigation }) {
         <View style={styles.header}>
           <View style={styles.logoWrapper}>
             <Image
-              source={require('shared/images/logo-white.png')}
+              source={require('~/shared/images/logo-white.png')}
               style={styles.logo}
             />
           </View>

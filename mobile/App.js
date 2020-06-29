@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -23,7 +23,16 @@ function App(props) {
     return (
       <SafeAreaProvider>
         <View style={styles.container}>
-          <NavigationContainer linking={LinkingConfiguration}>
+          <NavigationContainer
+            linking={LinkingConfiguration}
+            theme={{
+              ...DefaultTheme,
+              colors: {
+                ...DefaultTheme.colors,
+                background: 'white',
+              },
+            }}
+          >
             <Stack.Navigator headerMode="none">
               <Stack.Screen
                 name="AuthenticationRoot"
