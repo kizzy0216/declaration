@@ -20,7 +20,9 @@ function Application({ Component, pageProps }) {
         <SideNavigation />
       </div>
       <div className="container">
-        <Component {...pageProps} />
+        <div className="scroller">
+          <Component {...pageProps} />
+        </div>
       </div>
 
       <style jsx>{`
@@ -44,8 +46,15 @@ function Application({ Component, pageProps }) {
           margin-right: 20px;
           margin-bottom: 20px;
           background: white;
-          flex: 1 0 auto;
+          flex: 1;
           box-shadow: var(--box-shadow);
+          overflow: auto;
+        }
+
+        .scroller {
+          overflow: auto;
+          width: 100%;
+          height: 100%;
         }
       `}</style>
     </div>

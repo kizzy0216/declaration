@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import RequestNetworkForm from '~/components/RequestNetworkForm';
+import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
 import Footer from '~/components/Footer';
 
 function RequestNetworkPage() {
@@ -19,7 +19,7 @@ function RequestNetworkPage() {
         </p>
 
         <div className="form-wrapper">
-          <RequestNetworkForm />
+          <NetworkAccessRequestForm />
         </div>
       </main>
 

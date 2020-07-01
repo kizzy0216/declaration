@@ -1,7 +1,7 @@
 import Input from '~/shared/components/Input';
 import Select from '~/shared/components/Select';
 
-function RequestNetworkForm() {
+function NetworkAccessRequestForm() {
   return (
     <form>
       <div className="row">
@@ -79,4 +79,4 @@ function RequestNetworkForm() {
   );
 }
 
-export default RequestNetworkForm;
+export default NetworkAccessRequestForm;

@@ -42,10 +42,10 @@ function SideNavigation() {
           <li>
             <ActiveLink
               activeClassName="underline"
-              href="/content"
+              href="/knowledge"
             >
               <a>
-                Content
+                Knowledge
               </a>
             </ActiveLink>
           </li>
