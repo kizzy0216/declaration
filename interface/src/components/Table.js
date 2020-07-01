@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTable } from 'react-table';
+
+import ChevronIcon from './icons/ChevronIcon';
 
 // Create a default prop getter
 const defaultPropGetter = () => ({})
@@ -15,7 +17,10 @@ function Table({
   getColumnProps = defaultPropGetter,
   getRowProps = defaultPropGetter,
   getCellProps = defaultPropGetter,
+  isCollapsible = false,
 }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -25,11 +30,32 @@ function Table({
   } = useTable({
     columns,
     data,
-  })
+  });
+
+  function handleToggleCollapse(event) {
+    event.preventDefault();
+
+    setIsCollapsed(!isCollapsed);
+  }
 
   return (
-    <div className="table">
+    <div
+      className={[
+        'table',
+        isCollapsed && 'collapsed',
+      ].filter(x => x).join(' ')}
+    >
       <div className="table-header">
+        {isCollapsible &&
+          <a
+            onClick={handleToggleCollapse}
+            href="#collapse"
+            className="collapse-toggle"
+          >
+            <ChevronIcon fill="inherit" />
+          </a>
+        }
+
         {heading &&
           <h2>{heading}</h2>
         }
@@ -104,12 +130,34 @@ function Table({
         .table {
           width: 100%;
           font-family: var(--font-family-sans-serif);
+
+          &.collapsed {
+            & table {
+              display: none;
+            }
+
+            & .collapse-toggle {
+              transform: rotate(90deg);
+            }
+          }
         }
 
         .table-header {
           display: flex;
           flex-flow: row;
           justify-content: space-between;
+        }
+
+        .collapse-toggle {
+          fill: black;
+          padding-left: 10px;
+          padding-right: 10px;
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          align-items: center;
+          transition: transform 0.111s ease-in-out;
+          transform: rotate(180deg);
         }
 
         .sub-headings-wrapper {

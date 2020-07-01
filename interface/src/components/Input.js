@@ -1,15 +1,17 @@
 import React from 'react';
 
 import Button from './Button';
+import SpinnerIcon from './icons/SpinnerIcon';
 
 function Input({
   label,
   value,
   type, // text, email, password, submit
   placeholder,
+  rows,
   isAutofocused = false,
   isRequired = false,
-  rows,
+  isFetching = false,
   onChange = () => {},
   onFocus = () => {},
   onBlur = () => {},
@@ -29,6 +31,9 @@ function Input({
           type={type}
           label={label}
           size="large"
+          leftIcon={
+            isFetching && <SpinnerIcon fill="inherit" />
+          }
         />
       }
 
@@ -38,6 +43,10 @@ function Input({
           autoFocus={isAutofocused}
           required={isRequired}
           rows={rows}
+          value={value}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
       }
 

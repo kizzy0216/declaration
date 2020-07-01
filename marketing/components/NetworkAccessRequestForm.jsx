@@ -1,14 +1,41 @@
+import { useState } from 'react';
+
 import Input from '~/shared/components/Input';
 import Select from '~/shared/components/Select';
 
-function NetworkAccessRequestForm() {
+function NetworkAccessRequestForm({
+  isFetching = false,
+  error = '',
+  onSubmit,
+}) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [communityName, setCommunityName] = useState('');
+  const [userCountRange, setUserCountRange] = useState('');
+  const [body, setBody] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    onSubmit({
+      name,
+      email,
+      communityName,
+      userCountRange,
+      body,
+    });
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="row">
         <Input
           type="text"
           label="Name"
           placeholder="Name"
+          isRequired
+          value={name}
+          onChange={event => setName(event.target.value)}
         />
       </div>
       <div className="row">
@@ -16,6 +43,9 @@ function NetworkAccessRequestForm() {
           type="email"
           label="Email"
           placeholder="Email"
+          isRequired
+          value={email}
+          onChange={event => setEmail(event.target.value)}
         />
       </div>
       <div className="row">
@@ -23,6 +53,9 @@ function NetworkAccessRequestForm() {
           type="text"
           label="Company/School/Institution name"
           placeholder="Company/School/Institution name"
+          isRequired
+          value={communityName}
+          onChange={event => setCommunityName(event.target.value)}
         />
       </div>
       <div className="row">
@@ -55,6 +88,9 @@ function NetworkAccessRequestForm() {
               value: '(10000,)'
             },
           ]}
+          isRequired
+          value={userCountRange}
+          onChange={event => setUserCountRange(event.target.value)}
         />
       </div>
       <div className="row">
@@ -62,12 +98,15 @@ function NetworkAccessRequestForm() {
           label="Additional comments"
           type="text"
           rows={4}
+          value={body}
+          onChange={event => setBody(event.target.value)}
         />
       </div>
 
       <Input
         label="Send"
         type="submit"
+        isFetching={isFetching}
       />
 
       <style jsx>{`

@@ -74,6 +74,7 @@ function MemberTable({
           ], [])
         }
         data={items}
+        isCollapsible
       />
       <style jsx>{`
         .actions-wrapper {

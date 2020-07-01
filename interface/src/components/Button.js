@@ -5,13 +5,33 @@ function Button ({
   theme = 'primary', // primary, secondary, tertiary, transparent
   type,
   size = 'medium', // medium, large
+  leftIcon,
+  rightIcon,
 }) {
   return (
     <button
-      className={`${theme} ${size}`}
+      className={[
+        theme,
+        size,
+        (leftIcon || rightIcon) && 'has-icon',
+      ].filter(x => x).join(' ')}
       type={type}
     >
-      {label}
+      {leftIcon &&
+        <span className="icon-wrapper">
+          {leftIcon}
+        </span>
+      }
+
+      <span className="label">
+        {label}
+      </span>
+
+      {rightIcon &&
+        <span className="icon-wrapper">
+          {rightIcon}
+        </span>
+      }
 
       <style jsx>{`
         button {
@@ -20,6 +40,10 @@ function Button ({
           border-radius: var(--border-radius);
           cursor: pointer;
           width: 100%;
+          display: flex;
+          flex-flow: row;
+          justify-content: space-between;
+          align-items: center;
 
           &:not(.transparent):hover {
             box-shadow: var(--box-shadow);
@@ -43,20 +67,32 @@ function Button ({
         .primary {
           background: var(--blue);
           color: white;
+          fill: white;
         }
 
         .secondary {
           background: var(--light-gray);
           color: var(--gray);
+          fill: var(--gray);
         }
 
         .tertiary {
           background: white;
           color: var(--gray);
+          fill: var(--gray);
         }
 
         .transparent {
           color: black;
+          fill: black;
+        }
+
+        .label {
+          flex: 1;
+        }
+
+        .icon-wrapper {
+          line-height: 0;
         }
       `}</style>
     </button>

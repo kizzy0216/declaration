@@ -12,6 +12,24 @@
 - table:
     schema: public
     name: network_access_request
+  insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+      - body
+      - community_name
+      - requester_email
+      - requester_name
+      - user_count_range
+      backend_only: false
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - uuid
+      filter: {}
 - table:
     schema: public
     name: network_user
@@ -53,7 +71,6 @@
 - table:
     schema: public
     name: user_role
-  is_enum: true
   array_relationships:
   - name: network_users
     using:

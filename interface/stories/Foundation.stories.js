@@ -4,6 +4,7 @@ import ActionMenu from '~/components/ActionMenu';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Select from '~/components/Select';
+import SpinnerIcon from '~/components/icons/SpinnerIcon';
 
 export default {
   title: 'Foundation',
@@ -17,6 +18,15 @@ export const buttons = () => {
           <Button
             label="Primary"
             theme="primary"
+          />
+        </div>
+        <div className="row">
+          <Button
+            label="Primary"
+            theme="primary"
+            leftIcon={
+              <SpinnerIcon fill="inherit" />
+            }
           />
         </div>
         <div className="row">

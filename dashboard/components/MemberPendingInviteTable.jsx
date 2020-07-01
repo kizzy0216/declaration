@@ -59,6 +59,7 @@ function MemberPendingInviteTable({
           ], [])
         }
         data={items}
+        isCollapsible
       />
       <style jsx>{`
         .actions-wrapper {

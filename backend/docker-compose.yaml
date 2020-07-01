@@ -30,5 +30,6 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: secret
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "secretsecretsecretsecretsecretsecret"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous'
 volumes:
   db_data:

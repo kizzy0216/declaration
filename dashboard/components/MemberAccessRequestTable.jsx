@@ -62,6 +62,7 @@ function MemberAccessRequestTable({
           ], [])
         }
         data={items}
+        isCollapsible
       />
       <style jsx>{`
         .actions-wrapper {

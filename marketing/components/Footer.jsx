@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 function Footer({
   withLinkToContact = true,
 }) {
@@ -7,12 +5,19 @@ function Footer({
     <footer>
       <div className="container">
         { withLinkToContact &&
-          <h3>
-            Questions?&nbsp;
-            <Link href="/contact">
-              <a className="link">Say hi.</a>
-            </Link>
-          </h3>
+          <>
+            <h3>
+              Questions?&nbsp;
+            </h3>
+            <a
+              href="mailto:hi@declaration.net"
+              className="link"
+            >
+              <h4>
+                Say hi@declaration.net.
+              </h4>
+            </a>
+          </>
         }
 
         <p>
@@ -37,11 +42,23 @@ function Footer({
 
         h3 {
           font-size: 40px;
-          margin-bottom: 30px;
+          margin-bottom: 5px;
 
           @media (--small) {
             font-size: 20px;
           }
+        }
+
+        h4 {
+          font-size: 20px;
+
+          @media (--small) {
+            font-size: 16px;
+          }
+        }
+
+        p {
+          margin-top: 20px;
         }
       `}</style>
     </footer>

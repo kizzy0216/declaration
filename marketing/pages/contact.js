@@ -11,10 +11,9 @@ function ContactPage() {
       </Head>
 
       <main>
-        <h1>Questions?</h1>
-        <div className="form-wrapper">
-          <ContactForm />
-        </div>
+        <h1>
+          Questions?<br />Email us at <a href="mailto:hi@declaration.net">hi@declaration.net</a>.
+        </h1>
       </main>
 
       <Footer withLinkToContact={false} />
@@ -47,13 +46,6 @@ function ContactPage() {
           margin-right: auto;
           margin-bottom: 35px;
           text-align: center;
-        }
-
-        .form-wrapper {
-          width: 100%;
-          max-width: 44ch;
-          margin-left: auto;
-          margin-right: auto;
         }
       `}</style>
     </div>
