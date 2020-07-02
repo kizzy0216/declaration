@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { createClient, Provider as UrqlProvider } from 'urql';
 
 // import App from 'next/app'
 
@@ -7,6 +8,10 @@ import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
 
 import SideNavigation from '~/components/SideNavigation';
+
+const client = createClient({
+  url: process.env.API_BASE_URL,
+});
 
 function Application({ Component, pageProps }) {
   return (
@@ -21,7 +26,9 @@ function Application({ Component, pageProps }) {
       </div>
       <div className="container">
         <div className="scroller">
-          <Component {...pageProps} />
+          <UrqlProvider value={client}>
+            <Component {...pageProps} />
+          </UrqlProvider>
         </div>
       </div>
 

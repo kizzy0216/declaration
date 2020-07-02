@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { createClient, Provider as UrqlProvider } from 'urql';
 
 // import App from 'next/app'
 import '~/shared/styles/variables.css';
@@ -12,10 +11,6 @@ import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import ActiveLink from '~/shared/components/ActiveLink';
 import TopNavigation from '~/components/TopNavigation';
-
-const client = createClient({
-  url: process.env.API_BASE_URL,
-});
 
 function Application({ Component, pageProps }) {
   const { pathname } = useRouter();
@@ -40,9 +35,7 @@ function Application({ Component, pageProps }) {
         ]}
       />
 
-      <UrqlProvider value={client}>
-        <Component {...pageProps} />
-      </UrqlProvider>
+      <Component {...pageProps} />
     </Fragment>
   );
 }

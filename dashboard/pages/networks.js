@@ -1,4 +1,6 @@
 import React from 'react';
+import { useQuery } from 'urql';
+import { withUrqlClient } from 'next-urql';
 
 import NetworkAccessRequestTable from '~/components/NetworkAccessRequestTable';
 
@@ -36,4 +38,6 @@ function NetworksPage() {
   );
 }
 
-export default NetworksPage;
+export default withUrqlClient(() => ({
+  url: process.env.API_BASE_URL,
+}))(NetworksPage);

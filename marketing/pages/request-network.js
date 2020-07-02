@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useMutation } from 'urql';
+import { withUrqlClient } from 'next-urql';
 
 import InsertNetworkAccessRequest from '~/mutations/InsertNetworkAccessRequest';
 import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
@@ -115,4 +116,6 @@ function RequestNetworkPage() {
   );
 }
 
-export default RequestNetworkPage;
+export default withUrqlClient(() => ({
+  url: process.env.API_BASE_URL,
+}))(RequestNetworkPage);
