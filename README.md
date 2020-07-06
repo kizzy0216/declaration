@@ -5,6 +5,7 @@
 ### Global prerequisites
 
 ```bash
+npm install vercel --global
 npm install hasura-cli --global
 npm install expo-cli --global
 ```

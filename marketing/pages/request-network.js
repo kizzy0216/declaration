@@ -57,8 +57,8 @@ function RequestNetworkPage() {
         <div className="form-wrapper">
           {!data &&
             <NetworkAccessRequestForm
-              isFetching={response.fetching}
-              error={response.error}
+              isFetching={isFetching}
+              error={error}
               onSubmit={handleSubmit}
             />
           }
@@ -117,5 +117,5 @@ function RequestNetworkPage() {
 }
 
 export default withUrqlClient(() => ({
-  url: process.env.API_BASE_URL,
+  url: process.env.HASURA_BASE_URL,
 }))(RequestNetworkPage);

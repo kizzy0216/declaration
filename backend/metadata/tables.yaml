@@ -53,6 +53,15 @@
 - table:
     schema: public
     name: user
+  object_relationships:
+  - name: verification_code
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: verification_code
+        column_mapping:
+          email: email
   array_relationships:
   - name: network_users
     using:
@@ -82,3 +91,7 @@
 - table:
     schema: public
     name: verification_code
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: email

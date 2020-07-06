@@ -1,7 +1,9 @@
-import { Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+const DASHBOARD_BASE_URL = process.env.DASHBOARD_BASE_URL;
 
 // import App from 'next/app'
 import '~/shared/styles/variables.css';
@@ -11,12 +13,25 @@ import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import ActiveLink from '~/shared/components/ActiveLink';
 import TopNavigation from '~/components/TopNavigation';
+import { fetchREST } from '~/utils/api';
 
 function Application({ Component, pageProps }) {
   const { pathname } = useRouter();
+  const [hasSettledAuthentication, setHasSettledAuthentication] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    fetchREST('/me', {
+      method: 'GET',
+    }).then(r => r.json())
+      .then((user) => {
+        setUser(user);
+        setHasSettledAuthentication(true);
+      });
+  }, []);
 
   return (
-    <Fragment>
+    <>
       <Head>
         <title>Declaration</title>
         <link rel="icon" href="/favicon.ico" />
@@ -32,11 +47,21 @@ function Application({ Component, pageProps }) {
           >
             <a>Request a space</a>
           </ActiveLink>,
-        ]}
+          hasSettledAuthentication && user.uuid && (
+            <a
+              href={DASHBOARD_BASE_URL}
+              key={DASHBOARD_BASE_URL}
+            >
+              Dashboard
+            </a>
+          ),
+        ].filter(x => x)}
+        user={user}
+        hasSettledAuthentication={hasSettledAuthentication}
       />
 
-      <Component {...pageProps} />
-    </Fragment>
+      <Component {...pageProps} user={user} />
+    </>
   );
 }
 

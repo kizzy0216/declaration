@@ -8,11 +8,13 @@ function UserCell({
 }) {
   return (
     <div className="user-cell">
-      <Avatar
-        name={value.name}
-        imageSrc={value.image}
-        theme={theme}
-      />
+      <span className="avatar-wrapper">
+        <Avatar
+          name={value.name}
+          imageSrc={value.image}
+          theme={theme}
+        />
+      </span>
 
       <span className="name">
         {value.name}
@@ -23,6 +25,10 @@ function UserCell({
           display: flex;
           flex-flow: row;
           align-items: center;
+        }
+
+        .avatar-wrapper {
+          flex: 0 0 auto;
         }
 
         .name {

@@ -3,7 +3,9 @@ const webpack = require('webpack');
 
 module.exports = {
   env: {
-    API_BASE_URL: 'http://localhost:8080/v1/graphql',
+    HASURA_BASE_URL: 'http://localhost:8080/v1/graphql',
+    REST_BASE_URL: 'http://localhost:3000/api',
+    DASHBOARD_BASE_URL: 'http://localhost:55000',
   },
   webpack: config => {
     config.resolve.alias['~'] = path.resolve(__dirname);

@@ -5,13 +5,20 @@ import Router from 'next/router';
 import Button from '~/shared/components/Button';
 import CloseIcon from '~/shared/components/icons/CloseIcon';
 import MenuIcon from '~/shared/components/icons/MenuIcon';
+import SpinnerIcon from '~/shared/components/icons/SpinnerIcon';
 import useWindowScrollPosition from '~/shared/hooks/useWindowScrollPosition';
 import useKeyDown from '~/shared/hooks/useKeyDown';
 
 function TopNavigation({
   isInitiallyTransparent = false,
   links,
+  user = {},
+  hasSettledAuthentication = false,
 }) {
+  const [authenticationDisplay, setAuthenticationDisplay] = useState({
+    href: '/log-in',
+    label: 'Login',
+  });
   const [isActive, setIsActive] = useState(false);
   const isScrollingUp = useRef(false);
   const previousY = useRef(0);
@@ -44,6 +51,20 @@ function TopNavigation({
     setIsActive(!isActive);
   }
 
+  useEffect(() => {
+    if (user.uuid) {
+      setAuthenticationDisplay({
+        href: '/log-out',
+        label: 'Logout',
+      });
+    } else {
+      setAuthenticationDisplay({
+        href: '/log-in',
+        label: 'Login',
+      });
+    }
+  }, [user.uuid]);
+
   return (
     <nav className="top-navigation">
       <div
@@ -69,10 +90,15 @@ function TopNavigation({
         <span className="top-bar-links desktop">
           {links}
 
-          <span className="login-wrapper">
-            <Link href="/log-in">
+          <span className="authentication-action">
+            <Link href={authenticationDisplay.href}>
               <a>
-                <Button label="Login" />
+                <Button
+                  label={authenticationDisplay.label}
+                  leftIcon={
+                    !hasSettledAuthentication && <SpinnerIcon />
+                  }
+                />
               </a>
             </Link>
           </span>
@@ -105,12 +131,15 @@ function TopNavigation({
 
         {links}
 
-        <span className="login-wrapper">
-          <Link href="/log-in">
+        <span className="authentication-action">
+          <Link href={authenticationDisplay.href}>
             <a>
               <Button
-                label="Login"
+                label={authenticationDisplay.label}
                 size="large"
+                leftIcon={
+                  !hasSettledAuthentication && <SpinnerIcon />
+                }
               />
             </a>
           </Link>
@@ -171,7 +200,7 @@ function TopNavigation({
           justify-content: space-between;
           align-items: center;
 
-          & .login-wrapper {
+          & .authentication-action {
             font-size: 14px;
           }
 
@@ -223,7 +252,7 @@ function TopNavigation({
             opacity: 1;
           }
 
-          & .login-wrapper {
+          & .authentication-action {
             font-size: 16px;
             width: 100%;
 

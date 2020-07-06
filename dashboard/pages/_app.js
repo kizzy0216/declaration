@@ -1,19 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { createClient, Provider as UrqlProvider } from 'urql';
-
-// import App from 'next/app'
+import App from 'next/app'
+import cookie from 'cookie';
+import fetch from 'isomorphic-unfetch';
+import { withUrqlClient } from 'next-urql';
 
 import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
 
+import AuthenticationWall from '~/components/AuthenticationWall';
 import SideNavigation from '~/components/SideNavigation';
+import { JWT_COOKIE_KEY } from '~/constants';
 
-const client = createClient({
-  url: process.env.API_BASE_URL,
-});
-
-function Application({ Component, pageProps }) {
+function Application({ Component, pageProps, jwt }) {
   return (
     <div className="application">
       <Head>
@@ -21,17 +20,24 @@ function Application({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="side-navigation-wrapper">
-        <SideNavigation />
-      </div>
-      <div className="container">
-        <div className="scroller">
-          <UrqlProvider value={client}>
-            <Component {...pageProps} />
-          </UrqlProvider>
+      {!jwt &&
+        <div className="container">
+          <AuthenticationWall />
         </div>
-      </div>
+      }
 
+      {jwt &&
+        <>
+          <div className="side-navigation-wrapper">
+            <SideNavigation />
+          </div>
+          <div className="container">
+            <div className="scroller">
+              <Component {...pageProps} />
+            </div>
+          </div>
+        </>
+      }
       <style jsx>{`
         .application {
           width: 100%;
@@ -52,6 +58,7 @@ function Application({ Component, pageProps }) {
           margin-top: 20px;
           margin-right: 20px;
           margin-bottom: 20px;
+          margin-left: 20px;
           background: white;
           flex: 1;
           box-shadow: var(--box-shadow);
@@ -68,16 +75,38 @@ function Application({ Component, pageProps }) {
   );
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-// Application.getInitialProps = async (appContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
-//
-//   return { ...appProps }
-// }
+const getJWT = (ctx) => {
+  let jwt = '';
+  if (ctx && ctx.req && ctx.req.headers && ctx.req.headers.cookie) {
+    const { req: request } = ctx;
+    const cookies = cookie.parse(request.headers.cookie || '');
+    jwt = cookies[JWT_COOKIE_KEY];
+  }
 
-export default Application;
+  return jwt;
+};
+
+Application.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+  const jwt = getJWT(appContext.ctx);
+
+  return {
+    ...appProps,
+    jwt,
+  }
+}
+
+export default withUrqlClient((_, ctx) => {
+  const jwt = getJWT(ctx);
+
+  return {
+    url: process.env.HASURA_BASE_URL,
+    fetchOptions: {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    },
+    fetch,
+  };
+})(Application);

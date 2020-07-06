@@ -1,0 +1,15 @@
+{
+  "name": "declaration-backend",
+  "version": "0.0.0",
+  "scripts": {},
+  "dependencies": {
+    "@urql/core": "^1.12.2",
+    "cookie": "^0.4.1",
+    "graphql": "^15.2.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@vercel/node": "^1.7.1"
+  }
+}

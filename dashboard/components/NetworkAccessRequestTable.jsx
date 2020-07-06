@@ -23,14 +23,23 @@ function NetworkAccessRequestTable({
                   theme="secondary"
                 />
               ),
+              style: {
+                width: '25ch',
+              },
             },
             {
               Header: 'Email',
               accessor: 'email',
+              style: {
+                width: '25ch',
+              },
             },
             {
               Header: 'Network name',
               accessor: 'networkName',
+              style: {
+                width: '20ch',
+              },
             },
             {
               Header: 'Body',
