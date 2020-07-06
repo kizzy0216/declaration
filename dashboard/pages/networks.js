@@ -1,29 +1,72 @@
 import React from 'react';
-import { useQuery } from 'urql';
-import { withUrqlClient } from 'next-urql';
+import { useQuery, useMutation } from 'urql';
 
 import NetworkAccessRequestTable from '~/components/NetworkAccessRequestTable';
+import GetNetworkAccessRequests from '~/queries/GetNetworkAccessRequests';
+import DeleteNetworkAccessRequest from '~/mutations/DeleteNetworkAccessRequest';
 
 function NetworksPage() {
-  const items = [{
-    id: 0,
-    user: {
-      name: 'John Doe',
-    },
-    email: 'jdoe@example.com',
-    networkName: 'Doe Soc',
-    body: `
-      Your bones don't break, mine do. That's clear. Your cells react to bacteria and viruses differently than mine.
-      You don't get sick, I do.  That's also clear.
-      But for some reason, you and I react the exact same way to water. We swallow it too fast, we choke. We get some in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on the same curve, just on opposite ends.
-    `.trim(),
-    userCountRange: '0-100',
-  }];
+  const [result] = useQuery({
+    query: GetNetworkAccessRequests,
+  });
+  const [
+    deleteAccessRequestResult, 
+    deleteAccessRequest,
+  ] = useMutation(DeleteNetworkAccessRequest);
+
+  const {
+    data,
+    fetching: isFetching,
+  } = result;
+
+  let items = [];
+  if (!isFetching) {
+    items = result
+      .data
+      .network_access_request
+      .map(({
+        uuid,
+        requester_name,
+        requester_email,
+        community_name,
+        body,
+        user_count_range,
+      }) => ({
+        id: uuid,
+        user: {
+          name: requester_name,
+          email: requester_email,
+        },
+        networkName: community_name,
+        body,
+        userCountRange: user_count_range
+          .replace(/\[/g, '')
+          .replace(/\)/g, '')
+          .split(',')
+          .map((numberString) => {
+            if (numberString[numberString.length - 1] === '1') {
+              return Number(Number(numberString) - 1).toLocaleString();
+            }
+
+            return Number(numberString).toLocaleString();
+          })
+          .join(' - ')
+      }));
+  }
+
+  function handleAccept({ id }) {
+  }
+
+  function handleDecline ({ id }) {
+    deleteAccessRequest({ uuid: id });
+  }
 
   return (
     <div className="networks-page">
       <NetworkAccessRequestTable
         items={items}
+        onAccept={handleAccept}
+        onDecline={handleDecline}
       />
 
       <style jsx>{`
@@ -38,6 +81,4 @@ function NetworksPage() {
   );
 }
 
-export default withUrqlClient(() => ({
-  url: process.env.HASURA_BASE_URL,
-}))(NetworksPage);
+export default NetworksPage;

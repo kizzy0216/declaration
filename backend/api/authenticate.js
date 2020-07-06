@@ -154,8 +154,15 @@ const handlers = {
         .toPromise();
     }
 
-    const { uuid } = matchedUser;
-    const roles = ['user']; // TODO get from user record
+    const {
+      uuid,
+      super_admins,
+    } = matchedUser;
+    const roles = [];
+    if (super_admins.length > 0) {
+      roles.push('super_admin');
+    }
+    roles.push('user');
     const jwt = jsonwebtoken.sign({
       sub: uuid,
       'https://hasura.io/jwt/claims': {

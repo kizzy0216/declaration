@@ -6,6 +6,8 @@ import Table from '~/shared/components/Table';
 
 function NetworkAccessRequestTable({
   items,
+  onAccept = () => {},
+  onDecline = () => {},
 }) {
   const heading = `${items.length} Network Access Requests`;
   return (
@@ -29,7 +31,7 @@ function NetworkAccessRequestTable({
             },
             {
               Header: 'Email',
-              accessor: 'email',
+              accessor: 'user.email',
               style: {
                 width: '25ch',
               },
@@ -56,6 +58,9 @@ function NetworkAccessRequestTable({
             {
               Header: 'Member count',
               accessor: 'userCountRange',
+              style: {
+                width: '15ch',
+              },
             },
             {
               id: 'actions',
@@ -66,13 +71,13 @@ function NetworkAccessRequestTable({
                     items={[
                       {
                         href: '#accept',
-                        onClick: () => {},
+                        onClick: () => onAccept({ id: value }),
                         label: 'Accept',
                         theme: 'primary',
                       },
                       {
                         href: '#decline',
-                        onClick: () => {},
+                        onClick: () => onDecline({ id: value }),
                         label: 'Decline',
                         theme: 'tertiary',
                       },
@@ -96,6 +101,8 @@ function NetworkAccessRequestTable({
         .body-wrapper {
           line-height: 1.5;
           white-space: pre-line;
+          max-height: 110px;
+          overflow-y: auto;
         }
       `}</style>
     </>

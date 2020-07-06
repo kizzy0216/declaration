@@ -7,6 +7,9 @@ const GetUsersWithVerificationCode = `
   query GetUsersWithVerificationCode($email: String, $uuid: uuid, $code: String) {
     user(where: {uuid: {_eq: $uuid}, email: {_eq: $email}, verification_code: {text: {_eq: $code}}}) {
       ...UserFragment
+      super_admins {
+        user_uuid
+      }
       verification_code {
         ...VerificationCodeFragment
       }

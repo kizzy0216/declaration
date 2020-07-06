@@ -7,9 +7,14 @@ function ActionLink({
   onClick = () => {},
 }) {
   if (href[0] === '#') {
+    function handleClick(event) {
+      event.preventDefault();
+      onClick();
+    }
+
     return (
       <>
-        <a href={href} onClick={onClick}>
+        <a href={href} onClick={handleClick}>
           {children}
         </a>
         <style jsx>{`

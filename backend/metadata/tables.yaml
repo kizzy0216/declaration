@@ -23,12 +23,58 @@
       - requester_name
       - user_count_range
       backend_only: false
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - user_count_range
+      - id
+      - body
+      - community_name
+      - requester_email
+      - requester_name
+      - created_at
+      - updated_at
+      - uuid
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:
       columns:
       - id
       - uuid
+      filter: {}
+  - role: super_admin
+    permission:
+      columns:
+      - user_count_range
+      - id
+      - body
+      - community_name
+      - requester_email
+      - requester_name
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - user_count_range
+      - id
+      - body
+      - community_name
+      - requester_email
+      - requester_name
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
       filter: {}
 - table:
     schema: public
@@ -43,6 +89,42 @@
   - name: user_role
     using:
       foreign_key_constraint_on: role
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - network_uuid
+      - user_uuid
+      - role
+      - created_at
+      - updated_at
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - role
+      - created_at
+      - updated_at
+      - network_uuid
+      - user_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - role
+      - created_at
+      - updated_at
+      - network_uuid
+      - user_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
 - table:
     schema: public
     name: super_admin
@@ -77,6 +159,67 @@
         table:
           schema: public
           name: super_admin
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - is_verified
+      - id
+      - email
+      - name
+      - created_at
+      - updated_at
+      - uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_verified
+      - id
+      - email
+      - name
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - email
+      - id
+      - name
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_verified
+      - id
+      - email
+      - name
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - email
+      - name
+      filter:
+        uuid:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
 - table:
     schema: public
     name: user_role

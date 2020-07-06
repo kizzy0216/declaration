@@ -12,7 +12,12 @@ import AuthenticationWall from '~/components/AuthenticationWall';
 import SideNavigation from '~/components/SideNavigation';
 import { JWT_COOKIE_KEY } from '~/constants';
 
+let inMemoryJWT;
 function Application({ Component, pageProps, jwt }) {
+  if (jwt.length > 0) {
+    inMemoryJWT = jwt;
+  }
+
   return (
     <div className="application">
       <Head>
@@ -20,13 +25,13 @@ function Application({ Component, pageProps, jwt }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!jwt &&
+      {!inMemoryJWT &&
         <div className="container">
           <AuthenticationWall />
         </div>
       }
 
-      {jwt &&
+      {inMemoryJWT &&
         <>
           <div className="side-navigation-wrapper">
             <SideNavigation />
@@ -38,6 +43,7 @@ function Application({ Component, pageProps, jwt }) {
           </div>
         </>
       }
+
       <style jsx>{`
         .application {
           width: 100%;
@@ -98,15 +104,13 @@ Application.getInitialProps = async (appContext) => {
 }
 
 export default withUrqlClient((_, ctx) => {
-  const jwt = getJWT(ctx);
-
   return {
     url: process.env.HASURA_BASE_URL,
-    fetchOptions: {
+    fetchOptions: () => ({
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${inMemoryJWT}`,
       },
-    },
+    }),
     fetch,
   };
 })(Application);

@@ -5,6 +5,9 @@ const GetUsers = `
   query GetUsers($email: String, $uuid: uuid) {
     user(where: {email: {_eq: $email}, uuid: {_eq: $uuid}}) {
       ...UserFragment
+      super_admins {
+        user_uuid
+      }
     }
   }
 `;

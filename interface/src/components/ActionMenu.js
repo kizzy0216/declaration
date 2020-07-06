@@ -92,6 +92,7 @@ function ActionMenu({
             position: absolute;
             top: 0;
             right: 0;
+            z-index: var(--z-index-buoyant);
             box-shadow: var(--box-shadow);
             border-radius: var(--border-radius);
             padding-bottom: 10px;
