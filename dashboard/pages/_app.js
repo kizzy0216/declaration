@@ -3,19 +3,26 @@ import Link from 'next/link';
 import App from 'next/app'
 import cookie from 'cookie';
 import fetch from 'isomorphic-unfetch';
+import jsonwebtoken from 'jsonwebtoken';
 import { withUrqlClient } from 'next-urql';
 
 import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
 
+import { NetworkContextProvider } from '~/contexts/NetworkContext';
 import AuthenticationWall from '~/components/AuthenticationWall';
-import SideNavigation from '~/components/SideNavigation';
+import SideNavigationContainer from '~/containers/SideNavigationContainer';
 import { JWT_COOKIE_KEY } from '~/constants';
 
 let inMemoryJWT;
 function Application({ Component, pageProps, jwt }) {
   if (jwt.length > 0) {
     inMemoryJWT = jwt;
+  }
+
+  let userUuid;
+  if (inMemoryJWT) {
+    userUuid = jsonwebtoken.decode(inMemoryJWT).sub;
   }
 
   return (
@@ -25,6 +32,8 @@ function Application({ Component, pageProps, jwt }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div id="modal-portal-root" />
+
       {!inMemoryJWT &&
         <div className="container">
           <AuthenticationWall />
@@ -32,16 +41,18 @@ function Application({ Component, pageProps, jwt }) {
       }
 
       {inMemoryJWT &&
-        <>
+        <NetworkContextProvider>
           <div className="side-navigation-wrapper">
-            <SideNavigation />
+            <SideNavigationContainer
+              userUuid={userUuid}
+            />
           </div>
           <div className="container">
             <div className="scroller">
               <Component {...pageProps} />
             </div>
           </div>
-        </>
+        </NetworkContextProvider>
       }
 
       <style jsx>{`

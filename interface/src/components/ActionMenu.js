@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 import Button from './Button';
 import ActionLink from './ActionLink';
 import KebabIcon from './icons/KebabIcon';
+import useClickOutside from '../hooks/useClickOutside';
 
 function ActionMenu({
   items = [],
   isPopoverOnly = false,
 }) {
+  const popoverRef = useRef();
   const isPopover = (isPopoverOnly || items.length >=3);
   const [isPopoverActive, setIsPopoverActive] = useState(false);
 
@@ -16,6 +18,8 @@ function ActionMenu({
 
     setIsPopoverActive(!isPopoverActive);
   }
+
+  useClickOutside(popoverRef, useCallback(() => setIsPopoverActive(false)));
 
   return (
     <div className={[
@@ -52,7 +56,10 @@ function ActionMenu({
         }
 
         {isPopover &&
-          <div className="popover">
+          <div
+            className="popover"
+            ref={popoverRef}
+          >
             <a
               className="toggle"
               href="#toggle-popover"

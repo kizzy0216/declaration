@@ -5,6 +5,7 @@ import Avatar from './Avatar';
 function UserCell({
   value,
   theme = 'primary', // primary, secondary
+  showEmail = false,
 }) {
   return (
     <div className="user-cell">
@@ -16,9 +17,17 @@ function UserCell({
         />
       </span>
 
-      <span className="name">
-        {value.name}
-      </span>
+      <div className="container">
+        <p className="name">
+          {value.name || 'Unknown Name'}
+        </p>
+
+        {showEmail && value.email &&
+          <p className="email">
+            {value.email}
+          </p>
+        }
+      </div>
 
       <style jsx>{`
         .user-cell {
@@ -31,7 +40,7 @@ function UserCell({
           flex: 0 0 auto;
         }
 
-        .name {
+        .container {
           margin-left: 10px;
         }
       `}</style>

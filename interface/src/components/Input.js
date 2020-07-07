@@ -68,7 +68,6 @@ function Input({
         .input {
           font-family: var(--font-family-sans-serif);
           width: 100%;
-          font-size: 14px;
         }
 
         label {
@@ -76,6 +75,7 @@ function Input({
           width: 100%;
           margin-bottom: 5px;
           font-weight: 500;
+          font-size: 14px;
         }
 
         input, textarea {
@@ -88,6 +88,11 @@ function Input({
           padding-bottom: 1.3em;
           padding-left: 1.3em;
           border-radius: var(--border-radius);
+          font-size: 14px;
+        }
+
+        textarea {
+          white-space: pre-line;
         }
       `}</style>
     </div>

@@ -1,6 +1,13 @@
 import ActiveLink from '~/shared/components/ActiveLink';
 
-function SideNavigation() {
+const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
+
+import UserCell from '~/shared/components/UserCell';
+
+function SideNavigation({
+  user,
+  isFetchingUser,
+}) {
   return (
     <nav className="side-navigation">
       <div className="logo">
@@ -52,6 +59,18 @@ function SideNavigation() {
         </ul>
       </div>
 
+      {!isFetchingUser && user && user.uuid &&
+        <div className="footer">
+          <UserCell
+            value={user}
+            showEmail
+          />
+          <a href={`${MARKETING_BASE_URL}/log-out`}>
+            Log out
+          </a>
+        </div>
+      }
+
       <style jsx>{`
         .side-navigation {
           background: var(--light-gray);
@@ -76,21 +95,26 @@ function SideNavigation() {
           display: flex;
           flex-flow: column;
           justify-content: center;
+
+          & a {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 20px;
+
+            &:hover {
+              opacity: 0.7;
+            }
+
+            &.underline {
+              background-size: 2px 2px;
+            }
+          }
         }
 
         ul {
           list-style: none;
         }
 
-        a {
-          font-size: 24px;
-          font-weight: 500;
-          margin-bottom: 20px;
-
-          &.underline {
-            background-size: 2px 2px;
-          }
-        }
       `}</style>
     </nav>
   );

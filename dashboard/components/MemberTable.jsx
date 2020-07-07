@@ -8,83 +8,81 @@ function MemberTable({
   items,
 }) {
   const heading = `${items.length} Members`;
-  return (
-    <>
-      <Table
-        heading={heading}
-        columns={
-          useMemo(() => [
-            {
-              Header: 'Name',
-              accessor: 'user',
-              Cell: ({ value }) => (
-                <UserCell
-                  value={value}
-                  theme="secondary"
-                />
-              ),
-              style: {
-                width: '25ch'
+  const columns = useMemo(() => [
+    {
+      Header: 'Name',
+      accessor: 'user',
+      Cell: ({ value }) => (
+        <UserCell
+          value={value}
+          theme="secondary"
+        />
+      ),
+      style: {
+        width: '25ch'
+      },
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+      style: {
+        width: '25ch'
+      },
+    },
+    {
+      Header: 'Role',
+      accessor: 'role',
+      style: {
+        width: '25ch'
+      },
+    },
+    {
+      Header: 'Location',
+      accessor: 'location',
+      style: {
+        width: '25ch'
+      },
+    },
+    {
+      id: 'actions',
+      accessor: 'id',
+      Cell: ({ value }) => (
+        <div className="actions-wrapper">
+          <ActionMenu
+            items={[
+              {
+                href: '#elevate',
+                onClick: () => {},
+                label: 'Make Admin',
               },
-            },
-            {
-              Header: 'Email',
-              accessor: 'email',
-              style: {
-                width: '25ch'
+              {
+                href: '#block',
+                onClick: () => {},
+                label: 'Block',
               },
-            },
-            {
-              Header: 'Role',
-              accessor: 'role',
-              style: {
-                width: '25ch'
-              },
-            },
-            {
-              Header: 'Location',
-              accessor: 'location',
-              style: {
-                width: '25ch'
-              },
-            },
-            {
-              id: 'actions',
-              accessor: 'id',
-              Cell: ({ value }) => (
-                <div className="actions-wrapper">
-                  <ActionMenu
-                    items={[
-                      {
-                        href: '#elevate',
-                        onClick: () => {},
-                        label: 'Make Admin',
-                      },
-                      {
-                        href: '#block',
-                        onClick: () => {},
-                        label: 'Block',
-                      },
-                    ]}
-                    isPopoverOnly={true}
-                  />
-                </div>
-              ),
+            ]}
+            isPopoverOnly={true}
+          />
+          <style jsx>{`
+            .actions-wrapper {
+              display: flex;
+              flex-flow: row;
+              justify-content: flex-end;
+              align-items: center;
             }
-          ], [])
-        }
-        data={items}
-        isCollapsible
-      />
-      <style jsx>{`
-        .actions-wrapper {
-          display: flex;
-          flex-flow: row;
-          justify-content: flex-end;
-          align-items: center;
-        }
-      `}</style>
-    </>
+          `}</style>
+        </div>
+      ),
+    }
+  ], []);
+
+  return (
+    <Table
+      heading={heading}
+      columns={columns}
+      data={items}
+      isCollapsible
+    />
   );
 }
 

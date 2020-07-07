@@ -6,10 +6,14 @@ function Avatar({
   theme = 'primary', // primary, secondary
 }) {
   const [hasLoaded, setHasLoaded] = useState(false);
-  const initials = name
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
+  const initials = (
+    name && name.length > 0
+    ?  name
+      .split(' ')
+      .map((word) => word[0])
+      .join('')
+    : '??'
+  );
 
   function handleLoad() {
     setHasLoaded(true);

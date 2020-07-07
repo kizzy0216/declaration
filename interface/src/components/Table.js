@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTable } from 'react-table';
 
+import EmptyState from './EmptyState';
 import ChevronIcon from './icons/ChevronIcon';
 
 // Create a default prop getter
@@ -20,6 +21,7 @@ function Table({
   isCollapsible = false,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isEmpty = (data.length === 0);
 
   const {
     getTableProps,
@@ -46,7 +48,7 @@ function Table({
       ].filter(x => x).join(' ')}
     >
       <div className="table-header">
-        {isCollapsible &&
+        {isCollapsible && !isEmpty &&
           <a
             onClick={handleToggleCollapse}
             href="#collapse"
@@ -74,56 +76,59 @@ function Table({
       </div>
 
       <div className="container">
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <th
-                    // Return an array of prop objects and react-table will merge them appropriately
-                    {...column.getHeaderProps([
-                      {
-                        className: column.className,
-                        style: column.style,
-                      },
-                      getColumnProps(column),
-                      getHeaderProps(column),
-                    ])}
-                  >
-                    {column.render('Header')}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row)
-              return (
-                // Merge user row props in
-                <tr {...row.getRowProps(getRowProps(row))}>
-                  {row.cells.map(cell => {
-                    return (
-                      <td
-                        // Return an array of prop objects and react-table will merge them appropriately
-                        {...cell.getCellProps([
-                          {
-                            className: cell.column.className,
-                            style: cell.column.style,
-                          },
-                          getColumnProps(cell.column),
-                          getCellProps(cell),
-                        ])}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    )
-                  })}
+        {isEmpty ?
+          <EmptyState />
+        : <table {...getTableProps()}>
+            <thead>
+              {headerGroups.map(headerGroup => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <th
+                      // Return an array of prop objects and react-table will merge them appropriately
+                      {...column.getHeaderProps([
+                        {
+                          className: column.className,
+                          style: column.style,
+                        },
+                        getColumnProps(column),
+                        getHeaderProps(column),
+                      ])}
+                    >
+                      {column.render('Header')}
+                    </th>
+                  ))}
                 </tr>
-              )
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row, i) => {
+                prepareRow(row)
+                return (
+                  // Merge user row props in
+                  <tr {...row.getRowProps(getRowProps(row))}>
+                    {row.cells.map(cell => {
+                      return (
+                        <td
+                          // Return an array of prop objects and react-table will merge them appropriately
+                          {...cell.getCellProps([
+                            {
+                              className: cell.column.className,
+                              style: cell.column.style,
+                            },
+                            getColumnProps(cell.column),
+                            getCellProps(cell),
+                          ])}
+                        >
+                          {cell.render('Cell')}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        }
       </div>
 
       <style jsx>{`

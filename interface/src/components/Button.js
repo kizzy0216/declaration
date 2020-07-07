@@ -7,6 +7,7 @@ function Button ({
   size = 'medium', // medium, large
   leftIcon,
   rightIcon,
+  onClick = () => {},
 }) {
   return (
     <button
@@ -16,6 +17,7 @@ function Button ({
         (leftIcon || rightIcon) && 'has-icon',
       ].filter(x => x).join(' ')}
       type={type}
+      onClick={onClick}
     >
       {leftIcon &&
         <span className="icon-wrapper">
@@ -44,6 +46,10 @@ function Button ({
           flex-flow: row;
           justify-content: space-between;
           align-items: center;
+
+          &:hover {
+            opacity: 0.7;
+          }
 
           &:not(.transparent):hover {
             box-shadow: var(--box-shadow);

@@ -2,6 +2,13 @@
     schema: public
     name: network
   array_relationships:
+  - name: network_membership_requests
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: network_membership_request
   - name: network_users
     using:
       foreign_key_constraint_on:
@@ -9,6 +16,23 @@
         table:
           schema: public
           name: network_user
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - name
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      - id
+      - name
+      - created_at
+      - updated_at
+      filter: {}
 - table:
     schema: public
     name: network_access_request
@@ -78,6 +102,65 @@
       filter: {}
 - table:
     schema: public
+    name: network_membership_request
+  object_relationships:
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - network_uuid
+      - user_uuid
+      - uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      - id
+      - network_uuid
+      - user_uuid
+      - created_at
+      - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - network_uuid
+      - user_uuid
+      - uuid
+      filter:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - network_uuid
+      - user_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: network_user
   object_relationships:
   - name: network
@@ -110,6 +193,7 @@
       - network_uuid
       - user_uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
@@ -145,6 +229,13 @@
         column_mapping:
           email: email
   array_relationships:
+  - name: network_membership_requests
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          schema: public
+          name: network_membership_request
   - name: network_users
     using:
       foreign_key_constraint_on:
