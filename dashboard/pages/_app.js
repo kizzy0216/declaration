@@ -9,7 +9,7 @@ import { withUrqlClient } from 'next-urql';
 import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
 
-import { NetworkContextProvider } from '~/contexts/NetworkContext';
+import { UserContextProvider } from '~/contexts/UserContext';
 import AuthenticationWall from '~/components/AuthenticationWall';
 import SideNavigationContainer from '~/containers/SideNavigationContainer';
 import { JWT_COOKIE_KEY } from '~/constants';
@@ -41,7 +41,7 @@ function Application({ Component, pageProps, jwt }) {
       }
 
       {inMemoryJWT &&
-        <NetworkContextProvider>
+        <UserContextProvider userUuid={userUuid}>
           <div className="side-navigation-wrapper">
             <SideNavigationContainer
               userUuid={userUuid}
@@ -52,7 +52,7 @@ function Application({ Component, pageProps, jwt }) {
               <Component {...pageProps} />
             </div>
           </div>
-        </NetworkContextProvider>
+        </UserContextProvider>
       }
 
       <style jsx>{`

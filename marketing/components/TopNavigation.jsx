@@ -16,6 +16,7 @@ function TopNavigation({
   hasSettledAuthentication = false,
 }) {
   const [authenticationDisplay, setAuthenticationDisplay] = useState({
+    theme: 'primary',
     href: '/log-in',
     label: 'Login',
   });
@@ -54,11 +55,13 @@ function TopNavigation({
   useEffect(() => {
     if (user.uuid) {
       setAuthenticationDisplay({
+        theme: 'secondary',
         href: '/log-out',
         label: 'Logout',
       });
     } else {
       setAuthenticationDisplay({
+        theme: 'primary',
         href: '/log-in',
         label: 'Login',
       });
@@ -94,6 +97,7 @@ function TopNavigation({
             <Link href={authenticationDisplay.href}>
               <a>
                 <Button
+                  theme={authenticationDisplay.theme}
                   label={authenticationDisplay.label}
                   leftIcon={
                     !hasSettledAuthentication && <SpinnerIcon />
@@ -135,6 +139,7 @@ function TopNavigation({
           <Link href={authenticationDisplay.href}>
             <a>
               <Button
+                theme={authenticationDisplay.theme}
                 label={authenticationDisplay.label}
                 size="large"
                 leftIcon={

@@ -3,15 +3,17 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
+import StarIcon from '~/shared/components/icons/StarIcon';
+import FlagIcon from '~/shared/components/icons/FlagIcon';
 
 function MemberTable({
   items,
 }) {
-  const heading = `${items.length} Members`;
+  const heading = `${items.length.toLocaleString()} Members`;
   const columns = useMemo(() => [
     {
       Header: 'Name',
-      accessor: 'user',
+      accessor: ({ name, profile }) => ({ name, image: profile && profile.photo }),
       Cell: ({ value }) => (
         <UserCell
           value={value}
@@ -33,14 +35,24 @@ function MemberTable({
       Header: 'Role',
       accessor: 'role',
       style: {
-        width: '25ch'
+        width: '20ch'
       },
     },
     {
       Header: 'Location',
-      accessor: 'location',
+      accessor: 'profile.location',
       style: {
-        width: '25ch'
+        width: '30ch'
+      },
+    },
+    {
+      Header: 'Blocked?',
+      accessor: 'isBlocked',
+      Cell: ({ value }) => (
+        value ? 'True' : 'False'
+      ),
+      style: {
+        width: '10ch'
       },
     },
     {
@@ -54,11 +66,13 @@ function MemberTable({
                 href: '#elevate',
                 onClick: () => {},
                 label: 'Make Admin',
+                icon: <StarIcon />,
               },
               {
                 href: '#block',
                 onClick: () => {},
                 label: 'Block',
+                icon: <FlagIcon />,
               },
             ]}
             isPopoverOnly={true}

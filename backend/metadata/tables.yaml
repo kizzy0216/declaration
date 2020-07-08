@@ -2,6 +2,13 @@
     schema: public
     name: network
   array_relationships:
+  - name: network_membership_invitations
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: network_membership_invitation
   - name: network_membership_requests
     using:
       foreign_key_constraint_on:
@@ -25,6 +32,15 @@
       backend_only: false
   select_permissions:
   - role: super_admin
+    permission:
+      columns:
+      - uuid
+      - id
+      - name
+      - created_at
+      - updated_at
+      filter: {}
+  - role: user
     permission:
       columns:
       - uuid
@@ -102,6 +118,25 @@
       filter: {}
 - table:
     schema: public
+    name: network_membership_invitation
+  object_relationships:
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      - id
+      - network_uuid
+      - user_email
+      - created_at
+      - updated_at
+      - user_name
+      filter: {}
+- table:
+    schema: public
     name: network_membership_request
   object_relationships:
   - name: network
@@ -117,12 +152,10 @@
         user_uuid:
           _eq: X-Hasura-User-Id
       columns:
-      - id
       - created_at
-      - updated_at
       - network_uuid
+      - updated_at
       - user_uuid
-      - uuid
       backend_only: false
   select_permissions:
   - role: super_admin
@@ -187,13 +220,24 @@
   - role: super_admin
     permission:
       columns:
-      - role
       - created_at
-      - updated_at
+      - is_blocked
       - network_uuid
+      - role
+      - updated_at
       - user_uuid
       filter: {}
       allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - is_blocked
+      - network_uuid
+      - role
+      - updated_at
+      - user_uuid
+      filter: {}
   update_permissions:
   - role: super_admin
     permission:
@@ -216,10 +260,37 @@
   - name: user
     using:
       foreign_key_constraint_on: user_uuid
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - user_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - user_uuid
+      filter: {}
 - table:
     schema: public
     name: user
   object_relationships:
+  - name: super_admin
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: super_admin
+        column_mapping:
+          uuid: user_uuid
+  - name: user_profile
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_profile
+        column_mapping:
+          uuid: user_uuid
   - name: verification_code
     using:
       manual_configuration:
@@ -243,13 +314,6 @@
         table:
           schema: public
           name: network_user
-  - name: super_admins
-    using:
-      foreign_key_constraint_on:
-        column: user_uuid
-        table:
-          schema: public
-          name: super_admin
   insert_permissions:
   - role: super_admin
     permission:
@@ -305,6 +369,136 @@
       - name
       filter:
         uuid:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: user_profile
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - date_of_birth
+      - id
+      - educational_institution
+      - gender
+      - location
+      - personal_bio
+      - photo
+      - username
+      - work_bio
+      - work_place
+      - work_title
+      - created_at
+      - updated_at
+      - user_uuid
+      - uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - created_at
+      - date_of_birth
+      - educational_institution
+      - gender
+      - location
+      - personal_bio
+      - photo
+      - updated_at
+      - user_uuid
+      - username
+      - work_bio
+      - work_place
+      - work_title
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      - id
+      - user_uuid
+      - username
+      - date_of_birth
+      - location
+      - gender
+      - personal_bio
+      - work_bio
+      - work_title
+      - work_place
+      - educational_institution
+      - photo
+      - created_at
+      - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - date_of_birth
+      - id
+      - educational_institution
+      - gender
+      - location
+      - personal_bio
+      - photo
+      - username
+      - work_bio
+      - work_place
+      - work_title
+      - created_at
+      - updated_at
+      - user_uuid
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - date_of_birth
+      - educational_institution
+      - gender
+      - location
+      - personal_bio
+      - photo
+      - updated_at
+      - user_uuid
+      - username
+      - work_bio
+      - work_place
+      - work_title
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - date_of_birth
+      - educational_institution
+      - gender
+      - location
+      - personal_bio
+      - photo
+      - updated_at
+      - user_uuid
+      - username
+      - work_bio
+      - work_place
+      - work_title
+      filter:
+        user_uuid:
           _eq: X-Hasura-User-Id
       check: null
   delete_permissions:

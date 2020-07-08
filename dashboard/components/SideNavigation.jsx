@@ -1,73 +1,41 @@
-import ActiveLink from '~/shared/components/ActiveLink';
+import React  from 'react';
 
 const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 
+import ActiveLink from '~/shared/components/ActiveLink';
 import UserCell from '~/shared/components/UserCell';
+import ViewSwitcher from '~/components/ViewSwitcher';
 
 function SideNavigation({
   user,
+  links,
   isFetchingUser,
+  hasFetchedUser,
 }) {
   return (
     <nav className="side-navigation">
-      <div className="logo">
-        <h1>Your Network Name</h1>
-      </div>
+      <ViewSwitcher />
 
       <div className="links">
         <ul>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/"
-            >
-              <a>
-                Dashboard
-              </a>
-            </ActiveLink>
-          </li>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/networks"
-            >
-              <a>
-                Networks
-              </a>
-            </ActiveLink>
-          </li>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/members"
-            >
-              <a>
-                Members
-              </a>
-            </ActiveLink>
-          </li>
-          <li>
-            <ActiveLink
-              activeClassName="underline"
-              href="/knowledge"
-            >
-              <a>
-                Knowledge
-              </a>
-            </ActiveLink>
-          </li>
+          {links}
         </ul>
       </div>
 
-      {!isFetchingUser && user && user.uuid &&
+      {hasFetchedUser &&
         <div className="footer">
           <UserCell
             value={user}
             showEmail
+            footer={
+              <a
+                className="log-out"
+                href={`${MARKETING_BASE_URL}/log-out`}
+              >
+                (Log out)
+              </a>
+            }
           />
-          <a href={`${MARKETING_BASE_URL}/log-out`}>
-            Log out
-          </a>
         </div>
       }
 
@@ -82,21 +50,13 @@ function SideNavigation({
           justify-content: space-between;
         }
 
-        .logo {
-          & h1 {
-            font-size: 16px;
-            font-weight: 500;
-            user-select: none;
-          }
-        }
-
         .links {
           flex: 1 0 auto;
           display: flex;
           flex-flow: column;
           justify-content: center;
 
-          & a {
+          & :global(a) {
             font-size: 24px;
             font-weight: 500;
             margin-bottom: 20px;
@@ -115,6 +75,10 @@ function SideNavigation({
           list-style: none;
         }
 
+        .log-out {
+          color: var(--gray);
+          font-size: 14px;
+        }
       `}</style>
     </nav>
   );

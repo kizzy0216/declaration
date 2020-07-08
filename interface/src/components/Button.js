@@ -15,6 +15,8 @@ function Button ({
         theme,
         size,
         (leftIcon || rightIcon) && 'has-icon',
+        leftIcon && 'has-left-icon',
+        rightIcon && 'has-right-icon',
       ].filter(x => x).join(' ')}
       type={type}
       onClick={onClick}
@@ -53,6 +55,18 @@ function Button ({
 
           &:not(.transparent):hover {
             box-shadow: var(--box-shadow);
+          }
+
+          &.has-icon {
+            & .label {
+              text-align: left;
+            }
+
+            &.has-left-icon {
+              & .label {
+                padding-left: 10px;
+              }
+            }
           }
         }
 

@@ -12,7 +12,7 @@ const ActiveLink = ({
   const childClassName = child.props.className || '';
 
   const className = (
-    asPath === props.href
+    asPath === (props.as ? props.as : props.href)
       ? `${childClassName} ${activeClassName}`.trim()
       : childClassName
   );

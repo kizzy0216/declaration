@@ -38,6 +38,7 @@ function ActionMenu({
                   <Button
                     label={item.label}
                     theme={item.theme}
+                    leftIcon={item.icon}
                   />
                 </ActionLink>
               </li>
@@ -77,6 +78,7 @@ function ActionMenu({
                     <Button
                       label={item.label}
                       theme="transparent"
+                      leftIcon={item.icon}
                     />
                   </ActionLink>
                 </li>
@@ -118,8 +120,8 @@ function ActionMenu({
           display: none;
           min-width: 175px;
 
-          & li {
-            margin-bottom: 10px;
+          & li:not(:last-of-type) {
+            margin-bottom: 20px;
           }
         }
 

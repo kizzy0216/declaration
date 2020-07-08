@@ -6,6 +6,7 @@ function UserCell({
   value,
   theme = 'primary', // primary, secondary
   showEmail = false,
+  footer,
 }) {
   return (
     <div className="user-cell">
@@ -27,6 +28,8 @@ function UserCell({
             {value.email}
           </p>
         }
+
+        {footer}
       </div>
 
       <style jsx>{`

@@ -30,6 +30,7 @@ const handlers = {
   POST: async (request, response) => {
     const {
       email,
+      redirect,
       code,
     } = request.body;
     const { cookies } = request;
@@ -39,6 +40,10 @@ const handlers = {
       return response.status(400).json({ error: 'Email required' });
     } else if (!validateEmail(email)) {
       return response.status(400).json({ error: 'Invalid email' });
+    }
+
+    if (!code && !redirect) {
+      return response.status(400).json({ error: 'Redirect required, when supplying just email' });
     }
 
     // attempt to resolve user from cookies
@@ -129,6 +134,8 @@ const handlers = {
         .toPromise();
 
       // TODO send verification email
+      console.log(redirect, email, passcode);
+
       return response.status(202).json({ message: 'Verification email sent' });
     }
 
@@ -136,7 +143,6 @@ const handlers = {
     const { data: fullyMatchedUserData, ...rest } = await fetchHasuraAdmin
       .query(GetUsersWithVerificationCode, { email, code })
       .toPromise();
-    console.log(rest);
     const matchedUser = fullyMatchedUserData.user[0];
 
     if (!matchedUser) {
@@ -156,10 +162,10 @@ const handlers = {
 
     const {
       uuid,
-      super_admins,
+      super_admin,
     } = matchedUser;
     const roles = [];
-    if (super_admins.length > 0) {
+    if (super_admin) {
       roles.push('super_admin');
     }
     roles.push('user');
