@@ -2,14 +2,10 @@ const path = require('path');
 
 module.exports = {
   resolver: {
-    extraNodeModules: {
-      // NOTE: there's a difference between:
-      // - shared, the symlinked directory in this project root
-      // - shared, the import alias defined here
-      // Using the import alias was problematic for Android when importing fonts and images.
-      // Prefer to use the import alias, and defer to symlink whenever that fails.
-      'shared': path.resolve(__dirname, '../interface/src'),
-    },
+    // https://github.com/facebook/metro/issues/1#issuecomment-453450709
+    extraNodeModules: new Proxy({}, {
+      get: (target, name) => path.join(process.cwd(), `node_modules/${name}`),
+    }),
   },
   transformer: {
     getTransformOptions: async () => ({
@@ -22,5 +18,6 @@ module.exports = {
   projectRoot: path.resolve(__dirname),
   watchFolders: [
     path.resolve(__dirname, '../interface/src'),
+    path.resolve(__dirname, '../interface'),
   ],
 };

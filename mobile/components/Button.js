@@ -7,6 +7,8 @@ import Colors from '~/constants/Colors';
 function Button({
   label,
   theme = 'primary',
+  labelStyle,
+  leftIcon,
   onPress = () => {},
 }) {
   const inner = (
@@ -14,8 +16,22 @@ function Button({
       accessible
       style={styles.container}
     >
+      {leftIcon &&
+        <View style={[styles.leftIcon, styles.leftIconWrapper]}>
+          {leftIcon}
+        </View>
+      }
+
       <View style={styles.labelWrapper}>
-        <Text style={styles.label}>{label}</Text>
+        <Text
+          style={[
+            styles.label, 
+            styles[`${theme}Label`],
+            labelStyle,
+          ]}
+        >
+          {label}
+        </Text>
       </View>
     </View>
   );
@@ -45,12 +61,20 @@ const styles = StyleSheet.create({
   primary: {
     backgroundColor: Colors.blue,
   },
+  secondary: {
+    backgroundColor: Colors.lightGray,
+  },
+  secondaryLabel: {
+    color: 'black',
+  },
   transparent: {
     backgroundColor: 'transparent',
   },
   container: {
     width: '100%',
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   labelWrapper: {
     flex: 1,

@@ -7,8 +7,10 @@ module.exports = function(api) {
         'module-resolver',
         {
           root: ['./'],
+          extensions: ['.js', '.jsx', '.ios.js', '.android.js', '.native.js'],
           alias: {
-            '~': './'
+            '~': './',
+            'Shared': '../interface/src',
           }
         }
       ]

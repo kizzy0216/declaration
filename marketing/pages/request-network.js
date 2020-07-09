@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useMutation } from 'urql';
 import { withUrqlClient } from 'next-urql';
 
-import InsertNetworkAccessRequest from '~/mutations/InsertNetworkAccessRequest';
+import InsertNetworkAccessRequest from '~/shared/mutations/InsertNetworkAccessRequest';
 import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
 import Footer from '~/components/Footer';
 

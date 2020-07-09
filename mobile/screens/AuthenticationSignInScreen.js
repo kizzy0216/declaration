@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackActions } from '@react-navigation/native';
 
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -24,7 +25,11 @@ function AuthenticationSignInScreen({ navigation }) {
         </View>
         <Button
           label="Verify"
-          onPress={() => navigation.navigate('AuthenticationSignInFeedback')}
+          onPress={() =>
+            navigation.dispatch(
+              StackActions.replace('AuthenticationSignInFeedback')
+            )
+          }
         />
       </View>
     </SafeAreaView>

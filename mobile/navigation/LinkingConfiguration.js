@@ -1,13 +1,23 @@
 import * as Linking from 'expo-linking';
 
+console.log(Linking.makeUrl('/'));
+
 export default {
   prefixes: [Linking.makeUrl('/')],
   config: {
     Root: {
-      path: 'root',
+      initialRouteName: 'Feed',
       screens: {
-        Home: 'home',
-        Links: 'links',
+        Feed: 'feed',
+        Create: 'create',
+      },
+    },
+    AuthenticationRoot: {
+      initialRouteName: 'AuthenticationSignIn',
+      screens: {
+        AuthenticationHome: '/',
+        AuthenticationSignIn: 'sign-in',
+        RequestNetworkAccess: 'request-network-access',
       },
     },
   },

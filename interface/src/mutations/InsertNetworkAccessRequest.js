@@ -1,4 +1,4 @@
-import NetworkAccessRequestFragment from '~/fragments/NetworkAccessRequestFragment';
+import NetworkAccessRequestFragment from '../fragments/NetworkAccessRequestFragment';
 
 const InsertNetworkAccessRequest = `
   ${NetworkAccessRequestFragment}

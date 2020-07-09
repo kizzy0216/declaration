@@ -37,7 +37,7 @@ function AuthenticationHomeScreen({ navigation }) {
           <Button
             label="Create Your Own Network"
             theme="transparent"
-            onPress={() => navigation.navigate('RequestNetworkAccess')}
+            onPress={() => navigation.navigate('NetworkAccessRequest')}
           />
         </View>
       </SafeAreaView>

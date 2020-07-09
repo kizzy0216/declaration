@@ -3,6 +3,7 @@ import {
   StyleSheet,
   TextInput as RNTextInput,
   View,
+  Text,
 } from 'react-native';
 
 import Colors from '~/constants/Colors';
@@ -17,17 +18,20 @@ function TextInput({
   return (
     <View style={[styles.container, props.style]}>
       {label &&
-        <Text>
+        <Text style={styles.label}>
           {label}
         </Text>
       }
-      <RNTextInput
-        {...props}
-        placeholder={placeholder}
-        style={[styles.textInput, props.textInputStyle]}
-        onChange={onChange}
-        value={value}
-      />
+
+      <View style={styles.textInputWrapper}>
+        <RNTextInput
+          {...props}
+          placeholder={placeholder}
+          style={[styles.textInput, props.textInputStyle]}
+          onChangeText={onChange}
+          value={value}
+        />
+      </View>
     </View>
   );
 }
@@ -35,10 +39,14 @@ function TextInput({
 const styles = StyleSheet.create({
   container: {
   },
-  textInput: {
+  textInputWrapper: {
     borderRadius: 17,
     padding: 20,
     backgroundColor: Colors.lightGray,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
 

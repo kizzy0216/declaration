@@ -8,31 +8,36 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "storybook": "start-storybook -p 7007"
+    "storybook": "start-storybook -p 7007",
+    "nuke-and-pave": "rm -rf node_modules && npm cache clear --force && watchman watch-del-all && rm -rf $TMPDIR/metro* && rm -rf $TMPDIR/react-native* && npm install"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/vector-icons": "~10.0.6",
-    "@react-native-community/masked-view": "0.1.6",
+    "@expo/vector-icons": "^10.0.0",
+    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/picker": "1.6.0",
     "@react-navigation/bottom-tabs": "^5.3.1",
     "@react-navigation/native": "^5.2.1",
     "@react-navigation/stack": "^5.2.16",
-    "expo": "~37.0.9",
-    "expo-asset": "~8.1.0",
-    "expo-constants": "~9.0.0",
-    "expo-font": "~8.1.0",
+    "expo": "^38.0.0",
+    "expo-asset": "~8.1.7",
+    "expo-constants": "~9.1.1",
+    "expo-font": "~8.2.1",
     "expo-linking": "^1.0.1",
-    "expo-splash-screen": "^0.2.3",
-    "expo-web-browser": "~8.2.0",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+    "expo-splash-screen": "^0.3.1",
+    "expo-web-browser": "~8.3.1",
+    "graphql": "^15.3.0",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
-    "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "~2.2.0",
-    "react-native-web": "~0.11.7"
+    "react-native-safe-area-context": "~3.0.7",
+    "react-native-screens": "~2.9.0",
+    "react-native-web": "~0.11.7",
+    "urql": "^1.9.8",
+    "react-native-svg": "12.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -43,8 +48,9 @@
     "@storybook/react-native-server": "^5.3.19",
     "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
-    "babel-preset-expo": "~8.1.0",
-    "jest-expo": "~37.0.0"
+    "babel-preset-expo": "^8.2.3",
+    "dotenv": "^8.2.0",
+    "jest-expo": "^38.0.0"
   },
   "private": true
 }

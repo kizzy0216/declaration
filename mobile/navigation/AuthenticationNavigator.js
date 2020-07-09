@@ -2,10 +2,11 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DotsHeader from '~/components/DotsHeader';
-import AuthenticationHomeScreen from '~/screens/AuthenticationHomeScreen.js';
-import AuthenticationSignInScreen from '~/screens/AuthenticationSignInScreen.js';
-import AuthenticationSignInFeedbackScreen from '~/screens/AuthenticationSignInFeedbackScreen.js';
-import NetworkRequestAccessScreen from '~/screens/NetworkRequestAccessScreen.js';
+import AuthenticationHomeScreen from '~/screens/AuthenticationHomeScreen';
+import AuthenticationSignInScreen from '~/screens/AuthenticationSignInScreen';
+import AuthenticationSignInFeedbackScreen from '~/screens/AuthenticationSignInFeedbackScreen';
+import NetworkAccessRequestScreen from '~/screens/NetworkAccessRequestScreen';
+import NetworkAccessRequestFeedbackScreen from '~/screens/NetworkAccessRequestFeedbackScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function AuthenticationNavigator({ navigation, route }) {
             'AuthenticationSignIn',
             'AuthenticationSignInFeedback',
           ],
+          home: 'AuthenticationHome',
         }),
       }}
     >
@@ -39,8 +41,12 @@ function AuthenticationNavigator({ navigation, route }) {
         component={AuthenticationSignInFeedbackScreen}
       />
       <Stack.Screen
-        name="RequestNetworkAccess"
-        component={NetworkRequestAccessScreen}
+        name="NetworkAccessRequest"
+        component={NetworkAccessRequestScreen}
+      />
+      <Stack.Screen
+        name="NetworkAccessRequestFeedback"
+        component={NetworkAccessRequestFeedbackScreen}
       />
     </Stack.Navigator>
   );

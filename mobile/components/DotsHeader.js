@@ -10,6 +10,7 @@ function DotsHeader({
   scene,
   navigation,
   sceneNames,
+  home,
 }) {
   if (!sceneNames.includes(scene.route.name)) {
     return null;
@@ -33,7 +34,7 @@ function DotsHeader({
 
           <View style={styles.closeWrapper}>
             <BorderlessButton
-              onPress={() => navigation.navigate('AuthenticationHome')}
+              onPress={() => navigation.navigate(home)}
             >
               <Ionicons
                 name="md-close"
