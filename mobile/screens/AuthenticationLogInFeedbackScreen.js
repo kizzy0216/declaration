@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import DisplayHeading from '~/components/DisplayHeading';
 
-function AuthenticationSignInFeedbackScreen() {
+function AuthenticationLogInFeedbackScreen() {
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthenticationSignInFeedbackScreen;
+export default AuthenticationLogInFeedbackScreen;

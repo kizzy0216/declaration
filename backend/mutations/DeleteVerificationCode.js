@@ -5,6 +5,7 @@ const DeleteVerificationCode = `
       returning {
         __typename
         email
+        text
       }
     }
   }

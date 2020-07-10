@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DotsHeader from '~/components/DotsHeader';
 import AuthenticationHomeScreen from '~/screens/AuthenticationHomeScreen';
-import AuthenticationSignInScreen from '~/screens/AuthenticationSignInScreen';
-import AuthenticationSignInFeedbackScreen from '~/screens/AuthenticationSignInFeedbackScreen';
+import AuthenticationLogInScreen from '~/screens/AuthenticationLogInScreen';
+import AuthenticationLogInFeedbackScreen from '~/screens/AuthenticationLogInFeedbackScreen';
 import NetworkAccessRequestScreen from '~/screens/NetworkAccessRequestScreen';
 import NetworkAccessRequestFeedbackScreen from '~/screens/NetworkAccessRequestFeedbackScreen';
+import UserResolutionScreen from '~/screens/UserResolutionScreen';
+import { UserContext } from '~/contexts/UserContext';
 
 const Stack = createStackNavigator();
 
 function AuthenticationNavigator({ navigation, route }) {
+  const {
+    hasFetched: hasFetchedUser,
+    user,
+  } = useContext(UserContext);
+
+  if (!hasFetchedUser) {
+    return null;
+  }
+
+  const initialRouteName = (
+    user.uuid ? 'UserResolution' : 'AuthenticationHome'
+  );
+
   return (
     <Stack.Navigator
-      initialRouteName="AuthenticationHome"
+      initialRouteName={initialRouteName}
       headerMode="screen"
       screenOptions={{
         cardShadowEnabled: false,
@@ -21,8 +36,8 @@ function AuthenticationNavigator({ navigation, route }) {
           navigation,
           scene,
           sceneNames: [
-            'AuthenticationSignIn',
-            'AuthenticationSignInFeedback',
+            'AuthenticationLogIn',
+            'AuthenticationLogInFeedback',
           ],
           home: 'AuthenticationHome',
         }),
@@ -33,12 +48,12 @@ function AuthenticationNavigator({ navigation, route }) {
         component={AuthenticationHomeScreen}
       />
       <Stack.Screen
-        name="AuthenticationSignIn"
-        component={AuthenticationSignInScreen}
+        name="AuthenticationLogIn"
+        component={AuthenticationLogInScreen}
       />
       <Stack.Screen
-        name="AuthenticationSignInFeedback"
-        component={AuthenticationSignInFeedbackScreen}
+        name="AuthenticationLogInFeedback"
+        component={AuthenticationLogInFeedbackScreen}
       />
       <Stack.Screen
         name="NetworkAccessRequest"
@@ -47,6 +62,10 @@ function AuthenticationNavigator({ navigation, route }) {
       <Stack.Screen
         name="NetworkAccessRequestFeedback"
         component={NetworkAccessRequestFeedbackScreen}
+      />
+      <Stack.Screen
+        name="UserResolution"
+        component={UserResolutionScreen}
       />
     </Stack.Navigator>
   );

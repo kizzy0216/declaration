@@ -33,7 +33,6 @@ function LogInPage({ user }) {
         setIsFetching(false);
         setHasFetched(true);
 
-        // or go to MOBILE_LOG_IN_BASE_URL if on mobile
         window.location = DASHBOARD_BASE_URL;
       });
     }
@@ -46,6 +45,7 @@ function LogInPage({ user }) {
       method: 'POST',
       body: JSON.stringify({
         email,
+        redirect: 'http://localhost:55001/log-in', // TODO
       }),
     }).then(() => {
       setIsFetching(false);

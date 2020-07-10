@@ -54,6 +54,8 @@ function NetworkAccessRequestForm({
           label="Email"
           placeholder="Enter your email"
           keyboardType="email-address"
+          autoCapitalize="none"
+          autoCompleteType="email"
           value={email}
           onChange={setEmail}
         />

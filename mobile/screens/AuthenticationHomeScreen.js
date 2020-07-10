@@ -30,9 +30,9 @@ function AuthenticationHomeScreen({ navigation }) {
         </View>
         <View style={styles.footer}>
           <Button
-            label="Sign In"
+            label="Log In"
             theme="primary"
-            onPress={() => navigation.navigate('AuthenticationSignIn')}
+            onPress={() => navigation.navigate('AuthenticationLogIn')}
           />
           <Button
             label="Create Your Own Network"

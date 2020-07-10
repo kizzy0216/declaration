@@ -1,6 +1,6 @@
 const InsertVerificationCodeOne = `
   mutation InsertVerificationCodeOne($email: String, $code: String) {
-    insert_verification_code_one(objects: {email: $email, text: $code}) {
+    insert_verification_code_one(object: {email: $email, text: $code}) {
       __typename
       email
       text

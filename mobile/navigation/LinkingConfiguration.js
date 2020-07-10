@@ -13,10 +13,10 @@ export default {
       },
     },
     AuthenticationRoot: {
-      initialRouteName: 'AuthenticationSignIn',
+      initialRouteName: 'AuthenticationLogIn',
       screens: {
         AuthenticationHome: '/',
-        AuthenticationSignIn: 'sign-in',
+        AuthenticationLogIn: 'log-in',
         RequestNetworkAccess: 'request-network-access',
       },
     },

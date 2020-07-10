@@ -27,5 +27,6 @@ export default {
   },
   extra: {
     HASURA_BASE_URL: process.env.HASURA_BASE_URL,
+    REST_BASE_URL: process.env.REST_BASE_URL,
   },
 }

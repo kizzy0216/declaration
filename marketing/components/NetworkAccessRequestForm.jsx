@@ -18,13 +18,20 @@ function NetworkAccessRequestForm({
   function handleSubmit(event) {
     event.preventDefault();
 
-    onSubmit({
-      name,
-      email,
-      communityName,
-      userCountRange,
-      body,
-    });
+    if (
+      name.length > 0 &&
+      email.length > 0 &&
+      communityName.length > 0 &&
+      userCountRange.length > 0
+    ) {
+      onSubmit({
+        name,
+        email,
+        communityName,
+        userCountRange,
+        body,
+      });
+    }
   }
 
   return (

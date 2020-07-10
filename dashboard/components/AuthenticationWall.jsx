@@ -36,6 +36,7 @@ function AuthenticationWall() {
       method: 'POST',
       body: JSON.stringify({
         email,
+        redirect: 'http://localhost:55000', // TODO
       }),
     }).then(() => {
       setIsFetching(false);

@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import jsonwebtoken from 'jsonwebtoken';
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -32,6 +33,7 @@ const handlers = {
       email,
       redirect,
       code,
+      withCookies = true,
     } = request.body;
     const { cookies } = request;
 
@@ -48,7 +50,7 @@ const handlers = {
 
     // attempt to resolve user from cookies
     let resolvedUser;
-    if (cookies[JWT_COOKIE_KEY]) {
+    if (withCookies && cookies[JWT_COOKIE_KEY]) {
       let uuid;
       try {
         const { sub } = jsonwebtoken.verify(cookies[JWT_COOKIE_KEY], JWT_SECRET_KEY);
@@ -100,12 +102,14 @@ const handlers = {
           'x-hasura-user-id': uuid,
         },
       }, JWT_SECRET_KEY);
-      setCookie({
-        response,
-        key: JWT_COOKIE_KEY,
-        value: jwt,
-        options: COOKIE_OPTIONS
-      });
+      if (withCookies) {
+        setCookie({
+          response,
+          key: JWT_COOKIE_KEY,
+          value: jwt,
+          options: COOKIE_OPTIONS
+        });
+      }
     }
 
     // edge case, but bail if none of the above resolve
@@ -134,7 +138,10 @@ const handlers = {
         .toPromise();
 
       // TODO send verification email
-      console.log(redirect, email, passcode);
+      const redirectUrl = new URL(redirect);
+      redirectUrl.searchParams.append('email', email);
+      redirectUrl.searchParams.append('code', passcode);
+      console.log(redirect, email, passcode, redirectUrl.href);
 
       return response.status(202).json({ message: 'Verification email sent' });
     }
@@ -177,12 +184,14 @@ const handlers = {
         'x-hasura-user-id': uuid,
       },
     }, JWT_SECRET_KEY);
-    setCookie({
-      response,
-      key: JWT_COOKIE_KEY,
-      value: jwt,
-      options: COOKIE_OPTIONS
-    });
+    if (withCookies) {
+      setCookie({
+        response,
+        key: JWT_COOKIE_KEY,
+        value: jwt,
+        options: COOKIE_OPTIONS
+      });
+    }
 
     return response.status(200).json({ uuid, roles, jwt });
   },
