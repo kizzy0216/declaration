@@ -5,15 +5,16 @@ import { StackActions } from '@react-navigation/native';
 import { UserContext } from '~/contexts/UserContext';
 
 function UserResolutionScreen ({ navigation }) {
-  const { user } = useContext(UserContext);
+  const { isAuthenticated } = useContext(UserContext);
 
+  // TODO check if user has a profile, if not show Onboarding flow
   useEffect(() => {
-    if (user.uuid) {
+    if (isAuthenticated) {
       navigation.dispatch(
         StackActions.replace('Root')
       );
     }
-  }, [user]);
+  }, [isAuthenticated]);
 
   return (
     <View>

@@ -13,17 +13,10 @@ import { UserContext } from '~/contexts/UserContext';
 const Stack = createStackNavigator();
 
 function AuthenticationNavigator({ navigation, route }) {
-  const {
-    hasFetched: hasFetchedUser,
-    user,
-  } = useContext(UserContext);
-
-  if (!hasFetchedUser) {
-    return null;
-  }
+  const { isAuthenticated } = useContext(UserContext);
 
   const initialRouteName = (
-    user.uuid ? 'UserResolution' : 'AuthenticationHome'
+    isAuthenticated ? 'UserResolution' : 'AuthenticationHome'
   );
 
   return (

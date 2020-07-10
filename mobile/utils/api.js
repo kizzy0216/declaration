@@ -16,16 +16,16 @@ export const hydrateJWT = async () => {
   return Promise.resolve();
 }
 
-export const setJWT = (jwt) => {
+export const saveJWT = (jwt) => {
   inMemoryJWT = jwt;
   return SecureStore.setItemAsync('jwt', JSON.stringify(jwt));
 };
 
-export const setUser = (user) => {
+export const saveUser = (user) => {
   return SecureStore.setItemAsync('user', JSON.stringify(user))
 };
 
-export const getUser = async () => {
+export const loadUser = async () => {
   const user = await SecureStore.getItemAsync('user');
   return Promise.resolve(JSON.parse(user));
 }

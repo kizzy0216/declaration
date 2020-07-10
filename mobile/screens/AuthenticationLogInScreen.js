@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,13 +15,11 @@ import * as Linking from 'expo-linking';
 import SpinnerIcon from 'Shared/components/icons/SpinnerIcon';
 import DisplayHeading from '~/components/DisplayHeading';
 import LogInForm from '~/components/LogInForm';
-import {
-  fetchREST,
-  setJWT,
-  setUser,
-} from '~/utils/api';
+import { fetchREST } from '~/utils/api';
+import { UserContext } from '~/contexts/UserContext';
 
 function AuthenticationLogInScreen({ route, navigation }) {
+  const { logIn } = useContext(UserContext);
   const [isFetching, setIsFetching] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
 
@@ -40,11 +42,14 @@ function AuthenticationLogInScreen({ route, navigation }) {
           jwt,
         } = await response.json();
 
-        setJWT(jwt);
-        setUser({
-          uuid,
-          roles,
+        logIn({
+          jwt,
+          user: {
+            uuid,
+            roles,
+          }
         });
+
         setIsFetching(false);
         setHasFetched(true);
 

@@ -8,59 +8,93 @@ import { useQuery } from 'urql';
 import GetUser from '~/queries/GetUser';
 import mapUser from '~/mappings/mapUser';
 import mapNetwork from '~/mappings/mapNetwork';
+import {
+  saveJWT,
+  hydrateJWT,
+  saveUser,
+  loadUser,
+} from '~/utils/api';
 
 export const UserContext = createContext({
   user: {},
-  isFetching: true,
-  hasFetched: false,
-  clear: () => {},
+  hasSettled: false,
+  isAuthenticated: false,
+  logOut: () => {},
+  logIn: () => {},
 });
 
-export const UserContextProvider = ({ userUuid, children }) => {
+export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
+  const [hasHydratedJWT, setHasHydratedJWT] = useState(false);
+  const [hasLoadedUser, setHasLoadedUser] = useState(false);
+  const [hasSettled, setHasSettled] = useState(false);
   const [getUserResult] = useQuery({
     query: GetUser,
     variables: {
-      uuid: userUuid,
+      uuid: user.uuid,
     },
-    pause: !userUuid,
+    pause: !user.uuid,
   });
 
+  // Load persisted JWT and User
   useEffect(() => {
-    if (!userUuid) {
-      setHasFetched(true);
-      setIsFetching(false);
-    }
-  }, []);
+    hydrateJWT().then(() => {
+      setHasHydratedJWT(true);
+    });
 
+    loadUser().then((user) => {
+      setUser(user || {});
+      setHasLoadedUser(true);
+    });
+  }, []);
+  useEffect(() => {
+    setHasSettled(hasHydratedJWT && hasLoadedUser);
+  }, [hasHydratedJWT, hasLoadedUser]);
+
+  // Fetch User record and update local and persisted to latest
   useEffect(() => {
     if (getUserResult.data) {
       const mappedUser = mapUser(getUserResult.data.user_by_pk);
 
       setUser(mappedUser);
+      saveUser(mappedUser);
       setHasFetched(true);
     }
   }, [getUserResult.data]);
-
   useEffect(() => {
-    if (getUserResult.fetching) {
-      setIsFetching(true);
-    } else {
-      setIsFetching(false);
-    }
+    setIsFetching(getUserResult.fetching);
   }, [getUserResult.fetching]);
+
+  function logOut() {
+    setUser({});
+    saveUser(null);
+    saveJWT(null);
+  }
+
+  function logIn({
+    jwt,
+    user,
+  }) {
+    setUser(user);
+    saveUser(user);
+    saveJWT(jwt);
+  }
+
+  // Proceed with rendering AFTER persisted JWT and User have been loaded
+  if (!hasSettled) {
+    return null;
+  }
 
   return (
     <UserContext.Provider
       value={{
         user,
-        isFetching,
-        hasFetched,
-        clear: () => {
-          setUser({});
-        },
+        hasSettled,
+        isAuthenticated: !!user.uuid,
+        logOut,
+        logIn,
       }}
     >
       {children}

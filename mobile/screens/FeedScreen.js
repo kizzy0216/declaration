@@ -5,28 +5,20 @@ import { StackActions } from '@react-navigation/native';
 
 import Button from '~/components/Button';
 import { UserContext } from '~/contexts/UserContext';
-import {
-  setJWT,
-  setUser,
-} from '~/utils/api';
 
 function FeedScreen({ navigation }) {
   const {
     user,
-    clear,
+    logOut,
   } = useContext(UserContext);
 
   function handleLogOut() {
-    clear();
-    setJWT(null);
-    setUser(null);
+    logOut();
 
     navigation.dispatch(
       StackActions.replace('AuthenticationRoot', { Screen: 'AuthenticationHome' })
     );
   }
-
-  console.log(user);
 
   return (
     <View style={styles.container}>
