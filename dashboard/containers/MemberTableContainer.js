@@ -3,7 +3,7 @@ import { useQuery } from 'urql';
 
 import MemberTable from '~/components/MemberTable';
 import GetNetworkUsers from '~/queries/GetNetworkUsers';
-import mapUser from '~/mappings/mapUser';
+import mapUser from '~/shared/mappings/mapUser';
 
 function MemberTableContainer({
   networkId,

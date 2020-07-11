@@ -1,49 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { StackActions } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Button from '~/components/Button';
-import { UserContext } from '~/contexts/UserContext';
+import FeedHeader from '~/components/FeedHeader';
 
 function FeedScreen({ navigation }) {
-  const {
-    user,
-    logOut,
-  } = useContext(UserContext);
-
-  function handleLogOut() {
-    logOut();
-
-    navigation.dispatch(
-      StackActions.replace('AuthenticationRoot', { Screen: 'AuthenticationHome' })
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <Text>{user.email}</Text>
-        <Button
-          label="Log Out"
-          onPress={handleLogOut}
-        />
-      </ScrollView>
-    </View>
+    <SafeAreaView>
+      <FeedHeader
+        onCalendarPress={() => navigation.navigate('Events')}
+        onMessagesPress={() => navigation.navigate('Messaging')}
+      />
+      <Text>Feed</Text>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
 });
 
 export default FeedScreen;

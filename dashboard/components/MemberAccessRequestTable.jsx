@@ -3,15 +3,18 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
+import formatDate from '~/shared/utils/formatDate';
 
 function MemberAccessRequestTable({
   items,
+  onAccept = () => {},
+  onDecline = () => {},
 }) {
   const heading = `${items.length} Access Requests`;
   const columns = useMemo(() => [
     {
       Header: 'Name',
-      accessor: 'user',
+      accessor: ({ user: {name, profile} }) => ({ name, image: profile && profile.photo }),
       Cell: ({ value }) => (
         <UserCell value={value} />
       ),
@@ -21,31 +24,52 @@ function MemberAccessRequestTable({
     },
     {
       Header: 'Email',
-      accessor: 'email',
+      accessor: 'user.email',
       style: {
         width: '25ch'
       },
     },
     {
-      Header: 'Status',
-      accessor: 'status',
+      Header: 'Received at',
+      accessor: 'createdAt',
+      Cell: ({ value }) => formatDate(value)
+    },
+    {
+      Header: 'Body',
+      accessor: 'body',
+      style: {
+        width: '30ch',
+      },
+      Cell: ({ value }) => (
+        <div className="body-wrapper">
+          {value}
+          <style jsx>{`
+            .body-wrapper {
+              line-height: 1.5;
+              white-space: pre-line;
+              max-height: 110px;
+              overflow-y: auto;
+            }
+          `}</style>
+        </div>
+      ),
     },
     {
       id: 'actions',
-      accessor: 'id',
+      accessor: item => item,
       Cell: ({ value }) => (
         <div className="actions-wrapper">
           <ActionMenu
             items={[
               {
                 href: '#accept',
-                onClick: () => {},
+                onClick: () => onAccept({ item: value }),
                 label: 'Accept',
                 theme: 'primary',
               },
               {
                 href: '#decline',
-                onClick: () => {},
+                onClick: () => onDecline({ item: value }),
                 label: 'Decline',
                 theme: 'tertiary',
               },

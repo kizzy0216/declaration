@@ -1,26 +1,16 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function CreateScreen() {
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
+    <SafeAreaView>
       <Text>Create</Text>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fafafa',
-  },
-  contentContainer: {
-    paddingTop: 15,
-  },
 });
 
 export default CreateScreen;

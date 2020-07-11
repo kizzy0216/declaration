@@ -3,7 +3,7 @@ import { useQuery } from 'urql';
 
 import UserTable from '~/components/UserTable';
 import GetUsers from '~/queries/GetUsers';
-import mapUser from '~/mappings/mapUser';
+import mapUser from '~/shared/mappings/mapUser';
 
 function UserTableContainer() {
   const [getUsersResult] = useQuery({

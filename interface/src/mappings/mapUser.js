@@ -1,10 +1,10 @@
-import mapNetwork from '~/mappings/mapNetwork';
-import mapDateTime from '~/mappings/mapDateTime';
+import mapNetwork from './mapNetwork';
+import mapDateTime from './mapDateTime';
 import {
   NETWORK_ADMIN_ROLE,
   COMMUNITY_MANAGER_ROLE,
   MEMBER_ROLE,
-} from '~/shared/constants';
+} from '../constants';
 
 const mapUserRole = role => (() => {
   switch (role) {

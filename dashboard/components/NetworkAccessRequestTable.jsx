@@ -49,6 +49,14 @@ function NetworkAccessRequestTable({
       Cell: ({ value }) => (
         <div className="body-wrapper">
           {value}
+          <style jsx>{`
+            .body-wrapper {
+              line-height: 1.5;
+              white-space: pre-line;
+              max-height: 110px;
+              overflow-y: auto;
+            }
+          `}</style>
         </div>
       ),
     },
@@ -80,36 +88,27 @@ function NetworkAccessRequestTable({
               },
             ]}
           />
+          <style jsx>{`
+            .actions-wrapper {
+              display: flex;
+              flex-flow: row;
+              justify-content: flex-end;
+              align-items: center;
+            }
+          `}</style>
         </div>
       ),
     },
   ], []);
 
   return (
-    <>
-      <Table
-        action={action}
-        heading={heading}
-        columns={columns}
-        data={items}
-        isCollapsible
-      />
-      <style jsx>{`
-        .actions-wrapper {
-          display: flex;
-          flex-flow: row;
-          justify-content: flex-end;
-          align-items: center;
-        }
-
-        .body-wrapper {
-          line-height: 1.5;
-          white-space: pre-line;
-          max-height: 110px;
-          overflow-y: auto;
-        }
-      `}</style>
-    </>
+    <Table
+      action={action}
+      heading={heading}
+      columns={columns}
+      data={items}
+      isCollapsible
+    />
   );
 }
 

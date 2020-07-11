@@ -43,6 +43,9 @@ function App(props) {
                   <Stack.Screen
                     name="Root"
                     component={RootNavigator}
+                    options={{
+                      animationEnabled: false,
+                    }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

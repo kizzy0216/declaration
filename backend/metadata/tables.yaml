@@ -123,8 +123,38 @@
   - name: network
     using:
       foreign_key_constraint_on: network_uuid
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
+      columns:
+      - code
+      - network_uuid
+      - user_email
+      - user_name
+      backend_only: false
   select_permissions:
   - role: super_admin
+    permission:
+      columns:
+      - code
+      - created_at
+      - id
+      - network_uuid
+      - updated_at
+      - user_email
+      - user_name
+      - uuid
+      filter: {}
+  - role: user
     permission:
       columns:
       - uuid
@@ -134,7 +164,44 @@
       - created_at
       - updated_at
       - user_name
-      filter: {}
+      - code
+      filter:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - user_email
+      - user_name
+      filter:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
 - table:
     schema: public
     name: network_membership_request
@@ -146,40 +213,59 @@
     using:
       foreign_key_constraint_on: user_uuid
   insert_permissions:
-  - role: user
+  - role: super_admin
     permission:
-      check:
-        user_uuid:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
       - created_at
       - network_uuid
       - updated_at
       - user_uuid
       backend_only: false
+  - role: user
+    permission:
+      check:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - body
+      - network_uuid
+      - user_uuid
+      backend_only: false
   select_permissions:
   - role: super_admin
     permission:
       columns:
-      - uuid
+      - body
+      - created_at
       - id
       - network_uuid
-      - user_uuid
-      - created_at
       - updated_at
+      - user_uuid
+      - uuid
       filter: {}
   - role: user
     permission:
       columns:
-      - id
+      - body
       - created_at
-      - updated_at
+      - id
       - network_uuid
+      - updated_at
       - user_uuid
       - uuid
       filter:
-        user_uuid:
-          _eq: X-Hasura-User-Id
+        _or:
+        - user_uuid:
+            _eq: X-Hasura-User-Id
+        - network:
+            network_users:
+              _and:
+              - user_uuid:
+                  _eq: X-Hasura-User-Id
+              - user_role:
+                  text:
+                    _eq: NETWORK_ADMIN
   update_permissions:
   - role: super_admin
     permission:
@@ -192,6 +278,17 @@
   - role: super_admin
     permission:
       filter: {}
+  - role: user
+    permission:
+      filter:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
 - table:
     schema: public
     name: network_user
@@ -215,6 +312,23 @@
       - role
       - created_at
       - updated_at
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        network:
+          network_users:
+            _and:
+            - user_uuid:
+                _eq: X-Hasura-User-Id
+            - user_role:
+                text:
+                  _eq: NETWORK_ADMIN
+      columns:
+      - is_blocked
+      - network_uuid
+      - role
+      - user_uuid
       backend_only: false
   select_permissions:
   - role: super_admin

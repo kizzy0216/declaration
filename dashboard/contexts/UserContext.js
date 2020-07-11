@@ -6,8 +6,8 @@ import React, {
 import { useQuery } from 'urql';
 
 import GetUserAsAdmin from '~/queries/GetUserAsAdmin';
-import mapUser from '~/mappings/mapUser';
-import mapNetwork from '~/mappings/mapNetwork';
+import mapUser from '~/shared/mappings/mapUser';
+import mapNetwork from '~/shared/mappings/mapNetwork';
 
 export const UserContext = createContext({
   user: {},

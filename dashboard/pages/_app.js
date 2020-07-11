@@ -123,5 +123,6 @@ export default withUrqlClient((_, ctx) => {
       },
     }),
     fetch,
+    requestPolicy: 'cache-and-network',
   };
 })(Application);

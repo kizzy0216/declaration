@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import { TouchableOpacity, BorderlessButton } from 'react-native-gesture-handler';
 
 import Colors from '~/constants/Colors';
 
@@ -9,12 +9,13 @@ function Button({
   theme = 'primary',
   labelStyle,
   leftIcon,
+  rightIcon,
   onPress = () => {},
 }) {
   const inner = (
     <View
       accessible
-      style={styles.container}
+      style={[styles.container, `${theme}Container`]}
     >
       {leftIcon &&
         <View style={[styles.leftIcon, styles.leftIconWrapper]}>
@@ -28,11 +29,18 @@ function Button({
             styles.label, 
             styles[`${theme}Label`],
             labelStyle,
+            (rightIcon || leftIcon) && styles.hasIconLabel,
           ]}
         >
           {label}
         </Text>
       </View>
+
+      {rightIcon &&
+        <View style={[styles.rightIcon, styles.rightIconWrapper]}>
+          {rightIcon}
+        </View>
+      }
     </View>
   );
 
@@ -45,12 +53,15 @@ function Button({
   }
 
   return (
-    <RectButton
+    <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, styles[theme]]}
+      style={[styles.button, styles[theme], (rightIcon || leftIcon) && styles.hasIcon]}
+      containerStyle={{
+        overflow: 'visible',
+      }}
     >
       {inner}
-    </RectButton>
+    </TouchableOpacity>
   );
 }
 
@@ -67,10 +78,33 @@ const styles = StyleSheet.create({
   secondaryLabel: {
     color: 'black',
   },
+  tertiary: {
+    backgroundColor: 'white',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 40,
+    elevation: 20,
+    overflow: 'visible',
+  },
+  tertiaryContainer: {
+    backgroundColor: '#000',
+  },
+  tertiaryLabel: {
+    color: 'black',
+  },
   transparent: {
     backgroundColor: 'transparent',
   },
+  transparentLabel: {
+    backgroundColor: 'transparent',
+    color: 'black',
+  },
   container: {
+    borderRadius: 17,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -86,8 +120,16 @@ const styles = StyleSheet.create({
   label: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'center',
+  },
+  hasIconLabel: {
+    textAlign: 'left',
+  },
+  leftIconWrapper: {
+    paddingLeft: 20,
+  },
+  rightIconWrapper: {
+    paddingRight: 20,
   },
 });
 

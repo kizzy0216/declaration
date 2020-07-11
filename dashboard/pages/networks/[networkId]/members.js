@@ -1,13 +1,22 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useQuery } from 'urql';
 
-import MemberAccessRequestTable from '~/components/MemberAccessRequestTable';
+import GetNetworkById from '~/queries/GetNetworkById';
+import MemberAccessRequestTableContainer from '~/containers/MemberAccessRequestTableContainer';
 import MemberPendingInviteTable from '~/components/MemberPendingInviteTable';
 import MemberTableContainer from '~/containers/MemberTableContainer';
+import mapNetwork from '~/shared/mappings/mapNetwork';
 
 function NetworkMembersPage() {
   const router = useRouter();
   const { networkId } = router.query;
+  const [result] = useQuery({
+    query: GetNetworkById,
+    variables: {
+      id: networkId,
+    },
+  });
 
   const accessRequestItems = [{
     id: 0,
@@ -27,10 +36,17 @@ function NetworkMembersPage() {
     status: 'Sent 3/12/20',
   }];
 
+  let network;
+  if (result.data && result.data.network.length > 0) {
+    network = mapNetwork(result.data.network[0]);
+  }
+
   return (
     <div className="network-members-page">
       <div className="row">
-        <MemberAccessRequestTable
+        <MemberAccessRequestTableContainer
+          networkId={networkId}
+          network={network}
           items={accessRequestItems}
         />
       </div>

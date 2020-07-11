@@ -6,8 +6,8 @@ import React, {
 import { useQuery } from 'urql';
 
 import GetUser from '~/queries/GetUser';
-import mapUser from '~/mappings/mapUser';
-import mapNetwork from '~/mappings/mapNetwork';
+import mapUser from 'Shared/mappings/mapUser';
+import mapNetwork from 'Shared/mappings/mapNetwork';
 import {
   saveJWT,
   hydrateJWT,
@@ -55,6 +55,7 @@ export const UserContextProvider = ({ children }) => {
 
   // Fetch User record and update local and persisted to latest
   useEffect(() => {
+    console.log('Fetching User', getUserResult);
     if (getUserResult.data) {
       const mappedUser = mapUser(getUserResult.data.user_by_pk);
 
