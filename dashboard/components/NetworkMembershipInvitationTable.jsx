@@ -3,15 +3,18 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
+import formatDate from '~/shared/utils/formatDate';
 
-function MemberPendingInviteTable({
+function NetworkMembershipInvitationTable({
   items,
+  action,
+  onRevoke = () => {},
 }) {
   const heading = `${items.length} Pending Invites`;
   const columns = useMemo(() => [
     {
       Header: 'Name',
-      accessor: 'user',
+      accessor: ({ user: {name, profile} }) => ({ name, image: profile && profile.photo }),
       Cell: ({ value }) => (
         <UserCell
           value={value}
@@ -24,25 +27,26 @@ function MemberPendingInviteTable({
     },
     {
       Header: 'Email',
-      accessor: 'email',
+      accessor: 'user.email',
       style: {
         width: '25ch'
       },
     },
     {
-      Header: 'Status',
-      accessor: 'status',
+      Header: 'Sent at',
+      accessor: 'createdAt',
+      Cell: ({ value }) => formatDate(value)
     },
     {
       id: 'actions',
-      accessor: 'id',
+      accessor: item => item,
       Cell: ({ value }) => (
         <div className="actions-wrapper">
           <ActionMenu
             items={[
               {
                 href: '#revoke',
-                onClick: () => {},
+                onClick: () => onRevoke({ item: value }),
                 label: 'Revoke',
                 theme: 'tertiary',
               },
@@ -66,9 +70,10 @@ function MemberPendingInviteTable({
       heading={heading}
       columns={columns}
       data={items}
+      action={action}
       isCollapsible
     />
   );
 }
 
-export default MemberPendingInviteTable;
+export default NetworkMembershipInvitationTable;

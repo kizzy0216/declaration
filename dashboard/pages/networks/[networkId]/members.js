@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
 
 import GetNetworkById from '~/queries/GetNetworkById';
-import MemberAccessRequestTableContainer from '~/containers/MemberAccessRequestTableContainer';
-import MemberPendingInviteTable from '~/components/MemberPendingInviteTable';
+import NetworkMembershipRequestTableContainer from '~/containers/NetworkMembershipRequestTableContainer';
+import NetworkMembershipInvitationTableContainer from '~/containers/NetworkMembershipInvitationTableContainer';
 import MemberTableContainer from '~/containers/MemberTableContainer';
 import mapNetwork from '~/shared/mappings/mapNetwork';
 
@@ -18,24 +18,6 @@ function NetworkMembersPage() {
     },
   });
 
-  const accessRequestItems = [{
-    id: 0,
-    user: {
-      name: 'John Doe',
-    },
-    email: 'jdoe@example.com',
-    status: 'Received 3/12/20',
-  }];
-
-  const pendingInviteItems = [{
-    id: 0,
-    user: {
-      name: 'John Doe',
-    },
-    email: 'jdoe@example.com',
-    status: 'Sent 3/12/20',
-  }];
-
   let network;
   if (result.data && result.data.network.length > 0) {
     network = mapNetwork(result.data.network[0]);
@@ -44,16 +26,16 @@ function NetworkMembersPage() {
   return (
     <div className="network-members-page">
       <div className="row">
-        <MemberAccessRequestTableContainer
+        <NetworkMembershipRequestTableContainer
           networkId={networkId}
           network={network}
-          items={accessRequestItems}
         />
       </div>
 
       <div className="row">
-        <MemberPendingInviteTable
-          items={pendingInviteItems}
+        <NetworkMembershipInvitationTableContainer
+          networkId={networkId}
+          network={network}
         />
       </div>
 

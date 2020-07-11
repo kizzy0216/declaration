@@ -31,8 +31,8 @@ function EmptyState({
           width: 100%;
           fill: var(--gray);
           color: var(--gray);
-          padding-top: 100px;
-          padding-bottom: 100px;
+          padding-top: 20px;
+          padding-bottom: 20px;
         }
 
         .icon-wrapper {

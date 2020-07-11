@@ -5,7 +5,7 @@ import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
 import formatDate from '~/shared/utils/formatDate';
 
-function MemberAccessRequestTable({
+function NetworkMembershipRequestTable({
   items,
   onAccept = () => {},
   onDecline = () => {},
@@ -98,4 +98,4 @@ function MemberAccessRequestTable({
   );
 }
 
-export default MemberAccessRequestTable;
+export default NetworkMembershipRequestTable;

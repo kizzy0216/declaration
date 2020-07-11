@@ -99,9 +99,7 @@ function TopNavigation({
                 <Button
                   theme={authenticationDisplay.theme}
                   label={authenticationDisplay.label}
-                  leftIcon={
-                    !hasSettledAuthentication && <SpinnerIcon />
-                  }
+                  isFetching={!hasSettledAuthentication}
                 />
               </a>
             </Link>
@@ -142,9 +140,7 @@ function TopNavigation({
                 theme={authenticationDisplay.theme}
                 label={authenticationDisplay.label}
                 size="large"
-                leftIcon={
-                  !hasSettledAuthentication && <SpinnerIcon />
-                }
+                isFetching={!hasSettledAuthentication}
               />
             </a>
           </Link>

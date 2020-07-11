@@ -124,19 +124,28 @@
     using:
       foreign_key_constraint_on: network_uuid
   insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - network_uuid
+      - user_email
+      - user_name
+      backend_only: false
   - role: user
     permission:
       check:
-        network:
-          network_users:
-            _and:
-            - user_uuid:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
                 _eq: X-Hasura-User-Id
-            - user_role:
+        - network:
+            network_users:
+              user_role:
                 text:
                   _eq: NETWORK_ADMIN
       columns:
-      - code
       - network_uuid
       - user_email
       - user_name
@@ -157,29 +166,13 @@
   - role: user
     permission:
       columns:
-      - uuid
+      - created_at
       - id
       - network_uuid
-      - user_email
-      - created_at
       - updated_at
-      - user_name
-      - code
-      filter:
-        network:
-          network_users:
-            _and:
-            - user_uuid:
-                _eq: X-Hasura-User-Id
-            - user_role:
-                text:
-                  _eq: NETWORK_ADMIN
-  update_permissions:
-  - role: user
-    permission:
-      columns:
       - user_email
       - user_name
+      - uuid
       filter:
         network:
           network_users:
@@ -189,17 +182,21 @@
             - user_role:
                 text:
                   _eq: NETWORK_ADMIN
-      check: null
   delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
   - role: user
     permission:
       filter:
-        network:
-          network_users:
-            _and:
-            - user_uuid:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
                 _eq: X-Hasura-User-Id
-            - user_role:
+        - network:
+            network_users:
+              user_role:
                 text:
                   _eq: NETWORK_ADMIN
 - table:

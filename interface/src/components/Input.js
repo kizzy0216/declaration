@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Button from './Button';
-import SpinnerIcon from './icons/SpinnerIcon';
 
 function Input({
   label,
@@ -31,9 +30,7 @@ function Input({
           type={type}
           label={label}
           size="large"
-          leftIcon={
-            isFetching && <SpinnerIcon fill="inherit" />
-          }
+          isFetching={isFetching}
         />
       }
 

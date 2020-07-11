@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SpinnerIcon from './icons/SpinnerIcon';
+
 function Button ({
   label,
   theme = 'primary', // primary, secondary, tertiary, transparent
@@ -7,6 +9,7 @@ function Button ({
   size = 'medium', // medium, large
   leftIcon,
   rightIcon,
+  isFetching = false,
   onClick = () => {},
 }) {
   return (
@@ -28,7 +31,13 @@ function Button ({
       }
 
       <span className="label">
-        {label}
+        {isFetching
+          ? (
+            <SpinnerIcon fill="inherit" />
+          ) : (
+            label
+          )
+        }
       </span>
 
       {rightIcon &&

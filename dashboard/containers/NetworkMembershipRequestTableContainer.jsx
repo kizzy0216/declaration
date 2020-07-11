@@ -10,18 +10,18 @@ import DeleteNetworkMembershipRequest from '~/mutations/DeleteNetworkMembershipR
 import GetNetworkMembershipRequests from '~/queries/GetNetworkMembershipRequests';
 const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
-import MemberAccessRequestTable from '~/components/MemberAccessRequestTable';
+import NetworkMembershipRequestTable from '~/components/NetworkMembershipRequestTable';
 import mapNetworkMembershipRequest from '~/shared/mappings/mapNetworkMembershipRequest';
 import mapUser from '~/shared/mappings/mapUser';
 
-function MemberAccessRequestTableContainer({
+function NetworkMembershipRequestTableContainer({
   networkId,
   network,
 }) {
   const [selectedItem, setSelectedItem] = useState({});
   const [isInsertModalActive, setIsInsertModalActive] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
-  const [getNetworkMembershipRequests] = useQuery({
+  const [getRequests] = useQuery({
     query: GetNetworkMembershipRequests,
     variables: {
       network_id: networkId,
@@ -29,18 +29,18 @@ function MemberAccessRequestTableContainer({
     pause: !networkId,
   });
   const [
-    deleteMembershipRequestResult, 
-    deleteMembershipRequest,
+    deleteRequestResult, 
+    deleteRequest,
   ] = useMutation(DeleteNetworkMembershipRequest);
   const [
-    insertNetworkMemberResult,
-    insertNetworkMember,
+    insertMemberResult,
+    insertMember,
   ] = useMutation(InsertNetworkMember);
 
   const {
     data,
     fetching: isFetching,
-  } = getNetworkMembershipRequests;
+  } = getRequests;
 
   let items = [];
   if (!isFetching && data) {
@@ -50,11 +50,11 @@ function MemberAccessRequestTableContainer({
   }
 
   function handleInsert({ selectedItem }) {
-    insertNetworkMember({
+    insertMember({
       network_uuid: network.uuid,
       user_uuid: selectedItem.user.uuid,
     }).then(() => {
-      deleteMembershipRequest({
+      deleteRequest({
         uuid: selectedItem.uuid,
       });
       setIsInsertModalActive(false);
@@ -62,7 +62,7 @@ function MemberAccessRequestTableContainer({
   }
 
   function handleDelete({ selectedItem }) {
-    deleteMembershipRequest({ uuid: selectedItem.uuid });
+    deleteRequest({ uuid: selectedItem.uuid });
     setIsDeleteModalActive(false);
   }
 
@@ -87,7 +87,7 @@ function MemberAccessRequestTableContainer({
               `Are you sure you want to accept this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, accept"
-            isFetching={insertNetworkMemberResult.fetching}
+            isFetching={insertMemberResult.fetching}
             onSubmit={() => handleInsert({ selectedItem })}
             onCancel={() => setIsInsertModalActive(false)}
           />
@@ -103,14 +103,14 @@ function MemberAccessRequestTableContainer({
               `Are you sure you want to decline this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, decline"
-            isFetching={deleteMembershipRequest.fetching}
+            isFetching={deleteRequestResult.fetching}
             onSubmit={() => handleDelete({ selectedItem })}
             onCancel={() => setIsDeleteModalActive(false)}
           />
         </ModalPortal>
       }
 
-      <MemberAccessRequestTable
+      <NetworkMembershipRequestTable
         items={items}
         onAccept={handleAccept}
         onDecline={handleDecline}
@@ -119,4 +119,4 @@ function MemberAccessRequestTableContainer({
   );
 }
 
-export default MemberAccessRequestTableContainer;
+export default NetworkMembershipRequestTableContainer;
