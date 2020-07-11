@@ -38,6 +38,9 @@ function AuthenticationHomeScreen({ navigation }) {
             label="Create Your Own Network"
             theme="transparent"
             onPress={() => navigation.navigate('NetworkAccessRequest')}
+            labelStyle={{
+              color: 'white',
+            }}
           />
         </View>
       </SafeAreaView>

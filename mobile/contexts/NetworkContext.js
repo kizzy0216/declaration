@@ -10,20 +10,24 @@ import { UserContext } from '~/contexts/UserContext';
 
 export const NetworkContext = createContext({
   activeNetwork: {},
+  networks: [],
   hasSettled: false,
   setActiveNetwork: () => {},
 });
 
 export const NetworkContextProvider = ({ children }) => {
   const [activeNetwork, setActiveNetwork] = useState({});
-  const [hasSettled, setHasSettled] = useState(false);
+  const [networks, setNetworks] = useState([]);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     const { networkUuids, networksByUuid } = user;
 
     if (networkUuids.length > 0) {
-      setActiveNetwork(networksByUuid[networkUuids[0]]);
+      const allNetworks = networkUuids.map((networkUuid) => networksByUuid[networkUuid]);
+      const firstNetwork = allNetworks[0];
+      setActiveNetwork(firstNetwork);
+      setNetworks(allNetworks);
     }
   }, [user]);
 
@@ -31,7 +35,8 @@ export const NetworkContextProvider = ({ children }) => {
     <NetworkContext.Provider
       value={{
         activeNetwork,
-        hasSettled,
+        networks,
+        hasSettled: user.hasSettled,
         setActiveNetwork: network => setActiveNetwork(network),
       }}
     >

@@ -1,4 +1,7 @@
-import React, { useContext } from 'react';
+import React, {
+  useState,
+  useContext,
+} from 'react';
 import {
   View,
   Text,
@@ -6,23 +9,52 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
-
 import { BorderlessButton } from 'react-native-gesture-handler';
+
+import NetworkSwitcherModal from '~/components/NetworkSwitcherModal';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
 
 function FeedHeader({
+  onNetworkAdd = () => {},
+  onNetworkCreate = () => {},
   onCalendarPress = () => {},
   onMessagesPress = () => {},
 }) {
-  const { activeNetwork } = useContext(NetworkContext);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const {
+    activeNetwork,
+    networks,
+    setActiveNetwork,
+  } = useContext(NetworkContext);
   const { user } = useContext(UserContext);
-
-  function handleNamePress() {
-  }
 
   return (
     <View style={styles.container}>
+      <NetworkSwitcherModal
+        isVisible={isModalVisible}
+        items={
+          networks.map((network) => ({
+            uuid: network.uuid,
+            label: network.name,
+            isActive: network.uuid === activeNetwork.uuid,
+            onPress: () => {
+              setActiveNetwork(network);
+              setIsModalVisible(false);
+            },
+          }))
+        }
+        onClose={() => setIsModalVisible(false)}
+        onNetworkAdd={() => {
+          setIsModalVisible(false);
+          onNetworkAdd();
+        }}
+        onNetworkCreate={() => {
+          setIsModalVisible(false);
+          onNetworkCreate();
+        }}
+      />
+
       <View style={styles.leftIconWrapper}>
         <BorderlessButton onPress={onCalendarPress}>
           <Ionicons
@@ -33,7 +65,9 @@ function FeedHeader({
       </View>
 
       <View style={styles.usernameWrapper}>
-        <TouchableOpacity onPress={handleNamePress}>
+        <TouchableOpacity
+          onPress={() => setIsModalVisible(true)}
+        >
           <View style={styles.username}>
             <Text>
               {activeNetwork && activeNetwork.name}

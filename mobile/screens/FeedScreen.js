@@ -8,6 +8,8 @@ function FeedScreen({ navigation }) {
   return (
     <SafeAreaView>
       <FeedHeader
+        onNetworkAdd={() => navigation.navigate('NetworkMembershipSelect')}
+        onNetworkCreate={() => navigation.navigate('NetworkAccessRequest')}
         onCalendarPress={() => navigation.navigate('Events')}
         onMessagesPress={() => navigation.navigate('Messaging')}
       />
