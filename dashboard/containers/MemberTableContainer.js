@@ -21,7 +21,7 @@ function MemberTableContainer({
   } = getNetworkUsersResult;
 
   let items = [];
-  if (!isFetching) {
+  if (!isFetching && data) {
     items = data
       .network_user
       .map(({ user, role }) => mapUser({

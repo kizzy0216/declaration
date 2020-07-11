@@ -19,8 +19,9 @@ devices on hand.
 cd backend
 docker-compose up -d # start services
 hasura console --admin-secret <HASURA_ADMIN_SECRET> # start hasura console
+vercel dev # start REST API server
 
-# optionally
+# additionally
 hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
 hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```

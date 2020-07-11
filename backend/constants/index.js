@@ -17,3 +17,6 @@ export const COOKIE_OPTIONS = (
       path: '/',
     }
 );
+
+export const SENDGRID_FROM = 'help@declaration.net';
+export const SENDGRID_VERIFICATION_TEMPLATE_ID = 'd-bcbf2ca538ec459fbc41d41a6d4e09b4';

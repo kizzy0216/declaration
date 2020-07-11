@@ -68,6 +68,7 @@ function Button({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 17,
+    width: '100%',
   },
   primary: {
     backgroundColor: Colors.blue,

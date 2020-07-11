@@ -5,6 +5,9 @@ import React, {
 } from 'react';
 import { useQuery } from 'urql';
 
+const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
+
+import UnauthorizedWall from '~/components/UnauthorizedWall';
 import GetUserAsAdmin from '~/queries/GetUserAsAdmin';
 import mapUser from '~/shared/mappings/mapUser';
 import mapNetwork from '~/shared/mappings/mapNetwork';
@@ -28,6 +31,10 @@ export const UserContextProvider = ({ userUuid, children }) => {
   });
 
   useEffect(() => {
+    if (!getUserResult.data.user_by_pk) {
+      window.location = `${MARKETING_BASE_URL}/log-out`;
+    }
+
     const mappedUser = mapUser(getUserResult.data.user_by_pk);
 
     // Super Admins have access to all networks,
@@ -59,6 +66,14 @@ export const UserContextProvider = ({ userUuid, children }) => {
     }
   }, [getUserResult.fetching]);
 
+  const isAuthorized = (
+    user &&
+    (
+      user.isSuperAdmin ||
+      user.networkUuids.length > 0
+    )
+  );
+
   return (
     <UserContext.Provider
       value={{
@@ -67,7 +82,13 @@ export const UserContextProvider = ({ userUuid, children }) => {
         hasFetched,
       }}
     >
-      {children}
+      {!isAuthorized
+        ? (
+          <UnauthorizedWall />
+        ) : (
+          children
+        )
+      }
     </UserContext.Provider>
   );
 }

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
+    "@sendgrid/mail": "^7.2.1",
     "@urql/core": "^1.12.2",
     "cookie": "^0.4.1",
     "graphql": "^15.2.0",

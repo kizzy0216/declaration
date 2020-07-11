@@ -19,7 +19,9 @@ function IndexPage() {
         router.replace('/networks');
       } else {
         const firstNetworkId = user.networkIds[0];
-        router.replace(`/networks/${firstNetworkId}`);
+        if (firstNetworkId) {
+          router.replace(`/networks/${firstNetworkId}`);
+        }
       }
     }
 

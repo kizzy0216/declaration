@@ -1,9 +1,21 @@
 const InsertVerificationCodeOne = `
-  mutation InsertVerificationCodeOne($email: String, $code: String) {
-    insert_verification_code_one(object: {email: $email, text: $code}) {
+  mutation InsertVerificationCodeOne(
+    $email: String,
+    $code: String,
+    $redirect: String
+  ) {
+    insert_verification_code_one(
+      object: {
+        email: $email,
+        text: $code,
+        redirect: $redirect
+      }
+    ) {
       __typename
+      uuid
       email
       text
+      redirect
     }
   }
 `;

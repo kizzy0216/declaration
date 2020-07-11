@@ -16,7 +16,7 @@ function UserTableContainer() {
   } = getUsersResult;
 
   let items = [];
-  if (!isFetching) {
+  if (!isFetching && data) {
     items = data
       .user
       .map(mapUser)

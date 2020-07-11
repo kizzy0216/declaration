@@ -55,8 +55,11 @@ export const UserContextProvider = ({ children }) => {
 
   // Fetch User record and update local and persisted to latest
   useEffect(() => {
-    console.log('Fetching User', getUserResult);
     if (getUserResult.data) {
+      if (!getUserResult.data.user_by_pk) {
+        return logOut();
+      }
+
       const mappedUser = mapUser(getUserResult.data.user_by_pk);
 
       setUser(mappedUser);

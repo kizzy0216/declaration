@@ -31,5 +31,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: secret
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "secretsecretsecretsecretsecretsecret"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous'
+      INSERT_NETWORK_MEMBERSHIP_INVITATION_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/network-membership-invitation'
+      INSERT_VERIFICATION_CODE_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/verification-code'
 volumes:
   db_data:

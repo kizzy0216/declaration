@@ -3,8 +3,8 @@ import jsonwebtoken from 'jsonwebtoken';
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
+import GetVerificationCodes from '../queries/GetVerificationCodes';
 import GetUsers from '../queries/GetUsers';
-import GetUsersWithVerificationCode from '../queries/GetUsersWithVerificationCode';
 import InsertUserOne from '../mutations/InsertUserOne';
 import InsertVerificationCodeOne from '../mutations/InsertVerificationCodeOne';
 import DeleteVerificationCode from '../mutations/DeleteVerificationCode';
@@ -61,7 +61,7 @@ const handlers = {
 
       if (uuid) {
         const { data: matchedCookieUserData } = await fetchHasuraAdmin
-          .query(GetUsersWithVerificationCode, { uuid })
+          .query(GetUsers, { uuid })
           .toPromise();
         resolvedUser = matchedCookieUserData.user[0];
       }
@@ -78,99 +78,68 @@ const handlers = {
       return response.status(400).json({ error: 'Already authenticated' });
     }
 
-    // fetch user that is associated with this request's email
-    const { data: matchedEmailUserData } = await fetchHasuraAdmin
+    // request verification email
+    if (!code || code.length === 0) {
+      await fetchHasuraAdmin
+        .mutation(DeleteVerificationCode, { email })
+        .toPromise();
+
+      const passcode = generatePasscode(4);
+      const redirectUrl = new URL(redirect);
+      redirectUrl.searchParams.append('email', email);
+      redirectUrl.searchParams.append('code', passcode);
+
+      const { data: newVerificationCodeData } = await fetchHasuraAdmin
+        .mutation(InsertVerificationCodeOne, {
+          email, 
+          code: passcode,
+          redirect: redirectUrl.href,
+        })
+        .toPromise();
+
+      return response.status(202).json({ message: 'Verification email sent' });
+    }
+
+    // match email and code
+    const { data: matchedVerificationData, ...rest } = await fetchHasuraAdmin
+      .query(GetVerificationCodes, { email, code })
+      .toPromise();
+    const matchedVerification = matchedVerificationData.verification_code[0];
+
+    if (!matchedVerification) {
+      return response.status(403).json({ error: 'Email and code do not match' });
+    }
+
+    // fetch User with matching email
+    const { data: matchedUserData } = await fetchHasuraAdmin
       .query(GetUsers, { email })
       .toPromise();
-    resolvedUser = matchedEmailUserData.user[0];
+    resolvedUser = matchedUserData.user[0]
 
-    // insert a new user and associate this request's email
+    // if User doesn't exist, create new one
     if (!resolvedUser) {
       const { data: newUserData } = await fetchHasuraAdmin
         .mutation(InsertUserOne, { email })
         .toPromise();
 
       resolvedUser = newUserData.insert_user_one;
-
-      const { uuid } = resolvedUser;
-      const roles = ['temporary'];
-      const jwt = jsonwebtoken.sign({
-        sub: uuid,
-        'https://hasura.io/jwt/claims': {
-          'x-hasura-allowed-roles': roles,
-          'x-hasura-default-role': roles[0],
-          'x-hasura-user-id': uuid,
-        },
-      }, JWT_SECRET_KEY);
-      if (withCookies) {
-        setCookie({
-          response,
-          key: JWT_COOKIE_KEY,
-          value: jwt,
-          options: COOKIE_OPTIONS
-        });
-      }
-    }
-
-    // edge case, but bail if none of the above resolve
-    if (!resolvedUser) {
-      return response.status(500).json({ error: 'Unable to resolve User' });
-    }
-
-    // ensure this email is set to the user
-    if (!resolvedUser.email) {
-      await fetchHasuraAdmin
-        .mutation(UpdateUserEmail, { uuid: resolvedUser.uuid, email })
-        .toPromise()
-    }
-
-    // request verification email
-    if (!code || code.length === 0) {
-      if (resolvedUser.verification_code) {
-        await fetchHasuraAdmin
-          .mutation(DeleteVerificationCode, { email: resolvedUser.email })
-          .toPromise();
-      }
-
-      const passcode = generatePasscode(4);
-      const { data: newVerificationCodeData } = await fetchHasuraAdmin
-        .mutation(InsertVerificationCodeOne, { email: resolvedUser.email, code: passcode })
-        .toPromise();
-
-      // TODO send verification email
-      const redirectUrl = new URL(redirect);
-      redirectUrl.searchParams.append('email', email);
-      redirectUrl.searchParams.append('code', passcode);
-      console.log(redirect, email, passcode, redirectUrl.href);
-
-      return response.status(202).json({ message: 'Verification email sent' });
-    }
-
-    // match email and code against a user
-    const { data: fullyMatchedUserData, ...rest } = await fetchHasuraAdmin
-      .query(GetUsersWithVerificationCode, { email, code })
-      .toPromise();
-    const matchedUser = fullyMatchedUserData.user[0];
-
-    if (!matchedUser) {
-      return response.status(403).json({ error: 'Email and code do not match' });
     }
 
     await fetchHasuraAdmin
-      .mutation(DeleteVerificationCode, { email: resolvedUser.email })
+      .mutation(DeleteVerificationCode, { email })
       .toPromise();
 
     // code and email match, so elevate user to verified
-    if (!matchedUser.is_verified) {
+    if (!resolvedUser.is_verified) {
       await fetchHasuraAdmin
-        .mutation(UpdateUserIsVerified, { uuid: matchedUser.uuid, is_verified: true })
+        .mutation(UpdateUserIsVerified, { uuid: resolvedUser.uuid, is_verified: true })
         .toPromise();
     }
 
     const {
       uuid,
       super_admin,
-    } = matchedUser;
+    } = resolvedUser;
     const roles = [];
     if (super_admin) {
       roles.push('super_admin');

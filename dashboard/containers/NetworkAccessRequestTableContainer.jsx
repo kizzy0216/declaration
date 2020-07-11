@@ -36,7 +36,7 @@ function NetworkAccessRequestTableContainer() {
   } = getNetworkAccessRequestsResult;
 
   let items = [];
-  if (!isFetching) {
+  if (!isFetching && data) {
     items = data
       .network_access_request
       .map(({
