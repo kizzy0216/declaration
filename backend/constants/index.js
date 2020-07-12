@@ -20,3 +20,4 @@ export const COOKIE_OPTIONS = (
 
 export const SENDGRID_FROM = 'help@declaration.net';
 export const SENDGRID_VERIFICATION_TEMPLATE_ID = 'd-bcbf2ca538ec459fbc41d41a6d4e09b4';
+export const SENDGRID_MEMBERSHIP_INVITATION_TEMPLATE_ID = 'd-402a7e5579b64e01ae6538c141e259c5';

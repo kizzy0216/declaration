@@ -131,6 +131,7 @@
       check: {}
       columns:
       - network_uuid
+      - redirect
       - user_email
       - user_name
       backend_only: false
@@ -149,6 +150,7 @@
                   _eq: NETWORK_ADMIN
       columns:
       - network_uuid
+      - redirect
       - user_email
       - user_name
       backend_only: false
@@ -160,6 +162,7 @@
       - created_at
       - id
       - network_uuid
+      - redirect
       - updated_at
       - user_email
       - user_name
@@ -201,6 +204,30 @@
               user_role:
                 text:
                   _eq: NETWORK_ADMIN
+  event_triggers:
+  - name: network-membership-invitation
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - id
+        - code
+        - redirect
+        - user_email
+        - user_name
+        - created_at
+        - updated_at
+        - network_uuid
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: NETWORK_MEMBERSHIP_INVITATION_WEBHOOK_URL
 - table:
     schema: public
     name: network_membership_request
@@ -626,13 +653,24 @@
     schema: public
     name: verification_code
   event_triggers:
-  - name: insert-verification-code
+  - name: verification-code
     definition:
-      enable_manual: false
+      enable_manual: true
       insert:
         columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - id
+        - email
+        - redirect
+        - text
+        - created_at
+        - updated_at
+        - uuid
     retry_conf:
       num_retries: 3
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: INSERT_VERIFICATION_CODE_WEBHOOK_URL
+    webhook_from_env: VERIFICATION_CODE_WEBHOOK_URL

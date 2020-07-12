@@ -55,11 +55,18 @@ function NetworkMembershipInvitationTableContainer({
       network_uuid: network.uuid,
       user_name: name,
       user_email: email,
+      redirect: 'exp://127.0.0.1:19000/--/accept-invitation', // TODO replace
     }).then(() => setIsInviteMemberModalActive(false));
+  }
+
+  function handleDelete({ item }) {
+    deleteInvitation();
+    setIsRevokeModalActive(false);
   }
 
   function handleRevoke({ item }) {
     setSelectedItem(item);
+    setIsRevokeModalActive(true);
   }
 
   return (
@@ -69,9 +76,9 @@ function NetworkMembershipInvitationTableContainer({
           onClose={() => setIsInviteMemberModalActive(false)}
         >
           <InviteMemberModal
+            isFetching={insertInvitationResult.fetching}
             onSubmit={handleInsert}
             onCancel={() => setIsInviteMemberModalActive(false)}
-            isFetching={insertInvitationResult.fetching}
           />
         </ModalPortal>
       }
@@ -81,9 +88,12 @@ function NetworkMembershipInvitationTableContainer({
           onClose={() => setIsRevokeModalActive(false)}
         >
           <DoubleConfirmModal
-            heading={`Are you sure you want to revoke this membership invitation for ${selectedItem.name || selectedItem.email}?`}
+            heading={`Are you sure you want to revoke this membership invitation for ${selectedItem.user.name || selectedItem.user.email}?`}
             submitLabel="Yes, revoke"
             cancelLabel="No, cancel"
+            isFetching={deleteInvitationResult.fetching}
+            onSubmit={() => handleDelete(selectedItem)}
+            onCancel={() => setIsRevokeModalActive(false)}
           />
         </ModalPortal>
       }

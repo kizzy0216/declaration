@@ -7,7 +7,7 @@ import { useQuery } from 'urql';
 
 const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 
-import UnauthorizedWall from '~/components/UnauthorizedWall';
+import AuthorizationWall from '~/components/AuthorizationWall';
 import GetUserAsAdmin from '~/queries/GetUserAsAdmin';
 import mapUser from '~/shared/mappings/mapUser';
 import mapNetwork from '~/shared/mappings/mapNetwork';
@@ -67,10 +67,13 @@ export const UserContextProvider = ({ userUuid, children }) => {
   }, [getUserResult.fetching]);
 
   const isAuthorized = (
-    user &&
+    !hasFetched || // assume authorized to avoid FOUC
     (
-      user.isSuperAdmin ||
-      user.networkUuids.length > 0
+      hasFetched &&
+      (
+        user.isSuperAdmin ||
+        user.networkUuids.length > 0
+      )
     )
   );
 
@@ -82,11 +85,11 @@ export const UserContextProvider = ({ userUuid, children }) => {
         hasFetched,
       }}
     >
-      {!isAuthorized
+      {isAuthorized
         ? (
-          <UnauthorizedWall />
-        ) : (
           children
+        ) : (
+          <AuthorizationWall />
         )
       }
     </UserContext.Provider>

@@ -7,6 +7,7 @@ import AuthenticationLogInScreen from '~/screens/AuthenticationLogInScreen';
 import AuthenticationLogInFeedbackScreen from '~/screens/AuthenticationLogInFeedbackScreen';
 import NetworkAccessRequestScreen from '~/screens/NetworkAccessRequestScreen';
 import NetworkAccessRequestFeedbackScreen from '~/screens/NetworkAccessRequestFeedbackScreen';
+import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import UserResolutionScreen from '~/screens/UserResolutionScreen';
 import { UserContext } from '~/contexts/UserContext';
 
@@ -55,6 +56,10 @@ function AuthenticationNavigator({ navigation, route }) {
       <Stack.Screen
         name="NetworkAccessRequestFeedback"
         component={NetworkAccessRequestFeedbackScreen}
+      />
+      <Stack.Screen
+        name="NetworkMembershipInvitationAccept"
+        component={NetworkMembershipInvitationAcceptScreen}
       />
       <Stack.Screen
         name="UserResolution"

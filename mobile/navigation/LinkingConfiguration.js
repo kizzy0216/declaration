@@ -18,6 +18,7 @@ export default {
         AuthenticationHome: '/',
         AuthenticationLogIn: 'log-in',
         RequestNetworkAccess: 'request-network-access',
+        NetworkMembershipInvitationAccept: 'accept-invitation',
       },
     },
   },

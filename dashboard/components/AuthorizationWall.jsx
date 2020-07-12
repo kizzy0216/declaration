@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 
-function UnauthorizedWall() {
+function AuthorizationWall() {
   return (
-    <div className="unauthorized-wall">
+    <div className="authorization-wall">
       <div className="container">
         <h1>You're not authorized to access the admin dashboard</h1>
         <p>
@@ -34,7 +34,7 @@ function UnauthorizedWall() {
       <style jsx>{`
         @import 'shared/styles/media.css';
 
-        .unauthorized-wall {
+        .authorization-wall {
           display: flex;
           flex-flow: column;
           justify-content: center;
@@ -65,4 +65,4 @@ function UnauthorizedWall() {
   );
 }
 
-export default UnauthorizedWall;
+export default AuthorizationWall;
