@@ -10,6 +10,7 @@ export default {
       screens: {
         Feed: 'feed',
         Create: 'create',
+        NetworkMembershipInvitationAccept: 'accept-invitation',
       },
     },
     AuthenticationRoot: {

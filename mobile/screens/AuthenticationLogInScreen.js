@@ -87,22 +87,24 @@ function AuthenticationLogInScreen({ route, navigation }) {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <View style={styles.headingWrapper}>
-          <DisplayHeading style={styles.heading}>
-            What's your email address?
-          </DisplayHeading>
-        </View>
-
         {params.email && params.code
           ? (
             <>
-              <Text>Logging in...</Text>
               <SpinnerIcon width="50" height="50" />
+              <Text>Logging in...</Text>
             </>
           ) : (
-            <LogInForm
-              onSubmit={handleSubmit}
-            />
+            <>
+              <View style={styles.headingWrapper}>
+                <DisplayHeading style={styles.heading}>
+                  What's your email address?
+                </DisplayHeading>
+              </View>
+
+              <LogInForm
+                onSubmit={handleSubmit}
+              />
+            </>
           )
         }
       </View>

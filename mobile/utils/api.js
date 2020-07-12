@@ -45,12 +45,17 @@ export const urqlClient = createUrqlClient({
   },
 });
 
-export const fetchREST = (url, options) => fetch(
-  `${REST_BASE_URL}${url}`,
-  {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+export const fetchREST = (url, options) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (inMemoryJWT) {
+    headers['Authorization'] = `Bearer ${inMemoryJWT}`;
+  }
+
+  return fetch(`${REST_BASE_URL}${url}`, {
+    headers,
     ...options,
-  },
-);
+  });
+};

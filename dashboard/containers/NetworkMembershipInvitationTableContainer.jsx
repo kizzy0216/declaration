@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from 'urql';
 import dynamic from 'next/dynamic';
 
+const MOBILE_BASE_URL = process.env.MOBILE_BASE_URL;
+
 const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import NetworkMembershipInvitationTable from '~/components/NetworkMembershipInvitationTable';
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
@@ -55,12 +57,14 @@ function NetworkMembershipInvitationTableContainer({
       network_uuid: network.uuid,
       user_name: name,
       user_email: email,
-      redirect: 'exp://127.0.0.1:19000/--/accept-invitation', // TODO replace
+      redirect: `${MOBILE_BASE_URL}/accept-invitation`,
     }).then(() => setIsInviteMemberModalActive(false));
   }
 
   function handleDelete({ item }) {
-    deleteInvitation();
+    deleteInvitation({
+      uuid: item.uuid,
+    });
     setIsRevokeModalActive(false);
   }
 
@@ -92,7 +96,7 @@ function NetworkMembershipInvitationTableContainer({
             submitLabel="Yes, revoke"
             cancelLabel="No, cancel"
             isFetching={deleteInvitationResult.fetching}
-            onSubmit={() => handleDelete(selectedItem)}
+            onSubmit={() => handleDelete({ item: selectedItem })}
             onCancel={() => setIsRevokeModalActive(false)}
           />
         </ModalPortal>

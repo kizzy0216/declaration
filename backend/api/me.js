@@ -6,13 +6,14 @@ const handlers = {
     return response.status(200).send();
   },
   GET: (request, response) => {
+    console.dir(request.user)
     return response.status(200).json(request.user);
   },
 };
 
-const me = (request, response) => {
+const me = async (request, response) => {
   setCORS(request, response);
-  setUser(request, response);
+  await setUser(request, response);
 
   handlers[request.method] && handlers[request.method](request, response);
 };

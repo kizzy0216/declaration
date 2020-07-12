@@ -14,6 +14,7 @@ import UpdateUserIsVerified from '../mutations/UpdateUserIsVerified';
 import { fetchHasuraAdmin } from '../utils/api';
 import validateEmail from '../utils/validateEmail';
 import generatePasscode from '../utils/generatePasscode';
+import setUser from '../utils/setUser';
 import setCookie from '../utils/setCookie';
 import setCORS from '../utils/setCORS';
 import {
@@ -38,37 +39,24 @@ const handlers = {
     const { cookies } = request;
 
     // email is required
-    if (!email) {
+    if (!email || email.length === 0) {
       return response.status(400).json({ error: 'Email required' });
     } else if (!validateEmail(email)) {
       return response.status(400).json({ error: 'Invalid email' });
     }
 
-    if (!code && !redirect) {
+    if ((!code || code.length === 0) && (!redirect || redirect.length === 0)) {
       return response.status(400).json({ error: 'Redirect required, when supplying just email' });
     }
 
-    // attempt to resolve user from cookies
+    // attempt to resolve authenticated user
     let resolvedUser;
-    if (withCookies && cookies[JWT_COOKIE_KEY]) {
-      let uuid;
-      try {
-        const { sub } = jsonwebtoken.verify(cookies[JWT_COOKIE_KEY], JWT_SECRET_KEY);
-        uuid = sub;
-      } catch {
-        return response.status(500).json({ error: 'Unable to verify JWT' });
-      }
-
-      if (uuid) {
-        const { data: matchedCookieUserData } = await fetchHasuraAdmin
-          .query(GetUsers, { uuid })
-          .toPromise();
-        resolvedUser = matchedCookieUserData.user[0];
-      }
+    if (request.user.uuid) {
+      resolvedUser = request.user;
     }
 
-    // if resolved user from cookies has email and is verified,
-    // then they're already authenticated
+    // if resolved user from authentication has email and is verified,
+    // then there's nothing to do
     if (
       resolvedUser &&
       resolvedUser.email &&
@@ -166,8 +154,9 @@ const handlers = {
   },
 };
 
-const authenticate = (request, response) => {
+const authenticate = async (request, response) => {
   setCORS(request, response);
+  await setUser(request, response);
 
   handlers[request.method] && handlers[request.method](request, response);
 };

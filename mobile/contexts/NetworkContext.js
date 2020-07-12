@@ -18,12 +18,15 @@ export const NetworkContext = createContext({
 export const NetworkContextProvider = ({ children }) => {
   const [activeNetwork, setActiveNetwork] = useState({});
   const [networks, setNetworks] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user, isAuthenticated } = useContext(UserContext);
 
   useEffect(() => {
-    const { networkUuids, networksByUuid } = user;
+    const {
+      networkUuids,
+      networksByUuid,
+    } = user;
 
-    if (networkUuids.length > 0) {
+    if (networkUuids && networkUuids.length > 0) {
       const allNetworks = networkUuids.map((networkUuid) => networksByUuid[networkUuid]);
       const firstNetwork = allNetworks[0];
       setActiveNetwork(firstNetwork);

@@ -30,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
   const [hasHydratedJWT, setHasHydratedJWT] = useState(false);
   const [hasLoadedUser, setHasLoadedUser] = useState(false);
   const [hasSettled, setHasSettled] = useState(false);
-  const [getUserResult] = useQuery({
+  const [getUserResult, getUser] = useQuery({
     query: GetUser,
     variables: {
       uuid: user.uuid,
@@ -84,6 +84,7 @@ export const UserContextProvider = ({ children }) => {
     setUser(user);
     saveUser(user);
     saveJWT(jwt);
+    getUser({ requestPolicy: 'network-only' });
   }
 
   // Proceed with rendering AFTER persisted JWT and User have been loaded

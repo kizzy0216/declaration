@@ -13,6 +13,7 @@ import NetworkMembershipSelectScreen from '~/screens/NetworkMembershipSelectScre
 import NetworkMembershipRequestScreen from '~/screens/NetworkMembershipRequestScreen';
 import NetworkMembershipRequestFeedbackScreen from '~/screens/NetworkMembershipRequestFeedbackScreen';
 import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvitationScreen';
+import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import MessagingScreen from '~/screens/MessagingScreen';
 import EventsScreen from '~/screens/EventsScreen';
 import { UserContext } from '~/contexts/UserContext';
@@ -20,10 +21,15 @@ import { UserContext } from '~/contexts/UserContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    isAuthenticated,
+  } = useContext(UserContext);
 
   const initialRouteName = (
-    user.networkUuids.length === 0
+    (isAuthenticated &&
+    user.networkUuids &&
+    user.networkUuids.length === 0)
       ? 'NetworkMembershipSelect'
       : 'NetworkTabs'
   );
@@ -60,6 +66,10 @@ function RootNavigator({ navigation }) {
       <Stack.Screen
         name="NetworkMembershipRequestFeedback"
         component={NetworkMembershipRequestFeedbackScreen}
+      />
+      <Stack.Screen
+        name="NetworkMembershipInvitationAccept"
+        component={NetworkMembershipInvitationAcceptScreen}
       />
       <Stack.Screen
         name="Events"

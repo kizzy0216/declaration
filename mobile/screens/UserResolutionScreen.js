@@ -14,7 +14,7 @@ function UserResolutionScreen ({ navigation }) {
         StackActions.replace('Root')
       );
     }
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <View>
