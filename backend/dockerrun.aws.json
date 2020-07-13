@@ -1,0 +1,11 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "hasura/graphql-engine:v1.2.2"
+  },
+  "Ports": [
+    {
+      "ContainerPort": 8080
+    }
+  ]
+}
