@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import UserCell from '~/shared/components/UserCell';
 import Table from '~/shared/components/Table';
+import verbalizeUserRole from '~/shared/utils/verbalizeUserRole';
 
 function UserTable({
   items,
@@ -39,18 +40,18 @@ function UserTable({
         networksByUuid,
         rolesByNetworkUuid,
       }),
-      Cell: ({ value }) => (
+      Cell: ({ value: { networkUuids, networksByUuid, rolesByNetworkUuid } }) => (
         <>
-          {value.networkUuids.length === 0
+          {networkUuids.length === 0
             ? (
               <p>-</p>
             ) : (
-              value.networkUuids.map((networkUuid) => (
+              networkUuids.map((networkUuid) => (
                 <p
                   key={networkUuid}
                 >
-                  {value.networksByUuid[networkUuid].name}
-                  &nbsp;({value.rolesByNetworkUuid[networkUuid]})
+                  {networksByUuid[networkUuid].name}
+                  &nbsp;({verbalizeUserRole(rolesByNetworkUuid[networkUuid])})
                 </p>
               ))
             )

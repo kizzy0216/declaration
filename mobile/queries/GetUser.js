@@ -11,6 +11,9 @@ const GetUser = `
       network_users(
         order_by: {network: {name: asc}}
       ) {
+        __typename
+        role
+        is_blocked
         network {
           __typename
           uuid

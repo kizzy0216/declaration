@@ -16,7 +16,9 @@ import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvita
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import MessagingScreen from '~/screens/MessagingScreen';
 import EventsScreen from '~/screens/EventsScreen';
+import NetworkBlockedModal from '~/components/NetworkBlockedModal';
 import { UserContext } from '~/contexts/UserContext';
+import { NetworkContextProvider } from '~/contexts/NetworkContext';
 
 const Stack = createStackNavigator();
 
@@ -35,55 +37,59 @@ function RootNavigator({ navigation }) {
   );
 
   return (
-    <Stack.Navigator
-      initialRouteName={initialRouteName}
-      headerMode="none"
-    >
-      <Stack.Screen
-        name="NetworkTab"
-        component={NetworkTabNavigator}
-      />
-      <Stack.Screen
-        name="NetworkAccessRequest"
-        component={NetworkAccessRequestScreen}
-      />
-      <Stack.Screen
-        name="NetworkAccessRequestFeedback"
-        component={NetworkAccessRequestFeedbackScreen}
-      />
-      <Stack.Screen
-        name="NetworkMembershipInvitation"
-        component={NetworkMembershipInvitationScreen}
-      />
-      <Stack.Screen
-        name="NetworkMembershipSelect"
-        component={NetworkMembershipSelectScreen}
-      />
-      <Stack.Screen
-        name="NetworkMembershipRequest"
-        component={NetworkMembershipRequestScreen}
-      />
-      <Stack.Screen
-        name="NetworkMembershipRequestFeedback"
-        component={NetworkMembershipRequestFeedbackScreen}
-      />
-      <Stack.Screen
-        name="NetworkMembershipInvitationAccept"
-        component={NetworkMembershipInvitationAcceptScreen}
-      />
-      <Stack.Screen
-        name="Events"
-        component={EventsScreen}
-      />
-      <Stack.Screen
-        name="Messaging"
-        component={MessagingScreen}
-      />
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-      />
-    </Stack.Navigator>
+    <NetworkContextProvider>
+      <NetworkBlockedModal />
+
+      <Stack.Navigator
+        initialRouteName={initialRouteName}
+        headerMode="none"
+      >
+        <Stack.Screen
+          name="NetworkTab"
+          component={NetworkTabNavigator}
+        />
+        <Stack.Screen
+          name="NetworkAccessRequest"
+          component={NetworkAccessRequestScreen}
+        />
+        <Stack.Screen
+          name="NetworkAccessRequestFeedback"
+          component={NetworkAccessRequestFeedbackScreen}
+        />
+        <Stack.Screen
+          name="NetworkMembershipInvitation"
+          component={NetworkMembershipInvitationScreen}
+        />
+        <Stack.Screen
+          name="NetworkMembershipSelect"
+          component={NetworkMembershipSelectScreen}
+        />
+        <Stack.Screen
+          name="NetworkMembershipRequest"
+          component={NetworkMembershipRequestScreen}
+        />
+        <Stack.Screen
+          name="NetworkMembershipRequestFeedback"
+          component={NetworkMembershipRequestFeedbackScreen}
+        />
+        <Stack.Screen
+          name="NetworkMembershipInvitationAccept"
+          component={NetworkMembershipInvitationAcceptScreen}
+        />
+        <Stack.Screen
+          name="Events"
+          component={EventsScreen}
+        />
+        <Stack.Screen
+          name="Messaging"
+          component={MessagingScreen}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+        />
+      </Stack.Navigator>
+    </NetworkContextProvider>
   );
 }
 

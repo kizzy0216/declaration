@@ -6,7 +6,7 @@ As User with prior initiation but no verification, log in with email associated 
 
 As fully verified User, log in with email associated with the system
 
-As authenticated, Log out of the system
+As authenticated, log out of the system
 
 As unauthenticated, accept Network Membership Invitation
 
@@ -91,3 +91,13 @@ As User, switch view between Networks you belong to
 As User, upon authentication intitiation, receive email with link to complete authentication
 
 As Email address holder, upon Network Membership Invitation creation, receive email with link to join Network
+
+# Blocked Network Members
+
+As a Blocked Member, posting comments is disabled
+
+As a Blocked Member, posting content is disabled
+
+As a Blocked Member, upon navigating to the Network, a message is displayed indicating blocked access
+
+As a Member, when viewing a Blocked Member's profile, an indicator is shown representing the block

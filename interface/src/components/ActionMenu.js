@@ -4,6 +4,7 @@ import Button from './Button';
 import ActionLink from './ActionLink';
 import KebabIcon from './icons/KebabIcon';
 import useClickOutside from '../hooks/useClickOutside';
+import useKeyDown from '../hooks/useKeyDown';
 
 function ActionMenu({
   items = [],
@@ -18,6 +19,8 @@ function ActionMenu({
 
     setIsPopoverActive(!isPopoverActive);
   }
+
+  useKeyDown('Escape', () => setIsPopoverActive(false));
 
   useClickOutside(popoverRef, useCallback(() => setIsPopoverActive(false)));
 
@@ -118,6 +121,7 @@ function ActionMenu({
 
         .popover {
           display: none;
+          width: max-content;
           min-width: 175px;
 
           & li:not(:last-of-type) {

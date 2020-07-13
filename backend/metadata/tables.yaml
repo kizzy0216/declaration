@@ -333,21 +333,24 @@
     permission:
       check: {}
       columns:
-      - network_uuid
-      - user_uuid
-      - role
       - created_at
+      - is_blocked
+      - network_uuid
+      - role
       - updated_at
+      - user_uuid
       backend_only: false
   - role: user
     permission:
       check:
-        network:
-          network_users:
-            _and:
-            - user_uuid:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
                 _eq: X-Hasura-User-Id
-            - user_role:
+        - network:
+            network_users:
+              user_role:
                 text:
                   _eq: NETWORK_ADMIN
       columns:
@@ -383,12 +386,30 @@
   - role: super_admin
     permission:
       columns:
-      - role
       - created_at
-      - updated_at
+      - is_blocked
       - network_uuid
+      - role
+      - updated_at
       - user_uuid
       filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - is_blocked
+      - role
+      filter:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+        - network:
+            network_users:
+              user_role:
+                text:
+                  _eq: NETWORK_ADMIN
       check: null
   delete_permissions:
   - role: super_admin

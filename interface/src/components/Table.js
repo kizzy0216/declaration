@@ -19,6 +19,7 @@ function Table({
   getRowProps = defaultPropGetter,
   getCellProps = defaultPropGetter,
   isCollapsible = false,
+  isFetching = false,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const isEmpty = (data.length === 0);
@@ -76,7 +77,7 @@ function Table({
       </div>
 
       <div className="container">
-        {isEmpty ?
+        {!isFetching && isEmpty ?
           <EmptyState />
         : <table {...getTableProps()}>
             <thead>

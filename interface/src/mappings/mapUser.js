@@ -1,23 +1,5 @@
 import mapNetwork from './mapNetwork';
 import mapDateTime from './mapDateTime';
-import {
-  NETWORK_ADMIN_ROLE,
-  COMMUNITY_MANAGER_ROLE,
-  MEMBER_ROLE,
-} from '../constants';
-
-const mapUserRole = role => (() => {
-  switch (role) {
-    case NETWORK_ADMIN_ROLE:
-      return 'Admin';
-    case COMMUNITY_MANAGER_ROLE:
-      return 'Community Manager';
-    case MEMBER_ROLE: 
-      return 'Member';
-    default:
-      return 'Unknown Role';
-  }
-})();
 
 const mapUserProfile = ({
   location,
@@ -38,7 +20,6 @@ const mapUser = ({
   super_admin = null,
   role,
   user_profile = {},
-  is_blocked,
 }) => ({
   uuid,
   id,
@@ -57,17 +38,24 @@ const mapUser = ({
     return accumulator;
   }, {}),
   profile: mapUserProfile(user_profile || {}),
-  role: mapUserRole(role),
+  role: role,
   rolesByNetworkUuid: network_users.reduce((accumulator, { network, role }) => {
-    accumulator[network.uuid] = mapUserRole(role);
+    accumulator[network.uuid] = role;
     return accumulator;
   }, {}),
   rolesByNetworkId: network_users.reduce((accumulator, { network, role }) => {
-    accumulator[network.id] = mapUserRole(role);
+    accumulator[network.id] = role;
+    return accumulator;
+  }, {}),
+  isBlockedByNetworkUuid: network_users.reduce((accumulator, { network, is_blocked }) => {
+    accumulator[network.uuid] = is_blocked;
+    return accumulator;
+  }, {}),
+  isBlockedByNetworkId: network_users.reduce((accumulator, { network, is_blocked }) => {
+    accumulator[network.id] = is_blocked;
     return accumulator;
   }, {}),
   isSuperAdmin: !!super_admin,
-  isBlocked: is_blocked,
 });
 
 export default mapUser;
