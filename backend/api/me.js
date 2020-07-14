@@ -6,7 +6,6 @@ const handlers = {
     return response.status(200).send();
   },
   GET: (request, response) => {
-    console.dir(request.user)
     return response.status(200).json(request.user);
   },
 };
