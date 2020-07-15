@@ -25,11 +25,9 @@ export const UserContext = createContext({
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [isFetching, setIsFetching] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
   const [hasHydratedJWT, setHasHydratedJWT] = useState(false);
   const [hasLoadedUser, setHasLoadedUser] = useState(false);
-  const [hasSettled, setHasSettled] = useState(false);
   const [getUserResult, getUser] = useQuery({
     query: GetUser,
     variables: {
@@ -37,8 +35,11 @@ export const UserContextProvider = ({ children }) => {
     },
     pause: !user.uuid,
   });
+  const {
+    fetching: isFetching,
+  } = getUserResult;
 
-  // Load persisted JWT and User
+  // load persisted JWT and User on mount
   useEffect(() => {
     hydrateJWT().then(() => {
       setHasHydratedJWT(true);
@@ -49,11 +50,9 @@ export const UserContextProvider = ({ children }) => {
       setHasLoadedUser(true);
     });
   }, []);
-  useEffect(() => {
-    setHasSettled(hasHydratedJWT && hasLoadedUser);
-  }, [hasHydratedJWT, hasLoadedUser]);
 
-  // Fetch User record and update local and persisted to latest
+  // when a fetched user is returned, save it in local state, and persist it in
+  // global state
   useEffect(() => {
     if (getUserResult.data) {
       if (!getUserResult.data.user_by_pk) {
@@ -67,11 +66,18 @@ export const UserContextProvider = ({ children }) => {
       setHasFetched(true);
     }
   }, [getUserResult.data]);
+
+  // when user.uuid changes, refetch
   useEffect(() => {
-    setIsFetching(getUserResult.fetching);
-  }, [getUserResult.fetching]);
+    if (user.uuid) {
+      getUser({
+        requestPolicy: 'network-only',
+      });
+    }
+  }, [user.uuid]);
 
   function logOut() {
+    setHasFetched(false);
     setUser({});
     saveUser(null);
     saveJWT(null);
@@ -84,10 +90,11 @@ export const UserContextProvider = ({ children }) => {
     setUser(user);
     saveUser(user);
     saveJWT(jwt);
-    getUser({ requestPolicy: 'network-only' });
   }
 
-  // Proceed with rendering AFTER persisted JWT and User have been loaded
+  const hasSettled = (hasHydratedJWT && hasLoadedUser);
+
+  // proceed with rendering AFTER persisted JWT and User have been loaded
   if (!hasSettled) {
     return null;
   }
@@ -97,7 +104,9 @@ export const UserContextProvider = ({ children }) => {
       value={{
         user,
         hasSettled,
+        hasFetched,
         isAuthenticated: !!user.uuid,
+        isFetching,
         logOut,
         logIn,
       }}

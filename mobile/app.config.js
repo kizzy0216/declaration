@@ -24,14 +24,14 @@ export default {
     'ios',
     'android',
   ],
-  version: '0.0.0',
+  version: '0.0.1',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
   scheme: process.env.APPLICATION_SCHEME,
   splash: {
     image: './assets/images/splash.png',
     resizeMode: 'cover',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#222222'
   },
   updates: {
     fallbackToCacheTimeout: 0
@@ -45,10 +45,14 @@ export default {
   },
   ios: {
     bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
-    buildNumber: '0.0.0',
+    // irrelevant to version number, this is a build identifier
+    // just increment per build of a version
+    buildNumber: '2',
   },
   android: {
     package: process.env.APPLICATION_PACKAGE_ID,
-    versionCode: 0,
+    // irrelevant to version number, this is a build identifier
+    // just increment per build of a version
+    versionCode: 2,
   },
 }

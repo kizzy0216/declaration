@@ -23,11 +23,7 @@ import { NetworkContextProvider } from '~/contexts/NetworkContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
-  const {
-    user,
-    isAuthenticated,
-  } = useContext(UserContext);
-
+  const { user } = useContext(UserContext);
 
   const initialRouteName = (
     (!user.networkUuids ||

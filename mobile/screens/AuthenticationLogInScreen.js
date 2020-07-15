@@ -19,11 +19,23 @@ import { fetchREST } from '~/utils/api';
 import { UserContext } from '~/contexts/UserContext';
 
 function AuthenticationLogInScreen({ route, navigation }) {
-  const { logIn } = useContext(UserContext);
+  const {
+    isAuthenticated,
+    logIn,
+    hasFetched: hasFetchedUser,
+  } = useContext(UserContext);
   const [isFetching, setIsFetching] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
 
   const { params = {} } = route;
+
+  useEffect(() => {
+    if (isAuthenticated && hasFetchedUser) {
+      navigation.dispatch(
+        StackActions.replace('UserResolution')
+      );
+    }
+  }, [isAuthenticated, hasFetchedUser]);
 
   useEffect(() => {
     if (params.email && params.code) {
@@ -42,6 +54,9 @@ function AuthenticationLogInScreen({ route, navigation }) {
           jwt,
         } = await response.json();
 
+        setIsFetching(false);
+        setHasFetched(true);
+
         logIn({
           jwt,
           user: {
@@ -50,12 +65,6 @@ function AuthenticationLogInScreen({ route, navigation }) {
           }
         });
 
-        setIsFetching(false);
-        setHasFetched(true);
-
-        navigation.dispatch(
-          StackActions.replace('UserResolution')
-        );
       }).catch((error) => {
         console.error(error);
       });
@@ -77,6 +86,9 @@ function AuthenticationLogInScreen({ route, navigation }) {
         jwt,
       } = await response.json();
 
+      setIsFetching(false);
+      setHasFetched(true);
+
       // bypass for tester email
       if (jwt) {
         logIn({
@@ -86,22 +98,14 @@ function AuthenticationLogInScreen({ route, navigation }) {
             roles,
           }
         });
-
+      } else {
         navigation.dispatch(
-          StackActions.replace('UserResolution')
-        );
+          StackActions.replace('AuthenticationLogInFeedback')
+        )
       }
-
-      setIsFetching(false);
-      setHasFetched(true);
-
     }).catch((error) => {
       console.error(error);
     });
-
-    navigation.dispatch(
-      StackActions.replace('AuthenticationLogInFeedback')
-    )
   }
 
   return (

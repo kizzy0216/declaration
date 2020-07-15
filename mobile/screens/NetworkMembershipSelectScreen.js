@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from 'urql';
@@ -22,7 +23,10 @@ function NetworkMembershipSelectScreen({ navigation }) {
     hasSettled,
     logOut,
   } = useContext(UserContext);
-  const [getNetworksResult] = useQuery({
+  const [
+    getNetworksResult,
+    getNetworks,
+  ] = useQuery({
     query: GetNetworksWhereNotMember,
     variables: {
       user_uuid: user.uuid,
@@ -48,13 +52,27 @@ function NetworkMembershipSelectScreen({ navigation }) {
     );
   }
 
+  function handleRefresh() {
+    getNetworks({ 
+      requestPolicy: 'network-only',
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <DisplayHeading style={styles.heading}>
         Which space were you invited to join?
       </DisplayHeading>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={handleRefresh}
+          />
+        }
+      >
         {items.map((item) => (
           <View
             key={item.uuid}
