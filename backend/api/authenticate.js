@@ -2,6 +2,10 @@ import { URL } from 'url';
 import jsonwebtoken from 'jsonwebtoken';
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+// Tester email to bypass authentication, such that the iOS reviewers can
+// access the application. We can make this more secure in the future by
+// setting a specific verification code as well.
+const TESTER_BYPASS_EMAIL = 'metal-future-printed-judge@example.com';
 
 import GetVerificationCodes from '../queries/GetVerificationCodes';
 import GetUsers from '../queries/GetUsers';
@@ -67,7 +71,13 @@ const handlers = {
     }
 
     // request verification email
-    if (!code || code.length === 0) {
+    if (
+      (
+        !code ||
+        code.length === 0
+      ) &&
+      email !== TESTER_BYPASS_EMAIL
+    ) {
       await fetchHasuraAdmin
         .mutation(DeleteVerificationCode, { email })
         .toPromise();
@@ -94,7 +104,10 @@ const handlers = {
       .toPromise();
     const matchedVerification = matchedVerificationData.verification_code[0];
 
-    if (!matchedVerification) {
+    if (
+      !matchedVerification &&
+      email !== TESTER_BYPASS_EMAIL
+    ) {
       return response.status(403).json({ error: 'Email and code do not match' });
     }
 
@@ -113,9 +126,11 @@ const handlers = {
       resolvedUser = newUserData.insert_user_one;
     }
 
-    await fetchHasuraAdmin
-      .mutation(DeleteVerificationCode, { email })
-      .toPromise();
+    if (email !== TESTER_BYPASS_EMAIL) {
+      await fetchHasuraAdmin
+        .mutation(DeleteVerificationCode, { email })
+        .toPromise();
+    }
 
     // code and email match, so elevate user to verified
     if (!resolvedUser.is_verified) {

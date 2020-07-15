@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+const BASE_URL = process.env.BASE_URL;
+
 import SpinnerIcon from '~/shared/components/icons/SpinnerIcon';
 import LogInForm from '~/shared/components/LogInForm';
 import { fetchREST } from '~/utils/api';
@@ -36,7 +38,7 @@ function AuthenticationWall() {
       method: 'POST',
       body: JSON.stringify({
         email,
-        redirect: 'http://localhost:55000', // TODO
+        redirect: BASE_URL,
       }),
     }).then(() => {
       setIsFetching(false);

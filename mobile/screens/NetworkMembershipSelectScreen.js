@@ -8,6 +8,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from 'urql';
 import { Ionicons } from '@expo/vector-icons';
+import { StackActions } from '@react-navigation/native';
 
 import Button from '~/components/Button';
 import DisplayHeading from '~/components/DisplayHeading';
@@ -19,13 +20,14 @@ function NetworkMembershipSelectScreen({ navigation }) {
   const {
     user,
     hasSettled,
+    logOut,
   } = useContext(UserContext);
   const [getNetworksResult] = useQuery({
     query: GetNetworksWhereNotMember,
     variables: {
-      user_uuid: user.uuid || null,
+      user_uuid: user.uuid,
     },
-    pause: !hasSettled,
+    pause: !hasSettled || !user.uuid,
   });
   const {
     data,
@@ -37,6 +39,13 @@ function NetworkMembershipSelectScreen({ navigation }) {
     items = data
       .network
       .map(mapNetwork)
+  }
+
+  function handleLogOut() {
+    logOut()
+    navigation.dispatch(
+      StackActions.replace('AuthenticationRoot')
+    );
   }
 
   return (
@@ -75,6 +84,11 @@ function NetworkMembershipSelectScreen({ navigation }) {
         label="Request your own space"
         theme="transparent"
         onPress={() => navigation.navigate('NetworkAccessRequest')}
+      />
+      <Button
+        label="Log out"
+        theme="transparent"
+        onPress={handleLogOut}
       />
     </SafeAreaView>
   );

@@ -9,7 +9,7 @@ export const COOKIE_OPTIONS = (
     ? {
       httpOnly: true,
       secure: true,
-      sameSite: 'lax',
+      sameSite: 'strict',
       path: '/',
       domain: 'declaration.net',
     }

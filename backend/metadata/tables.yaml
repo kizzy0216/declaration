@@ -79,6 +79,16 @@
       - updated_at
       - uuid
       backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - body
+      - community_name
+      - requester_email
+      - requester_name
+      - user_count_range
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:
@@ -97,6 +107,12 @@
       - requester_name
       - created_at
       - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
       - uuid
       filter: {}
   update_permissions:

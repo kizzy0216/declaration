@@ -1,8 +1,25 @@
-import 'dotenv/config';
+import path from 'path';
+import dotenv from 'dotenv';
+
+const BUILD_ENVIRONMENT_MODE = process.env.BUILD_ENVIRONMENT_MODE || 'development';
+
+let dotenvPath = '.env';
+if (BUILD_ENVIRONMENT_MODE === 'stage') {
+  console.log('Loading stage environment variables');
+  dotenvPath = '.stage.env';
+} else if (BUILD_ENVIRONMENT_MODE === 'production') {
+  console.log('Loading production environment variables');
+  dotenvPath = '.production.env';
+} else {
+  console.log('Loading development environment variables');
+}
+dotenv.config({
+  path: path.resolve(process.cwd(), dotenvPath),
+});
 
 export default {
-  name: 'Declaration', // TODO switch between staging and production builds
-  slug: 'declaration', // TODO switch between staging and production builds
+  name: process.env.APPLICATION_NAME,
+  slug: process.env.APPLICATION_SLUG,
   platforms: [
     'ios',
     'android',
@@ -10,7 +27,7 @@ export default {
   version: '0.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'declaration', // TODO switch between staging and production builds
+  scheme: process.env.APPLICATION_SCHEME,
   splash: {
     image: './assets/images/splash.png',
     resizeMode: 'cover',
@@ -25,5 +42,13 @@ export default {
   extra: {
     HASURA_BASE_URL: process.env.HASURA_BASE_URL,
     REST_BASE_URL: process.env.REST_BASE_URL,
+  },
+  ios: {
+    bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
+    buildNumber: '0.0.0',
+  },
+  android: {
+    package: process.env.APPLICATION_PACKAGE_ID,
+    versionCode: 0,
   },
 }

@@ -28,9 +28,9 @@ function RootNavigator({ navigation }) {
     isAuthenticated,
   } = useContext(UserContext);
 
+
   const initialRouteName = (
-    (isAuthenticated &&
-    user.networkUuids &&
+    (!user.networkUuids ||
     user.networkUuids.length === 0)
       ? 'NetworkMembershipSelect'
       : 'NetworkTabs'

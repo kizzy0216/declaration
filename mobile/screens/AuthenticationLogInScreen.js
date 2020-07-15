@@ -53,8 +53,6 @@ function AuthenticationLogInScreen({ route, navigation }) {
         setIsFetching(false);
         setHasFetched(true);
 
-        // TODO persist jwt, user BUT ALSO set user in UserContext
-
         navigation.dispatch(
           StackActions.replace('UserResolution')
         );
@@ -72,9 +70,31 @@ function AuthenticationLogInScreen({ route, navigation }) {
         redirect: Linking.makeUrl('log-in'),
         withCookies: false,
       }),
-    }).then(() => {
+    }).then(async (response) => {
+      const {
+        uuid,
+        roles,
+        jwt,
+      } = await response.json();
+
+      // bypass for tester email
+      if (jwt) {
+        logIn({
+          jwt,
+          user: {
+            uuid,
+            roles,
+          }
+        });
+
+        navigation.dispatch(
+          StackActions.replace('UserResolution')
+        );
+      }
+
       setIsFetching(false);
       setHasFetched(true);
+
     }).catch((error) => {
       console.error(error);
     });

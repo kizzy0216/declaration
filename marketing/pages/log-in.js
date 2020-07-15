@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const DASHBOARD_BASE_URL = process.env.DASHBOARD_BASE_URL;
+const BASE_URL = process.env.BASE_URL;
 
 import SpinnerIcon from '~/shared/components/icons/SpinnerIcon';
 import LogInForm from '~/shared/components/LogInForm';
@@ -29,11 +30,15 @@ function LogInPage({ user }) {
           email: query.email,
           code: query.code,
         }),
-      }).then(() => {
+      }).then(async (response) => {
+        const { jwt } = await response.json();
+
         setIsFetching(false);
         setHasFetched(true);
 
-        window.location = DASHBOARD_BASE_URL;
+        if (jwt) {
+          window.location = DASHBOARD_BASE_URL;
+        }
       });
     }
   }, [query.email, query.code]);
@@ -45,9 +50,16 @@ function LogInPage({ user }) {
       method: 'POST',
       body: JSON.stringify({
         email,
-        redirect: 'http://localhost:55001/log-in', // TODO
+        redirect: `${BASE_URL}/log-in`,
       }),
-    }).then(() => {
+    }).then(async (response) => {
+      const { jwt } = await response.json();
+
+      // bypass for tester email
+      if (jwt) {
+        window.location = DASHBOARD_BASE_URL;
+      }
+
       setIsFetching(false);
       setHasFetched(true);
     });
