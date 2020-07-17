@@ -5,6 +5,7 @@ import GetNetworkByUuid from '../../queries/GetNetworkByUuid';
 import UpdateNetworkMembershipInvitation from '../../mutations/UpdateNetworkMembershipInvitation';
 import setCORS from '../../utils/setCORS';
 import sendEmail from '../../utils/sendEmail';
+import getAbsoluteHost from '../../utils/getAbsoluteHost';
 import { fetchHasuraAdmin } from '../../utils/api';
 import generatePasscode from '../../utils/generatePasscode';
 import {
@@ -30,6 +31,16 @@ const handlers = {
       const redirectUrl = new URL(redirect);
       redirectUrl.searchParams.append('email', user_email);
       redirectUrl.searchParams.append('code', code);
+      // some email clients strip out `href` attributes from `<a />` tags if
+      // they're not http(s), handle that use-case here
+      const href = (
+        (
+          redirectUrl.protocol !== 'https:' ||
+          redirectUrl.protocol !== 'http:'
+        )
+          ? `${getAbsoluteHost(request)}/api/redirect?to=${encodeURIComponent(redirectUrl.href)}`
+          : redirectUrl.href
+      );
 
       const { data: networkData } = await fetchHasuraAdmin
         .query(GetNetworkByUuid, { uuid: network_uuid })
@@ -42,7 +53,7 @@ const handlers = {
           templateId: SENDGRID_MEMBERSHIP_INVITATION_TEMPLATE_ID,
           data: {
             networkName: network.name,
-            href: redirectUrl.href,
+            href,
           },
         });
       } catch (error) {
