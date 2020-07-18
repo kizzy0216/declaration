@@ -1,24 +1,65 @@
-function Footer({
-  withLinkToContact = true,
-}) {
+import Link from 'next/link';
+
+import ActiveLink from '~/shared/components/ActiveLink';
+
+function Footer() {
   return (
     <footer>
       <div className="container">
-        { withLinkToContact &&
-          <>
-            <h3>
-              Questions?&nbsp;
-            </h3>
-            <a
-              href="mailto:hi@declaration.net"
-              className="link"
-            >
-              <h4>
-                Say hi@declaration.net.
-              </h4>
-            </a>
-          </>
-        }
+        <ActiveLink
+          href="/contact"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Contact us
+            </h4>
+          </a>
+        </ActiveLink>
+
+        <ActiveLink
+          href="/terms"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Terms of use
+            </h4>
+          </a>
+        </ActiveLink>
+
+        <ActiveLink
+          href="/privacy"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Privacy policy
+            </h4>
+          </a>
+        </ActiveLink>
+
+        <ActiveLink
+          href="/community-guidelines"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Community guidelines
+            </h4>
+          </a>
+        </ActiveLink>
+
+        <ActiveLink
+          href="/partnerships"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Partnerships
+            </h4>
+          </a>
+        </ActiveLink>
 
         <p>
           Created in Brooklyn, New York.
@@ -26,6 +67,8 @@ function Footer({
       </div>
 
       <style jsx>{`
+        @import 'shared/styles/media.css';
+
         footer {
           min-height: 33vh;
           display: flex;
@@ -46,6 +89,14 @@ function Footer({
 
           @media (--small) {
             font-size: 20px;
+          }
+        }
+
+        a {
+          margin-right: 20px;
+
+          @media (--small) {
+            margin-bottom: 10px;
           }
         }
 

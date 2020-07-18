@@ -107,7 +107,7 @@ function LogInPage({ user }) {
         }
       </main>
 
-      <Footer withLinkToContact={false} />
+      <Footer />
 
       <style jsx>{`
         @import 'shared/styles/media.css';

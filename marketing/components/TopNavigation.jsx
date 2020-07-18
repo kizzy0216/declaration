@@ -148,6 +148,8 @@ function TopNavigation({
       </div>
 
       <style jsx>{`
+        @import 'shared/styles/media.css';
+
         .top-navigation {
           position: relative;
         }

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 
-import ContactForm from '~/components/ContactForm';
 import Footer from '~/components/Footer';
 
 function ContactPage() {
@@ -12,11 +11,31 @@ function ContactPage() {
 
       <main>
         <h1>
-          Questions?<br />Email us at <a href="mailto:hi@declaration.net">hi@declaration.net</a>.
+          Contact us
         </h1>
+
+        <p>
+          Declaration is a fluid, dynamic and ever-evolving site. We rely on
+          the input of members and casual visitors alike in order to help us
+          ensure the archive grows in the right direction and serves the greatest
+          good.
+        </p>
+        <p>
+          If you have any questions or comments or are interested in
+          partnering with us, please let us know by emailing us at&nbsp;
+          <a
+            className="underline"
+            href="mailto:hi@declaration.net"
+          >
+            hi@declaration.net
+          </a>.
+        </p>
+        <p>
+          Your feedback is greatly appreciated.
+        </p>
       </main>
 
-      <Footer withLinkToContact={false} />
+      <Footer />
 
       <style jsx>{`
         @import 'shared/styles/media.css';
@@ -46,6 +65,14 @@ function ContactPage() {
           margin-right: auto;
           margin-bottom: 35px;
           text-align: center;
+        }
+
+        p {
+          max-width: 50ch;
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 20px;
+          line-height: 1.5;
         }
       `}</style>
     </div>
