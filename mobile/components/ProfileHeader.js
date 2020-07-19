@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
 import { BorderlessButton } from 'react-native-gesture-handler';
+
+import ScreenHeader from '~/components/ScreenHeader';
 import { UserContext } from '~/contexts/UserContext';
 
 function ProfileHeader({
@@ -11,22 +12,19 @@ function ProfileHeader({
   const { user } = useContext(UserContext);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.usernameWrapper}>
-        <Text style={styles.username}>{user.email}</Text>
-      </View>
-
-      <View style={styles.iconWrapper}>
-        <BorderlessButton
-          onPress={onSettingsPress}
-        >
-          <Ionicons
-            name="md-settings"
-            size={22}
-          />
-        </BorderlessButton>
-      </View>
-    </View>
+    <ScreenHeader
+      heading={user.email}
+      rightElement={(
+      <BorderlessButton
+        onPress={onSettingsPress}
+      >
+        <Ionicons
+          name="md-settings"
+          size={22}
+        />
+      </BorderlessButton>
+      )}
+    />
   );
 }
 

@@ -7,6 +7,12 @@ import {
 
 import NetworkTabNavigator from '~/navigation/NetworkTabNavigator';
 import SettingsScreen from '~/screens/SettingsScreen';
+import ContactUsScreen from '~/screens/ContactUsScreen';
+import PartnershipsScreen from '~/screens/PartnershipsScreen';
+import PrivacyPolicyScreen from '~/screens/PrivacyPolicyScreen';
+import TermsOfUseScreen from '~/screens/TermsOfUseScreen';
+import CopyrightScreen from '~/screens/CopyrightScreen';
+import CommunityGuidelinesScreen from '~/screens/CommunityGuidelinesScreen';
 import NetworkAccessRequestScreen from '~/screens/NetworkAccessRequestScreen';
 import NetworkAccessRequestFeedbackScreen from '~/screens/NetworkAccessRequestFeedbackScreen';
 import NetworkMembershipSelectScreen from '~/screens/NetworkMembershipSelectScreen';
@@ -83,6 +89,30 @@ function RootNavigator({ navigation }) {
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
+        />
+        <Stack.Screen
+          name="ContactUs"
+          component={ContactUsScreen}
+        />
+        <Stack.Screen
+          name="Partnerships"
+          component={PartnershipsScreen}
+        />
+        <Stack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicyScreen}
+        />
+        <Stack.Screen
+          name="TermsOfUse"
+          component={TermsOfUseScreen}
+        />
+        <Stack.Screen
+          name="Copyright"
+          component={CopyrightScreen}
+        />
+        <Stack.Screen
+          name="CommunityGuidelines"
+          component={CommunityGuidelinesScreen}
         />
       </Stack.Navigator>
     </NetworkContextProvider>

@@ -51,6 +51,17 @@ function Footer() {
         </ActiveLink>
 
         <ActiveLink
+          href="/copyright"
+          activeClassName="underline"
+        >
+          <a>
+            <h4>
+              Copyright
+            </h4>
+          </a>
+        </ActiveLink>
+
+        <ActiveLink
           href="/partnerships"
           activeClassName="underline"
         >
