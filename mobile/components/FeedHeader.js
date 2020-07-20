@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import Constants from 'expo-constants';
+
+const { REST_BASE_URL } = Constants.manifest.extra;
 
 import NetworkSwitcherModal from '~/components/NetworkSwitcherModal';
 import { NetworkContext } from '~/contexts/NetworkContext';
@@ -33,11 +36,12 @@ function FeedHeader({
     <View style={styles.container}>
       <NetworkSwitcherModal
         isVisible={isModalVisible}
+        activeItem={activeNetwork}
         items={
           networks.map((network) => ({
             uuid: network.uuid,
             label: network.name,
-            isActive: network.uuid === activeNetwork.uuid,
+            imageSrc: `${REST_BASE_URL}/avatar/${network.uuid}`,
             onPress: () => {
               setActiveNetwork(network);
               setIsModalVisible(false);
