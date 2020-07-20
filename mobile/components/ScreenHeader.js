@@ -2,19 +2,35 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import Dot from '~/components/Dot';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 function ScreenHeader({
-  onClose = () => {},
   heading,
   rightElement,
+  activePageIndex = null,
+  countPages = null,
+  onClose = () => {},
 }) {
   return (
     <View style={styles.container}>
       <View style={styles.headingWrapper}>
-        <Text style={styles.heading}>
-          {heading}
-        </Text>
+        {heading &&
+          <Text style={styles.heading}>
+            {heading}
+          </Text>
+        }
+        {activePageIndex !== null && countPages !== null &&
+          <View style={styles.dotsWrapper}>
+            {Array.from(Array(countPages).keys()).map((index) => (
+              <Dot
+                key={index}
+                style={styles.dot}
+                isActive={activePageIndex === index}
+              />
+            ))}
+          </View>
+        }
       </View>
 
       <View style={styles.iconWrapper}>
@@ -50,6 +66,15 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  dotsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  dot: {
+    marginRight: 5,
   },
   iconWrapper: {
     position: 'absolute',

@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
+import ScreenHeader from '~/components/ScreenHeader';
 import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import DisplayHeading from '~/components/DisplayHeading';
 import LogInForm from '~/components/LogInForm';
@@ -122,6 +123,20 @@ function AuthenticationLogInScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <ScreenHeader
+        activePageIndex={(
+          params.email && params.code
+            ? null
+            : 0
+        )}
+        countPages={(
+          params.email && params.code
+            ? null
+            : 2
+        )}
+        onClose={() => navigation.goBack()}
+      />
+
       <View style={styles.container}>
         {params.email && params.code
           ? (
@@ -159,6 +174,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
+    paddingTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
     flex: 1,

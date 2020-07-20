@@ -3,10 +3,16 @@ import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import DisplayHeading from '~/components/DisplayHeading';
+import ScreenHeader from '~/components/ScreenHeader';
 
-function AuthenticationLogInFeedbackScreen() {
+function AuthenticationLogInFeedbackScreen({ navigation }) {
   return (
     <SafeAreaView>
+      <ScreenHeader
+        activePageIndex={1}
+        countPages={2}
+        onClose={() => navigation.goBack()}
+      />
       <View style={styles.container}>
         <DisplayHeading style={{ width: 250, marginBottom: 40 }}>
           We are an exclusive invite only network.
@@ -22,8 +28,9 @@ function AuthenticationLogInFeedbackScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 20,
+    paddingTop: 50,
     paddingRight: 20,
+    paddingLeft: 20,
   },
 });
 

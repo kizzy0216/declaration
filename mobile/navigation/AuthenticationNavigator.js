@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import DotsHeader from '~/components/DotsHeader';
 import AuthenticationHomeScreen from '~/screens/AuthenticationHomeScreen';
 import AuthenticationLogInScreen from '~/screens/AuthenticationLogInScreen';
 import AuthenticationLogInFeedbackScreen from '~/screens/AuthenticationLogInFeedbackScreen';
@@ -26,15 +25,7 @@ function AuthenticationNavigator({ navigation, route }) {
       headerMode="screen"
       screenOptions={{
         cardShadowEnabled: false,
-        header: ({ scene }) => DotsHeader({
-          navigation,
-          scene,
-          sceneNames: [
-            'AuthenticationLogIn',
-            'AuthenticationLogInFeedback',
-          ],
-          home: 'AuthenticationHome',
-        }),
+        header: () => null,
       }}
     >
       <Stack.Screen
