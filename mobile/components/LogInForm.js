@@ -5,6 +5,7 @@ import TextInput from '~/components/TextInput';
 import Button from '~/components/Button';
 
 function LogInForm({
+  isFetching = false,
   onSubmit = () => {},
 }) {
   const [email, setEmail] = useState('');
@@ -31,6 +32,7 @@ function LogInForm({
 
       <Button
         label="Verify"
+        isFetching={isFetching}
         onPress={handleSubmit}
       />
     </View>

@@ -32,7 +32,7 @@ function AuthenticationHomeScreen({ navigation }) {
           <Button
             label="Log In"
             theme="primary"
-            onPress={() => navigation.navigate('AuthenticationLogIn')}
+            onPress={() => navigation.navigate('AuthenticationLogIn', { email: null, code: null })}
           />
           <Button
             label="Create Your Own Network"

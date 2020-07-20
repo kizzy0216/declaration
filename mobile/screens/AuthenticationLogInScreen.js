@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import SpinnerIcon from 'Shared/components/icons/SpinnerIcon';
+import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import DisplayHeading from '~/components/DisplayHeading';
 import LogInForm from '~/components/LogInForm';
 import { fetchREST } from '~/utils/api';
@@ -24,6 +24,7 @@ function AuthenticationLogInScreen({ route, navigation }) {
     logIn,
     hasFetched: hasFetchedUser,
   } = useContext(UserContext);
+  const [error, setError] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
 
@@ -47,6 +48,9 @@ function AuthenticationLogInScreen({ route, navigation }) {
           code: params.code,
           withCookies: false,
         }),
+        headers: { // clear Authorization header, to ensure this request goes unauthenticated
+          'Content-Type': 'application/json',
+        },
       }).then(async (response) => {
         const {
           uuid,
@@ -57,14 +61,17 @@ function AuthenticationLogInScreen({ route, navigation }) {
         setIsFetching(false);
         setHasFetched(true);
 
-        logIn({
-          jwt,
-          user: {
-            uuid,
-            roles,
-          }
-        });
-
+        if (jwt && uuid && roles) {
+          logIn({
+            jwt,
+            user: {
+              uuid,
+              roles,
+            }
+          });
+        } else if (response.status === 403) {
+          setError('Email verification failed. Please use the latest verification email sent to your address, or try again.');
+        }
       }).catch((error) => {
         console.error(error);
       });
@@ -72,6 +79,8 @@ function AuthenticationLogInScreen({ route, navigation }) {
   }, [params.email, params.code]);
 
   function handleSubmit({ email }) {
+    setIsFetching(true);
+
     fetchREST('/authenticate', {
       method: 'POST',
       body: JSON.stringify({
@@ -79,6 +88,9 @@ function AuthenticationLogInScreen({ route, navigation }) {
         redirect: Linking.makeUrl('log-in'),
         withCookies: false,
       }),
+      headers: { // clear Authorization header, to ensure this request goes unauthenticated
+        'Content-Type': 'application/json',
+      },
     }).then(async (response) => {
       const {
         uuid,
@@ -90,7 +102,7 @@ function AuthenticationLogInScreen({ route, navigation }) {
       setHasFetched(true);
 
       // bypass for tester email
-      if (jwt) {
+      if (jwt && uuid && roles) {
         logIn({
           jwt,
           user: {
@@ -109,14 +121,19 @@ function AuthenticationLogInScreen({ route, navigation }) {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         {params.email && params.code
           ? (
-            <>
-              <SpinnerIcon width="50" height="50" />
-              <Text>Logging in...</Text>
-            </>
+            <View style={styles.center}>
+              {error.length === 0
+                ? (
+                  <AnimatedSpinnerIcon width={50} height={50} />
+                ) : (
+                  <Text style={styles.error}>{error}</Text>
+                )
+              }
+            </View>
           ) : (
             <>
               <View style={styles.headingWrapper}>
@@ -126,6 +143,7 @@ function AuthenticationLogInScreen({ route, navigation }) {
               </View>
 
               <LogInForm
+                isFetching={isFetching}
                 onSubmit={handleSubmit}
               />
             </>
@@ -137,15 +155,30 @@ function AuthenticationLogInScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     paddingLeft: 20,
     paddingRight: 20,
+    flex: 1,
+  },
+  center: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -100, // gross!
   },
   headingWrapper: {
     marginBottom: 40,
   },
   heading: {
     width: 250,
+  },
+  error: {
+    fontSize: 16,
+    lineHeight: 24
   },
 });
 

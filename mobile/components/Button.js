@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity, BorderlessButton } from 'react-native-gesture-handler';
 
+import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import Colors from '~/constants/Colors';
 
 function Button({
@@ -10,6 +11,7 @@ function Button({
   labelStyle,
   leftIcon,
   rightIcon,
+  isFetching,
   onPress = () => {},
 }) {
   const inner = (
@@ -23,17 +25,31 @@ function Button({
         </View>
       }
 
-      <View style={styles.labelWrapper}>
-        <Text
-          style={[
-            styles.label, 
-            styles[`${theme}Label`],
-            labelStyle,
-            (rightIcon || leftIcon) && styles.hasIconLabel,
-          ]}
-        >
-          {label}
-        </Text>
+      <View
+        style={[
+          styles.labelWrapper,
+          (rightIcon || leftIcon) && styles.hasIconLabel,
+        ]}
+      >
+        {isFetching
+          ? (
+            <AnimatedSpinnerIcon
+              width={16}
+              height={16}
+              fill="white"
+            />
+          ) : (
+            <Text
+              style={[
+                styles.label, 
+                styles[`${theme}Label`],
+                labelStyle,
+              ]}
+            >
+              {label}
+            </Text>
+          )
+        }
       </View>
 
       {rightIcon &&
@@ -117,6 +133,8 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 20,
     paddingLeft: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   label: {
     color: 'white',
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   hasIconLabel: {
-    textAlign: 'left',
+    justifyContent: 'flex-start',
   },
   leftIconWrapper: {
     paddingLeft: 20,
