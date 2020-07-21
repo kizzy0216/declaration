@@ -5,12 +5,14 @@
   "dependencies": {
     "@sendgrid/mail": "^7.2.1",
     "@urql/core": "^1.12.2",
+    "aws-sdk": "^2.717.0",
     "color": "^3.1.2",
     "cookie": "^0.4.1",
     "graphql": "^15.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "sharp": "^0.25.4"
+    "sharp": "^0.25.4",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@vercel/node": "^1.7.1"

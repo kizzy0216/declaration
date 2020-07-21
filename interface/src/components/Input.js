@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from './Button';
+import SpinnerIcon from './icons/SpinnerIcon';
 
 function Input({
   label,
@@ -8,6 +9,7 @@ function Input({
   type, // text, email, password, submit
   placeholder,
   rows,
+  maxLength,
   isAutofocused = false,
   isRequired = false,
   isFetching = false,
@@ -53,6 +55,7 @@ function Input({
           type={type}
           value={value}
           placeholder={placeholder}
+          maxLength={maxLength}
           autoFocus={isAutofocused}
           required={isRequired}
           onChange={onChange}
@@ -61,10 +64,18 @@ function Input({
         />
       }
 
+
+      {isFetching && type !== 'submit' &&
+        <span className="icon-wrapper">
+          <SpinnerIcon fill="inherit" />
+        </span>
+      }
+
       <style jsx>{`
         .input {
           font-family: var(--font-family-sans-serif);
           width: 100%;
+          position: relative;
         }
 
         label {
@@ -90,6 +101,12 @@ function Input({
 
         textarea {
           white-space: pre-line;
+        }
+
+        .icon-wrapper {
+          position: absolute;
+          top: 0;
+          right: 0;
         }
       `}</style>
     </div>

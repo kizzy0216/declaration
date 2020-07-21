@@ -19,6 +19,7 @@ const GetUserAsAdmin = `
           uuid
           id
           name
+          avatar
         }
       }
       super_admin {
@@ -31,6 +32,7 @@ const GetUserAsAdmin = `
       uuid
       id
       name
+      avatar
     }
   }
 `;

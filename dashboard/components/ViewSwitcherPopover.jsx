@@ -2,7 +2,7 @@ import React, { useRef, useCallback } from 'react';
 import Link from 'next/link';
 
 import SupermanIcon from '~/shared/components/icons/SupermanIcon';
-import VennDiagramIcon from '~/shared/components/icons/VennDiagramIcon';
+import Avatar from '~/shared/components/Avatar';
 import ArrowDownIcon from '~/shared/components/icons/ArrowDownIcon';
 import useClickOutside from '~/shared/hooks/useClickOutside';
 import { SUPER_ADMIN_VIEW_CONTEXT } from '~/shared/constants';
@@ -50,7 +50,11 @@ function ViewSwitcherPopover({
           <span className="icon-wrapper logo">
             { active.id === SUPER_ADMIN_VIEW_CONTEXT
               ? <SupermanIcon />
-              : <VennDiagramIcon />
+              : (
+                <Avatar
+                  imageSrc={active.avatar}
+                />
+              )
             }
           </span>
 
@@ -79,7 +83,11 @@ function ViewSwitcherPopover({
               <span className="icon-wrapper logo">
                 { item.id === SUPER_ADMIN_VIEW_CONTEXT
                   ? <SupermanIcon />
-                  : <VennDiagramIcon />
+                  : (
+                    <Avatar
+                      imageSrc={item.avatar}
+                    />
+                  )
                 }
               </span>
 

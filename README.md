@@ -26,11 +26,17 @@ hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
 hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```
 
-Expected environment variables
+Expected environment variables:
 
 ```bash
 SENDGRID_API_KEY=
+DECLARATION_AWS_ACCESS_KEY=
+DECLARATION_AWS_SECRET_KEY=
+DECLARATION_AWS_BUCKET_NAME=
 ```
+
+Note: Some environment variables are prefixed with `DECLARATION_` due to
+[Vercel Platform Limitations](https://vercel.com/docs/v2/platform/limits).
 
 ### Run Dashboard locally
 

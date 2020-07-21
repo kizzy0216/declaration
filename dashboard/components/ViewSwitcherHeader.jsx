@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SupermanIcon from '~/shared/components/icons/SupermanIcon';
-import VennDiagramIcon from '~/shared/components/icons/VennDiagramIcon';
+import Avatar from '~/shared/components/Avatar';
 import ArrowDownIcon from '~/shared/components/icons/ArrowDownIcon';
 import { SUPER_ADMIN_VIEW_CONTEXT } from '~/shared/constants';
 
@@ -33,7 +33,11 @@ function ViewSwitcherHeader({
           <span className="icon-wrapper logo">
             { active.id === SUPER_ADMIN_VIEW_CONTEXT
               ? <SupermanIcon />
-              : <VennDiagramIcon />
+              : (
+                <Avatar
+                  imageSrc={active.avatar}
+                />
+              )
             }
           </span>
 

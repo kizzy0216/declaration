@@ -5,6 +5,7 @@ const GetNetworkById = `
       uuid
       id
       name
+      avatar
       updated_at
       created_at
     }

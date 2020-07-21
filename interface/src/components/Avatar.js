@@ -4,6 +4,7 @@ function Avatar({
   name = '',
   imageSrc,
   theme = 'primary', // primary, secondary
+  size = 'medium', // small, medium, large
 }) {
   const [hasLoaded, setHasLoaded] = useState(false);
   const initials = (
@@ -24,7 +25,9 @@ function Avatar({
       className={[
         'avatar',
         hasLoaded && 'image-loaded',
+        !!imageSrc && 'has-src',
         theme,
+        size,
       ].filter(x => x).join(' ')}
     >
       <div className="initials">
@@ -41,8 +44,6 @@ function Avatar({
       <style jsx>{`
         .avatar {
           display: inline-block;
-          width: 32px;
-          height: 32px;
           border-radius: 50%;
           display: flex;
           flex-flow: column;
@@ -59,7 +60,34 @@ function Avatar({
             background: var(--gray);
           }
 
+          &.small {
+            width: 16px;
+            height: 16px;
+          }
+
+          &.medium {
+            width: 32px;
+            height: 32px;
+          }
+
+          &.large {
+            width: 64px;
+            height: 64px;
+          }
+
+          &:not(.has-src) {
+            & .initials {
+              opacity: 1;
+            }
+
+            & img {
+              opacity: 0;
+            }
+          }
+
           &.image-loaded {
+            background: none;
+
             & .initials {
               opacity: 0;
             }
@@ -74,8 +102,7 @@ function Avatar({
           line-height: 1;
           font-size: 14px;
           font-weight: bold;
-          opacity: 1;
-          transition: opacity 0.333s ease-in-out;
+          opacity: 0;
           user-select: none;
         }
 
@@ -87,7 +114,6 @@ function Avatar({
           left: 0;
           width: 100%;
           height: 100%;
-          transition: opacity 0.333s ease-in-out;
         }
       `}</style>
     </div>

@@ -28,29 +28,55 @@
     permission:
       check: {}
       columns:
+      - avatar
       - name
       backend_only: false
   select_permissions:
   - role: super_admin
     permission:
       columns:
-      - uuid
+      - avatar
+      - created_at
       - id
       - name
-      - created_at
       - updated_at
+      - uuid
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - uuid
+      - avatar
+      - created_at
       - id
       - name
-      - created_at
       - updated_at
+      - uuid
       filter: {}
       allow_aggregations: true
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - avatar
+      - name
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - avatar
+      - name
+      filter:
+        _and:
+        - network_users:
+            user_uuid:
+              _eq: X-Hasura-User-Id
+        - network_users:
+            user_role:
+              text:
+                _eq: NETWORK_ADMIN
+      check: null
 - table:
     schema: public
     name: network_access_request

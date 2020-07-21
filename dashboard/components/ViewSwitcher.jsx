@@ -29,6 +29,8 @@ function ViewSwitcher() {
       setActive({
         id: networkId,
         name: user.networksById[networkId].name,
+        uuid: user.networksById[networkId].uuid,
+        avatar: user.networksById[networkId].avatar,
       });
     } else {
       setActive({
@@ -37,6 +39,21 @@ function ViewSwitcher() {
       });
     }
   }, [hasFetched, router.pathname]);
+
+  // account for the active network's data changing elsewhere
+  useEffect(() => {
+    if (!hasFetched) {
+      return;
+    }
+
+    if (active.id.length > 0) {
+      setActive({
+        ...active,
+        name: user.networksById[active.id].name,
+        avatar: user.networksById[active.id].avatar,
+      });
+    }
+  }, [hasFetched, user]);
 
   if (!hasFetched) {
     return null;
