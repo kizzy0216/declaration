@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
@@ -15,7 +14,6 @@ function useCachedResources() {
 
         // Load fonts
         await Font.loadAsync({
-          ...Ionicons.font,
           'Requiem': Asset.fromModule(require('~/shared/fonts/Requiem-Text-Roman.ttf')).uri,
           'Requiem-Italic': require('~/shared/fonts/Requiem-Text-Italic.ttf'),
           'Requiem-Display': require('~/shared/fonts/Requiem-Display-Roman.ttf'),

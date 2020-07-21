@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from 'urql';
-import { Ionicons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 
 import Button from '~/components/Button';
@@ -16,6 +15,7 @@ import DisplayHeading from '~/components/DisplayHeading';
 import GetNetworksWhereNotMember from '~/queries/GetNetworksWhereNotMember';
 import mapNetwork from 'Shared/mappings/mapNetwork';
 import { UserContext } from '~/contexts/UserContext';
+import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
 
 function NetworkMembershipSelectScreen({ navigation }) {
   const {
@@ -88,9 +88,10 @@ function NetworkMembershipSelectScreen({ navigation }) {
                 )
               }
               rightIcon={
-                <Ionicons
-                  name="md-arrow-forward"
-                  size={22}
+                <ArrowRightIcon
+                  width={22}
+                  height={22}
+                  fill="black"
                 />
               }
             />

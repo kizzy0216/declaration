@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 import Dot from '~/components/Dot';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import CloseIcon from 'Shared/components/icons/CloseIcon';
 
 function ScreenHeader({
   heading,
+  headingElement,
+  leftElement,
   rightElement,
   activePageIndex = null,
   countPages = null,
@@ -14,12 +16,17 @@ function ScreenHeader({
 }) {
   return (
     <View style={styles.container}>
+      <View style={styles.left}>
+        {leftElement && leftElement}
+      </View>
+
       <View style={styles.headingWrapper}>
         {heading &&
           <Text style={styles.heading}>
             {heading}
           </Text>
         }
+        {headingElement && headingElement}
         {activePageIndex !== null && countPages !== null &&
           <View style={styles.dotsWrapper}>
             {Array.from(Array(countPages).keys()).map((index) => (
@@ -33,16 +40,17 @@ function ScreenHeader({
         }
       </View>
 
-      <View style={styles.iconWrapper}>
+      <View style={styles.right}>
         {rightElement ? (
           rightElement
         ) : (
           <BorderlessButton
             onPress={onClose}
           >
-            <Ionicons
-              name="md-close"
-              size={22}
+            <CloseIcon
+              width={22}
+              height={22}
+              fill="black"
             />
           </BorderlessButton>
         )}
@@ -76,9 +84,15 @@ const styles = StyleSheet.create({
   dot: {
     marginRight: 5,
   },
-  iconWrapper: {
+  left: {
+    position: 'absolute',
+    left: 20,
+    zIndex: 1,
+  },
+  right: {
     position: 'absolute',
     right: 20,
+    zIndex: 1,
   },
 });
 

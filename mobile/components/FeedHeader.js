@@ -8,15 +8,18 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
 
+import ScreenHeader from '~/components/ScreenHeader';
 import NetworkSwitcherModal from '~/components/NetworkSwitcherModal';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
+import MessageIcon from 'Shared/components/icons/MessageIcon';
+import CalendarIcon from 'Shared/components/icons/CalendarIcon';
+import ChevronDownIcon from 'Shared/components/icons/ChevronDownIcon';
 
 function FeedHeader({
   onNetworkAdd = () => {},
@@ -59,73 +62,60 @@ function FeedHeader({
         }}
       />
 
-      <View style={styles.leftIconWrapper}>
-        <BorderlessButton onPress={onCalendarPress}>
-          <Ionicons
-            name="md-calendar"
-            size={22}
-          />
-        </BorderlessButton>
-      </View>
-
-      <View style={styles.usernameWrapper}>
-        <TouchableOpacity
-          onPress={() => setIsModalVisible(true)}
-        >
-          <View style={styles.username}>
-            <Text>
-              {activeNetwork && activeNetwork.name}
-            </Text>
-            <Feather
-              name="chevron-down"
-              size={16}
+      <ScreenHeader
+        leftElement={(
+          <BorderlessButton onPress={onCalendarPress}>
+            <CalendarIcon
+              width={22}
+              height={22}
+              fill="black"
             />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.rightIconWrapper}>
-        <BorderlessButton onPress={onMessagesPress}>
-          <Ionicons
-            name="md-paper-plane"
-            size={22}
-          />
-        </BorderlessButton>
-      </View>
+          </BorderlessButton>
+        )}
+        headingElement={(
+          <TouchableOpacity
+            onPress={() => setIsModalVisible(true)}
+          >
+            <View style={styles.nameWrapper}>
+              <Text style={styles.name}>
+                {activeNetwork && activeNetwork.name}
+              </Text>
+              <View style={styles.chevronIconWrapper}>
+                <ChevronDownIcon
+                  width={16}
+                  height={16}
+                  fill="black"
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+        rightElement={(
+          <BorderlessButton onPress={onMessagesPress}>
+            <MessageIcon
+              width={22}
+              height={22}
+              fill="black"
+            />
+          </BorderlessButton>
+        )}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  usernameWrapper: {
-    flex: 1,
-    paddingLeft: 60,
-    paddingRight: 60,
-  },
-  username: {
+  nameWrapper: {
     textAlign: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  chevronWrapper: {
-    marginLeft: 10,
+  name: {
+    fontWeight: 'bold',
   },
-  leftIconWrapper: {
-    position: 'absolute',
-    left: 20,
-    zIndex: 1,
-  },
-  rightIconWrapper: {
-    position: 'absolute',
-    right: 20,
-    zIndex: 1,
+  chevronIconWrapper: {
+    marginLeft: 5,
   },
 });
 

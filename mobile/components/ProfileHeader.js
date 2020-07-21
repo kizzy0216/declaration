@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import ScreenHeader from '~/components/ScreenHeader';
 import { UserContext } from '~/contexts/UserContext';
+import SettingsIcon from 'Shared/components/icons/SettingsIcon';
 
 function ProfileHeader({
   onSettingsPress = () => {},
@@ -18,9 +18,10 @@ function ProfileHeader({
       <BorderlessButton
         onPress={onSettingsPress}
       >
-        <Ionicons
-          name="md-settings"
-          size={22}
+        <SettingsIcon
+          width={22}
+          height={22}
+          fill="black"
         />
       </BorderlessButton>
       )}
