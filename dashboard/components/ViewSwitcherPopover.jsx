@@ -40,6 +40,8 @@ function ViewSwitcherPopover({
     onToggle();
   }
 
+  console.log(items, active);
+
   return (
     <div
       ref={popoverRef}
@@ -72,7 +74,7 @@ function ViewSwitcherPopover({
       </div>
 
       {items
-        .filter(item => (item.id !== active.id))
+        .filter(item => (Number(item.id) !== Number(active.id)))
         .map((item) => (
           <Link
             href={getHref(item)}
