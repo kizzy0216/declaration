@@ -40,8 +40,6 @@ function ViewSwitcherPopover({
     onToggle();
   }
 
-  console.log(items, active);
-
   return (
     <div
       ref={popoverRef}

@@ -12,12 +12,14 @@ import { StackActions } from '@react-navigation/native';
 import ScreenHeader from '~/components/ScreenHeader';
 import Button from '~/components/Button';
 import { UserContext } from '~/contexts/UserContext';
+import { NetworkContext } from '~/contexts/NetworkContext';
 import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
 import LogOutIcon from 'Shared/components/icons/LogOutIcon';
 import EmailSendIcon from 'Shared/components/icons/EmailSendIcon';
 
 function SettingsScreen({ navigation }) {
   const { logOut } = useContext(UserContext);
+  const { activeNetwork } = useContext(NetworkContext);
 
   function handleLogOut() {
     logOut();
@@ -26,6 +28,10 @@ function SettingsScreen({ navigation }) {
       StackActions.replace('AuthenticationRoot')
     );
   }
+
+  const abuseMailHref = `mailto:abuse@declaration.net?subject=Abuse report for network ${activeNetwork.name}(${activeNetwork.uuid})`;
+  const bugMailHref = `mailto:help@declaration.net?subject=Bug report for network ${activeNetwork.name}(${activeNetwork.uuid})`;
+  const helpMailHref = 'mailto:help@declaration.net';
 
   return (
     <SafeAreaView>
@@ -90,7 +96,7 @@ function SettingsScreen({ navigation }) {
             <Button
               label="Report spam or abuse"
               theme="secondary"
-              onPress={() => Linking.openURL('mailto:abuse@declaration.net')}
+              onPress={() => Linking.openURL(abuseMailHref)}
               rightIcon={(
                 <EmailSendIcon
                   width={24}
@@ -104,7 +110,7 @@ function SettingsScreen({ navigation }) {
             <Button
               label="Something isn't working"
               theme="secondary"
-              onPress={() => Linking.openURL('mailto:help@declaration.net')}
+              onPress={() => Linking.openURL(bugMailHref)}
               rightIcon={(
                 <EmailSendIcon
                   width={24}
@@ -118,7 +124,7 @@ function SettingsScreen({ navigation }) {
             <Button
               label="General feedback"
               theme="secondary"
-              onPress={() => Linking.openURL('hi:help@declaration.net')}
+              onPress={() => Linking.openURL(helpMailHref)}
               rightIcon={(
                 <EmailSendIcon
                   width={24}

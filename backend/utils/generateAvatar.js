@@ -59,5 +59,5 @@ export const generateAvatarPng = ({ identifier, width, height }) => {
 
   const svg = generateGradient({ identifier, text: '', width, height });
 
-  return sharp(new Buffer(svg)).png().toBuffer();
+  return sharp(Buffer.from(svg)).png().toBuffer();
 }
