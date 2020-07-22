@@ -46,7 +46,15 @@ function ViewSwitcher() {
       return;
     }
 
-    if (active.id.length > 0) {
+    if (
+      active.id &&
+      active.id.length > 0 &&
+      user.networksById[active.id] &&
+      (
+        user.networksById[active.id].name !== active.name ||
+        user.networksById[active.id].avatar !== active.avatar
+      )
+    ) {
       setActive({
         ...active,
         name: user.networksById[active.id].name,
