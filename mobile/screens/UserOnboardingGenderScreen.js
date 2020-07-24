@@ -42,6 +42,10 @@ function UserOnboardingGenderScreen({ navigation }) {
   const isValid = gender.length > 0;
 
   const handleSubmit = () => {
+    if (user.profile.private.gender === gender) {
+      return navigation.navigate('UserOnboardingProfileWelcome');
+    }
+
     updateGender({
       uuid: user.profile.private.uuid,
       gender,

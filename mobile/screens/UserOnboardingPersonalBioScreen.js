@@ -47,11 +47,15 @@ function UserOnboardingPersonalBioScreen({ navigation }) {
   }, [isKeyboardShowing]);
 
   const handleSubmit = () => {
+    if (user.profile.personalBio === personalBio) {
+      return navigation.navigate('UserOnboardingEducationalInstitution');
+    }
+
     updatePersonalBio({
       uuid: user.profile.uuid,
       personal_bio: personalBio,
     }).then(() => {
-      navigation.navigate('UserOnboardingEducationalInstitution')
+      navigation.navigate('UserOnboardingEducationalInstitution');
     });
   }
 
@@ -104,7 +108,7 @@ function UserOnboardingPersonalBioScreen({ navigation }) {
           <View style={[styles.buttonWrapper, styles.skipButton]}>
             <Button
               label="Skip"
-              theme="secondary"
+              theme="transparent"
               onPress={() => navigation.navigate('UserOnboardingEducationalInstitution')}
             />
           </View>

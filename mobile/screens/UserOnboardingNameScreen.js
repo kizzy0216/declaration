@@ -32,6 +32,10 @@ function UserOnboardingNameScreen({ navigation }) {
   const isDisabled = (name.length === 0);
 
   const handleSubmit = () => {
+    if (user.name === name) {
+      return navigation.navigate('UserOnboardingUsername');
+    }
+
     updateName({
       uuid: user.uuid,
       name,

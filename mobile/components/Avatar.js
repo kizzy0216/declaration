@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
   BLUE,
@@ -15,6 +16,9 @@ function Avatar({
   name = '',
   imageSrc,
   theme = 'primary', // primary, secondary
+  size = 'medium', // small, medium, large
+  isTouchable = false,
+  onPress = () => {},
 }) {
   const [hasLoaded, setHasLoaded] = useState(false);
   const initials = (
@@ -30,27 +34,24 @@ function Avatar({
     setHasLoaded(true);
   }
 
-  return (
+  const avatarElement = (
     <View
       style={[
         styles.avatar,
         hasLoaded && styles.imageLoaded,
         styles[theme],
+        styles[size],
       ]}
     >
-      <View
-        style={[
-          styles.initials,
-          hasLoaded && styles.initialsImageLoaded,
-        ]}
-      >
-        <Text>{initials}</Text>
+      <View style={hasLoaded && styles.initialsImageLoaded}>
+        <Text style={styles.initials}>{initials}</Text>
       </View>
 
       {imageSrc &&
         <Image
           style={[
             styles.image,
+            styles[`${size}Image`],
             hasLoaded && styles.imageImageLoaded,
           ]}
           source={{
@@ -61,13 +62,23 @@ function Avatar({
       }
     </View>
   );
+
+  if (isTouchable) {
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        containerStyle={{ overflow: 'hidden' }}
+      >
+        {avatarElement}
+      </TouchableOpacity>
+    );
+  }
+
+  return avatarElement;
 }
 
 const styles = StyleSheet.create({
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -78,6 +89,21 @@ const styles = StyleSheet.create({
   },
   secondary: {
     backgroundColor: GRAY,
+  },
+  small: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+  },
+  medium: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
+  large: {
+    width: 144,
+    height: 144,
+    borderRadius: 72,
   },
   initials: {
     lineHeight: 1,
@@ -91,12 +117,24 @@ const styles = StyleSheet.create({
   },
   image: {
     opacity: 0,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  smallImage: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+  },
+  mediumImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
+  largeImage: {
+    width: 144,
+    height: 144,
+    borderRadius: 72,
   },
   imageImageLoaded: {
     opacity: 1,

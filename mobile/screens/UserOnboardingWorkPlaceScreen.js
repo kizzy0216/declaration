@@ -33,11 +33,15 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
   ] = useMutation(UpdateUserProfileWorkPlace);
 
   const handleSubmit = () => {
+    if (user.profile.workPlace === workPlace) {
+      return navigation.navigate('UserOnboardingWorkTitle');
+    }
+
     updateWorkPlace({
       uuid: user.profile.uuid,
       work_place: workPlace,
     }).then(() => {
-      navigation.navigate('UserOnboardingWorkTitle')
+      navigation.navigate('UserOnboardingWorkTitle');
     });
   }
 
@@ -73,7 +77,7 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
           <View style={[styles.buttonWrapper, styles.skipButton]}>
             <Button
               label="Skip"
-              theme="secondary"
+              theme="transparent"
               onPress={() => navigation.navigate('UserOnboardingWorkTitle')}
             />
           </View>

@@ -33,11 +33,15 @@ function UserOnboardingWorkTitleScreen({ navigation }) {
   ] = useMutation(UpdateUserProfileWorkTitle);
 
   const handleSubmit = () => {
+    if (user.profile.workTitle === workTitle) {
+      return navigation.navigate('UserOnboardingWorkBio');
+    }
+
     updateWorkTitle({
       uuid: user.profile.uuid,
       work_title: workTitle,
     }).then(() => {
-      navigation.navigate('UserOnboardingWorkBio')
+      navigation.navigate('UserOnboardingWorkBio');
     });
   }
 
@@ -73,7 +77,7 @@ function UserOnboardingWorkTitleScreen({ navigation }) {
           <View style={[styles.buttonWrapper, styles.skipButton]}>
             <Button
               label="Skip"
-              theme="secondary"
+              theme="transparent"
               onPress={() => navigation.navigate('UserOnboardingWorkBio')}
             />
           </View>

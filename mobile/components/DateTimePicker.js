@@ -25,7 +25,7 @@ function DateTimePicker({
   ...props
 }) {
   const [isActive, setIsActive] = useState(false);
-  const [hasSelected, setHasSelected] = useState(value !== new Date());
+  const [hasSelected, setHasSelected] = useState(!!value);
 
   function handleChange(_, datetime) {
     if (!hasSelected) {
@@ -39,7 +39,7 @@ function DateTimePicker({
     <RNDateTimePicker
       mode={mode}
       style={styles.rnDateTimePicker}
-      value={value}
+      value={value || new Date()}
       display="default"
       onChange={handleChange}
     />

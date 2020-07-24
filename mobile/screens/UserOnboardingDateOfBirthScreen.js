@@ -30,7 +30,7 @@ function UserOnboardingDateOfBirthScreen({ navigation }) {
   const [dateOfBirth, setDateOfBirth] = useState(
     user.profile.private.dateOfBirth
       ? new Date(user.profile.private.dateOfBirth)
-      : new Date()
+      : null
   );
   const [hasSettled, setHasSettled] = useState(false);
   const [
@@ -66,6 +66,10 @@ function UserOnboardingDateOfBirthScreen({ navigation }) {
   } = isValidDateOfBirth(dateOfBirth);
 
   const handleSubmit = () => {
+    if (user.profile.private.dateOfBirth === dateOfBirth) {
+      return navigation.navigate('UserOnboardingGender');
+    }
+
     updateDateOfBirth({
       uuid: user.profile.private.uuid,
       date_of_birth: dateOfBirth,

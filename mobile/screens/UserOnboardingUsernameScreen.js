@@ -56,7 +56,7 @@ function UserOnboardingUsernameScreen({ navigation }) {
     getUsersWithUsernameResult.data.user_profile.length > 0 &&
     getUsersWithUsernameResult.data.user_profile[0].uuid !== user.profile.uuid
   );
-  const isDisabled = (!isValid || isTaken);
+  const isDisabled = (!isValid || isTaken || getUsersWithUsernameResult.fetching);
   const takenError = (
     isTaken
       ? 'Username taken'
@@ -68,6 +68,10 @@ function UserOnboardingUsernameScreen({ navigation }) {
   }, [debouncedUsername]);
 
   const handleSubmit = () => {
+    if (user.profile.username === username) {
+      return navigation.navigate('UserOnboardingDateOfBirth');
+    }
+
     updateUsername({
       uuid: user.profile.uuid,
       username,

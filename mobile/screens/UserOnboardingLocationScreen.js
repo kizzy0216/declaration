@@ -30,6 +30,10 @@ function UserOnboardingLocationScreen({ navigation }) {
   ] = useMutation(UpdateUserProfileLocation);
 
   const handleSubmit = () => {
+    if (user.profile.location === location) {
+      return navigation.navigate('UserOnboardingPersonalBio');
+    }
+
     updateLocation({
       uuid: user.profile.uuid,
       location,
@@ -71,7 +75,7 @@ function UserOnboardingLocationScreen({ navigation }) {
           <View style={[styles.buttonWrapper, styles.skipButton]}>
             <Button
               label="Skip"
-              theme="secondary"
+              theme="transparent"
               onPress={() => navigation.navigate('UserOnboardingEducationalInstitution')}
             />
           </View>

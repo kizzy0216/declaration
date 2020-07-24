@@ -49,12 +49,22 @@ function UserOnboardingWorkBioScreen({ navigation }) {
   }, [isKeyboardShowing]);
 
   const handleSubmit = () => {
+    if (user.profile.workBio === workBio) {
+      return navigation.dispatch(
+        StackActions.replace('Authentication', {
+          screen: 'UserResolution'
+        })
+      );
+    }
+
     updateWorkBio({
       uuid: user.profile.uuid,
       work_bio: workBio,
     }).then(() => {
       navigation.dispatch(
-        StackActions.popToTop()
+        StackActions.replace('Authentication', {
+          screen: 'UserResolution'
+        })
       )
     });
   }

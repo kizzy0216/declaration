@@ -33,6 +33,10 @@ function UserOnboardingEducationalInstitutionScreen({ navigation }) {
   ] = useMutation(UpdateUserProfileEducationalInstitution);
 
   const handleSubmit = () => {
+    if (user.profile.educationalInstitution === educationalInstitution) {
+      return navigation.navigate('UserOnboardingWorkPlace');
+    }
+
     updateEducationalInstitution({
       uuid: user.profile.uuid,
       educational_institution: educationalInstitution,
@@ -73,7 +77,7 @@ function UserOnboardingEducationalInstitutionScreen({ navigation }) {
           <View style={[styles.buttonWrapper, styles.skipButton]}>
             <Button
               label="Skip"
-              theme="secondary"
+              theme="transparent"
               onPress={() => navigation.navigate('UserOnboardingWorkPlace')}
             />
           </View>

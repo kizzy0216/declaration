@@ -96,14 +96,12 @@ export const UserContextProvider = ({ children }) => {
 
   const hasSettled = (hasHydratedJWT && hasLoadedUser);
 
+  // mandatory fields of a profile
   const hasProfile = (
-    user.name &&
-    user.name.length > 0 &&
-    user.profile.username &&
-    user.profile.username.length > 0 &&
-    user.profile.private.dateOfBirth &&
-    user.profile.location &&
-    user.profile.location.length > 0
+    !!user.name &&
+    !!user.profile.username &&
+    !!user.profile.private.dateOfBirth &&
+    !!user.profile.private.gender
   );
 
   const hasNetworks = (
