@@ -25,7 +25,7 @@ function SettingsScreen({ navigation }) {
     logOut();
 
     navigation.dispatch(
-      StackActions.replace('AuthenticationRoot')
+      StackActions.replace('Authentication')
     );
   }
 

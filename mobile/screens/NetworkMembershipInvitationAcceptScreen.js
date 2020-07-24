@@ -44,7 +44,7 @@ function NetworkMembershipInvitationAcceptScreen({ route, navigation }) {
         ) {
           setTimeout(() => {
             navigation.dispatch(
-              StackActions.replace('AuthenticationRoot')
+              StackActions.replace('Authentication')
             );
           }, 5000);
         } else if (response.status === 201) {
@@ -58,7 +58,7 @@ function NetworkMembershipInvitationAcceptScreen({ route, navigation }) {
 
           setTimeout(() => {
             navigation.dispatch(
-              StackActions.replace('AuthenticationRoot')
+              StackActions.replace('Authentication')
             );
           }, 5000);
         }
@@ -122,7 +122,7 @@ function NetworkMembershipInvitationAcceptScreen({ route, navigation }) {
           theme="transparent"
           onPress={() => 
             navigation.dispatch(
-              StackActions.replace('AuthenticationRoot')
+              StackActions.replace('Authentication')
             )
           }
         />

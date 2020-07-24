@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Colors from '~/constants/Colors';
+import colors from '~/constants/colors';
 
 const DragHandle = ({
   width = 20,
@@ -13,7 +13,7 @@ const DragHandle = ({
         width,
         height,
         borderRadius: 5,
-        backgroundColor: Colors.gray,
+        backgroundColor: colors.gray,
       }}
     />
   );

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function(api) {
   api.cache(true);
   return {
@@ -11,6 +13,12 @@ module.exports = function(api) {
           alias: {
             '~': './',
             'Shared': '../interface/src',
+            // resolve local (to `mobile/`) version of dependencies,
+            // such that we can import dependencies from `interface/**/*.js`
+            // files without resolver issues
+            react: require.resolve('react', {
+              paths: [path.join(__dirname, './')],
+            }),
           }
         }
       ]

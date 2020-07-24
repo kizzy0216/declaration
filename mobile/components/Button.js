@@ -3,21 +3,33 @@ import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity, BorderlessButton } from 'react-native-gesture-handler';
 
 import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
-import Colors from '~/constants/Colors';
+import {
+  BLUE,
+  LIGHT_GRAY,
+} from '~/constants';
 
 function Button({
   label,
   theme = 'primary',
   labelStyle,
+  labelWrapperStyle,
   leftIcon,
   rightIcon,
+  style,
   isFetching,
+  isDisabled,
   onPress = () => {},
 }) {
   const inner = (
     <View
       accessible
-      style={[styles.container, `${theme}Container`]}
+      style={[
+        styles.button,
+        styles[theme],
+        styles.container,
+        `${theme}Container`,
+        isDisabled && styles.disabled,
+      ]}
     >
       {leftIcon &&
         <View style={[styles.leftIcon, styles.leftIconWrapper]}>
@@ -29,6 +41,7 @@ function Button({
         style={[
           styles.labelWrapper,
           (rightIcon || leftIcon) && styles.hasIconLabel,
+          labelWrapperStyle,
         ]}
       >
         {isFetching
@@ -62,7 +75,10 @@ function Button({
 
   if (theme === 'transparent') {
     return (
-      <BorderlessButton onPress={onPress}>
+      <BorderlessButton
+        onPress={onPress}
+        disabled={isDisabled}
+      >
         {inner}
       </BorderlessButton>
     );
@@ -71,10 +87,11 @@ function Button({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, styles[theme], (rightIcon || leftIcon) && styles.hasIcon]}
       containerStyle={{
         overflow: 'visible',
       }}
+      style={style}
+      disabled={isDisabled}
     >
       {inner}
     </TouchableOpacity>
@@ -86,11 +103,14 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     width: '100%',
   },
+  disabled: {
+    opacity: 0.5,
+  },
   primary: {
-    backgroundColor: Colors.blue,
+    backgroundColor: BLUE,
   },
   secondary: {
-    backgroundColor: Colors.lightGray,
+    backgroundColor: LIGHT_GRAY,
   },
   secondaryLabel: {
     color: 'black',

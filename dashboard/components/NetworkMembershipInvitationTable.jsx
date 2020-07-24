@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
-import formatDate from '~/shared/utils/formatDate';
+import { formatDateTime } from '~/shared/utils/formatDate';
 
 function NetworkMembershipInvitationTable({
   items,
@@ -35,7 +35,7 @@ function NetworkMembershipInvitationTable({
     {
       Header: 'Sent at',
       accessor: 'createdAt',
-      Cell: ({ value }) => formatDate(value)
+      Cell: ({ value }) => formatDateTime(value)
     },
     {
       id: 'actions',

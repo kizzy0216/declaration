@@ -1,18 +1,56 @@
 import mapNetwork from './mapNetwork';
 import mapDateTime from './mapDateTime';
 
+const mapUserProfilePrivate = ({
+  uuid,
+  id,
+  date_of_birth,
+  gender,
+  created_at,
+  updated_at,
+}) => ({
+  uuid,
+  id,
+  dateOfBirth: date_of_birth && mapDateTime(date_of_birth),
+  gender,
+  createdAt: created_at && mapDateTime(created_at),
+  updatedAt: updated_at && mapDateTime(updated_at),
+});
+
 const mapUserProfile = ({
+  uuid,
+  id,
+  username,
   location,
   photo,
+  personal_bio,
+  educational_institution,
+  work_place,
+  work_title,
+  work_bio,
+  user_profile_private = {},
+  created_at,
+  updated_at,
 }) => ({
-  location: location || 'Unknown Location',
+  uuid,
+  id,
+  username,
+  location,
   photo,
+  personalBio: personal_bio,
+  educationalInstitution: educational_institution,
+  workPlace: work_place,
+  workTitle: work_title,
+  workBio: work_bio,
+  private: mapUserProfilePrivate(user_profile_private || {}),
+  createdAt: created_at && mapDateTime(created_at),
+  updatedAt: updated_at && mapDateTime(updated_at),
 });
 
 const mapUser = ({
   uuid,
   id,
-  name,
+  name = '',
   email,
   created_at,
   updated_at,
@@ -23,7 +61,7 @@ const mapUser = ({
 }) => ({
   uuid,
   id,
-  name,
+  name: name || '',
   email,
   createdAt: mapDateTime(created_at),
   updatedAt: mapDateTime(updated_at),

@@ -8,6 +8,30 @@ const GetUser = `
       email
       created_at
       updated_at
+      user_profile {
+        __typename
+        uuid
+        id
+        username
+        location
+        personal_bio
+        work_place
+        work_title
+        work_bio
+        educational_institution
+        photo
+        created_at
+        updated_at
+        user_profile_private {
+          __typename
+          uuid
+          id
+          date_of_birth
+          gender
+          created_at
+          updated_at
+        }
+      }
       network_users(
         order_by: {network: {name: asc}}
       ) {

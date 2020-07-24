@@ -4,12 +4,17 @@ import {
   TextInput as RNTextInput,
   View,
   Text,
+  Keyboard,
 } from 'react-native';
 
-import Colors from '~/constants/Colors';
+import {
+  LIGHT_GRAY,
+  RED,
+} from '~/constants';
 
 function TextInput({
   label,
+  error = '',
   placeholder,
   onChange = () => {},
   value,
@@ -32,6 +37,12 @@ function TextInput({
           value={value}
         />
       </View>
+
+      {error.length > 0 &&
+        <Text style={styles.error}>
+          {error}
+        </Text>
+      }
     </View>
   );
 }
@@ -42,11 +53,16 @@ const styles = StyleSheet.create({
   textInputWrapper: {
     borderRadius: 17,
     padding: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: LIGHT_GRAY,
   },
   label: {
     fontWeight: 'bold',
     marginBottom: 5,
+  },
+  error: {
+    color: RED,
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

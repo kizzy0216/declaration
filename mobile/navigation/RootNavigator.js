@@ -22,6 +22,20 @@ import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvita
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import MessagingScreen from '~/screens/MessagingScreen';
 import EventsScreen from '~/screens/EventsScreen';
+import UserResolutionScreen from '~/screens/UserResolutionScreen';
+import UserOnboardingWelcomeScreen from '~/screens/UserOnboardingWelcomeScreen';
+import UserOnboardingNameScreen from '~/screens/UserOnboardingNameScreen';
+import UserOnboardingUsernameScreen from '~/screens/UserOnboardingUsernameScreen';
+import UserOnboardingDateOfBirthScreen from '~/screens/UserOnboardingDateOfBirthScreen';
+import UserOnboardingGenderScreen from '~/screens/UserOnboardingGenderScreen';
+import UserOnboardingLocationScreen from '~/screens/UserOnboardingLocationScreen';
+import UserOnboardingProfileWelcomeScreen from '~/screens/UserOnboardingProfileWelcomeScreen';
+import UserOnboardingPhotoScreen from '~/screens/UserOnboardingPhotoScreen';
+import UserOnboardingPersonalBioScreen from '~/screens/UserOnboardingPersonalBioScreen';
+import UserOnboardingEducationalInstitutionScreen from '~/screens/UserOnboardingEducationalInstitutionScreen';
+import UserOnboardingWorkPlaceScreen from '~/screens/UserOnboardingWorkPlaceScreen';
+import UserOnboardingWorkTitleScreen from '~/screens/UserOnboardingWorkTitleScreen';
+import UserOnboardingWorkBioScreen from '~/screens/UserOnboardingWorkBioScreen';
 import NetworkBlockedModal from '~/components/NetworkBlockedModal';
 import { UserContext } from '~/contexts/UserContext';
 import { NetworkContextProvider } from '~/contexts/NetworkContext';
@@ -29,23 +43,72 @@ import { NetworkContextProvider } from '~/contexts/NetworkContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
-  const { user } = useContext(UserContext);
-
-  const initialRouteName = (
-    (!user.networkUuids ||
-    user.networkUuids.length === 0)
-      ? 'NetworkMembershipSelect'
-      : 'NetworkTabs'
-  );
+  const {
+    user,
+    hasProfile,
+    hasNetworks,
+  } = useContext(UserContext);
 
   return (
     <NetworkContextProvider>
       <NetworkBlockedModal />
 
       <Stack.Navigator
-        initialRouteName={initialRouteName}
+        initialRouteName="UserResolution"
         headerMode="none"
       >
+        <Stack.Screen
+          name="UserOnboardingWelcome"
+          component={UserOnboardingWelcomeScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingName"
+          component={UserOnboardingNameScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingUsername"
+          component={UserOnboardingUsernameScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingDateOfBirth"
+          component={UserOnboardingDateOfBirthScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingGender"
+          component={UserOnboardingGenderScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingProfileWelcome"
+          component={UserOnboardingProfileWelcomeScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingLocation"
+          component={UserOnboardingLocationScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingPhoto"
+          component={UserOnboardingPhotoScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingPersonalBio"
+          component={UserOnboardingPersonalBioScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingEducationalInstitution"
+          component={UserOnboardingEducationalInstitutionScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingWorkPlace"
+          component={UserOnboardingWorkPlaceScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingWorkTitle"
+          component={UserOnboardingWorkTitleScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingWorkBio"
+          component={UserOnboardingWorkBioScreen}
+        />
         <Stack.Screen
           name="NetworkTab"
           component={NetworkTabNavigator}

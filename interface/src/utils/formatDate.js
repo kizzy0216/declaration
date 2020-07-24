@@ -1,4 +1,13 @@
-function formatDate(timestamp) {
+export const formatDate = (timestamp) => {
+  return (new Date(timestamp))
+    .toLocaleDateString(undefined, {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+    });
+}
+
+export const formatDateTime = (timestamp) => {
   return (new Date(timestamp))
     .toLocaleDateString(undefined, {
       day: '2-digit',
@@ -8,5 +17,3 @@ function formatDate(timestamp) {
       minute: '2-digit',
     });
 }
-
-export default formatDate;

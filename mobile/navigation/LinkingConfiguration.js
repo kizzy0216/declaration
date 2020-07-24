@@ -13,7 +13,7 @@ export default {
         NetworkMembershipInvitationAccept: 'accept-invitation',
       },
     },
-    AuthenticationRoot: {
+    Authentication: {
       initialRouteName: 'AuthenticationLogIn',
       screens: {
         AuthenticationHome: '/',

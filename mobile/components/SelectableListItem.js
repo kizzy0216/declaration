@@ -2,7 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import Colors from '~/constants/Colors';
+import {
+  BLUE,
+  GRAY,
+} from '~/constants';
 import CheckmarkIcon from 'Shared/components/icons/CheckmarkIcon';
 
 const SelectableListItem = ({
@@ -76,17 +79,17 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.gray,
+    borderBottomColor: GRAY,
   },
   actionWrapper: {
     backgroundColor: 'white',
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.gray,
+    borderColor: GRAY,
     overflow: 'hidden',
   },
   actionSelected: {
-    backgroundColor: Colors.blue,
+    backgroundColor: BLUE,
   },
   iconWrapper: {
     padding: 4,

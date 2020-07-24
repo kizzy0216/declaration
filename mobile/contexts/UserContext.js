@@ -70,9 +70,7 @@ export const UserContextProvider = ({ children }) => {
   // when user.uuid changes, refetch
   useEffect(() => {
     if (user.uuid) {
-      getUser({
-        requestPolicy: 'network-only',
-      });
+      getUser({ requestPolicy: 'network-only' });
     }
   }, [user.uuid]);
 
@@ -92,7 +90,26 @@ export const UserContextProvider = ({ children }) => {
     saveJWT(jwt);
   }
 
+  function refresh() {
+    getUser({ requestPolicy: 'network-only' });
+  }
+
   const hasSettled = (hasHydratedJWT && hasLoadedUser);
+
+  const hasProfile = (
+    user.name &&
+    user.name.length > 0 &&
+    user.profile.username &&
+    user.profile.username.length > 0 &&
+    user.profile.private.dateOfBirth &&
+    user.profile.location &&
+    user.profile.location.length > 0
+  );
+
+  const hasNetworks = (
+    user.networkUuids &&
+    user.networkUuids.length > 0
+  );
 
   // proceed with rendering AFTER persisted JWT and User have been loaded
   if (!hasSettled) {
@@ -107,8 +124,11 @@ export const UserContextProvider = ({ children }) => {
         hasFetched,
         isAuthenticated: !!user.uuid,
         isFetching,
+        hasProfile,
+        hasNetworks,
         logOut,
         logIn,
+        refresh,
       }}
     >
       {children}

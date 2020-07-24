@@ -6,7 +6,10 @@ import {
   Text,
 } from 'react-native';
 
-import Colors from '~/constants/Colors';
+import {
+  BLUE,
+  GRAY,
+} from '~/constants';
 
 function Avatar({
   name = '',
@@ -71,10 +74,10 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   primary: {
-    backgroundColor: Colors.blue,
+    backgroundColor: BLUE,
   },
   secondary: {
-    backgroundColor: Colors.gray,
+    backgroundColor: GRAY,
   },
   initials: {
     lineHeight: 1,

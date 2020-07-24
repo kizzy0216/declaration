@@ -37,7 +37,7 @@ function App(props) {
               >
                 <Stack.Navigator headerMode="none">
                   <Stack.Screen
-                    name="AuthenticationRoot"
+                    name="Authentication"
                     component={AuthenticationNavigator}
                   />
                   <Stack.Screen

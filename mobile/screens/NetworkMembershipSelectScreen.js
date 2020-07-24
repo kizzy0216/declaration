@@ -48,7 +48,7 @@ function NetworkMembershipSelectScreen({ navigation }) {
   function handleLogOut() {
     logOut()
     navigation.dispatch(
-      StackActions.replace('AuthenticationRoot')
+      StackActions.replace('Authentication')
     );
   }
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import Colors from '~/constants/Colors';
+import {
+  DARK_GRAY,
+} from '~/constants';
 
 function Dot({
   isActive = false,
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#C5C5C5',
   },
   active: {
-    backgroundColor: Colors.darkGray,
+    backgroundColor: DARK_GRAY,
   },
 });
 

@@ -33,6 +33,7 @@ function AuthenticationHomeScreen({ navigation }) {
             label="Log In"
             theme="primary"
             onPress={() => navigation.navigate('AuthenticationLogIn', { email: null, code: null })}
+            style={{ width: '100%' }}
           />
           <Button
             label="Create Your Own Network"
@@ -79,10 +80,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'column',
-    paddingBottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
     paddingRight: 20,
+    paddingBottom: 30,
     paddingLeft: 20,
   },
   imageBackground: {

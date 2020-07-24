@@ -8,12 +8,14 @@ import {
 import { Picker as RNPicker } from '@react-native-community/picker';
 
 import Button from '~/components/Button';
-import Colors from '~/constants/Colors';
+import {
+  LIGHT_GRAY,
+  GRAY,
+} from '~/constants';
 
 function Picker({
   label,
   value,
-  placeholder,
   options = [],
   onChange = () => {},
   ...props
@@ -81,18 +83,18 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: LIGHT_GRAY,
   },
   iosWrapper: {
   },
   active: {
-    backgroundColor: Colors.lightGray,
+    backgroundColor: LIGHT_GRAY,
     borderRadius: 17,
   },
   buttonLabelStyle: {
     textAlign: 'left',
     fontWeight: 'normal',
-    color: Colors.gray,
+    color: GRAY,
   },
 });
 

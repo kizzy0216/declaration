@@ -1,3 +1,4 @@
+const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
   },
   projectRoot: path.resolve(__dirname),
   watchFolders: [
-    path.resolve(__dirname, '../interface/src'),
     path.resolve(__dirname, '../interface'),
+    path.resolve(__dirname, '../interface/src'),
   ],
 };
