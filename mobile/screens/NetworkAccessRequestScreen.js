@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+} from 'react';
 import {
   ScrollView,
   View,
   StyleSheet,
   Text,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
@@ -13,6 +16,8 @@ import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
 import DisplayHeading from '~/components/DisplayHeading';
 import InsertNetworkAccessRequest from 'Shared/mutations/InsertNetworkAccessRequest';
 import Button from '~/components/Button';
+import { IS_IOS } from '~/constants';
+import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function NetworkAccessRequestScreen({ navigation }) {
   const [response, insertNetworkRequest] = useMutation(InsertNetworkAccessRequest);
@@ -43,30 +48,35 @@ function NetworkAccessRequestScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.headingWrapper}>
-          <DisplayHeading style={styles.heading}>
-            Do you want to create your own space?
-          </DisplayHeading>
-        </View>
+    <KeyboardAvoidingView
+      behavior={IS_IOS ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.headingWrapper}>
+            <DisplayHeading style={styles.heading}>
+              Do you want to create your own space?
+            </DisplayHeading>
+          </View>
 
-        <View style={styles.subHeadingWrapper}>
-          <Text style={styles.subHeading}>
-            Declaration is a fluid, dynamic and ever-evolving private
-            networking platform.
-          </Text>
-          <Text style={[styles.subHeading, styles.lastSubHeading]}>
-            Fill out the form below and a representative will contact you about
-            the status of your new space soon.
-          </Text>
-        </View>
+          <View style={styles.subHeadingWrapper}>
+            <Text style={styles.subHeading}>
+              Declaration is a fluid, dynamic and ever-evolving private
+              networking platform.
+            </Text>
+            <Text style={[styles.subHeading, styles.lastSubHeading]}>
+              Fill out the form below and a representative will contact you about
+              the status of your new space soon.
+            </Text>
+          </View>
 
-        <NetworkAccessRequestForm
-          onSubmit={handleSubmit}
-        />
-      </ScrollView>
-    </SafeAreaView>
+          <NetworkAccessRequestForm
+            onSubmit={handleSubmit}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -1,5 +1,15 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, {
+  useContext,
+  useRef,
+  useEffect,
+} from 'react';
+import {
+  Animated,
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useQuery,
@@ -13,6 +23,8 @@ import NetworkMembershipRequestForm from '~/components/NetworkMembershipRequestF
 import GetNetworkByUuid from '~/queries/GetNetworkByUuid';
 import InsertNetworkMembershipRequestOne from '~/mutations/InsertNetworkMembershipRequestOne';
 import { UserContext } from '~/contexts/UserContext';
+import { IS_IOS } from '~/constants';
+import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function NetworkMembershipRequestScreen({ route, navigation }) {
   const { user } = useContext(UserContext);
@@ -24,6 +36,17 @@ function NetworkMembershipRequestScreen({ route, navigation }) {
     },
   });
   const [response, insertMembershipRequest] = useMutation(InsertNetworkMembershipRequestOne);
+
+  const isKeyboardShowing = useIsKeyboardShowing();
+  const translateYAnimation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(translateYAnimation, {
+      toValue: (isKeyboardShowing ? 1 : 0),
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isKeyboardShowing]);
 
   function handleSubmit({ body }) {
     insertMembershipRequest({
@@ -38,22 +61,37 @@ function NetworkMembershipRequestScreen({ route, navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>
-        {getNetworkResult.data && getNetworkResult.data.network_by_pk.name}
-      </Text>
+    <KeyboardAvoidingView
+      behavior={IS_IOS ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <SafeAreaView style={styles.container}>
+        <Animated.View
+          style={{
+            flex: 1,
+            transform: [
+              {
+                translateY: translateYAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -200],
+                }),
+              },
+            ],
+          }}
+        >
+          <DisplayHeading style={styles.heading}>
+            Unfortunately you're not on our invite list.
+          </DisplayHeading>
 
-      <DisplayHeading style={styles.heading}>
-        Unfortunately you're not on our invite list.
-      </DisplayHeading>
+          <Text style={styles.subHeading}>
+            Fill out the fields below and we will send a request to that network
+            admin letting them know you want to join.
+          </Text>
 
-      <Text style={styles.subHeading}>
-        Fill out the fields below and we will send a request to that network
-        admin letting them know you want to join.
-      </Text>
-
-      <NetworkMembershipRequestForm onSubmit={handleSubmit} />
-    </SafeAreaView>
+          <NetworkMembershipRequestForm onSubmit={handleSubmit} />
+        </Animated.View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
