@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
+import { StackActions } from '@react-navigation/native';
 
 import UpdateUserProfileWorkTitle from '~/mutations/UpdateUserProfileWorkTitle';
+import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -34,14 +36,22 @@ function UserOnboardingWorkTitleScreen({ navigation }) {
 
   const handleSubmit = () => {
     if (user.profile.workTitle === workTitle) {
-      return navigation.navigate('UserOnboardingWorkBio');
+      return navigation.dispatch(
+        StackActions.replace('Authentication', {
+          screen: 'UserResolution'
+        })
+      );
     }
 
     updateWorkTitle({
       uuid: user.profile.uuid,
       work_title: workTitle,
     }).then(() => {
-      navigation.navigate('UserOnboardingWorkBio');
+      navigation.dispatch(
+        StackActions.replace('Authentication', {
+          screen: 'UserResolution'
+        })
+      )
     });
   }
 
@@ -55,7 +65,7 @@ function UserOnboardingWorkTitleScreen({ navigation }) {
         contentContainerStyle={styles.contentContainer}
       >
         <ScreenHeader
-          activePageIndex={5}
+          activePageIndex={4}
           countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
           rightElement={<></>}
         />
@@ -73,22 +83,17 @@ function UserOnboardingWorkTitleScreen({ navigation }) {
             onChange={setWorkTitle}
           />
         </View>
-        <View style={styles.footer}>
-          <View style={[styles.buttonWrapper, styles.skipButton]}>
-            <Button
-              label="Skip"
-              theme="transparent"
-              onPress={() => navigation.navigate('UserOnboardingWorkBio')}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Next"
-              isFetching={updateWorkTitleResult.fetching}
-              onPress={handleSubmit}
-            />
-          </View>
-        </View>
+        <UserOnboardingFooter
+          isFetching={updateWorkTitleResult.fetching}
+          onSkip={() =>
+            navigation.dispatch(
+              StackActions.replace('Authentication', {
+                screen: 'UserResolution'
+              })
+            )
+          }
+          onNext={handleSubmit}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -117,17 +122,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  footer: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonWrapper: {
-    flexBasis: '50%',
-    paddingRight: 10,
-    paddingLeft: 10,
   },
 });
 

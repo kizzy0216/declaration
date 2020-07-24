@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 
 import UpdateUserProfileWorkPlace from '~/mutations/UpdateUserProfileWorkPlace';
+import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -55,7 +56,7 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
         contentContainerStyle={styles.contentContainer}
       >
         <ScreenHeader
-          activePageIndex={4}
+          activePageIndex={3}
           countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
           rightElement={<></>}
         />
@@ -73,22 +74,11 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
             onChange={setWorkPlace}
           />
         </View>
-        <View style={styles.footer}>
-          <View style={[styles.buttonWrapper, styles.skipButton]}>
-            <Button
-              label="Skip"
-              theme="transparent"
-              onPress={() => navigation.navigate('UserOnboardingWorkTitle')}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Next"
-              isFetching={updateWorkPlaceResult.fetching}
-              onPress={handleSubmit}
-            />
-          </View>
-        </View>
+        <UserOnboardingFooter
+          isFetching={updateWorkPlaceResult.fetching}
+          onSkip={() => navigation.navigate('UserOnboardingWorkTitle')}
+          onNext={handleSubmit}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -117,17 +107,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  footer: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonWrapper: {
-    flexBasis: '50%',
-    paddingRight: 10,
-    paddingLeft: 10,
   },
 });
 

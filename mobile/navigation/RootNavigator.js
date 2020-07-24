@@ -82,12 +82,12 @@ function RootNavigator({ navigation }) {
           component={UserOnboardingProfileWelcomeScreen}
         />
         <Stack.Screen
-          name="UserOnboardingLocation"
-          component={UserOnboardingLocationScreen}
-        />
-        <Stack.Screen
           name="UserOnboardingPhoto"
           component={UserOnboardingPhotoScreen}
+        />
+        <Stack.Screen
+          name="UserOnboardingLocation"
+          component={UserOnboardingLocationScreen}
         />
         <Stack.Screen
           name="UserOnboardingPersonalBio"

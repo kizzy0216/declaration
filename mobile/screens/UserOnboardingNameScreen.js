@@ -63,7 +63,7 @@ function UserOnboardingNameScreen({ navigation }) {
             What's your name?
           </DisplayHeading>
           <Text style={styles.subHeading}>
-            Use your full name so that other members can find you
+            Use your full name here so that other members can find you
           </Text>
           <TextInput
             placeholder="Full name"

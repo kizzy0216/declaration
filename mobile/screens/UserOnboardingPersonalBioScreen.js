@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 
 import UpdateUserProfilePersonalBio from '~/mutations/UpdateUserProfilePersonalBio';
+import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -104,22 +105,11 @@ function UserOnboardingPersonalBioScreen({ navigation }) {
             />
           </Animated.View>
         </View>
-        <View style={styles.footer}>
-          <View style={[styles.buttonWrapper, styles.skipButton]}>
-            <Button
-              label="Skip"
-              theme="transparent"
-              onPress={() => navigation.navigate('UserOnboardingEducationalInstitution')}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Next"
-              isFetching={updatePersonalBioResult.fetching}
-              onPress={handleSubmit}
-            />
-          </View>
-        </View>
+        <UserOnboardingFooter
+          isFetching={updatePersonalBioResult.fetching}
+          onSkip={() => navigation.navigate('UserOnboardingEducationalInstitution')}
+          onNext={handleSubmit}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -152,17 +142,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  footer: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonWrapper: {
-    flexBasis: '50%',
-    paddingRight: 10,
-    paddingLeft: 10,
   },
 });
 

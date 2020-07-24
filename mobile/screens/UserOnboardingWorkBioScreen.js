@@ -17,6 +17,7 @@ import { StackActions } from '@react-navigation/native';
 import { useMutation } from 'urql';
 
 import UpdateUserProfileWorkBio from '~/mutations/UpdateUserProfileWorkBio';
+import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -114,26 +115,17 @@ function UserOnboardingWorkBioScreen({ navigation }) {
             />
           </Animated.View>
         </View>
-        <View style={styles.footer}>
-          <View style={[styles.buttonWrapper, styles.skipButton]}>
-            <Button
-              label="Skip"
-              theme="secondary"
-              onPress={() =>
-                navigation.dispatch(
-                  StackActions.popToTop()
-                )
-              }
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Next"
-              isFetching={updateWorkBioResult.fetching}
-              onPress={handleSubmit}
-            />
-          </View>
-        </View>
+        <UserOnboardingFooter
+          isFetching={updateWorkBioResult.fetching}
+          onSkip={() =>
+            navigation.dispatch(
+              StackActions.replace('Authentication', {
+                screen: 'UserResolution'
+              })
+            )
+          }
+          onNext={handleSubmit}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -163,18 +155,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  footer: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-  },
-  buttonWrapper: {
-    flexBasis: '50%',
-    paddingRight: 10,
-    paddingLeft: 10,
   },
 });
 

@@ -12,6 +12,7 @@ import { useMutation } from 'urql';
 import UpdateUserProfilePhoto from '~/mutations/UpdateUserProfilePhoto';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
+import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import Button from '~/components/Button';
 import AvatarPicker from '~/components/AvatarPicker';
 import {
@@ -112,22 +113,11 @@ function UserOnboardingPhotoScreen({ navigation }) {
           onChange={handleChange}
         />
       </View>
-      <View style={styles.footer}>
-        <View style={[styles.buttonWrapper, styles.skipButton]}>
-          <Button
-            label="Skip"
-            theme="transparent"
-            onPress={() => navigation.navigate('UserOnboardingLocation')}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
-            label="Next"
-            isFetching={isFetching || updatePhotoResult.fetching}
-            onPress={handleSubmit}
-          />
-        </View>
-      </View>
+      <UserOnboardingFooter
+        isFetching={isFetching || updatePhotoResult.fetching}
+        onSkip={() => navigation.navigate('UserOnboardingLocation')}
+        onNext={handleSubmit}
+      />
     </SafeAreaView>
   );
 }
@@ -155,17 +145,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  footer: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonWrapper: {
-    flexBasis: '50%',
-    paddingRight: 10,
-    paddingLeft: 10,
   },
 });
 
