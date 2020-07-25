@@ -5,6 +5,7 @@ import TextInput from '~/components/TextInput';
 import Button from '~/components/Button';
 
 function NetworkMembershipRequestForm({
+  isFetching = false,
   onSubmit = () => {},
 }) {
   const [body, setBody] = useState('');
@@ -28,6 +29,7 @@ function NetworkMembershipRequestForm({
 
       <Button
         label="Send"
+        isFetching={isFetching}
         onPress={handleSubmit}
       />
     </View>

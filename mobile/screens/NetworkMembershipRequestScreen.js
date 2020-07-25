@@ -35,7 +35,10 @@ function NetworkMembershipRequestScreen({ route, navigation }) {
       uuid: params.networkUuid,
     },
   });
-  const [response, insertMembershipRequest] = useMutation(InsertNetworkMembershipRequestOne);
+  const [
+    insertMembershipRequestResult,
+    insertMembershipRequest,
+  ] = useMutation(InsertNetworkMembershipRequestOne);
 
   const isKeyboardShowing = useIsKeyboardShowing();
   const translateYAnimation = useRef(new Animated.Value(0)).current;
@@ -88,7 +91,10 @@ function NetworkMembershipRequestScreen({ route, navigation }) {
             admin letting them know you want to join.
           </Text>
 
-          <NetworkMembershipRequestForm onSubmit={handleSubmit} />
+          <NetworkMembershipRequestForm
+            isFetching={insertMembershipRequestResult.fetching}
+            onSubmit={handleSubmit}
+          />
         </Animated.View>
       </SafeAreaView>
     </KeyboardAvoidingView>

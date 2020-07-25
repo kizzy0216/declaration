@@ -20,12 +20,15 @@ import { IS_IOS } from '~/constants';
 import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function NetworkAccessRequestScreen({ navigation }) {
-  const [response, insertNetworkRequest] = useMutation(InsertNetworkAccessRequest);
+  const [
+    insertNetworkRequestResult,
+    insertNetworkRequest,
+  ] = useMutation(InsertNetworkAccessRequest);
   const {
     fetching: isFetching,
     error,
     data,
-  } = response;
+  } = insertNetworkRequestResult;
 
   function handleSubmit({
     name,
@@ -72,6 +75,7 @@ function NetworkAccessRequestScreen({ navigation }) {
           </View>
 
           <NetworkAccessRequestForm
+            isFetching={isFetching}
             onSubmit={handleSubmit}
           />
         </ScrollView>

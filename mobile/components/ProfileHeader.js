@@ -13,39 +13,25 @@ function ProfileHeader({
 
   return (
     <ScreenHeader
-      heading={user.email}
+      heading={(
+        user.profile.username
+          ? `@${user.profile.username}`
+          : user.email
+      )}
       rightElement={(
-      <BorderlessButton
-        onPress={onSettingsPress}
-      >
-        <SettingsIcon
-          width={22}
-          height={22}
-          fill="black"
-        />
-      </BorderlessButton>
+        <BorderlessButton onPress={onSettingsPress}>
+          <SettingsIcon
+            width={22}
+            height={22}
+            fill="black"
+          />
+        </BorderlessButton>
       )}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  usernameWrapper: {
-    flex: 1,
-  },
-  username: {
-    textAlign: 'center',
-  },
-  iconWrapper: {
-    position: 'absolute',
-    right: 20,
-  },
 });
 
 export default ProfileHeader;

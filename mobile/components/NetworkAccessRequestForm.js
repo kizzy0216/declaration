@@ -17,6 +17,7 @@ const userCountRangeOptions = [
 ];
 
 function NetworkAccessRequestForm({
+  isFetching = false,
   onSubmit = () => {},
 }) {
   const [name, setName] = useState('');
@@ -92,6 +93,7 @@ function NetworkAccessRequestForm({
 
       <Button
         label="Send"
+        isFetching={isFetching}
         onPress={handleSubmit}
       />
     </View>

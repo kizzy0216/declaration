@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 20,
+    backgroundColor: 'transparent',
   },
   headingWrapper: {
     flex: 1,
@@ -86,11 +87,13 @@ const styles = StyleSheet.create({
   },
   left: {
     position: 'absolute',
+    top: 5,
     left: 20,
     zIndex: 1,
   },
   right: {
     position: 'absolute',
+    top: 5,
     right: 20,
     zIndex: 1,
   },
