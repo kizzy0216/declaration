@@ -9,9 +9,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ProfileHeader from '~/components/ProfileHeader';
 import { UserContext } from '~/contexts/UserContext';
 import ScreenCard from '~/components/ScreenCard';
+import DisplayHeading from '~/components/DisplayHeading';
+import PersonalBio from '~/components/PersonalBio';
+import ProfileSummaryCard from '~/components/ProfileSummaryCard';
+import EditIcon from 'Shared/components/icons/EditIcon';
 
 function ProfileScreen({ navigation }) {
   const { user } = useContext(UserContext);
+
+  function handleEdit() {
+  }
+
+  function handleEditLocation() {
+  }
+
+  function handleEditWork() {
+  }
+
+  function handleEditEducation() {
+  }
 
   return (
     <ScreenCard
@@ -23,14 +39,33 @@ function ProfileScreen({ navigation }) {
         />
       )}
       stamp="Create positive social impact."
+      actions={[
+        {
+          icon: (
+            <EditIcon
+              fill="#000"
+              width="50%"
+              height="50%"
+            />
+          ),
+          onPress: handleEdit,
+        },
+      ]}
     >
-      <Text>{user.name}</Text>
-      <Text>@{user.profile.username}</Text>
-      <Text>{user.profile.personalBio}</Text>
-      <Text>{user.profile.location}</Text>
-      <Text>{user.profile.workTitle}</Text>
-      <Text>{user.profile.workPlace}</Text>
-      <Text>{user.profile.educationalInstitution}</Text>
+      <DisplayHeading>
+        {user.name}
+      </DisplayHeading>
+      <PersonalBio
+        username={user.profile.username}
+        personalBio={user.profile.personalBio}
+      />
+      <ProfileSummaryCard
+        profile={user.profile}
+        isEditable={true}
+        onEditLocation={handleEditLocation}
+        onEditWork={handleEditWork}
+        onEditEducation={handleEditEducation}
+      />
     </ScreenCard>
   );
 }

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
 
@@ -22,6 +23,7 @@ function ScreenCard({
   header,
   headerImageSrc = '',
   stamp = '',
+  actions = [],
   children,
 }) {
   const hasAnimated = useRef(false);
@@ -79,8 +81,6 @@ function ScreenCard({
 
         <Animated.View
             style={{
-              flex: 1,
-              backgroundColor: 'white',
               borderTopLeftRadius: animation.interpolate({
                 inputRange: [0, SCROLL_DISTANCE_TRIGGER],
                 outputRange: [55, 0],
@@ -91,22 +91,57 @@ function ScreenCard({
                 outputRange: [55, 0],
                 extrapolate: 'clamp',
               }),
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: -10,
-              },
-              shadowOpacity: 0.5,
-              shadowRadius: 40,
-              elevation: 20,
-              overflow: 'visible',
-              width: '100%',
-              minHeight: '100%',
-              paddingTop: 40,
-              paddingRight: 20,
-              paddingLeft: 20,
+              ...styles.main,
             }}
         >
+          {actions.length > 0 &&
+            <Animated.View
+              style={{
+                transform: [
+                  {
+                    translateY: animation.interpolate({
+                      inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                      outputRange: [-32, 16],
+                      extrapolate: 'clamp',
+                    })
+                  },
+                ],
+                opacity: animation.interpolate({
+                  inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                  outputRange: [1, 0],
+                  extrapolate: 'clamp',
+                }),
+                ...styles.actionsWrapper,
+              }}
+            >
+              {actions.map((action, index) => (
+                <TouchableOpacity
+                  onPress={action.onPress}
+                  key={index}
+                  containerStyle={{overflow: 'visible'}}
+                >
+                  <Animated.View
+                    style={{
+                      width: animation.interpolate({
+                        inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                        outputRange: [64, 32],
+                        extrapolate: 'clamp',
+                      }),
+                      height: animation.interpolate({
+                        inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                        outputRange: [64, 32],
+                        extrapolate: 'clamp',
+                      }),
+                      backgroundColor: action.backgroundColor || 'white',
+                      ...styles.action,
+                    }}
+                  >
+                    {action.icon}
+                  </Animated.View>
+                </TouchableOpacity>
+              ))}
+            </Animated.View>
+          }
           {children}
         </Animated.View>
       </Animated.ScrollView>
@@ -154,6 +189,49 @@ const styles = StyleSheet.create({
     aspectRatio: 1.75,
   },
   main: {
+    position: 'relative',
+    flex: 1,
+    backgroundColor: 'white',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -10,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 40,
+    elevation: 20,
+    overflow: 'visible',
+    width: '100%',
+    minHeight: '100%',
+    paddingTop: 40,
+    paddingRight: 30,
+    paddingLeft: 30,
+  },
+  actionsWrapper: {
+    position: 'absolute',
+    top: 0,
+    right: 30,
+    zIndex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    overflow: 'visible',
+    flexDirection: 'row',
+  },
+  action: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 32,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 20,
+    overflow: 'visible',
+    marginLeft: 5,
+    marginRight: 5,
   },
 });
 
