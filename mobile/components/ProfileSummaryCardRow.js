@@ -36,9 +36,7 @@ function ProfileSummaryCardRow({
 
   if (isEditable) {
     return (
-      <TouchableOpacity
-        onPress={onPress}
-      >
+      <TouchableOpacity onPress={onPress}>
         {rowElement}
       </TouchableOpacity>
     );

@@ -16,6 +16,13 @@
         table:
           schema: public
           name: network_membership_request
+  - name: network_user_profiles
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: network_user_profile
   - name: network_users
     using:
       foreign_key_constraint_on:
@@ -459,6 +466,79 @@
       filter: {}
 - table:
     schema: public
+    name: network_user_profile
+  object_relationships:
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - network_uuid
+      - problem_bio
+      - solution_bio
+      - user_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - network_uuid
+      - problem_bio
+      - solution_bio
+      - user_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - problem_bio
+      - solution_bio
+      - created_at
+      - updated_at
+      - network_uuid
+      - user_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - uuid
+      - id
+      - network_uuid
+      - user_uuid
+      - problem_bio
+      - solution_bio
+      - created_at
+      - updated_at
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - problem_bio
+      - solution_bio
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - problem_bio
+      - solution_bio
+      filter:
+        user_uuid:
+          _eq: X-Hasura-User-Id
+      check: null
+- table:
+    schema: public
     name: super_admin
   object_relationships:
   - name: user
@@ -503,6 +583,13 @@
         table:
           schema: public
           name: network_membership_request
+  - name: network_user_profiles
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          schema: public
+          name: network_user_profile
   - name: network_users
     using:
       foreign_key_constraint_on:

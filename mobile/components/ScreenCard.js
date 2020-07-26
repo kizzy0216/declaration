@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingRight: 30,
     paddingLeft: 30,
+    paddingBottom: 100,
   },
   actionsWrapper: {
     position: 'absolute',

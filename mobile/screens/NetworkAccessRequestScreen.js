@@ -17,7 +17,6 @@ import DisplayHeading from '~/components/DisplayHeading';
 import InsertNetworkAccessRequest from 'Shared/mutations/InsertNetworkAccessRequest';
 import Button from '~/components/Button';
 import { IS_IOS } from '~/constants';
-import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function NetworkAccessRequestScreen({ navigation }) {
   const [

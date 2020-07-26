@@ -46,34 +46,6 @@ function SettingsScreen({ navigation }) {
           </Text>
           <View style={styles.buttonWrapper}>
             <Button
-              label="Account information"
-              theme="secondary"
-              onPress={() => {}}
-              rightIcon={(
-                <ArrowRightIcon
-                  width={24}
-                  height={24}
-                  fill="black"
-                />
-              )}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Edit your profile"
-              theme="secondary"
-              onPress={() => {}}
-              rightIcon={(
-                <ArrowRightIcon
-                  width={24}
-                  height={24}
-                  fill="black"
-                />
-              )}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
               label="Log out"
               theme="secondary"
               onPress={handleLogOut}

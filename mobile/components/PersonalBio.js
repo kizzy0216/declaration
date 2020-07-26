@@ -10,12 +10,14 @@ function PersonalBio({
   personalBio = '',
 }) {
   return (
-    <View style={styles.personalBio}>
-      <Text style={styles.username}>
-        @{username}
-      </Text>
-      <Text style={styles.personalBio}>
-        {personalBio}
+    <View style={styles.container}>
+      <Text>
+        <Text style={styles.username}>
+          @{username}&nbsp;&nbsp;
+        </Text>
+        <Text style={styles.personalBio}>
+          {personalBio}
+        </Text>
       </Text>
     </View>
   );
@@ -23,6 +25,10 @@ function PersonalBio({
 
 const styles = StyleSheet.create({
   personalBio: {
+  },
+  username: {
+    fontWeight: 'bold',
+    marginRight: 10,
   },
 });
 

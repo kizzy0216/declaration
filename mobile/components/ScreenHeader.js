@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'relative',
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: 'transparent',
   },
@@ -87,13 +87,11 @@ const styles = StyleSheet.create({
   },
   left: {
     position: 'absolute',
-    top: 5,
     left: 20,
     zIndex: 1,
   },
   right: {
     position: 'absolute',
-    top: 5,
     right: 20,
     zIndex: 1,
   },

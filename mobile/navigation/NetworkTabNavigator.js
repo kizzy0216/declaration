@@ -7,6 +7,7 @@ import CreateScreen from '~/screens/CreateScreen';
 import NotificationsScreen from '~/screens/NotificationsScreen';
 import ProfileScreen from '~/screens/ProfileScreen';
 import StorybookScreen from '~/screens/StorybookScreen';
+import TabBar from '~/components/TabBar';
 import TabBarIcon from '~/components/TabBarIcon';
 
 import PlusInSquareIcon from 'Shared/components/icons/PlusInSquareIcon';
@@ -24,34 +25,14 @@ function NetworkTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}
-      tabBarOptions={{
-        showLabel: false,
-        activeTintColor: 'black',
-        inactiveTintColor: 'black',
-        style: {
-          paddingTop: 20,
-          paddingLeft: 10,
-          paddingRight: 10,
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: -10,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 40,
-          elevation: 20,
-          overflow: 'visible',
-        },
-      }}
+      tabBar={props => <TabBar {...props} />}
     >
       <BottomTab.Screen
         name="Feed"
         component={FeedScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon isFocused={focused}>
+          tabBarIcon: ({ isFocused }) => (
+            <TabBarIcon isFocused={isFocused}>
               <VennDiagramIcon
                 width={24}
                 height={24}
@@ -65,8 +46,8 @@ function NetworkTabNavigator({ navigation, route }) {
         name="Archive"
         component={ArchiveScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon isFocused={focused}>
+          tabBarIcon: ({ isFocused }) => (
+            <TabBarIcon isFocused={isFocused}>
               <SearchIcon
                 width={24}
                 height={24}
@@ -80,8 +61,8 @@ function NetworkTabNavigator({ navigation, route }) {
         name="Create"
         component={CreateScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon isFocused={focused}>
+          tabBarIcon: ({ isFocused }) => (
+            <TabBarIcon isFocused={isFocused}>
               <PlusInSquareIcon
                 width={24}
                 height={24}
@@ -95,8 +76,8 @@ function NetworkTabNavigator({ navigation, route }) {
         name="Notifications"
         component={NotificationsScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon isFocused={focused}>
+          tabBarIcon: ({ isFocused }) => (
+            <TabBarIcon isFocused={isFocused}>
               <NotificationsIcon
                 width={24}
                 height={24}
@@ -110,8 +91,8 @@ function NetworkTabNavigator({ navigation, route }) {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon isFocused={focused}>
+          tabBarIcon: ({ isFocused }) => (
+            <TabBarIcon isFocused={isFocused}>
               <PersonIcon
                 width={24}
                 height={24}
@@ -126,8 +107,8 @@ function NetworkTabNavigator({ navigation, route }) {
           name="Storybook"
           component={StorybookScreen}
           options={{
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon focused={focused} name="md-book" />
+            tabBarIcon: ({ isFocused }) => (
+              <TabBarIcon isFocused={isFocused} name="md-book" />
             ),
           }}
         />

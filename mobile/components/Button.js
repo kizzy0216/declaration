@@ -10,7 +10,8 @@ import {
 
 function Button({
   label,
-  theme = 'primary',
+  theme = 'primary', // primary, secondary, tertiary, transparent
+  size = 'medium', // small, medium
   labelStyle,
   labelWrapperStyle,
   leftIcon,
@@ -26,9 +27,10 @@ function Button({
       style={[
         styles.button,
         styles[theme],
-        styles.container,
-        `${theme}Container`,
+        styles[size],
         isDisabled && styles.disabled,
+        theme === 'tertiary' && size === 'medium' && styles.mediumShadow,
+        theme === 'tertiary' && size === 'small' && styles.smallShadow,
       ]}
     >
       {leftIcon &&
@@ -42,6 +44,7 @@ function Button({
           styles.labelWrapper,
           (rightIcon || leftIcon) && styles.hasIconLabel,
           labelWrapperStyle,
+          styles[`${size}LabelWrapper`],
         ]}
       >
         {isFetching
@@ -78,6 +81,9 @@ function Button({
       <BorderlessButton
         onPress={onPress}
         disabled={isDisabled}
+        containerStyle={{
+          overflow: 'visible',
+        }}
       >
         {inner}
       </BorderlessButton>
@@ -102,57 +108,16 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 17,
     width: '100%',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  primary: {
-    backgroundColor: BLUE,
-  },
-  secondary: {
-    backgroundColor: LIGHT_GRAY,
-  },
-  secondaryLabel: {
-    color: 'black',
-  },
-  tertiary: {
-    backgroundColor: 'white',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 40,
-    elevation: 20,
     overflow: 'visible',
-  },
-  tertiaryContainer: {
-    backgroundColor: '#000',
-  },
-  tertiaryLabel: {
-    color: 'black',
-  },
-  transparent: {
-    backgroundColor: 'transparent',
-  },
-  transparentLabel: {
-    backgroundColor: 'transparent',
-    color: 'black',
-  },
-  container: {
-    borderRadius: 17,
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  disabled: {
+    opacity: 0.5,
+  },
   labelWrapper: {
     flex: 1,
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
-    paddingLeft: 20,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -169,6 +134,69 @@ const styles = StyleSheet.create({
   },
   rightIconWrapper: {
     paddingRight: 20,
+  },
+
+  primary: {
+    backgroundColor: BLUE,
+  },
+
+  secondary: {
+    backgroundColor: LIGHT_GRAY,
+  },
+  secondaryLabel: {
+    color: 'black',
+  },
+
+  tertiary: {
+    backgroundColor: 'white',
+  },
+  tertiaryLabel: {
+    color: 'black',
+  },
+
+  transparent: {
+    backgroundColor: 'transparent',
+  },
+  transparentLabel: {
+    backgroundColor: 'transparent',
+    color: 'black',
+  },
+
+  small: {
+    borderRadius: 10,
+  },
+  smallLabelWrapper: {
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+  },
+  smallShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 30,
+    elevation: 20,
+  },
+
+  mediumLabelWrapper: {
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    paddingLeft: 20,
+  },
+  mediumShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 30,
+    elevation: 20,
   },
 });
 

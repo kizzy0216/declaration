@@ -94,7 +94,7 @@ function ProfileSummaryCard({
 const styles = StyleSheet.create({
   profileSummaryCard: {
     backgroundColor: 'white',
-    borderRadius: 17,
+    borderRadius: 23,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
