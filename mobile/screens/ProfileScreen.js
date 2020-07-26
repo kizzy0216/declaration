@@ -23,6 +23,7 @@ import ProfileEducationEditModal from '~/components/ProfileEducationEditModal';
 import ProfileProblemBioEditModal from '~/components/ProfileProblemBioEditModal';
 import ProfileSolutionBioEditModal from '~/components/ProfileSolutionBioEditModal';
 import EditIcon from 'Shared/components/icons/EditIcon';
+import CameraIcon from 'Shared/components/icons/CameraIcon';
 
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
@@ -81,13 +82,23 @@ function ProfileScreen({ navigation }) {
         actions={[
           {
             icon: (
-              <EditIcon
+              <CameraIcon
                 fill="#000"
-                width="50%"
-                height="50%"
+                width="40%"
+                height="40%"
               />
             ),
-              onPress: () => setIsEditModalActive(true),
+            onPress: () => {},
+          },
+          {
+            icon: (
+              <EditIcon
+                fill="#000"
+                width="40%"
+                height="40%"
+              />
+            ),
+            onPress: () => setIsEditModalActive(true),
           },
         ]}
       >
