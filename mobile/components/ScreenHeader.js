@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Animated, View, Text, StyleSheet } from 'react-native';
 
 import Dot from '~/components/Dot';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -8,6 +8,7 @@ import CloseIcon from 'Shared/components/icons/CloseIcon';
 function ScreenHeader({
   heading,
   headingElement,
+  headingStyle,
   leftElement,
   rightElement,
   activePageIndex = null,
@@ -22,9 +23,9 @@ function ScreenHeader({
 
       <View style={styles.headingWrapper}>
         {heading &&
-          <Text style={styles.heading}>
+          <Animated.Text style={[styles.heading, headingStyle]}>
             {heading}
-          </Text>
+          </Animated.Text>
         }
         {headingElement && headingElement}
         {activePageIndex !== null && countPages !== null &&
@@ -87,12 +88,12 @@ const styles = StyleSheet.create({
   },
   left: {
     position: 'absolute',
-    left: 20,
+    left: 30,
     zIndex: 1,
   },
   right: {
     position: 'absolute',
-    right: 20,
+    right: 30,
     zIndex: 1,
   },
 });

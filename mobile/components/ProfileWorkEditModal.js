@@ -11,6 +11,7 @@ import TextInput from '~/components/TextInput';
 function ProfileWorkEditModal({
   user,
   isVisible = false,
+  isFetching = false,
   onClose = () => {},
   onSubmit = () => {},
 }) {
@@ -36,6 +37,7 @@ function ProfileWorkEditModal({
       position="bottom"
       hasDragHandle={false}
       heading="Work"
+      isFetching={isFetching}
       onClose={onClose}
       onSubmit={handleSubmit}
     >

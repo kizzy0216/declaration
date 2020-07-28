@@ -32,6 +32,21 @@ const GetUser = `
           updated_at
         }
       }
+      network_user_profiles {
+        __typename
+        uuid
+        id
+        problem_bio
+        solution_bio
+        network {
+          __typename
+          uuid
+          id
+          name
+        }
+        created_at
+        updated_at
+      }
       network_users(
         order_by: {network: {name: asc}}
       ) {

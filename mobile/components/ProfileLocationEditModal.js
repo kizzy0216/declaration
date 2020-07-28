@@ -11,6 +11,7 @@ import TextInput from '~/components/TextInput';
 function ProfileLocationEditModal({
   user,
   isVisible = false,
+  isFetching = false,
   onClose = () => {},
   onSubmit = () => {},
 }) {
@@ -28,6 +29,7 @@ function ProfileLocationEditModal({
       position="bottom"
       hasDragHandle={false}
       heading="Location"
+      isFetching={isFetching}
       onClose={onClose}
       onSubmit={handleSubmit}
     >

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FeedScreen from '~/screens/FeedScreen';
@@ -101,6 +101,11 @@ function NetworkTabNavigator({ navigation, route }) {
             </TabBarIcon>
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabLongPress: () => {
+            navigation.navigate('Members');
+          }
+        })}
       />
       {process.env.NODE_ENV !== 'production' && RENDER_STORYBOOK_TAB &&
         <BottomTab.Screen

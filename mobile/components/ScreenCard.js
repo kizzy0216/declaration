@@ -13,40 +13,73 @@ import {
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+
+import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
+import { WINDOW_WIDTH } from '~/constants';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
-
-const SCROLL_DISTANCE_TRIGGER = 200;
+const PULL_DOWN_DISTANCE = WINDOW_WIDTH * -0.5;
+const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.5;
 
 function ScreenCard({
   uuid,
-  header,
+  renderHeader,
   headerImageSrc = '',
   stamp = '',
   actions = [],
   children,
+  isFetching,
 }) {
-  const hasAnimated = useRef(false);
   const imageSrc = (
     (headerImageSrc || '').length === 0
       ? `${REST_BASE_URL}/avatar/${uuid}`
       : headerImageSrc
   );
-  const animation = useRef(new Animated.Value(0)).current;
+
+  const scrollAnimation = useRef(new Animated.Value(0)).current;
 
   return (
     <View style={styles.screenCard}>
       <View style={styles.header}>
         <View style={styles.headerImageWrapper}>
-          <Image
-            style={styles.headerImage}
-            source={{ uri: imageSrc }}
-          />
+          <Animated.View
+            style={{
+              ...styles.gradientWrapper,
+              opacity: scrollAnimation.interpolate({
+                inputRange: [PULL_DOWN_DISTANCE, 0],
+                outputRange: [0, 1],
+                extrapolate: 'clamp',
+              }),
+            }}
+          >
+            <LinearGradient
+              colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0)']}
+              style={styles.gradient}
+            />
+          </Animated.View>
 
-          {stamp.length > 0 &&
-            <Text style={styles.stamp}>{stamp}</Text>
+          {isFetching &&
+            <View style={styles.spinnerIconWrapper}>
+              <AnimatedSpinnerIcon
+                width={24}
+                height={24}
+                fill="white"
+              />
+            </View>
           }
+
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.headerImage}
+              source={{ uri: imageSrc }}
+            />
+          </View>
         </View>
+
+        {stamp.length > 0 &&
+          <Text style={styles.stamp}>{stamp}</Text>
+        }
       </View>
 
       <Animated.View
@@ -54,9 +87,14 @@ function ScreenCard({
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          backgroundColor: animation.interpolate({
-            inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+          backgroundColor: scrollAnimation.interpolate({
+            inputRange: [0, PULL_UP_DISTANCE],
             outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,1)'],
+            extrapolate: 'clamp',
+          }),
+          opacity: scrollAnimation.interpolate({
+            inputRange: [PULL_DOWN_DISTANCE, 0],
+            outputRange: [0, 1],
             extrapolate: 'clamp',
           }),
         }}
@@ -65,7 +103,7 @@ function ScreenCard({
           style={styles.safeArea}
           edges={['top']}
         >
-          {header}
+          {renderHeader({ scrollAnimation })}
         </SafeAreaView>
       </Animated.View>
 
@@ -73,7 +111,7 @@ function ScreenCard({
         contentContainerStyle={styles.scrollView}
         scrollEventThrottle={16}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: animation } } }],
+          [{ nativeEvent: { contentOffset: { y: scrollAnimation } } }],
           { useNativeDriver: false },
         )}
       >
@@ -81,13 +119,13 @@ function ScreenCard({
 
         <Animated.View
             style={{
-              borderTopLeftRadius: animation.interpolate({
-                inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+              borderTopLeftRadius: scrollAnimation.interpolate({
+                inputRange: [0, PULL_UP_DISTANCE],
                 outputRange: [55, 0],
                 extrapolate: 'clamp',
               }),
-              borderTopRightRadius: animation.interpolate({
-                inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+              borderTopRightRadius: scrollAnimation.interpolate({
+                inputRange: [0, PULL_UP_DISTANCE],
                 outputRange: [55, 0],
                 extrapolate: 'clamp',
               }),
@@ -99,15 +137,15 @@ function ScreenCard({
               style={{
                 transform: [
                   {
-                    translateY: animation.interpolate({
-                      inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                    translateY: scrollAnimation.interpolate({
+                      inputRange: [0, PULL_UP_DISTANCE],
                       outputRange: [-32, 16],
                       extrapolate: 'clamp',
                     })
                   },
                 ],
-                opacity: animation.interpolate({
-                  inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                opacity: scrollAnimation.interpolate({
+                  inputRange: [0, PULL_UP_DISTANCE],
                   outputRange: [1, 0],
                   extrapolate: 'clamp',
                 }),
@@ -122,13 +160,13 @@ function ScreenCard({
                 >
                   <Animated.View
                     style={{
-                      width: animation.interpolate({
-                        inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                      width: scrollAnimation.interpolate({
+                        inputRange: [0, PULL_UP_DISTANCE],
                         outputRange: [64, 32],
                         extrapolate: 'clamp',
                       }),
-                      height: animation.interpolate({
-                        inputRange: [0, SCROLL_DISTANCE_TRIGGER],
+                      height: scrollAnimation.interpolate({
+                        inputRange: [0, PULL_UP_DISTANCE],
                         outputRange: [64, 32],
                         extrapolate: 'clamp',
                       }),
@@ -172,13 +210,14 @@ const styles = StyleSheet.create({
   scrollView: {
   },
   header: {
-  },
-  headerImageWrapper: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
     zIndex: -10,
+  },
+  headerImageWrapper: {
+    position: 'relative',
   },
   headerImage: {
     width: '100%',
@@ -187,6 +226,31 @@ const styles = StyleSheet.create({
   headerSpacer: {
     width: '100%',
     aspectRatio: 1.75,
+  },
+  gradientWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  gradient: {
+    width: '100%',
+    height: 100,
+  },
+  spinnerIconWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   main: {
     position: 'relative',

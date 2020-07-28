@@ -4,8 +4,9 @@ import React, {
   useContext,
   createContext,
 } from 'react';
-import { useQuery } from 'urql';
+import { useQuery, useMutation } from 'urql';
 
+import InsertNetworkUserProfile from '~/mutations/InsertNetworkUserProfile';
 import { UserContext } from '~/contexts/UserContext';
 
 export const NetworkContext = createContext({
@@ -19,6 +20,10 @@ export const NetworkContextProvider = ({ children }) => {
   const [activeNetwork, setActiveNetwork] = useState({});
   const [networks, setNetworks] = useState([]);
   const { user, isAuthenticated } = useContext(UserContext);
+  const [
+    insertNetworkProfileResult,
+    insertNetworkProfile,
+  ] = useMutation(InsertNetworkUserProfile);
 
   useEffect(() => {
     const {
@@ -29,8 +34,18 @@ export const NetworkContextProvider = ({ children }) => {
     if (networkUuids && networkUuids.length > 0) {
       const allNetworks = networkUuids.map((networkUuid) => networksByUuid[networkUuid]);
       const firstNetwork = allNetworks[0];
+
       setActiveNetwork(firstNetwork);
       setNetworks(allNetworks);
+
+      allNetworks.forEach((network) => {
+        if (!user.profilesByNetworkUuid[network.uuid]) {
+          insertNetworkProfile({
+            user_uuid: user.uuid,
+            network_uuid: network.uuid,
+          });
+        }
+      });
     }
   }, [user]);
 

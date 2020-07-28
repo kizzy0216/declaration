@@ -15,9 +15,10 @@ import ScreenHeader from '~/components/ScreenHeader';
 const BORDER_RADIUS = 20;
 
 function Modal({
-  isVisible = false,
   position = 'bottom', // bottom or up
   heading = '',
+  isFetching = false,
+  isVisible = false,
   onClose = () => {},
   onSubmit = () => {},
   children,
@@ -139,6 +140,7 @@ function Modal({
                   label="Save"
                   theme="tertiary"
                   size="small"
+                  isFetching={isFetching}
                   onPress={onSubmit}
                 />
               }

@@ -25,6 +25,7 @@ const GENDER_TAGS = [
 function ProfileEditModal({
   user,
   isVisible = false,
+  isFetching = false,
   onClose = () => {},
   onSubmit = () => {},
 }) {
@@ -46,10 +47,11 @@ function ProfileEditModal({
 
   return (
     <Modal
-      isVisible={isVisible}
       position="bottom"
       hasDragHandle={false}
       heading="Profile details"
+      isVisible={isVisible}
+      isFetching={isFetching}
       onClose={onClose}
       onSubmit={handleSubmit}
     >

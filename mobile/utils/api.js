@@ -21,6 +21,11 @@ export const saveJWT = (jwt) => {
   return SecureStore.setItemAsync('jwt', JSON.stringify(jwt));
 };
 
+// TODO explore either string chunking
+// (with /interface/src/utils/chunkString)
+// or some kind of SecureStore + FileSystem
+// (github.com/neverdull-agency/expo-unlimited-secure-store)
+// method to securely and reliably store strings larger than 2048.
 export const saveUser = (user) => {
   return SecureStore.setItemAsync('user', JSON.stringify(user))
 };

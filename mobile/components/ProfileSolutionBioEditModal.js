@@ -9,12 +9,13 @@ import Modal from '~/components/Modal';
 import TextInput from '~/components/TextInput';
 
 function ProfileSolutionBioEditModal({
-  user,
+  networkProfile,
   isVisible = false,
+  isFetching = false,
   onClose = () => {},
   onSubmit = () => {},
 }) {
-  const [solutionBio, setSolutionBio] = useState(user.profile.solutionBio || '');
+  const [solutionBio, setSolutionBio] = useState(networkProfile.solutionBio || '');
 
   function handleSubmit() {
     onSubmit({
@@ -28,6 +29,7 @@ function ProfileSolutionBioEditModal({
       position="bottom"
       hasDragHandle={false}
       heading="I can help by"
+      isFetching={isFetching}
       onClose={onClose}
       onSubmit={handleSubmit}
     >

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   View,
@@ -21,6 +21,7 @@ import NetworkMembershipRequestFeedbackScreen from '~/screens/NetworkMembershipR
 import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvitationScreen';
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import MessagingScreen from '~/screens/MessagingScreen';
+import MembersScreen from '~/screens/MembersScreen';
 import EventsScreen from '~/screens/EventsScreen';
 import UserResolutionScreen from '~/screens/UserResolutionScreen';
 import UserOnboardingWelcomeScreen from '~/screens/UserOnboardingWelcomeScreen';
@@ -148,6 +149,10 @@ function RootNavigator({ navigation }) {
         <Stack.Screen
           name="Messaging"
           component={MessagingScreen}
+        />
+        <Stack.Screen
+          name="Members"
+          component={MembersScreen}
         />
         <Stack.Screen
           name="Settings"

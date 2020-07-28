@@ -1,6 +1,22 @@
 import mapNetwork from './mapNetwork';
 import mapDateTime from './mapDateTime';
 
+const mapUserNetworkProfile = ({
+  uuid,
+  id,
+  problem_bio,
+  solution_bio,
+  created_at,
+  updated_at,
+}) => ({
+  uuid,
+  id,
+  problemBio: problem_bio,
+  solutionBio: solution_bio,
+  createdAt: created_at && mapDateTime(created_at),
+  updatedAt: updated_at && mapDateTime(updated_at),
+});
+
 const mapUserProfilePrivate = ({
   uuid,
   id,
@@ -54,10 +70,11 @@ const mapUser = ({
   email,
   created_at,
   updated_at,
-  network_users = [],
   super_admin = null,
   role,
   user_profile = {},
+  network_user_profiles = [],
+  network_users = [],
 }) => ({
   uuid,
   id,
@@ -76,6 +93,14 @@ const mapUser = ({
     return accumulator;
   }, {}),
   profile: mapUserProfile(user_profile || {}),
+  profilesByNetworkUuid: network_user_profiles.reduce((accumulator, { network, ...network_user_profile }) => {
+    accumulator[network.uuid] = mapUserNetworkProfile(network_user_profile);
+    return accumulator;
+  }, {}),
+  profilesByNetworkId: network_user_profiles.reduce((accumulator, { network, ...network_user_profile }) => {
+    accumulator[network.id] = mapUserNetworkProfile(network_user_profile);
+    return accumulator;
+  }, {}),
   role: role,
   rolesByNetworkUuid: network_users.reduce((accumulator, { network, role }) => {
     accumulator[network.uuid] = role;

@@ -1,6 +1,7 @@
 import React, {
   useContext,
   useState,
+  useCallback,
 } from 'react';
 import {
   StyleSheet,
@@ -8,31 +9,40 @@ import {
   Text,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { setStatusBarStyle } from 'expo-status-bar';
+import { useFocusEffect } from '@react-navigation/native';
 
-import ProfileHeader from '~/components/ProfileHeader';
-import { UserContext } from '~/contexts/UserContext';
 import ScreenCard from '~/components/ScreenCard';
 import DisplayHeading from '~/components/DisplayHeading';
 import PersonalBio from '~/components/PersonalBio';
-import ProfileSummaryCard from '~/components/ProfileSummaryCard';
-import ProfileSectionCard from '~/components/ProfileSectionCard';
-import ProfileEditModal from '~/components/ProfileEditModal';
-import ProfileLocationEditModal from '~/components/ProfileLocationEditModal';
-import ProfileWorkEditModal from '~/components/ProfileWorkEditModal';
-import ProfileEducationEditModal from '~/components/ProfileEducationEditModal';
-import ProfileProblemBioEditModal from '~/components/ProfileProblemBioEditModal';
-import ProfileSolutionBioEditModal from '~/components/ProfileSolutionBioEditModal';
 import EditIcon from 'Shared/components/icons/EditIcon';
 import CameraIcon from 'Shared/components/icons/CameraIcon';
+import ProfileEditModalContainer from '~/containers/ProfileEditModalContainer';
+import NetworkProfileSolutionBioCardContainer from '~/containers/NetworkProfileSolutionBioCardContainer';
+import NetworkProfileProblemBioCardContainer from '~/containers/NetworkProfileProblemBioCardContainer';
+import ProfileHeader from '~/components/ProfileHeader';
+import ProfileSummaryCardContainer from '~/containers/ProfileSummaryCardContainer';
+import useProfilePhotoUpload from '~/hooks/useProfilePhotoUpload';
+import { UserContext } from '~/contexts/UserContext';
+import { NetworkContext } from '~/contexts/NetworkContext';
 
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
-  const [isEditLocationModalActive, setIsEditLocationModalActive] = useState(false);
-  const [isEditWorkModalActive, setIsEditWorkModalActive] = useState(false);
-  const [isEditEducationModalActive, setIsEditEducationModalActive] = useState(false);
-  const [isEditProblemBioModalActive, setIsEditProblemBioModalActive] = useState(false);
-  const [isEditSolutionBioModalActive, setIsEditSolutionBioModalActive] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, refresh: refreshUser } = useContext(UserContext);
+  const { activeNetwork } = useContext(NetworkContext);
+  const {
+    isFetching: isFetchingPhoto,
+    handleInitiation: handleProfilePhotoInitiation,
+  } = useProfilePhotoUpload({
+    onComplete: refreshUser,
+  });
+
+  useFocusEffect(useCallback(() => {
+    setStatusBarStyle('light');
+    return () => {
+      setStatusBarStyle('dark');
+    }
+  }));
 
   if (!user) {
     return null;
@@ -40,45 +50,23 @@ function ProfileScreen({ navigation }) {
 
   return (
     <>
-      <ProfileEditModal
+      <ProfileEditModalContainer
         user={user}
         isVisible={isEditModalActive}
+        onUpdate={refreshUser}
         onClose={() => setIsEditModalActive(false)}
-      />
-      <ProfileLocationEditModal
-        user={user}
-        isVisible={isEditLocationModalActive}
-        onClose={() => setIsEditLocationModalActive(false)}
-      />
-      <ProfileWorkEditModal
-        user={user}
-        isVisible={isEditWorkModalActive}
-        onClose={() => setIsEditWorkModalActive(false)}
-      />
-      <ProfileEducationEditModal
-        user={user}
-        isVisible={isEditEducationModalActive}
-        onClose={() => setIsEditEducationModalActive(false)}
-      />
-      <ProfileProblemBioEditModal
-        user={user}
-        isVisible={isEditProblemBioModalActive}
-        onClose={() => setIsEditProblemBioModalActive(false)}
-      />
-      <ProfileSolutionBioEditModal
-        user={user}
-        isVisible={isEditSolutionBioModalActive}
-        onClose={() => setIsEditSolutionBioModalActive(false)}
       />
       <ScreenCard
         uuid={user.uuid}
         headerImageSrc={user.profile.photo}
-        header={(
+        renderHeader={({ scrollAnimation }) => (
           <ProfileHeader
+            scrollAnimation={scrollAnimation}
             onSettingsPress={() => navigation.navigate('Settings')}
           />
         )}
         stamp="Create positive social impact."
+        isFetching={isFetchingPhoto}
         actions={[
           {
             icon: (
@@ -88,7 +76,7 @@ function ProfileScreen({ navigation }) {
                 height="40%"
               />
             ),
-            onPress: () => {},
+            onPress: handleProfilePhotoInitiation,
           },
           {
             icon: (
@@ -115,37 +103,27 @@ function ProfileScreen({ navigation }) {
             />
           </View>
           <View style={styles.row}>
-            <ProfileSummaryCard
-              profile={user.profile}
+            <ProfileSummaryCardContainer
+              user={user}
               isEditable={true}
-              onEditLocation={() => setIsEditLocationModalActive(true)}
-              onEditWork={() => setIsEditWorkModalActive(true)}
-              onEditEducation={() => setIsEditEducationModalActive(true)}
+              onUpdate={refreshUser}
             />
           </View>
           <View style={styles.row}>
-            <ProfileSectionCard
-              heading={('The one thing I\ncan help you with is')}
+            <NetworkProfileProblemBioCardContainer
+              user={user}
+              network={activeNetwork}
               isEditable={true}
-              onPress={() => setIsEditSolutionBioModalActive(true)}
-            >
-              <Text style={styles.paragraph}>
-                Vestibulum sagittis sem id metus elin eleifend massa viverra.
-                Suspendisse consequat nunc id commodo auctor.
-              </Text>
-            </ProfileSectionCard>
+              onUpdate={refreshUser}
+            />
           </View>
           <View style={styles.row}>
-            <ProfileSectionCard
-              heading={('The one thing I\nneed help with is')}
+            <NetworkProfileSolutionBioCardContainer
+              user={user}
+              network={activeNetwork}
               isEditable={true}
-              onPress={() => setIsEditProblemBioModalActive(true)}
-            >
-              <Text style={styles.paragraph}>
-                Vestibulum sagittis sem id metus elin eleifend massa viverra.
-                Suspendisse consequat nunc id commodo auctor.
-              </Text>
-            </ProfileSectionCard>
+              onUpdate={refreshUser}
+            />
           </View>
         </View>
       </ScreenCard>

@@ -21,6 +21,12 @@ function Button({
   isDisabled,
   onPress = () => {},
 }) {
+  const spinnerFill = (
+    theme === 'transparent' || theme === 'tertiary'
+    ? 'black'
+    : 'white'
+  );
+
   const inner = (
     <View
       accessible
@@ -52,7 +58,7 @@ function Button({
             <AnimatedSpinnerIcon
               width={16}
               height={16}
-              fill="white"
+              fill={spinnerFill}
             />
           ) : (
             <Text
