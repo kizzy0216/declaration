@@ -38,9 +38,7 @@ import {
 import mapNetworkUserRelationship from 'Shared/mappings/mapNetworkUserRelationship';
 import { BLUE } from '~/constants';
 
-function ProfileScreen({ navigation, route }) {
-  const { uuid } = route.params;
-
+function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const {
     user: authenticatedUser,
