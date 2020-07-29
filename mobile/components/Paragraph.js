@@ -3,10 +3,11 @@ import { Text, StyleSheet } from 'react-native';
 
 function Paragraph({
   size = 'medium', // small, medium, large
+  style,
   children,
 }) {
   return (
-    <Text style={styles[size]}>
+    <Text style={[styles[size], style]}>
       {children}
     </Text>
   );

@@ -11,7 +11,7 @@ const GetUserAsAdmin = `
       created_at
       updated_at
       network_users(
-        where: {role: {_eq: "${NETWORK_ADMIN_ROLE}"}},
+        where: {role: {_eq: ${NETWORK_ADMIN_ROLE}}},
         order_by: {network: {name: asc}}
       ) {
         network {

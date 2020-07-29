@@ -24,7 +24,7 @@ function NetworkProfileSolutionBioCardContainer({
     return null;
   }
 
-  const networkProfile = user.profilesByNetworkUuid[network.uuid];
+  const networkProfile = user.profilesByNetworkUuid[network.uuid] || {};
   const solutionBio = networkProfile.solutionBio;
   const hasSolutionBio = (
     solutionBio &&

@@ -18,7 +18,7 @@ function ProfileEducationEditModal({
   const [
     educationalInstitution,
     setEducationalInstitution,
-  ] = useState(user.profile.educationalInstitution || '');
+  ] = useState(user.profile.educationalInstitution);
 
   function handleSubmit() {
     onSubmit({

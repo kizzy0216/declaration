@@ -15,7 +15,7 @@ function ProfileLocationEditModal({
   onClose = () => {},
   onSubmit = () => {},
 }) {
-  const [location, setLocation] = useState(user.profile.location || '');
+  const [location, setLocation] = useState(user.profile.location);
 
   function handleSubmit() {
     onSubmit({

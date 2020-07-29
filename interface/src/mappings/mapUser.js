@@ -51,13 +51,13 @@ const mapUserProfile = ({
   uuid,
   id,
   username,
-  location,
+  location: location || '',
   photo,
-  personalBio: personal_bio,
-  educationalInstitution: educational_institution,
-  workPlace: work_place,
-  workTitle: work_title,
-  workBio: work_bio,
+  personalBio: personal_bio || '',
+  educationalInstitution: educational_institution || '',
+  workPlace: work_place || '',
+  workTitle: work_title || '',
+  workBio: work_bio || '',
   private: mapUserProfilePrivate(user_profile_private || {}),
   createdAt: created_at && mapDateTime(created_at),
   updatedAt: updated_at && mapDateTime(updated_at),
@@ -94,11 +94,11 @@ const mapUser = ({
   }, {}),
   profile: mapUserProfile(user_profile || {}),
   profilesByNetworkUuid: network_user_profiles.reduce((accumulator, { network, ...network_user_profile }) => {
-    accumulator[network.uuid] = mapUserNetworkProfile(network_user_profile);
+    accumulator[network.uuid] = mapUserNetworkProfile(network_user_profile || {});
     return accumulator;
   }, {}),
   profilesByNetworkId: network_user_profiles.reduce((accumulator, { network, ...network_user_profile }) => {
-    accumulator[network.id] = mapUserNetworkProfile(network_user_profile);
+    accumulator[network.id] = mapUserNetworkProfile(network_user_profile || {});
     return accumulator;
   }, {}),
   role: role,

@@ -9,7 +9,7 @@ const InsertNetworkMember = `
       object: {
         network_uuid: $network_uuid,
         user_uuid: $user_uuid,
-        role: "${MEMBER_ROLE}"
+        role: ${MEMBER_ROLE}
       }
     ) {
       __typename

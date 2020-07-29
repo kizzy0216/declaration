@@ -1,7 +1,7 @@
 import { NETWORK_ADMIN_ROLE } from '~/shared/constants';
 
 const GetNetworksWithAdmins = `
-  query GetNetworksWithAdmins($role: String = "${NETWORK_ADMIN_ROLE}") {
+  query GetNetworksWithAdmins($role: user_role_enum = ${NETWORK_ADMIN_ROLE}) {
     network {
       __typename
       uuid

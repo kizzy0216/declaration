@@ -23,6 +23,13 @@
         table:
           schema: public
           name: network_user_profile
+  - name: network_user_relationships
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: network_user_relationship
   - name: network_users
     using:
       foreign_key_constraint_on:
@@ -429,7 +436,11 @@
       - role
       - updated_at
       - user_uuid
-      filter: {}
+      filter:
+        network:
+          network_users:
+            user_uuid:
+              _eq: X-Hasura-User-Id
       allow_aggregations: true
   update_permissions:
   - role: super_admin
@@ -519,7 +530,11 @@
       - solution_bio
       - created_at
       - updated_at
-      filter: {}
+      filter:
+        network:
+          network_users:
+            user_uuid:
+              _eq: X-Hasura-User-Id
   update_permissions:
   - role: super_admin
     permission:
@@ -537,6 +552,158 @@
         user_uuid:
           _eq: X-Hasura-User-Id
       check: null
+- table:
+    schema: public
+    name: network_user_relationship
+  object_relationships:
+  - name: from_user
+    using:
+      foreign_key_constraint_on: from_user_uuid
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  - name: network_user_relationship_type
+    using:
+      foreign_key_constraint_on: type
+  - name: to_user
+    using:
+      foreign_key_constraint_on: to_user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - from_user_uuid
+      - network_uuid
+      - to_user_uuid
+      - type
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+        - _and:
+          - from_user_uuid:
+              _eq: X-Hasura-User-Id
+          - type:
+              _in:
+              - PENDING
+              - BLOCKED
+              - MUTED
+      columns:
+      - from_user_uuid
+      - network_uuid
+      - to_user_uuid
+      - type
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - type
+      - created_at
+      - updated_at
+      - from_user_uuid
+      - network_uuid
+      - to_user_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - uuid
+      - id
+      - network_uuid
+      - from_user_uuid
+      - to_user_uuid
+      - type
+      - created_at
+      - updated_at
+      filter:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+        - _or:
+          - from_user_uuid:
+              _eq: X-Hasura-User-Id
+          - to_user_uuid:
+              _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - type
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - type
+      filter:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+        - _or:
+          - _and:
+            - from_user_uuid:
+                _eq: X-Hasura-User-Id
+            - type:
+                _in:
+                - PENDING
+                - BLOCKED
+                - MUTED
+          - _and:
+            - to_user_uuid:
+                _eq: X-Hasura-User-Id
+            - type:
+                _in:
+                - CONNECTED
+                - BLOCKED
+                - MUTED
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        _and:
+        - network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+        - _or:
+          - from_user_uuid:
+              _eq: X-Hasura-User-Id
+          - _and:
+            - to_user_uuid:
+                _eq: X-Hasura-User-Id
+            - type:
+                _in:
+                - CONNECTED
+                - PENDING
+- table:
+    schema: public
+    name: network_user_relationship_type
+  is_enum: true
+  array_relationships:
+  - name: network_user_relationships
+    using:
+      foreign_key_constraint_on:
+        column: type
+        table:
+          schema: public
+          name: network_user_relationship
 - table:
     schema: public
     name: super_admin
@@ -576,6 +743,13 @@
         column_mapping:
           uuid: user_uuid
   array_relationships:
+  - name: from_network_user_relationships
+    using:
+      foreign_key_constraint_on:
+        column: from_user_uuid
+        table:
+          schema: public
+          name: network_user_relationship
   - name: network_membership_requests
     using:
       foreign_key_constraint_on:
@@ -597,6 +771,13 @@
         table:
           schema: public
           name: network_user
+  - name: to_network_user_relationships
+    using:
+      foreign_key_constraint_on:
+        column: to_user_uuid
+        table:
+          schema: public
+          name: network_user_relationship
   insert_permissions:
   - role: super_admin
     permission:
@@ -855,6 +1036,7 @@
 - table:
     schema: public
     name: user_role
+  is_enum: true
   array_relationships:
   - name: network_users
     using:

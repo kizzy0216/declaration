@@ -18,11 +18,11 @@ function ProfileWorkEditModal({
   const [
     workPlace,
     setWorkPlace,
-  ] = useState(user.profile.workPlace || '');
+  ] = useState(user.profile.workPlace);
   const [
     workTitle,
     setWorkTitle,
-  ] = useState(user.profile.workTitle || '');
+  ] = useState(user.profile.workTitle);
 
   function handleSubmit() {
     onSubmit({

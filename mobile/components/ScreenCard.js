@@ -172,6 +172,7 @@ function ScreenCard({
                       }),
                       backgroundColor: action.backgroundColor || 'white',
                       ...styles.action,
+                      ...action.style,
                     }}
                   >
                     {action.icon}

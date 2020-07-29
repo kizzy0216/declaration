@@ -31,6 +31,7 @@ export const UserContextProvider = ({ userUuid, children }) => {
   });
 
   useEffect(() => {
+    console.dir(getUserResult);
     if (!getUserResult.data.user_by_pk) {
       window.location = `${MARKETING_BASE_URL}/log-out`;
     }

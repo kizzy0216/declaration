@@ -2,7 +2,7 @@ const InsertNetworkWithUser = `
   mutation InsertNetworkWithUser(
     $network_name: String,
     $user_email: String,
-    $user_role: String
+    $user_role: user_role_enum
   ) {
     insert_network(
       objects: {

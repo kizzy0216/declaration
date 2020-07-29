@@ -19,6 +19,7 @@ function Modal({
   heading = '',
   isFetching = false,
   isVisible = false,
+  submitLabel = 'Save',
   onClose = () => {},
   onSubmit = () => {},
   children,
@@ -137,7 +138,7 @@ function Modal({
               heading={heading}
               rightElement={
                 <Button
-                  label="Save"
+                  label={submitLabel}
                   theme="tertiary"
                   size="small"
                   isFetching={isFetching}

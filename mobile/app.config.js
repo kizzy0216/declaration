@@ -5,14 +5,11 @@ const BUILD_ENVIRONMENT_MODE = process.env.BUILD_ENVIRONMENT_MODE || 'developmen
 
 let dotenvPath = '.env';
 if (BUILD_ENVIRONMENT_MODE === 'stage') {
-  console.log('Loading stage environment variables');
   dotenvPath = '.stage.env';
 } else if (BUILD_ENVIRONMENT_MODE === 'production') {
-  console.log('Loading production environment variables');
   dotenvPath = '.production.env';
-} else {
-  console.log('Loading development environment variables');
 }
+
 dotenv.config({
   path: path.resolve(process.cwd(), dotenvPath),
 });
@@ -26,7 +23,7 @@ export default {
   ],
   version: '0.0.1',
   orientation: 'portrait',
-  icon: './assets/images/icon.png',
+  icon: process.env.APPLICATION_ICON,
   scheme: process.env.APPLICATION_SCHEME,
   splash: {
     image: './assets/images/splash.png',
@@ -47,12 +44,12 @@ export default {
     bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    buildNumber: '3',
+    buildNumber: '4',
   },
   android: {
     package: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    versionCode: 3,
+    versionCode: 4,
   },
 }
