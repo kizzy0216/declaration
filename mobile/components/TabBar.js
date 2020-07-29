@@ -24,21 +24,7 @@ function TabBar({ state, descriptors, navigation }) {
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
 
-          // tab is focused if state index matches,
-          // and if matched route has falsey params
-          // this allows screen reusability
-          // (e.g. ProfileScreen used to display authenticated user and a
-          // network member)
-          const isFocused = (
-            state.index === index &&
-            (
-              !state.routes[index].params ||
-              Object
-                .values(state.routes[index].params)
-                .filter(x => x)
-                .length === 0
-            )
-          );
+          const isFocused = (state.index === index);
 
           const onPress = () => {
             const event = navigation.emit({
@@ -48,14 +34,7 @@ function TabBar({ state, descriptors, navigation }) {
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              // navigate with cleared params
-              navigation.navigate(
-                route.name,
-                Object.keys(route.params || {}).reduce((accumulator, key) => {
-                  accumulator[key] = null;
-                  return accumulator;
-                }, {}),
-              );
+              navigation.navigate(route.name);
             }
           };
 

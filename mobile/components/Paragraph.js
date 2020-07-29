@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
+  large: {
+    fontSize: 24,
+    lineHeight: 36,
+  },
 });
 
 export default Paragraph;

@@ -22,6 +22,7 @@ import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvita
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
 import MessagingScreen from '~/screens/MessagingScreen';
 import MembersScreen from '~/screens/MembersScreen';
+import MemberScreen from '~/screens/MemberScreen';
 import EventsScreen from '~/screens/EventsScreen';
 import UserResolutionScreen from '~/screens/UserResolutionScreen';
 import UserOnboardingWelcomeScreen from '~/screens/UserOnboardingWelcomeScreen';
@@ -153,6 +154,10 @@ function RootNavigator({ navigation }) {
         <Stack.Screen
           name="Members"
           component={MembersScreen}
+        />
+        <Stack.Screen
+          name="Member"
+          component={MemberScreen}
         />
         <Stack.Screen
           name="Settings"

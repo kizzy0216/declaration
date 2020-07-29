@@ -71,7 +71,7 @@ function MembersScreen({ navigation }) {
             <MemberCard
               {...item}
               onPress={
-                ({ uuid }) => navigation.navigate('Profile', { uuid })
+                ({ uuid }) => navigation.navigate('Member', { uuid })
               }
             />
           </View>

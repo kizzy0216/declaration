@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const { REST_BASE_URL } = Constants.manifest.extra;
 
 import Paragraph from '~/components/Paragraph';
+import { LIGHT_GRAY } from '~/constants';
 
 function MemberCard({
   uuid,
@@ -38,7 +39,7 @@ function MemberCard({
 
           <Paragraph
             style={styles.heading}
-            size="small"
+            size="large"
           >
             {name}
           </Paragraph>
@@ -55,11 +56,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
-    backgroundColor: 'blue',
     overflow: 'hidden',
   },
   backgroundImage: {
-    backgroundColor: 'red',
+    backgroundColor: LIGHT_GRAY,
     width: '100%',
     aspectRatio: 1.5,
   },
