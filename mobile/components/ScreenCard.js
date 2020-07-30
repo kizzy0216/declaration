@@ -1,6 +1,8 @@
 import React, {
+  useEffect,
   useState,
   useRef,
+  useCallback,
 } from 'react';
 import {
   Animated,
@@ -14,13 +16,15 @@ import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
+import { setStatusBarStyle } from 'expo-status-bar';
+import { useFocusEffect } from '@react-navigation/native';
 
 import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import { WINDOW_WIDTH } from '~/constants';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
 const PULL_DOWN_DISTANCE = WINDOW_WIDTH * -0.5;
-const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.5;
+const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.6;
 
 function ScreenCard({
   uuid,
@@ -37,7 +41,27 @@ function ScreenCard({
       : headerImageSrc
   );
 
+  const statusBarStyle = useRef('light');
   const scrollAnimation = useRef(new Animated.Value(0)).current;
+
+  useFocusEffect(useCallback(() => {
+    setStatusBarStyle('light');
+    return () => {
+      setStatusBarStyle('dark');
+    }
+  }));
+
+  const handleScroll = useCallback(({ nativeEvent: { contentOffset: { y } } }) => {
+    if (y > PULL_UP_DISTANCE && statusBarStyle.current === 'light') {
+      setStatusBarStyle('dark');
+      statusBarStyle.current = 'dark';
+    }
+
+    if (y <= PULL_UP_DISTANCE && statusBarStyle.current === 'dark') {
+      setStatusBarStyle('light');
+      statusBarStyle.current = 'light';
+    }
+  })
 
   return (
     <View style={styles.screenCard}>
@@ -112,7 +136,10 @@ function ScreenCard({
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollAnimation } } }],
-          { useNativeDriver: false },
+          {
+            useNativeDriver: false,
+            listener: handleScroll,
+          },
         )}
       >
         <View style={styles.headerSpacer} />
@@ -222,11 +249,11 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: '100%',
-    aspectRatio: 1,
+    aspectRatio: 0.9,
   },
   headerSpacer: {
     width: '100%',
-    aspectRatio: 1.75,
+    aspectRatio: 1.5,
   },
   gradientWrapper: {
     position: 'absolute',

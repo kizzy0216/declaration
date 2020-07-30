@@ -17,7 +17,6 @@ import Button from '~/components/Button';
 import AvatarPicker from '~/components/AvatarPicker';
 import {
   COUNT_USER_ONBOARDING_OPTIONAL_PAGES,
-  GRAY,
 } from '~/constants';
 import { UserContext } from '~/contexts/UserContext';
 import { fetchREST } from '~/utils/api';
@@ -103,10 +102,6 @@ function UserOnboardingPhotoScreen({ navigation }) {
         <DisplayHeading style={styles.heading}>
           Add your profile photo
         </DisplayHeading>
-        <Text style={styles.subHeading}>
-          Our networks are built on a strong sense of community, tap the
-          default photo below to upload your own.
-        </Text>
         <AvatarPicker
           user={user}
           photo={photo}
@@ -139,12 +134,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 20,
-  },
-  subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
   },
 });
 

@@ -93,7 +93,7 @@ function UserOnboardingDateOfBirthScreen({ navigation }) {
           What's your date of birth?
         </DisplayHeading>
         <Text style={styles.subHeading}>
-          This information will not be publicly available to other members.
+          This information will not be made public.
         </Text>
         <DateTimePicker
           mode="date"

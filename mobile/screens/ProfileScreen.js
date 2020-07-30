@@ -112,8 +112,8 @@ function ProfileScreen({ navigation }) {
       >
         <View style={styles.container}>
           <View style={styles.nameWrapper}>
-            <DisplayHeading>
-              {authenticatedUser.name}
+            <DisplayHeading size="large">
+              {`${authenticatedUser.name.split(' ').join('\n')}`}
             </DisplayHeading>
           </View>
           <View style={styles.personalBioWrapper}>

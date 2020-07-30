@@ -16,7 +16,6 @@ import Button from '~/components/Button';
 import TextInput from '~/components/TextInput';
 import {
   COUNT_USER_ONBOARDING_REQUIRED_PAGES,
-  GRAY,
   IS_IOS,
 } from '~/constants';
 import { UserContext } from '~/contexts/UserContext';
@@ -62,9 +61,6 @@ function UserOnboardingNameScreen({ navigation }) {
           <DisplayHeading style={styles.heading}>
             What's your name?
           </DisplayHeading>
-          <Text style={styles.subHeading}>
-            Use your full name here so that other members can find you
-          </Text>
           <TextInput
             placeholder="Full name"
             value={name}
@@ -102,12 +98,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 20,
-  },
-  subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
   },
   footer: {
     paddingRight: 20,

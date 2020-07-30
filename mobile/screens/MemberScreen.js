@@ -226,7 +226,8 @@ function MemberScreen({ navigation, route }) {
   return (
     <>
       <DoubleConfirmModal
-        heading="Are you sure you want to send a connection request?"
+        heading={`Want to connect with ${user.name}?`}
+        subHeading="The feeling has to be mutual. We'll send a request on your behalf to elevate each other's contributions to the network and allow direct communication."
         submitLabel="Yes, send connection request"
         cancelLabel="No, cancel"
         isVisible={isDoubleConfirmConnectionModalActive}
@@ -234,7 +235,8 @@ function MemberScreen({ navigation, route }) {
         onCancel={() => setIsDoubleConfirmConnectionModalActive(false)}
       />
       <DoubleConfirmModal
-        heading="Are you sure you want to disconnect?"
+        heading={`Disconnect from ${user.name}?`}
+        subHeading="Communication between you and them will be limited, as well as contributions to the network."
         submitLabel="Yes, disconnect"
         cancelLabel="No, cancel"
         isVisible={isDoubleConfirmDisconnectionModalActive}
@@ -242,7 +244,8 @@ function MemberScreen({ navigation, route }) {
         onCancel={() => setIsDoubleConfirmDisconnectionModalActive(false)}
       />
       <ChoiceModal
-        heading="Do you approve this connection?"
+        heading={`Want to connect with ${user.name}?`}
+        subHeading="Direct communication between you and them will be enabled, and each other's contributions to the network will be elevated."
         acceptLabel="Yes, let's connect"
         declineLabel="No, decline"
         isVisible={isChoiceModalActive}
@@ -258,15 +261,16 @@ function MemberScreen({ navigation, route }) {
             user={user}
             scrollAnimation={scrollAnimation}
             showSettings={false}
+            showClose={true}
+            onClose={() => navigation.goBack()}
           />
         )}
-        stamp="Create positive social impact."
         actions={actions}
       >
         <View style={styles.container}>
           <View style={styles.nameWrapper}>
-            <DisplayHeading>
-              {user.name}
+            <DisplayHeading size="large">
+              {`${user.name.split(' ').join('\n')}`}
             </DisplayHeading>
           </View>
           <View style={styles.personalBioWrapper}>

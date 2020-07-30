@@ -4,6 +4,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import ScreenHeader from '~/components/ScreenHeader';
 import SettingsIcon from 'Shared/components/icons/SettingsIcon';
+import CloseIcon from 'Shared/components/icons/CloseIcon';
 import { WINDOW_WIDTH } from '~/constants';
 
 const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.5;
@@ -12,7 +13,9 @@ function ProfileHeader({
   user,
   scrollAnimation,
   showSettings = false,
+  showClose = false,
   onSettingsPress = () => {},
+  onClose = () => {},
 }) {
   return (
     <ScreenHeader
@@ -31,6 +34,20 @@ function ProfileHeader({
       rightElement={showSettings ? (
         <BorderlessButton onPress={onSettingsPress}>
           <SettingsIcon
+            width={22}
+            height={22}
+            fill={
+              scrollAnimation.interpolate({
+                inputRange: [0, PULL_UP_DISTANCE],
+                outputRange: ['#FFFFFF', '#000000'],
+                extrapolate: 'clamp',
+              })
+            }
+          />
+        </BorderlessButton>
+      ) : showClose ? (
+        <BorderlessButton onPress={onClose}>
+          <CloseIcon
             width={22}
             height={22}
             fill={

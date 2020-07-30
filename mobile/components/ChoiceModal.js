@@ -10,6 +10,7 @@ import Paragraph from '~/components/Paragraph';
 
 function ChoiceModal({
   heading = 'Do you want to accept this?',
+  subHeading = '',
   acceptLabel = 'Yes, I accept',
   declineLabel = 'No, I decline',
   isFetching = false,
@@ -29,6 +30,15 @@ function ChoiceModal({
         <Paragraph style={styles.heading}>
           {heading}
         </Paragraph>
+
+        {subHeading.length > 0 &&
+          <Paragraph
+            style={styles.subHeading}
+            size="small"
+          >
+            {subHeading}
+          </Paragraph>
+        }
 
         <View style={styles.row}>
           <Button
@@ -56,9 +66,13 @@ const styles = StyleSheet.create({
   heading: {
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
+  },
+  subHeading: {
+    textAlign: 'center',
   },
   row: {
+    marginTop: 40,
     marginBottom: 10,
   },
 });

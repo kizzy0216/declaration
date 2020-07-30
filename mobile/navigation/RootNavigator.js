@@ -130,6 +130,9 @@ function RootNavigator({ navigation }) {
         <Stack.Screen
           name="NetworkMembershipSelect"
           component={NetworkMembershipSelectScreen}
+          initialParams={{
+            shouldRedirect: false,
+          }}
         />
         <Stack.Screen
           name="NetworkMembershipRequest"

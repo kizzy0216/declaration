@@ -22,7 +22,6 @@ import TextInput from '~/components/TextInput';
 import { UserContext } from '~/contexts/UserContext';
 import {
   COUNT_USER_ONBOARDING_REQUIRED_PAGES,
-  GRAY,
   RED,
   IS_IOS,
 } from '~/constants';
@@ -98,10 +97,6 @@ function UserOnboardingUsernameScreen({ navigation }) {
           <DisplayHeading style={styles.heading}>
             Enter a username.
           </DisplayHeading>
-          <Text style={styles.subHeading}>
-            This is your unique handle across all networks, and what other
-            members will @mention to get your feedback
-          </Text>
           <TextInput
             placeholder="username"
             autoCorrect={false}
@@ -142,12 +137,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 20,
-  },
-  subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
   },
   footer: {
     paddingRight: 20,

@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
 
@@ -37,9 +38,14 @@ function MemberCard({
             source={{ uri: imageSrc }}
           />
 
+          <LinearGradient
+            colors={['rgba(0,0,0,0)','rgba(0,0,0,0.4)']}
+            style={styles.gradient}
+          />
+
           <Paragraph
             style={styles.heading}
-            size="large"
+            size="huge"
           >
             {name}
           </Paragraph>
@@ -70,6 +76,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  gradient: {
+    position: 'absolute',
+    width: '100%',
+    height: 100,
   },
 });
 

@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   large: {
+    fontSize: 20,
+    lineHeight: 30,
+  },
+  huge: {
     fontSize: 24,
     lineHeight: 36,
   },

@@ -10,6 +10,7 @@ import Paragraph from '~/components/Paragraph';
 
 function DoubleConfirmModal({
   heading = 'Are you sure?',
+  subHeading = '',
   submitLabel = 'Yes, do it',
   cancelLabel = 'No, cancel',
   isFetching = false,
@@ -25,9 +26,21 @@ function DoubleConfirmModal({
       onClose={onCancel}
     >
       <View style={styles.container}>
-        <Paragraph style={styles.heading}>
+        <Paragraph
+          style={styles.heading}
+          size="large"
+        >
           {heading}
         </Paragraph>
+
+        {subHeading.length > 0 &&
+          <Paragraph
+            style={styles.subHeading}
+            size="small"
+          >
+            {subHeading}
+          </Paragraph>
+        }
 
         <View style={styles.row}>
           <Button
@@ -55,9 +68,13 @@ const styles = StyleSheet.create({
   heading: {
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
+  },
+  subHeading: {
+    textAlign: 'center',
   },
   row: {
+    marginTop: 40,
     marginBottom: 10,
   },
 });

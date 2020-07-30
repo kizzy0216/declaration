@@ -17,10 +17,14 @@ import mapNetwork from 'Shared/mappings/mapNetwork';
 import { UserContext } from '~/contexts/UserContext';
 import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
 
-function NetworkMembershipSelectScreen({ navigation }) {
+function NetworkMembershipSelectScreen({ navigation, route }) {
+  const { shouldRedirect } = route.params;
+
   const {
     user,
+    refresh: refreshUser,
     hasSettled,
+    hasNetworks,
     logOut,
   } = useContext(UserContext);
   const [
@@ -52,11 +56,24 @@ function NetworkMembershipSelectScreen({ navigation }) {
     );
   }
 
-  function handleRefresh() {
-    getNetworks({ 
-      requestPolicy: 'network-only',
-    });
+  async function handleRefresh() {
+    await Promise.all([
+      getNetworks({ 
+        requestPolicy: 'network-only',
+      }),
+      refreshUser(),
+    ]);
   }
+
+  useEffect(() => {
+    if (hasNetworks && shouldRedirect) {
+      navigation.dispatch(
+        StackActions.replace('Authentication', {
+          screen: 'UserResolution',
+        })
+      );
+    }
+  }, [hasNetworks]);
 
   return (
     <SafeAreaView style={styles.container}>

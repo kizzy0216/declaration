@@ -17,7 +17,7 @@ function NetworkMembershipRequestFeedbackScreen() {
 
       <Text style={styles.subHeading}>
         We’ve notified the network adminstrator to grant you access. Once
-        they accept your request, you’ll receive an email invite to join.
+        they accept your request, you’ll receive access to the network.
       </Text>
     </SafeAreaView>
   );

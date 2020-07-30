@@ -45,9 +45,7 @@ function ScreenHeader({
         {rightElement ? (
           rightElement
         ) : (
-          <BorderlessButton
-            onPress={onClose}
-          >
+          <BorderlessButton onPress={onClose}>
             <CloseIcon
               width={22}
               height={22}

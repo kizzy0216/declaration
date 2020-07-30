@@ -36,7 +36,10 @@ function UserResolutionScreen ({ navigation, route }) {
     if (!hasNetworks) {
       return navigation.dispatch(
         StackActions.replace('Root', {
-          screen: 'NetworkMembershipSelect'
+          screen: 'NetworkMembershipSelect',
+          params: {
+            shouldRedirect: true,
+          },
         })
       );
     }
