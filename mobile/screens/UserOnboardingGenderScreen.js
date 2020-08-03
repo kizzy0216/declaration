@@ -10,26 +10,19 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useMutation } from 'urql';
 
 import UpdateUserProfilePrivateGender from '~/mutations/UpdateUserProfilePrivateGender';
 import ScreenHeader from '~/components/ScreenHeader';
+import GenderInput from '~/components/GenderInput';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
-import TextInput from '~/components/TextInput';
 import { UserContext } from '~/contexts/UserContext';
 import {
   COUNT_USER_ONBOARDING_REQUIRED_PAGES,
   GRAY,
   IS_IOS,
 } from '~/constants';
-
-const GENDER_TAGS = [
-  'Male',
-  'Female',
-  'Undisclosed',
-];
 
 function UserOnboardingGenderScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -76,28 +69,10 @@ function UserOnboardingGenderScreen({ navigation }) {
             This information will not be publicly visible, but may be used by
             members seeking gendered support or advice.
           </Text>
-          <TextInput
-            placeholder="Gender"
-            value={gender}
-            onChange={setGender}
+          <GenderInput
+            gender={gender}
+            setGender={setGender}
           />
-          <View>
-            <ScrollView
-              style={styles.tags}
-              horizontal={true}
-            >
-              {GENDER_TAGS.map((tag) => (
-                <TouchableOpacity
-                  key={tag}
-                  onPress={() => setGender(tag)}
-                >
-                  <Text style={styles.tag}>
-                    {tag}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
         </View>
         <View style={styles.footer}>
           <Button
@@ -135,15 +110,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 5,
     color: GRAY,
-  },
-  tags: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  tag: {
-    textDecorationLine: 'underline',
-    fontSize: 16,
-    marginRight: 10,
   },
   footer: {
     paddingRight: 20,

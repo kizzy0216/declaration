@@ -8,20 +8,12 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
-import {
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
 
 import Modal from '~/components/Modal';
 import TextInput from '~/components/TextInput';
+import GenderInput from '~/components/GenderInput';
 import DateTimePicker from '~/components/DateTimePicker';
 import UserProfileUsernameInputContainer from '~/containers/UserProfileUsernameInputContainer';
-
-const GENDER_TAGS = [
-  'Male',
-  'Female',
-  'Undisclosed',
-];
 
 function ProfileEditModal({
   user,
@@ -109,29 +101,11 @@ function ProfileEditModal({
                 />
               </View>
               <View style={styles.row}>
-                <TextInput
-                  label="Gender"
-                  placeholder="Gender"
-                  value={gender}
-                  onChange={setGender}
+                <GenderInput
+                  gender={gender}
+                  setGender={setGender}
+                  withLabel={true}
                 />
-                <View>
-                  <ScrollView
-                    style={styles.tags}
-                    horizontal={true}
-                  >
-                    {GENDER_TAGS.map((tag) => (
-                      <TouchableOpacity
-                        key={tag}
-                        onPress={() => setGender(tag)}
-                      >
-                        <Text style={styles.tag}>
-                          {tag}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -149,15 +123,6 @@ const styles = StyleSheet.create({
   },
   row: {
     marginBottom: 20,
-  },
-  tags: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  tag: {
-    textDecorationLine: 'underline',
-    fontSize: 16,
-    marginRight: 10,
   },
 });
 
