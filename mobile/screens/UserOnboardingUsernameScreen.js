@@ -1,7 +1,6 @@
 import React, {
   useState,
   useContext,
-  useEffect,
 } from 'react';
 import {
   StyleSheet,
@@ -11,60 +10,39 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useMutation, useQuery } from 'urql';
+import { useMutation } from 'urql';
 
-import GetUsersWithUsername from '~/queries/GetUsersWithUsername';
 import UpdateUserProfileUsername from '~/mutations/UpdateUserProfileUsername';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
-import TextInput from '~/components/TextInput';
 import { UserContext } from '~/contexts/UserContext';
 import {
   COUNT_USER_ONBOARDING_REQUIRED_PAGES,
   RED,
   IS_IOS,
 } from '~/constants';
-import isValidUsername from 'Shared/utils/isValidUsername';
-import useDebouncedState from 'Shared/hooks/useDebouncedState';
+import UserProfileUsernameInputContainer from '~/containers/UserProfileUsernameInputContainer';
 
 function UserOnboardingUsernameScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [username, setUsername] = useState(user.profile.username || '');
-  const debouncedUsername = useDebouncedState(username, 300);
-  const [
-    getUsersWithUsernameResult,
-    getUsersWithUsername,
-  ] = useQuery({
-    query: GetUsersWithUsername,
-    variables: {
-      username: debouncedUsername,
-    },
-    pause: !debouncedUsername,
-  });
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [
     updateUsernameResult,
     updateUsername,
   ] = useMutation(UpdateUserProfileUsername);
 
-  const { isValid, error: validationError } = isValidUsername(username);
-  const isTaken = (
-    !getUsersWithUsernameResult.fetching &&
-    getUsersWithUsernameResult.data &&
-    getUsersWithUsernameResult.data.user_profile &&
-    getUsersWithUsernameResult.data.user_profile.length > 0 &&
-    getUsersWithUsernameResult.data.user_profile[0].uuid !== user.profile.uuid
-  );
-  const isDisabled = (!isValid || isTaken || getUsersWithUsernameResult.fetching);
-  const takenError = (
-    isTaken
-      ? 'Username taken'
-      : ''
-  );
-
-  useEffect(() => {
-    getUsersWithUsername();
-  }, [debouncedUsername]);
+  const handleUsernameChange = ({
+    username,
+    isDisabled,
+    isFetching,
+  }) => {
+    setUsername(username);
+    setIsDisabled(isDisabled);
+    setIsFetching(isFetching);
+  }
 
   const handleSubmit = () => {
     if (user.profile.username === username) {
@@ -97,21 +75,15 @@ function UserOnboardingUsernameScreen({ navigation }) {
           <DisplayHeading style={styles.heading}>
             Enter a username.
           </DisplayHeading>
-          <TextInput
-            placeholder="username"
-            autoCorrect={false}
-            autoCapitalize="none"
-            maxLength={16}
-            error={validationError || takenError}
-            value={username}
-            onChange={username => setUsername(username.toLowerCase())}
+          <UserProfileUsernameInputContainer
+            onChange={handleUsernameChange}
           />
         </View>
         <View style={styles.footer}>
           <Button
             label="Next"
             isDisabled={isDisabled}
-            isFetching={getUsersWithUsernameResult.fetching || updateUsernameResult.fetching}
+            isFetching={isFetching || updateUsernameResult.fetching}
             onPress={handleSubmit}
           />
         </View>

@@ -13,7 +13,7 @@ import {
 } from '~/constants';
 
 function TextInput({
-  label,
+  label = '',
   error = '',
   placeholder,
   onChange = () => {},
@@ -22,7 +22,7 @@ function TextInput({
 }) {
   return (
     <View style={[styles.container, props.style]}>
-      {label &&
+      {label.length > 0 &&
         <Text style={styles.label}>
           {label}
         </Text>

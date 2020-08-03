@@ -19,6 +19,7 @@ function Modal({
   heading = '',
   isFetching = false,
   isVisible = false,
+  isSubmitDisabled = false,
   submitLabel = 'Save',
   onClose = () => {},
   onSubmit = () => {},
@@ -142,6 +143,7 @@ function Modal({
                   theme="tertiary"
                   size="small"
                   isFetching={isFetching}
+                  isDisabled={isSubmitDisabled}
                   onPress={onSubmit}
                 />
               }

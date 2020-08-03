@@ -15,6 +15,7 @@ import {
 import Modal from '~/components/Modal';
 import TextInput from '~/components/TextInput';
 import DateTimePicker from '~/components/DateTimePicker';
+import UserProfileUsernameInputContainer from '~/containers/UserProfileUsernameInputContainer';
 
 const GENDER_TAGS = [
   'Male',
@@ -34,6 +35,8 @@ function ProfileEditModal({
   const [personalBio, setPersonalBio] = useState(user.profile.personalBio || '');
   const [gender, setGender] = useState(user.profile.private.gender || '');
   const [dateOfBirth, setDateOfBirth] = useState(user.profile.private.dateOfBirth || null);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isFetchingUsername, setIsFetchingUsername] = useState(false);
 
   function handleSubmit() {
     onSubmit({
@@ -45,13 +48,24 @@ function ProfileEditModal({
     });
   }
 
+  function handleUsernameChange({
+    username,
+    isDisabled,
+    isFetching,
+  }) {
+    setUsername(username);
+    setIsDisabled(isDisabled);
+    setIsFetchingUsername(isFetching);
+  }
+
   return (
     <Modal
       position="bottom"
       hasDragHandle={false}
       heading="Profile details"
       isVisible={isVisible}
-      isFetching={isFetching}
+      isFetching={isFetching || isFetchingUsername}
+      isSubmitDisabled={isDisabled}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
@@ -69,14 +83,9 @@ function ProfileEditModal({
                 />
               </View>
               <View style={styles.row}>
-                <TextInput
-                  label="Username"
-                  placeholder="username"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  maxLength={16}
-                  value={username}
-                  onChange={username => setUsername(username.toLowerCase())}
+                <UserProfileUsernameInputContainer
+                  hasLabel={true}
+                  onChange={handleUsernameChange}
                 />
               </View>
               <View style={styles.row}>
