@@ -38,6 +38,7 @@ const mapUserProfile = ({
   id,
   username,
   location,
+  location_latitude_longitude,
   photo,
   personal_bio,
   educational_institution,
@@ -52,6 +53,11 @@ const mapUserProfile = ({
   id,
   username,
   location: location || '',
+  latitudeLongitude: (
+    location_latitude_longitude
+    ? location_latitude_longitude.split(',').map((l) => Number(l.replace(/[\(\)]/g, '')))
+    : [NaN, NaN]
+  ),
   photo,
   personalBio: personal_bio || '',
   educationalInstitution: educational_institution || '',

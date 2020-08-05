@@ -1,5 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, {
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 import {
+  Animated,
   StyleSheet,
   View,
   Text,
@@ -14,23 +20,37 @@ import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
-import TextInput from '~/components/TextInput';
+import UserProfileLocationInputContainer from '~/containers/UserProfileLocationInputContainer';
 import {
   COUNT_USER_ONBOARDING_OPTIONAL_PAGES,
   GRAY,
   IS_IOS,
 } from '~/constants';
 import { UserContext } from '~/contexts/UserContext';
+import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function UserOnboardingLocationScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [location, setLocation] = useState(user.profile.location || '');
+  const [place, setPlace] = useState({});
+  const [isFetching, setIsFetching] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [
     updateLocationResult,
     updateLocation,
   ] = useMutation(UpdateUserProfileLocation);
+  const isKeyboardShowing = useIsKeyboardShowing();
+  const translateYAnimation = useRef(new Animated.Value(0)).current;
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    Animated.timing(translateYAnimation, {
+      toValue: (isKeyboardShowing ? 1 : 0),
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isKeyboardShowing]);
+
+  function handleSubmit () {
     if (user.profile.location === location) {
       return navigation.navigate('UserOnboardingEducationalInstitution');
     }
@@ -38,9 +58,22 @@ function UserOnboardingLocationScreen({ navigation }) {
     updateLocation({
       uuid: user.profile.uuid,
       location,
+      location_latitude_longitude: `(${place.latitudeLongitude.join(',')})`,
     }).then(() => {
       navigation.navigate('UserOnboardingEducationalInstitution');
     });
+  }
+
+  function handleChange({
+    location,
+    place,
+    isFetching,
+    isDisabled,
+  }) {
+    setLocation(location);
+    setPlace(place);
+    setIsFetching(isFetching);
+    setIsDisabled(isDisabled);
   }
 
   return (
@@ -57,7 +90,19 @@ function UserOnboardingLocationScreen({ navigation }) {
           countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
           rightElement={<></>}
         />
-        <View style={styles.container}>
+        <Animated.View
+          style={{
+            ...styles.container,
+            transform: [
+              {
+                translateY: translateYAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -50],
+                }),
+              },
+            ],
+          }}
+        >
           <DisplayHeading style={styles.heading}>
             Where do you live currently?
           </DisplayHeading>
@@ -65,15 +110,11 @@ function UserOnboardingLocationScreen({ navigation }) {
             Your rough location may be used by members seeking support by
             those geographically close to them. Optional.
           </Text>
-          <TextInput
-            placeholder="City, State"
-            value={location}
-            onChange={setLocation}
-            autoCapitalize="words"
-          />
-        </View>
+          <UserProfileLocationInputContainer onChange={handleChange} />
+        </Animated.View>
         <UserOnboardingFooter
-          isFetching={updateLocationResult.fetching}
+          isFetching={updateLocationResult.fetching || isFetching}
+          isDisabled={isDisabled}
           onSkip={() => navigation.navigate('UserOnboardingEducationalInstitution')}
           onNext={handleSubmit}
         />

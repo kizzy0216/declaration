@@ -66,7 +66,7 @@ function DateTimePicker({
             onPress={() => setIsActive(!isActive)}
             theme="secondary"
             labelWrapperStyle={styles.labelWrapperStyle}
-            labelStyle={styles.buttonLabelStyle}
+            labelStyle={[styles.buttonLabelStyle, hasSelected && styles.buttonLabelStyleSelected]}
           />
 
           {isActive && element}
@@ -111,6 +111,9 @@ const styles = StyleSheet.create({
   buttonLabelStyle: {
     fontWeight: 'normal',
     color: GRAY,
+  },
+  buttonLabelStyleSelected: {
+    color: 'black',
   },
   error: {
     color: RED,

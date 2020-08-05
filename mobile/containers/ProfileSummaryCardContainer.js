@@ -31,10 +31,11 @@ function ProfileSummaryCardContainer({
   const [isEditWorkModalActive, setIsEditWorkModalActive] = useState(false);
   const [isEditEducationModalActive, setIsEditEducationModalActive] = useState(false);
 
-  function handleLocationSubmit({ location }) {
+  function handleLocationSubmit({ location, latitudeLongitude }) {
     updateLocation({
       uuid: user.profile.uuid,
       location,
+      location_latitude_longitude: `(${latitudeLongitude.join(',')})`,
     }).then(() => {
       onUpdate();
       setIsEditLocationModalActive(false);

@@ -8,6 +8,7 @@ import Button from '~/components/Button';
 
 const UserOnboardingFooter = ({
   isFetching = false,
+  isDisabled = false,
   onNext = () => {},
   onSkip = () => {},
 }) => {
@@ -24,6 +25,7 @@ const UserOnboardingFooter = ({
         <Button
           label="Next"
           isFetching={isFetching}
+          isDisabled={isDisabled}
           onPress={onNext}
         />
       </View>

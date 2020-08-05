@@ -5,9 +5,7 @@ import {
   ScrollView,
   Text,
 } from 'react-native';
-import {
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import TextInput from '~/components/TextInput';
 

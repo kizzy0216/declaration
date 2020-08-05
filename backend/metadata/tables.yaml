@@ -863,6 +863,7 @@
       - educational_institution
       - id
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - updated_at
@@ -882,6 +883,7 @@
       - created_at
       - educational_institution
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - updated_at
@@ -899,6 +901,7 @@
       - educational_institution
       - id
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - updated_at
@@ -916,6 +919,7 @@
       - educational_institution
       - id
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - updated_at
@@ -932,6 +936,7 @@
       columns:
       - educational_institution
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - username
@@ -945,6 +950,7 @@
       columns:
       - educational_institution
       - location
+      - location_latitude_longitude
       - personal_bio
       - photo
       - username

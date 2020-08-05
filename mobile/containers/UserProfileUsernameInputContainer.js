@@ -56,7 +56,7 @@ function UserProfileUsernameInputContainer({
     });
   }, [isDisabled, debouncedUsername, getUsersWithUsernameResult.fetching]);
 
-  function onLocalChange (username) {
+  function handleChange (username) {
     setUsername(username.toLowerCase());
   }
 
@@ -69,7 +69,7 @@ function UserProfileUsernameInputContainer({
       maxLength={16}
       error={validationError || takenError}
       value={username}
-      onChange={onLocalChange}
+      onChange={handleChange}
     />
   );
 }
