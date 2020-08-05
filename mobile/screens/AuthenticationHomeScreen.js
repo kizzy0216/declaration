@@ -3,37 +3,47 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Logo from 'Shared/components/Logo';
+import VideoBackground from '~/components/VideoBackground';
 import Button from '~/components/Button';
 
 function AuthenticationHomeScreen({ navigation }) {
   return (
-    <ImageBackground
-      source={require('~/assets/images/authentication-home-background.jpg')}
-      style={styles.imageBackground}
+    <VideoBackground
+      source={require('~/shared/videos/home-background.mp4')}
+      posterSource={require('~/shared/images/home-background.jpg')}
+      withGradient={true}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.logoWrapper}>
-            <Image
-              source={require('~/shared/images/logo-white.png')}
-              style={styles.logo}
+            <Logo
+              width={161}
+              height={15}
+              fill="white"
             />
           </View>
-          <Text style={styles.subHeading}>
-            Private networking made easy
-          </Text>
         </View>
         <View style={styles.footer}>
+          <Text style={styles.heading}>
+            Built for those{'\n'}
+            who dare to be great
+          </Text>
+          <Text style={styles.subHeading}>
+            A private social advising network designed to create positive
+            social impact.
+          </Text>
           <Button
             label="Log In"
             theme="primary"
             onPress={() => navigation.navigate('AuthenticationLogIn', { email: null, code: null })}
-            style={{ width: '100%' }}
+            style={{
+              width: '100%',
+              marginBottom: 40,
+            }}
           />
           <Button
             label="Create Your Own Network"
@@ -41,11 +51,12 @@ function AuthenticationHomeScreen({ navigation }) {
             onPress={() => navigation.navigate('NetworkAccessRequest')}
             labelStyle={{
               color: 'white',
+              textDecorationLine: 'underline',
             }}
           />
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </VideoBackground>
   );
 }
 
@@ -56,9 +67,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    paddingTop: 150,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingTop: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -66,30 +77,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
   },
-  logo: {
-    flex: 1,
-    width: null,
-    height: null,
-    aspectRatio: 298/28,
-    resizeMode: 'contain',
+  heading: {
+    color: 'white',
+    fontSize: 40,
+    textAlign: 'center',
+    fontFamily: 'Requiem-Display',
+    marginBottom: 10,
   },
   subHeading: {
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    lineHeight: 28,
+    textAlign: 'center',
+    marginBottom: 30,
   },
   footer: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 20,
-    paddingBottom: 30,
-    paddingLeft: 20,
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
+    paddingRight: 30,
+    paddingBottom: 20,
+    paddingLeft: 30,
   },
 });
 

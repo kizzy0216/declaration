@@ -1,12 +1,46 @@
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 function IndexPageHero() {
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const videoRef = useRef();
+
+  function handlePlay() {
+    setHasLoaded(true);
+  }
+
+  useEffect(() => {
+    if (videoRef.current.readyState === 4) {
+      setHasLoaded(true);
+    }
+  }, []);
+
   return (
     <section className="index-page-hero">
-      <img
-        src="/images/index-hero-background.jpg"
-        className="background-image"
-      />
+      <div
+        className={[
+          'background',
+          hasLoaded && 'video-loaded',
+        ].filter(x => x).join(' ')}
+      >
+        <div className="background-container">
+          <img
+            src="/images/index-hero-background.jpg"
+            className="background-image"
+          />
+          <video
+            ref={videoRef}
+            src="/videos/home-background.mp4"
+            className="background-video"
+            loop
+            muted
+            autoPlay
+            playsInline
+            type={'video/mp4'}
+            onLoad={handlePlay}
+          />
+        </div>
+      </div>
 
       <div className="container">
         <h1>
@@ -68,15 +102,50 @@ function IndexPageHero() {
           }
         }
 
-        .background-image {
+        .background {
           width: 100%;
           height: 100%;
-          object-position: 50% 50%;
-          object-fit: cover;
           position: absolute;
           top: 0;
           left: 0;
           z-index: var(--z-index-bottom);
+
+          & .background-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+          }
+
+          & img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: cover;
+          }
+
+          & video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: cover;
+            opacity: 0;
+          }
+
+          &.video-loaded {
+           & img {
+            opacity: 0;
+           }
+
+           & video {
+            opacity: 1;
+           }
+          }
         }
 
         a {
