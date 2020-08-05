@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     backgroundColor: GRAY,
   },
   small: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
   },
   medium: {
     width: 48,
@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
     left: 0,
   },
   smallImage: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
   },
   mediumImage: {
     width: 48,
