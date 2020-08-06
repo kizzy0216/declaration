@@ -13,7 +13,7 @@ import { IS_IOS } from '~/constants';
 import TextInput from '~/components/TextInput';
 import RadioGroup from '~/components/RadioGroup';
 import CheckboxGroup from '~/components/CheckboxGroup';
-import DateTimePicker from '~/components/DateTimePicker';
+import DateTimePickerGroup from '~/components/DateTimePickerGroup';
 
 const DURATION_OPTIONS = [
   {
@@ -62,13 +62,12 @@ function CreateContentSessionScreen({ navigation }) {
   const [duration, setDuration] = useState(DURATION_OPTIONS[0].value);
   const [availableDays, setAvailableDays] = useState([]);
   const [
-    timeAvailableFrom,
-    setTimeAvailableFrom,
-  ] = useState(new Date(new Date().setHours(9)).setMinutes(30));
-  const [
-    timeAvailableTo, 
-    setTimeAvailableTo,
-  ] = useState(new Date(new Date().setHours(18)).setMinutes(0));
+    timesAvailable,
+    setTimesAvailable,
+  ] = useState([
+    new Date(new Date().setHours(9)).setMinutes(30),
+    new Date(new Date().setHours(18)).setMinutes(0),
+  ]);
   const isDisabled = (false);
 
   return (
@@ -131,22 +130,14 @@ function CreateContentSessionScreen({ navigation }) {
           </View>
 
           <View style={styles.row}>
-            <DateTimePicker
-              label="Available from"
+            <DateTimePickerGroup
+              label="Available between"
               mode="time"
-              value={timeAvailableFrom}
-              onChange={setTimeAvailableFrom}
+              values={timesAvailable}
+              onChange={setTimesAvailable}
             />
           </View>
 
-          <View style={styles.row}>
-            <DateTimePicker
-              label="Available to"
-              mode="time"
-              value={timeAvailableTo}
-              onChange={setTimeAvailableTo}
-            />
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -19,7 +19,7 @@ import {
 } from 'Shared/utils/formatDate';
 
 function DateTimePicker({
-  label,
+  label = '',
   value,
   error = '',
   placeholder,
@@ -58,7 +58,7 @@ function DateTimePicker({
 
   return (
     <View style={[styles.container, props.style]}>
-      {label &&
+      {label.length > 0 &&
         <Text style={styles.label}>
           {label}
         </Text>

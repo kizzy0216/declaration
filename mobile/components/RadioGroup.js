@@ -40,7 +40,7 @@ function RadioGroup({
               style={[
                 styles.button,
                 (option.value === value) && styles.selected,
-                index % 2 ? styles.odd : styles.even,
+                index % 2 ? styles.even : styles.odd,
               ]}
             >
               <Text style={styles.buttonLabel}>
@@ -57,7 +57,6 @@ function RadioGroup({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 17,
-    width: '100%',
     overflow: 'visible',
     backgroundColor: LIGHT_GRAY,
     paddingTop: 20,
@@ -84,10 +83,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   even: {
-    marginRight: 10,
+    marginLeft: 5,
   },
   odd: {
-    marginLeft: 10,
+    marginRight: 5,
   },
 });
 
