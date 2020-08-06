@@ -4,7 +4,9 @@ import {
   View,
   Text,
 } from 'react-native';
+import { TransitionPresets } from '@react-navigation/stack';
 
+import CreateNavigator from '~/navigation/CreateNavigator';
 import NetworkTabNavigator from '~/navigation/NetworkTabNavigator';
 import SettingsScreen from '~/screens/SettingsScreen';
 import ContactUsScreen from '~/screens/ContactUsScreen';
@@ -114,6 +116,13 @@ function RootNavigator({ navigation }) {
         <Stack.Screen
           name="NetworkTab"
           component={NetworkTabNavigator}
+        />
+        <Stack.Screen
+          name="Create"
+          component={CreateNavigator}
+          options={{
+            ...TransitionPresets.ModalSlideFromBottomIOS,
+          }}
         />
         <Stack.Screen
           name="NetworkAccessRequest"

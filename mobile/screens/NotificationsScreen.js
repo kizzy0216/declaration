@@ -70,7 +70,10 @@ function NotificationsScreen({ navigation }) {
         {MOCK_ITEMS.length > 0 
           ? (
             MOCK_ITEMS.map((item) => (
-              <View style={styles.callToActionWrapper}>
+              <View
+                style={styles.callToActionWrapper}
+                key={item.id}
+              >
                 <CallToActionButton
                   {...item}
                 />

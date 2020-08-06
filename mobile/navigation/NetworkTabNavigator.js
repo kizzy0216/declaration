@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FeedScreen from '~/screens/FeedScreen';
 import ArchiveScreen from '~/screens/ArchiveScreen';
-import CreateScreen from '~/screens/CreateScreen';
 import NotificationsScreen from '~/screens/NotificationsScreen';
 import ProfileScreen from '~/screens/ProfileScreen';
 import StorybookScreen from '~/screens/StorybookScreen';
@@ -20,6 +19,10 @@ const BottomTab = createBottomTabNavigator();
 
 const INITIAL_ROUTE_NAME = 'Feed';
 const RENDER_STORYBOOK_TAB = false;
+
+function DummyScreen() {
+  return null;
+}
 
 function NetworkTabNavigator({ navigation, route }) {
   return (
@@ -58,8 +61,8 @@ function NetworkTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="Create"
-        component={CreateScreen}
+        name="DummyCreate"
+        component={DummyScreen}
         options={{
           tabBarIcon: ({ isFocused }) => (
             <TabBarIcon isFocused={isFocused}>
@@ -71,6 +74,15 @@ function NetworkTabNavigator({ navigation, route }) {
             </TabBarIcon>
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+
+            navigation.navigate('Root', {
+              screen: 'Create',
+            });
+          }
+        })}
       />
       <BottomTab.Screen
         name="Notifications"
