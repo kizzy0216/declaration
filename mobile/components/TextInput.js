@@ -16,6 +16,7 @@ function TextInput({
   label = '',
   error = '',
   placeholder,
+  theme = 'primary', // primary, secondary
   onChange = () => {},
   value,
   ...props
@@ -28,7 +29,7 @@ function TextInput({
         </Text>
       }
 
-      <View style={styles.textInputWrapper}>
+      <View style={[styles.textInputWrapper, styles[`${theme}TextInputWrapper`]]}>
         <RNTextInput
           {...props}
           placeholder={placeholder}
@@ -53,7 +54,12 @@ const styles = StyleSheet.create({
   textInputWrapper: {
     borderRadius: 17,
     padding: 20,
+  },
+  primaryTextInputWrapper: {
     backgroundColor: LIGHT_GRAY,
+  },
+  secondaryTextInputWrapper: {
+    backgroundColor: 'white',
   },
   label: {
     fontWeight: 'bold',

@@ -49,8 +49,8 @@ function Button({
         style={[
           styles.labelWrapper,
           (rightIcon || leftIcon) && styles.hasIconLabel,
-          labelWrapperStyle,
           styles[`${size}LabelWrapper`],
+          labelWrapperStyle,
         ]}
       >
         {isFetching

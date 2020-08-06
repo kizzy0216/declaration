@@ -11,15 +11,15 @@ const templatesByCategory = [
     templates: [
       {
         imageSource: require('~/assets/images/content-template-just-text-card.png'),
-        screenName: 'CreateJustText',
+        screenName: 'CreateContentText',
       },
       {
         imageSource: require('~/assets/images/content-template-just-single-choice-poll-card.png'),
-        screenName: 'CreateJustSingleChoicePoll',
+        screenName: 'CreateContentSingleChoicePoll',
       },
       {
         imageSource: require('~/assets/images/content-template-just-multiple-choice-poll-card.png'),
-        screenName: 'CreateJustMultipleChoicePoll',
+        screenName: 'CreateContentMultipleChoicePoll',
       },
     ],
   },
@@ -28,11 +28,11 @@ const templatesByCategory = [
     templates: [
       {
         imageSource: require('~/assets/images/content-template-just-image-card.png'),
-        screenName: 'CreateJustImage',
+        screenName: 'CreateContentJustImage',
       },
       {
         videoSource: require('~/assets/videos/content-template-just-video-card.mp4'),
-        screenName: 'CreateJustVideo',
+        screenName: 'CreateContentJustVideo',
       },
     ],
   },
@@ -42,15 +42,24 @@ const templatesByCategory = [
       {
         imageSource: require('~/assets/images/content-template-media-with-text-card.png'),
         videoSource: require('~/assets/videos/content-template-media-with-text-card.mp4'),
-        screenName: 'CreateMediaWithText',
+        screenName: 'CreateContentText',
+        screenOptions: {
+          withMedia: true,
+        },
       },
       {
         imageSource: require('~/assets/images/content-template-media-with-single-choice-poll-card.png'),
-        screenName: 'CreateMediaWithSingleChoicePoll',
+        screenName: 'CreateContentSingleChoicePoll',
+        screenOptions: {
+          withMedia: true,
+        },
       },
       {
         imageSource: require('~/assets/images/content-template-media-with-multiple-choice-poll-card.png'),
-        screenName: 'CreateMediaWithMultipleChoicePoll',
+        screenName: 'CreateContentMultipleChoicePoll',
+        screenOptions: {
+          withMedia: true,
+        },
       },
     ],
   },
@@ -59,15 +68,15 @@ const templatesByCategory = [
     templates: [
       {
         imageSource: require('~/assets/images/content-template-opportunity-listing-card.png'),
-        screenName: 'CreateOpportunityListing',
+        screenName: 'CreateContentOpportunityListing',
       },
       {
         imageSource: require('~/assets/images/content-template-session-card.png'),
-        screenName: 'CreateSession',
+        screenName: 'CreateContentSession',
       },
       {
         imageSource: require('~/assets/images/content-template-availability-listing-card.png'),
-        screenName: 'CreateAvailabilityListing',
+        screenName: 'CreateContentAvailabilityListing',
       },
     ],
   },
@@ -99,6 +108,9 @@ function CreateOverviewScreen({ navigation }) {
             <ContentTemplateScrollView
               heading={category.heading}
               templates={category.templates}
+              onTemplatePress={({ screenName, screenOptions }) =>
+                navigation.navigate(screenName, screenOptions)
+              }
             />
           </View>
         ))}

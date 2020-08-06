@@ -11,6 +11,7 @@ function CreateHeader ({
   canBack = false,
   canPost = true,
   canNext = false,
+  isNextOrPostDisabled = false,
   onCancelOrBack = () => {},
   onNextOrPost = () => {},
 }) {
@@ -23,6 +24,7 @@ function CreateHeader ({
             size="small"
             onPress={onCancelOrBack}
             label="Cancel"
+            labelWrapperStyle={{ paddingLeft: 0 }}
           />
         ) : canBack ? (
           <TouchableOpacity onPress={onCancelOrBack}>
@@ -40,10 +42,11 @@ function CreateHeader ({
       rightElement={(
         canNext ? (
           <Button
-            theme="secondary"
+            theme="tertiary"
             size="small"
             onPress={onNextOrPost}
             label="Next"
+            isDisabled={isNextOrPostDisabled}
           />
         ) : canPost ? (
           <Button
@@ -51,6 +54,7 @@ function CreateHeader ({
             size="small"
             onPress={onNextOrPost}
             label="Post"
+            isDisabled={isNextOrPostDisabled}
           />
         ) : (
           <></>
