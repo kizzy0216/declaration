@@ -25,6 +25,7 @@ function Picker({
   const element = (
     <RNPicker
       style={styles.rnPicker}
+      itemStyle={styles.rnPickerItem}
       selectedValue={value}
       onValueChange={onChange}
     >
@@ -58,7 +59,8 @@ function Picker({
             label={options.find((option) => option.value === value).label}
             onPress={() => setIsActive(!isActive)}
             theme="secondary"
-            labelStyle={styles.buttonLabelStyle}
+            labelStyle={[styles.buttonLabel, value.length > 0 && styles.valueButtonLabel]}
+            labelWrapperStyle={styles.buttonLabelWrapper}
           />
 
           {isActive && element}
@@ -72,6 +74,11 @@ const styles = StyleSheet.create({
   container: {
   },
   rnPicker: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  rnPickerItem: {
+    textAlign: 'left',
   },
   label: {
     fontWeight: 'bold',
@@ -91,10 +98,18 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_GRAY,
     borderRadius: 17,
   },
-  buttonLabelStyle: {
-    textAlign: 'left',
+  buttonLabel: {
     fontWeight: 'normal',
     color: GRAY,
+    opacity: 0.5,
+    fontSize: 14,
+  },
+  valueButtonLabel: {
+    color: 'black',
+    opacity: 1,
+  },
+  buttonLabelWrapper: {
+    justifyContent: 'flex-start',
   },
 });
 

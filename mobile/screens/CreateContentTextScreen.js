@@ -6,7 +6,7 @@ import CreateHeader from '~/components/CreateHeader';
 import TextInput from '~/components/TextInput';
 
 function CreateContentTextScreen({ navigation, route }) {
-  const { withMedia } = route.params;
+  const { withMedia } = route.params || {};
 
   const [text, setText] = useState('');
 
@@ -19,7 +19,7 @@ function CreateContentTextScreen({ navigation, route }) {
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={text === ''}
-        onNextOrPost={() => navigation.navigate(withMedia ? 'CreateContentMediaScreen' : 'CreateContentReachScreen')}
+        onNextOrPost={() => navigation.navigate(withMedia ? 'CreateContentMedia' : 'CreateContentMeta')}
         onCancelOrBack={() => navigation.goBack()}
       />
       <View style={styles.container}>

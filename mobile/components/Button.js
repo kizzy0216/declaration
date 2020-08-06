@@ -11,12 +11,13 @@ import {
 function Button({
   label,
   theme = 'primary', // primary, secondary, tertiary, transparent
-  size = 'medium', // small, medium
-  labelStyle,
-  labelWrapperStyle,
+  size = 'medium', // tiny, small, medium
   leftIcon,
   rightIcon,
   style,
+  buttonStyle,
+  labelStyle,
+  labelWrapperStyle,
   isFetching,
   isDisabled,
   onPress = () => {},
@@ -37,6 +38,7 @@ function Button({
         isDisabled && styles.disabled,
         theme === 'tertiary' && size === 'medium' && styles.mediumShadow,
         theme === 'tertiary' && size === 'small' && styles.smallShadow,
+        buttonStyle,
       ]}
     >
       {leftIcon &&
@@ -65,6 +67,7 @@ function Button({
               style={[
                 styles.label, 
                 styles[`${theme}Label`],
+                styles[`${size}Label`],
                 labelStyle,
               ]}
             >
@@ -131,6 +134,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+    fontWeight: '500',
   },
   hasIconLabel: {
     justifyContent: 'flex-start',
@@ -168,8 +172,15 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
+  tinyLabel: {
+    fontSize: 12,
+  },
+
   small: {
     borderRadius: 10,
+  },
+  smallLabel: {
+    fontSize: 14,
   },
   smallLabelWrapper: {
     paddingTop: 10,

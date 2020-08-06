@@ -28,11 +28,17 @@ const templatesByCategory = [
     templates: [
       {
         imageSource: require('~/assets/images/content-template-just-image-card.png'),
-        screenName: 'CreateContentJustImage',
+        screenName: 'CreateContentMedia',
+        screenOptions: {
+          isJustImage: true,
+        },
       },
       {
         videoSource: require('~/assets/videos/content-template-just-video-card.mp4'),
-        screenName: 'CreateContentJustVideo',
+        screenName: 'CreateContentMedia',
+        screenOptions: {
+          isJustVideo: true,
+        },
       },
     ],
   },
@@ -77,6 +83,16 @@ const templatesByCategory = [
       {
         imageSource: require('~/assets/images/content-template-availability-listing-card.png'),
         screenName: 'CreateContentAvailabilityListing',
+      },
+    ],
+  },
+  {
+    heading: 'Events',
+    templates: [
+      {
+        imageSource: require('~/assets/images/content-template-event-card.png'),
+        videoSource: require('~/assets/videos/content-template-event-card.mp4'),
+        screenName: 'CreateContentEvent',
       },
     ],
   },

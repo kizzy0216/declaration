@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   ScrollView,
+  Image,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -110,16 +111,27 @@ function UserProfileLocationInputContainer({
           style={styles.suggestions}
           horizontal={true}
         >
-          {hasSuggestions && suggestions.map((suggestion) => (
-            <TouchableOpacity
-              key={suggestion.id}
-              onPress={() => handlePress(suggestion)}
-            >
-              <Text style={styles.suggestion}>
-                {suggestion.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          {hasSuggestions &&
+            <>
+              {suggestions.map((suggestion) => (
+                <TouchableOpacity
+                  key={suggestion.id}
+                  onPress={() => handlePress(suggestion)}
+                >
+                  <Text style={styles.suggestion}>
+                    {suggestion.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <Image
+                source={require('~/assets/images/powered-by-Google.png')}
+                style={{
+                  width: 128,
+                  height: 16,
+                }}
+              />
+            </>
+          }
         </ScrollView>
       </View>
     </>

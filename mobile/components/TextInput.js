@@ -17,6 +17,7 @@ function TextInput({
   error = '',
   placeholder,
   theme = 'primary', // primary, secondary
+  inputFooter,
   onChange = () => {},
   value,
   ...props
@@ -29,7 +30,12 @@ function TextInput({
         </Text>
       }
 
-      <View style={[styles.textInputWrapper, styles[`${theme}TextInputWrapper`]]}>
+      <View
+        style={[
+          styles.textInputWrapper,
+          styles[`${theme}TextInputWrapper`],
+        ]}
+      >
         <RNTextInput
           {...props}
           placeholder={placeholder}
@@ -37,6 +43,12 @@ function TextInput({
           onChangeText={onChange}
           value={value}
         />
+
+        {inputFooter &&
+          <View style={styles.inputFooterWrapper}>
+            {inputFooter}
+          </View>
+        }
       </View>
 
       {error.length > 0 &&
@@ -69,6 +81,9 @@ const styles = StyleSheet.create({
     color: RED,
     fontSize: 12,
     marginTop: 5,
+  },
+  inputFooterWrapper: {
+    marginTop: 10,
   },
 });
 

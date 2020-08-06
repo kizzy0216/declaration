@@ -13,7 +13,10 @@ import {
   GRAY,
   RED,
 } from '~/constants';
-import { formatDate } from 'Shared/utils/formatDate';
+import {
+  formatDate,
+  formatTime,
+} from 'Shared/utils/formatDate';
 
 function DateTimePicker({
   label,
@@ -45,6 +48,14 @@ function DateTimePicker({
     />
   );
 
+  const buttonLabel = (
+    hasSelected
+    ? mode === 'date'
+    ? formatDate(value)
+    : formatTime(value)
+    : placeholder
+  );
+
   return (
     <View style={[styles.container, props.style]}>
       {label &&
@@ -62,7 +73,7 @@ function DateTimePicker({
       {Platform.OS === 'ios' &&
         <View style={[styles.iosWrapper, isActive && styles.active]}>
           <Button
-            label={hasSelected ? formatDate(value) : placeholder}
+            label={buttonLabel}
             onPress={() => setIsActive(!isActive)}
             theme="secondary"
             labelWrapperStyle={styles.labelWrapperStyle}
