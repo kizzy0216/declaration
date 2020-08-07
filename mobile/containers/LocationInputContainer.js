@@ -1,6 +1,5 @@
 import React, {
   useState,
-  useContext,
   useEffect,
 } from 'react';
 import {
@@ -12,7 +11,6 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { UserContext } from '~/contexts/UserContext';
 import TextInput from '~/components/TextInput';
 import useDebouncedState from 'Shared/hooks/useDebouncedState';
 import {
@@ -20,13 +18,16 @@ import {
   fetchPlace,
 } from '~/utils/googlePlaces';
 
-function UserProfileLocationInputContainer({
+function LocationInputContainer({
+  label,
+  placeholder,
+  initialLocation = '',
+  types,
   onChange = () => {},
 }) {
-  const { user } = useContext(UserContext);
-  const [location, setLocation] = useState(user.profile.location || '');
+  const [location, setLocation] = useState(initialLocation);
   const [place, setPlace] = useState({
-    label: user.profile.location || '',
+    label: initialLocation,
     latitudeLongitude: [NaN, NaN],
   });
   const debouncedLocation = useDebouncedState(location, 300);
@@ -38,21 +39,23 @@ function UserProfileLocationInputContainer({
 
     setSuggestions([]);
 
-    fetchSuggestions({ input: debouncedLocation })
-      .then(async (response) => {
-        const { predictions } = await response.json();
+    fetchSuggestions({
+      input: debouncedLocation,
+      types,
+    }).then(async (response) => {
+      const { predictions } = await response.json();
 
-        setSuggestions(predictions.map(({ description, place_id }) => ({
-          id: place_id,
-          label: description,
-        })));
+      setSuggestions(predictions.map(({ description, place_id }) => ({
+        id: place_id,
+        label: description,
+      })));
 
-        setIsFetching(false);
-      });
+      setIsFetching(false);
+    });
   }, [debouncedLocation]);
 
   useEffect(() => {
-    const isDisabled = (
+    const isInvalid = (
       !place.latitudeLongitude ||
       isNaN(place.latitudeLongitude[0]) ||
       isNaN(place.latitudeLongitude[1]) ||
@@ -62,7 +65,7 @@ function UserProfileLocationInputContainer({
     onChange({
       location,
       place,
-      isDisabled,
+      isInvalid,
       isFetching,
     });
   }, [place, isFetching]);
@@ -101,7 +104,8 @@ function UserProfileLocationInputContainer({
   return (
     <>
       <TextInput
-        placeholder="City, State"
+        label={label}
+        placeholder={placeholder}
         value={location}
         onChange={setLocation}
         autoCapitalize="words"
@@ -152,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserProfileLocationInputContainer;
+export default LocationInputContainer;

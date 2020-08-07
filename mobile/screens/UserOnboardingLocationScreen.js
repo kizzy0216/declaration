@@ -20,7 +20,7 @@ import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import ScreenHeader from '~/components/ScreenHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
-import UserProfileLocationInputContainer from '~/containers/UserProfileLocationInputContainer';
+import LocationInputContainer from '~/containers/LocationInputContainer';
 import {
   COUNT_USER_ONBOARDING_OPTIONAL_PAGES,
   GRAY,
@@ -68,12 +68,12 @@ function UserOnboardingLocationScreen({ navigation }) {
     location,
     place,
     isFetching,
-    isDisabled,
+    isInvalid,
   }) {
     setLocation(location);
     setPlace(place);
     setIsFetching(isFetching);
-    setIsDisabled(isDisabled);
+    setIsDisabled(isInvalid);
   }
 
   return (
@@ -110,7 +110,12 @@ function UserOnboardingLocationScreen({ navigation }) {
             Your rough location may be used by members seeking support by
             those geographically close to them. Optional.
           </Text>
-          <UserProfileLocationInputContainer onChange={handleChange} />
+          <LocationInputContainer
+            types="(regions)"
+            placeholder="City, State"
+            initialLocation={location}
+            onChange={handleChange}
+          />
         </Animated.View>
         <UserOnboardingFooter
           isFetching={updateLocationResult.fetching || isFetching}

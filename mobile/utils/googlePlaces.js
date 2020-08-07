@@ -6,11 +6,14 @@ const GOOGLE_PLACE_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/place';
 
 const sessionToken = String(Number(new Date()));
 
-export const fetchSuggestions = ({ input }) => {
+export const fetchSuggestions = ({
+  input,
+  types,
+}) => {
   return fetch(
     `${GOOGLE_PLACE_API_ENDPOINT}/autocomplete/json?` + new URLSearchParams({
       input,
-      types: '(regions)',
+      types,
       key: GOOGLE_API_KEY,
       sessiontoken: sessionToken,
     }), {

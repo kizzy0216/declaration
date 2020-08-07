@@ -12,6 +12,7 @@ function CreateHeader ({
   canPost = true,
   canNext = false,
   isNextOrPostDisabled = false,
+  isFetching = false,
   onCancelOrBack = () => {},
   onNextOrPost = () => {},
 }) {
@@ -47,6 +48,7 @@ function CreateHeader ({
             onPress={onNextOrPost}
             label="Next"
             isDisabled={isNextOrPostDisabled}
+            isFetching={isFetching}
           />
         ) : canPost ? (
           <Button
@@ -55,6 +57,7 @@ function CreateHeader ({
             onPress={onNextOrPost}
             label="Post"
             isDisabled={isNextOrPostDisabled}
+            isFetching={isFetching}
           />
         ) : (
           <></>

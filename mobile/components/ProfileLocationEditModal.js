@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import Modal from '~/components/Modal';
-import UserProfileLocationInputContainer from '~/containers/UserProfileLocationInputContainer';
+import LocationInputContainer from '~/containers/LocationInputContainer';
 
 function ProfileLocationEditModal({
   user,
@@ -15,7 +15,7 @@ function ProfileLocationEditModal({
   onClose = () => {},
   onSubmit = () => {},
 }) {
-  const [location, setLocation] = useState(user.profile.location);
+  const [location, setLocation] = useState(user.profile.location || '');
   const [place, setPlace] = useState({});
   const [isLocalFetching, setIsLocalFetching] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
@@ -31,12 +31,12 @@ function ProfileLocationEditModal({
     location,
     place,
     isFetching,
-    isDisabled,
+    isInvalid,
   }) {
     setLocation(location);
     setPlace(place);
     setIsLocalFetching(isFetching);
-    setIsSubmitDisabled(isDisabled);
+    setIsSubmitDisabled(isInvalid);
   }
 
   return (
@@ -52,7 +52,12 @@ function ProfileLocationEditModal({
     >
       <View style={styles.container}>
         <View style={styles.row}>
-          <UserProfileLocationInputContainer onChange={handleChange} />
+          <LocationInputContainer
+            placeholder="City, State"
+            types="(regions)"
+            initialLocation={location}
+            onChange={handleChange}
+          />
         </View>
       </View>
     </Modal>
