@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView,
   Text,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -10,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CreateHeader from '~/components/CreateHeader';
 import { IS_IOS } from '~/constants';
+import MediaLibraryPickerContainer from '~/containers/MediaLibraryPickerContainer';
 
 function CreateContentMediaScreen({ navigation, route }) {
   const {
@@ -20,9 +20,13 @@ function CreateContentMediaScreen({ navigation, route }) {
   const isDisabled = (false);
   const canCancel = (isJustImage || isJustVideo);
 
+  function handleMediaSelect(asset) {
+  }
+
   return (
     <SafeAreaView
       style={{flex: 1}}
+      edges={['top', 'left', 'right']}
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
@@ -37,30 +41,26 @@ function CreateContentMediaScreen({ navigation, route }) {
       />
       <KeyboardAvoidingView
         behavior={IS_IOS ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+        style={{flex: 1}}
       >
-        <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.row}>
-          </View>
-
-          <View style={styles.row}>
-          </View>
-        </ScrollView>
+        <View style={styles.container}>
+          <MediaLibraryPickerContainer
+            isJustImage={isJustImage}
+            isJustVideo={isJustVideo}
+            onChange={handleMediaSelect}
+          />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flexGrow: 1,
+  container: {
+    flex: 1,
     paddingTop: 30,
-    paddingRight: 30,
     paddingLeft: 30,
-    paddingBottom: 100,
+    paddingRight: 30,
   },
   row: {
     marginBottom: 30,
