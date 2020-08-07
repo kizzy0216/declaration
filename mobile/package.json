@@ -21,8 +21,10 @@
     "@react-navigation/bottom-tabs": "^5.3.1",
     "@react-navigation/native": "^5.2.1",
     "@react-navigation/stack": "^5.2.16",
+    "currency.js": "^2.0.3",
     "expo": "^38.0.0",
     "expo-asset": "~8.1.7",
+    "expo-av": "~8.2.1",
     "expo-constants": "~9.1.1",
     "expo-font": "~8.2.1",
     "expo-image-picker": "~8.3.0",
@@ -44,8 +46,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-svg": "12.1.0",
     "react-native-web": "~0.11.7",
-    "urql": "^1.9.8",
-    "expo-av": "~8.2.1"
+    "urql": "^1.9.8"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

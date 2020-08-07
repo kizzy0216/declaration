@@ -15,6 +15,7 @@ function CreateContentMediaScreen({ navigation, route }) {
   const {
     isJustImage = false,
     isJustVideo = false,
+    nextScreenName = 'CreateContentMeta',
   } = route.params || {};
   const isDisabled = (false);
   const canCancel = (isJustImage || isJustVideo);
@@ -31,7 +32,7 @@ function CreateContentMediaScreen({ navigation, route }) {
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('CreateContentMeta')}
+        onNextOrPost={() => navigation.navigate(nextScreenName)}
         onCancelOrBack={() => navigation.goBack()}
       />
       <KeyboardAvoidingView

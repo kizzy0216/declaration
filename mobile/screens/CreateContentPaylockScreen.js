@@ -11,9 +11,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CreateHeader from '~/components/CreateHeader';
 import { IS_IOS } from '~/constants';
 import TextInput from '~/components/TextInput';
+import CurrencyInput from '~/components/CurrencyInput';
 
-function CreateContentEventScreen({ navigation }) {
-  const [heading, setHeading] = useState('');
+function CreateContentPaylockScreen({ navigation }) {
+  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState('');
 
   const isDisabled = (false);
 
@@ -23,15 +25,13 @@ function CreateContentEventScreen({ navigation }) {
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
-        heading="Add event"
-        canCancel={true}
-        canBack={false}
+        heading="Payment options"
+        canCancel={false}
+        canBack={true}
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('CreateContentMedia', {
-          nextScreenName: 'CreateContentPaylock',
-        })}
+        onNextOrPost={() => navigation.navigate('CreateContentMeta')}
         onCancelOrBack={() => navigation.goBack()}
       />
       <KeyboardAvoidingView
@@ -43,12 +43,26 @@ function CreateContentEventScreen({ navigation }) {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.row}>
-            <TextInput
-              label="Event title"
-              placeholder="Build a strong brand with social media"
-              value={heading}
-              onChange={setHeading}
-            />
+            <View style={styles.column}>
+              <View style={styles.odd}>
+                <CurrencyInput
+                  label="Price"
+                  value={price}
+                  onChange={setPrice}
+                />
+              </View>
+            </View>
+            <View style={styles.column}>
+              <View style={styles.even}>
+                <TextInput
+                  label="Quantity"
+                  placeholder="(Unlimited)"
+                  value={quantity}
+                  keyboardType="numeric"
+                  onChange={setQuantity}
+                />
+              </View>
+            </View>
           </View>
 
           <View style={styles.row}>
@@ -69,7 +83,19 @@ const styles = StyleSheet.create({
   },
   row: {
     marginBottom: 30,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  column: {
+    width: '50%',
+  },
+  odd: {
+    marginRight: 10,
+  },
+  event: {
+    marginLeft: 10,
   },
 });
 
-export default CreateContentEventScreen;
+export default CreateContentPaylockScreen;

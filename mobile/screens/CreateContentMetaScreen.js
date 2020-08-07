@@ -107,14 +107,14 @@ function CreateContentMetaScreen({ navigation }) {
             />
           </View>
 
-          <View style={styles.row}>
-            <Picker
-              label="Who can view"
-              value={selectedReach}
-              onChange={setSelectedReach}
-              options={REACH_OPTIONS}
-            />
-          </View>
+          {/* <View style={styles.row}> */}
+          {/*   <Picker */}
+          {/*     label="Who can view" */}
+          {/*     value={selectedReach} */}
+          {/*     onChange={setSelectedReach} */}
+          {/*     options={REACH_OPTIONS} */}
+          {/*   /> */}
+          {/* </View> */}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

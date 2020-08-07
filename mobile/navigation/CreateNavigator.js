@@ -10,6 +10,7 @@ import CreateContentOpportunityListingScreen from '~/screens/CreateContentOpport
 import CreateContentAvailabilityListingScreen from '~/screens/CreateContentAvailabilityListingScreen';
 import CreateContentSessionScreen from '~/screens/CreateContentSessionScreen';
 import CreateContentEventScreen from '~/screens/CreateContentEventScreen';
+import CreateContentPaylockScreen from '~/screens/CreateContentPaylockScreen';
 import CreateContentMetaScreen from '~/screens/CreateContentMetaScreen';
 
 const Stack = createStackNavigator();
@@ -55,6 +56,10 @@ function CreateNavigator({ navigation, route }) {
       <Stack.Screen
         name="CreateContentEvent"
         component={CreateContentEventScreen}
+      />
+      <Stack.Screen
+        name="CreateContentPaylock"
+        component={CreateContentPaylockScreen}
       />
       <Stack.Screen
         name="CreateContentMeta"

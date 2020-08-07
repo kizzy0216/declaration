@@ -82,7 +82,9 @@ function CreateContentSessionScreen({ navigation }) {
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('CreateContentMeta')}
+        onNextOrPost={() => navigation.navigate('CreateContentMedia', {
+          nextScreenName: 'CreateContentPaylock',
+        })}
         onCancelOrBack={() => navigation.goBack()}
       />
       <KeyboardAvoidingView
@@ -93,15 +95,6 @@ function CreateContentSessionScreen({ navigation }) {
           style={{flex: 1}}
           contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.row}>
-            <TextInput
-              label="Fee"
-              value={heading}
-              onChange={setHeading}
-            />
-          </View>
-
-
           <View style={styles.row}>
             <TextInput
               label="Session title"
