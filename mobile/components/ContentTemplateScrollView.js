@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   contentContainer: {
-    height: 255,
     flexDirection: 'row',
     overflow: 'visible',
   },

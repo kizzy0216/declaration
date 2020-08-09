@@ -22,6 +22,7 @@ import CalendarIcon from 'Shared/components/icons/CalendarIcon';
 import ChevronDownIcon from 'Shared/components/icons/ChevronDownIcon';
 
 function FeedHeader({
+  theme = 'dark', // light or dark
   onNetworkAdd = () => {},
   onNetworkCreate = () => {},
   onCalendarPress = () => {},
@@ -68,7 +69,7 @@ function FeedHeader({
             <CalendarIcon
               width={22}
               height={22}
-              fill="black"
+              fill={theme === 'light' ? 'white' : 'black'}
             />
           </BorderlessButton>
         )}
@@ -77,14 +78,19 @@ function FeedHeader({
             onPress={() => setIsModalVisible(true)}
           >
             <View style={styles.nameWrapper}>
-              <Text style={styles.name}>
+              <Text
+                style={{
+                  ...styles.name,
+                  color: (theme === 'light' ? 'white' : 'black'),
+                }}
+              >
                 {activeNetwork && activeNetwork.name}
               </Text>
               <View style={styles.chevronIconWrapper}>
                 <ChevronDownIcon
                   width={16}
                   height={16}
-                  fill="black"
+                  fill={theme === 'light' ? 'white' : 'black'}
                 />
               </View>
             </View>
@@ -95,7 +101,7 @@ function FeedHeader({
             <MessageIcon
               width={22}
               height={22}
-              fill="black"
+              fill={theme === 'light' ? 'white' : 'black'}
             />
           </BorderlessButton>
         )}

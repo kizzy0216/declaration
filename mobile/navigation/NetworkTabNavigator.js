@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FeedScreen from '~/screens/FeedScreen';
@@ -8,6 +8,7 @@ import ProfileScreen from '~/screens/ProfileScreen';
 import StorybookScreen from '~/screens/StorybookScreen';
 import TabBar from '~/components/TabBar';
 import TabBarIcon from '~/components/TabBarIcon';
+import { InterfaceContext } from '~/contexts/InterfaceContext';
 
 import PlusInSquareIcon from 'Shared/components/icons/PlusInSquareIcon';
 import NotificationsIcon from 'Shared/components/icons/NotificationsIcon';
@@ -25,6 +26,10 @@ function DummyScreen() {
 }
 
 function NetworkTabNavigator({ navigation, route }) {
+  const {
+    isVisible: isInterfaceVisible,
+  } = useContext(InterfaceContext);
+
   return (
     <BottomTab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}
@@ -43,6 +48,7 @@ function NetworkTabNavigator({ navigation, route }) {
               />
             </TabBarIcon>
           ),
+          tabBarVisible: isInterfaceVisible,
         }}
       />
       <BottomTab.Screen

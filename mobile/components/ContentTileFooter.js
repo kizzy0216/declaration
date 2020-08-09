@@ -1,0 +1,69 @@
+import React, { useContext } from 'react';
+import {
+  View,
+  StyleSheet,
+} from 'react-native';
+
+import {
+  ContentTilePagerContext,
+  FOCUS_MEDIA,
+  FOCUS_CONTENTS,
+} from '~/contexts/ContentTilePagerContext';
+import ContentTileByline from '~/components/ContentTileByline';
+import ContentTileActions from '~/components/ContentTileActions';
+
+function ContentTileFooter({
+  creator,
+  meta,
+  controls = {
+    hasVideo: false,
+    shouldPlayVideo: false,
+  },
+  onCreatorPress = () => {},
+  onHashtagPress = () => {},
+  onLikePress = () => {},
+  onCommentPress = () => {},
+  onMenuPress = () => {},
+  onVideoPlayToggle = () => {},
+}) {
+  const { focus } = useContext(ContentTilePagerContext);
+
+  return (
+    <View
+      style={styles.footer}
+      pointerEvents="box-none"
+    >
+      <View
+        style={[
+          styles.bylineWrapper,
+          (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS) && styles.hidden,
+        ]}
+      >
+        <ContentTileByline
+          creator={creator}
+          meta={meta}
+          onCreatorPress={onCreatorPress}
+          onHashtagPress={onHashtagPress}
+        />
+      </View>
+      <ContentTileActions
+        controls={controls}
+        onLikePress={onLikePress}
+        onCommentPress={onCommentPress}
+        onMenuPress={onMenuPress}
+        onVideoPlayToggle={onVideoPlayToggle}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  bylineWrapper: {
+    width: '100%',
+  },
+  hidden: {
+    opacity: 0,
+  },
+});
+
+export default ContentTileFooter;

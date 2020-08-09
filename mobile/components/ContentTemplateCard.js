@@ -7,6 +7,8 @@ import {
 import { Video } from 'expo-av';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { WINDOW_WIDTH } from '~/constants';
+
 function ContentTemplateCard({
   imageSource,
   videoSource,
@@ -25,8 +27,6 @@ function ContentTemplateCard({
             source={imageSource}
             resizeMode="cover"
             style={styles.image}
-            width={155}
-            height={245}
           />
         }
 
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
   contentTemplateCard: {
     position: 'relative',
     overflow: 'visible',
-    width: 155,
-    height: 245,
+    width: WINDOW_WIDTH / 1.8,
+    aspectRatio: 155/245,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

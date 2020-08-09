@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View } from 'react-native';
@@ -10,6 +13,7 @@ import RootNavigator from '~/navigation/RootNavigator';
 import AuthenticationNavigator from '~/navigation/AuthenticationNavigator';
 import LinkingConfiguration from '~/navigation/LinkingConfiguration';
 import { UserContextProvider } from '~/contexts/UserContext';
+import { InterfaceContextProvider } from '~/contexts/InterfaceContext';
 import { urqlClient } from '~/utils/api';
 
 const Stack = createStackNavigator();
@@ -24,32 +28,34 @@ function App(props) {
       <UrqlProvider value={urqlClient}>
         <UserContextProvider>
           <SafeAreaProvider>
-            <View style={styles.container}>
-              <NavigationContainer
-                linking={LinkingConfiguration}
-                theme={{
-                  ...DefaultTheme,
-                  colors: {
-                    ...DefaultTheme.colors,
-                    background: 'white',
-                  },
-                }}
-              >
-                <Stack.Navigator headerMode="none">
-                  <Stack.Screen
-                    name="Authentication"
-                    component={AuthenticationNavigator}
-                  />
-                  <Stack.Screen
-                    name="Root"
-                    component={RootNavigator}
-                    options={{
-                      animationEnabled: false,
-                    }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </View>
+            <InterfaceContextProvider>
+              <View style={styles.container}>
+                <NavigationContainer
+                  linking={LinkingConfiguration}
+                  theme={{
+                    ...DefaultTheme,
+                    colors: {
+                      ...DefaultTheme.colors,
+                      background: 'white',
+                    },
+                  }}
+                >
+                  <Stack.Navigator headerMode="none">
+                    <Stack.Screen
+                      name="Authentication"
+                      component={AuthenticationNavigator}
+                    />
+                    <Stack.Screen
+                      name="Root"
+                      component={RootNavigator}
+                      options={{
+                        animationEnabled: false,
+                      }}
+                    />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </View>
+            </InterfaceContextProvider>
           </SafeAreaProvider>
         </UserContextProvider>
       </UrqlProvider>
