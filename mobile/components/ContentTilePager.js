@@ -317,10 +317,6 @@ function ContentTilePager({ children }) {
 
     setTheme((tile.media ? 'light' : 'dark'));
     setActiveTileIndex(position);
-
-    if (!tile.media && focus === FOCUS_MEDIA) {
-      setFocus(FOCUS_CONTENTS);
-    }
   }
 
   return (

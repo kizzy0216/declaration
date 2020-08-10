@@ -21,22 +21,6 @@ function ContentTileBackground({
   isFocused = false,
   onPress = () => {},
 }) {
-  const isImage = (
-    media &&
-    media.uri &&
-    (
-      media.uri.includes('jpg') ||
-      media.uri.includes('png') ||
-      media.uri.includes('gif') ||
-      media.uri.includes('jpeg')
-    )
-  );
-
-  const isVideo = (
-    media &&
-    media.uri &&
-    media.uri.includes('mp4')
-  );
 
   return (
     <TapGestureHandler
@@ -55,7 +39,7 @@ function ContentTileBackground({
         }
 
         <View style={styles.media}>
-          {media && isImage &&
+          {controls.hasImage &&
             <Image
               source={media}
               resizeMode="cover"
@@ -65,7 +49,7 @@ function ContentTileBackground({
               }}
             />
           }
-          {media && isVideo &&
+          {controls.hasVideo &&
             <Video
               source={media}
               resizeMode="cover"

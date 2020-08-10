@@ -25,6 +25,7 @@ function ContentTileFooter({
   onCommentPress = () => {},
   onMenuPress = () => {},
   onVideoPlayToggle = () => {},
+  onFullscreenToggle = () => {},
 }) {
   const { focus } = useContext(ContentTilePagerContext);
 
@@ -52,6 +53,7 @@ function ContentTileFooter({
         onCommentPress={onCommentPress}
         onMenuPress={onMenuPress}
         onVideoPlayToggle={onVideoPlayToggle}
+        onFullscreenToggle={onFullscreenToggle}
       />
     </View>
   );

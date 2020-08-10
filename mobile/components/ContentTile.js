@@ -16,7 +16,6 @@ import {
   ContentTilePagerContext,
   FOCUS_ALL,
   FOCUS_CONTENTS,
-  FOCUS_MEDIA,
 } from '~/contexts/ContentTilePagerContext';
 import ContentTileForeground from '~/components/ContentTileForeground';
 import ContentTileBackground from '~/components/ContentTileBackground';
@@ -39,23 +38,27 @@ function ContentTile({
   onMenuRequest = () => {},
   ...props
 }) {
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
   const {
     focus,
     setFocus,
     activeTileIndex,
   } = useContext(ContentTilePagerContext);
+  const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
   const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
-
-  const isVideo = (
-    media &&
-    media.uri &&
-    media.uri.includes('mp4')
-  );
 
   useEffect(() => {
     setShouldPlayVideo(index === activeTileIndex);
+
+    if (isFullscreen) {
+      setIsFullscreen(false);
+    }
   }, [activeTileIndex]);
+
+  useEffect(() => {
+    setIsInterfaceVisible(!isFullscreen);
+  }, [isFullscreen]);
 
   function handleLongPress() {
     onMenuRequest({ id });
@@ -63,12 +66,6 @@ function ContentTile({
 
   function handleBackgroundPress() {
     if (focus === FOCUS_ALL) {
-      if (media) {
-        setFocus(FOCUS_MEDIA);
-      } else {
-        setFocus(FOCUS_CONTENTS);
-      }
-    } else if (focus === FOCUS_MEDIA) {
       setFocus(FOCUS_CONTENTS);
     } else if (focus === FOCUS_CONTENTS) {
       setFocus(FOCUS_ALL);
@@ -95,9 +92,28 @@ function ContentTile({
     setShouldPlayVideo(updatedShouldPlayVideo);
   }
 
+  function handleFullscreenToggle(updatedIsFullscreen) {
+    setIsFullscreen(updatedIsFullscreen);
+  }
+
   const controls = {
-    hasVideo: isVideo,
+    hasImage: (
+      media &&
+      media.uri &&
+      (
+        media.uri.includes('jpg') ||
+        media.uri.includes('png') ||
+        media.uri.includes('gif') ||
+        media.uri.includes('jpeg')
+      )
+    ),
+    hasVideo: (
+      media &&
+      media.uri &&
+      media.uri.includes('mp4')
+    ),
     shouldPlayVideo,
+    isFullscreen,
   }
 
   return (
@@ -120,7 +136,7 @@ function ContentTile({
               index={index}
               media={media}
               controls={controls}
-              isFocused={focus === FOCUS_MEDIA}
+              isFocused={isFullscreen}
               onPress={handleBackgroundPress}
             />
           </View>
@@ -129,7 +145,7 @@ function ContentTile({
             style={[
               styles.foregroundWrapper,
               !media && styles.foregroundWrapperWithoutMedia,
-              (focus === FOCUS_MEDIA) && styles.hidden,
+              (isFullscreen) && styles.hidden,
             ]}
           >
             <ContentTileForeground
@@ -147,7 +163,7 @@ function ContentTile({
           <View
             style={[
               styles.footerWrapper,
-              (focus === FOCUS_MEDIA) && styles.lower,
+              (isFullscreen) && styles.lower,
             ]}
             pointerEvents="box-none"
           >
@@ -161,6 +177,7 @@ function ContentTile({
               onCommentPress={handleCommentPress}
               onMenuPress={handleMenuPress}
               onVideoPlayToggle={handleVideoPlayToggle}
+              onFullscreenToggle={handleFullscreenToggle}
             />
           </View>
         </View>
