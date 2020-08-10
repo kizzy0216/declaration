@@ -43,7 +43,7 @@ function ContentTileActions({
         style={[
           styles.left,
           styles.container,
-          (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS) && styles.hidden,
+          (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS || controls.isFullscreen) && styles.hidden,
         ]}
       >
         <TouchableOpacity

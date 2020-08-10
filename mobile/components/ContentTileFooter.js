@@ -37,7 +37,7 @@ function ContentTileFooter({
       <View
         style={[
           styles.bylineWrapper,
-          (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS) && styles.hidden,
+          (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS || controls.isFullscreen) && styles.hidden,
         ]}
       >
         <ContentTileByline
