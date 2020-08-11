@@ -23,7 +23,7 @@ import {
   COUNT_USER_ONBOARDING_REQUIRED_PAGES,
   GRAY,
 } from '~/constants';
-import isValidDateOfBirth from 'Shared/utils/isValidDateOfBirth';
+import isValidDateOfBirth from '@shared/utils/isValidDateOfBirth';
 
 function UserOnboardingDateOfBirthScreen({ navigation }) {
   const { user, refresh: refreshUser } = useContext(UserContext);

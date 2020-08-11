@@ -12,7 +12,7 @@ module.exports = function(api) {
           extensions: ['.js', '.jsx', '.ios.js', '.android.js', '.native.js'],
           alias: {
             '~': './',
-            'Shared': '../interface/src',
+            '@shared': '../interface/src',
             // resolve local (to `mobile/`) version of dependencies,
             // such that we can import dependencies from `interface/**/*.js`
             // files without resolver issues

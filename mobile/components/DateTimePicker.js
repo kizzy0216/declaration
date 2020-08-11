@@ -16,7 +16,7 @@ import {
 import {
   formatDate,
   formatTime,
-} from 'Shared/utils/formatDate';
+} from '@shared/utils/formatDate';
 
 function DateTimePicker({
   label = '',

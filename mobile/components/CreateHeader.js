@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Button from '~/components/Button';
 import ScreenHeader from '~/components/ScreenHeader';
-import ArrowLeftIcon from 'Shared/components/icons/ArrowLeftIcon';
+import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 
 function CreateHeader ({
   heading,

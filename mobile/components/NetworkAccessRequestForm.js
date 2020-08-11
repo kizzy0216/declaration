@@ -6,7 +6,7 @@ import Button from '~/components/Button';
 import Picker from '~/components/Picker';
 import {
   NETWORK_ACCESS_REQUEST_COUNT_USERS_OPTIONS
-} from 'Shared/constants/index.js';
+} from '@shared/constants/index.js';
 
 const userCountRangeOptions = [
   {

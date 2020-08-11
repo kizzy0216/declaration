@@ -13,9 +13,9 @@ import { StackActions } from '@react-navigation/native';
 import Button from '~/components/Button';
 import DisplayHeading from '~/components/DisplayHeading';
 import GetNetworksWhereNotMember from '~/queries/GetNetworksWhereNotMember';
-import mapNetwork from 'Shared/mappings/mapNetwork';
+import mapNetwork from '@shared/mappings/mapNetwork';
 import { UserContext } from '~/contexts/UserContext';
-import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
+import ArrowRightIcon from '@shared/components/icons/ArrowRightIcon';
 
 function NetworkMembershipSelectScreen({ navigation, route }) {
   const { shouldRedirect } = route.params;

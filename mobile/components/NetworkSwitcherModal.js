@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from '~/components/Modal';
 import SelectableList from '~/components/SelectableList';
 import SelectableListItem from '~/components/SelectableListItem';
-import PlusIcon from 'Shared/components/icons/PlusIcon';
+import PlusIcon from '@shared/components/icons/PlusIcon';
 import Avatar from '~/components/Avatar';
 
 function NetworkSwitcherModal({

@@ -8,8 +8,8 @@ import { useQuery } from 'urql';
 import GetUsersWithUsername from '~/queries/GetUsersWithUsername';
 import { UserContext } from '~/contexts/UserContext';
 import TextInput from '~/components/TextInput';
-import isValidUsername from 'Shared/utils/isValidUsername';
-import useDebouncedState from 'Shared/hooks/useDebouncedState';
+import isValidUsername from '@shared/utils/isValidUsername';
+import useDebouncedState from '@shared/hooks/useDebouncedState';
 
 function UserProfileUsernameInputContainer({
   onChange = () => {},

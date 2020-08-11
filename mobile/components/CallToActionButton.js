@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
+import ArrowRightIcon from '@shared/components/icons/ArrowRightIcon';
 import Avatar from '~/components/Avatar';
 import {
   BLUE,

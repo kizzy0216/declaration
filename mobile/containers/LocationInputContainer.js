@@ -12,7 +12,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import TextInput from '~/components/TextInput';
-import useDebouncedState from 'Shared/hooks/useDebouncedState';
+import useDebouncedState from '@shared/hooks/useDebouncedState';
 import {
   fetchSuggestions,
   fetchPlace,

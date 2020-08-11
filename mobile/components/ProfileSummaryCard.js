@@ -5,15 +5,15 @@ import {
   Text,
 } from 'react-native';
 
-import LocationPinIcon from 'Shared/components/icons/LocationPinIcon';
-import LocationPinEditIcon from 'Shared/components/icons/LocationPinEditIcon';
-import LocationPinAddIcon from 'Shared/components/icons/LocationPinAddIcon';
-import BriefCaseIcon from 'Shared/components/icons/BriefCaseIcon';
-import BriefCaseEditIcon from 'Shared/components/icons/BriefCaseEditIcon';
-import BriefCaseAddIcon from 'Shared/components/icons/BriefCaseAddIcon';
-import MortarboardIcon from 'Shared/components/icons/MortarboardIcon';
-import MortarboardEditIcon from 'Shared/components/icons/MortarboardEditIcon';
-import MortarboardAddIcon from 'Shared/components/icons/MortarboardAddIcon';
+import LocationPinIcon from '@shared/components/icons/LocationPinIcon';
+import LocationPinEditIcon from '@shared/components/icons/LocationPinEditIcon';
+import LocationPinAddIcon from '@shared/components/icons/LocationPinAddIcon';
+import BriefCaseIcon from '@shared/components/icons/BriefCaseIcon';
+import BriefCaseEditIcon from '@shared/components/icons/BriefCaseEditIcon';
+import BriefCaseAddIcon from '@shared/components/icons/BriefCaseAddIcon';
+import MortarboardIcon from '@shared/components/icons/MortarboardIcon';
+import MortarboardEditIcon from '@shared/components/icons/MortarboardEditIcon';
+import MortarboardAddIcon from '@shared/components/icons/MortarboardAddIcon';
 import ProfileSummaryCardRow from '~/components/ProfileSummaryCardRow';
 import {
   LIGHT_GRAY,

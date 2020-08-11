@@ -6,7 +6,7 @@ import {
   BLUE,
   GRAY,
 } from '~/constants';
-import CheckmarkIcon from 'Shared/components/icons/CheckmarkIcon';
+import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 
 const SelectableListItem = ({
   image,

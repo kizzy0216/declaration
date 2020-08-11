@@ -7,7 +7,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
 import Button from '~/components/Button';
-import SpinnerIcon from 'Shared/components/icons/SpinnerIcon';
+import SpinnerIcon from '@shared/components/icons/SpinnerIcon';
 import { UserContext } from '~/contexts/UserContext';
 import { fetchREST } from '~/utils/api';
 

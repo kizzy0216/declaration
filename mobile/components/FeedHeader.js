@@ -17,9 +17,9 @@ import ScreenHeader from '~/components/ScreenHeader';
 import NetworkSwitcherModal from '~/components/NetworkSwitcherModal';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
-import MessageIcon from 'Shared/components/icons/MessageIcon';
-import CalendarIcon from 'Shared/components/icons/CalendarIcon';
-import ChevronDownIcon from 'Shared/components/icons/ChevronDownIcon';
+import MessageIcon from '@shared/components/icons/MessageIcon';
+import CalendarIcon from '@shared/components/icons/CalendarIcon';
+import ChevronDownIcon from '@shared/components/icons/ChevronDownIcon';
 
 function FeedHeader({
   theme = 'dark', // light or dark

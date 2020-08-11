@@ -3,7 +3,7 @@ import { Animated, View, Text, StyleSheet } from 'react-native';
 
 import Dot from '~/components/Dot';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import CloseIcon from 'Shared/components/icons/CloseIcon';
+import CloseIcon from '@shared/components/icons/CloseIcon';
 
 function ScreenHeader({
   heading,

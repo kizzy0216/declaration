@@ -14,7 +14,7 @@ import { StackActions } from '@react-navigation/native';
 
 import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
 import DisplayHeading from '~/components/DisplayHeading';
-import InsertNetworkAccessRequest from 'Shared/mutations/InsertNetworkAccessRequest';
+import InsertNetworkAccessRequest from '@shared/mutations/InsertNetworkAccessRequest';
 import Button from '~/components/Button';
 import { IS_IOS } from '~/constants';
 

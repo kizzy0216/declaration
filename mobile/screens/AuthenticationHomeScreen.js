@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Logo from 'Shared/components/Logo';
+import Logo from '@shared/components/Logo';
 import VideoBackground from '~/components/VideoBackground';
 import Button from '~/components/Button';
 

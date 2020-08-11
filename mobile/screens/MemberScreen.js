@@ -19,10 +19,10 @@ import UpdateNetworkUserRelationship from '~/mutations/UpdateNetworkUserRelation
 import ScreenCard from '~/components/ScreenCard';
 import DisplayHeading from '~/components/DisplayHeading';
 import PersonalBio from '~/components/PersonalBio';
-import EditIcon from 'Shared/components/icons/EditIcon';
-import CameraIcon from 'Shared/components/icons/CameraIcon';
-import PlusIcon from 'Shared/components/icons/PlusIcon';
-import CheckmarkIcon from 'Shared/components/icons/CheckmarkIcon';
+import EditIcon from '@shared/components/icons/EditIcon';
+import CameraIcon from '@shared/components/icons/CameraIcon';
+import PlusIcon from '@shared/components/icons/PlusIcon';
+import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 import DoubleConfirmModal from '~/components/DoubleConfirmModal';
 import ChoiceModal from '~/components/ChoiceModal';
 import NetworkProfileSolutionBioCardContainer from '~/containers/NetworkProfileSolutionBioCardContainer';
@@ -31,13 +31,13 @@ import ProfileHeader from '~/components/ProfileHeader';
 import ProfileSummaryCardContainer from '~/containers/ProfileSummaryCardContainer';
 import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
-import mapUser from 'Shared/mappings/mapUser';
+import mapUser from '@shared/mappings/mapUser';
 import {
   CONNECTED_NETWORK_USER_RELATIONSHIP_TYPE,
   PENDING_NETWORK_USER_RELATIONSHIP_TYPE,
   DECLINED_NETWORK_USER_RELATIONSHIP_TYPE,
-} from 'Shared/constants';
-import mapNetworkUserRelationship from 'Shared/mappings/mapNetworkUserRelationship';
+} from '@shared/constants';
+import mapNetworkUserRelationship from '@shared/mappings/mapNetworkUserRelationship';
 import { BLUE } from '~/constants';
 
 function MemberScreen({ navigation, route }) {

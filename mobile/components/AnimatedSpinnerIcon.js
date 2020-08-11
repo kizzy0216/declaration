@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Animated } from 'react-native';
 
-import SpinnerIcon from 'Shared/components/icons/SpinnerIcon';
+import SpinnerIcon from '@shared/components/icons/SpinnerIcon';
 
 const AnimatedSpinnerIcon = ({
   width = 50,

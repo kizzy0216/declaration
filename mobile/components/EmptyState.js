@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import { GRAY } from '~/constants';
-import EmptySetIcon from 'Shared/components/icons/EmptySetIcon';
+import EmptySetIcon from '@shared/components/icons/EmptySetIcon';
 
 function EmptyState({
   heading,

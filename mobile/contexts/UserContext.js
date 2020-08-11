@@ -6,8 +6,8 @@ import React, {
 import { useQuery } from 'urql';
 
 import GetUser from '~/queries/GetUser';
-import mapUser from 'Shared/mappings/mapUser';
-import mapNetwork from 'Shared/mappings/mapNetwork';
+import mapUser from '@shared/mappings/mapUser';
+import mapNetwork from '@shared/mappings/mapNetwork';
 import {
   saveJWT,
   hydrateJWT,

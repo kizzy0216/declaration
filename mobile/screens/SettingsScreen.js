@@ -13,9 +13,9 @@ import ScreenHeader from '~/components/ScreenHeader';
 import Button from '~/components/Button';
 import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
-import ArrowRightIcon from 'Shared/components/icons/ArrowRightIcon';
-import LogOutIcon from 'Shared/components/icons/LogOutIcon';
-import EmailSendIcon from 'Shared/components/icons/EmailSendIcon';
+import ArrowRightIcon from '@shared/components/icons/ArrowRightIcon';
+import LogOutIcon from '@shared/components/icons/LogOutIcon';
+import EmailSendIcon from '@shared/components/icons/EmailSendIcon';
 
 function SettingsScreen({ navigation }) {
   const { logOut } = useContext(UserContext);

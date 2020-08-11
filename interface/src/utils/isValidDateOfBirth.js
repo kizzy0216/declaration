@@ -1,4 +1,4 @@
-import calculateAge from 'Shared/utils/calculateAge';
+import calculateAge from '@shared/utils/calculateAge';
 
 const isValidDateOfBirth = (dateOfBirth) => {
   if (calculateAge(dateOfBirth) < 16) {

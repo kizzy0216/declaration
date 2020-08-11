@@ -10,11 +10,11 @@ import TabBar from '~/components/TabBar';
 import TabBarIcon from '~/components/TabBarIcon';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 
-import PlusInSquareIcon from 'Shared/components/icons/PlusInSquareIcon';
-import NotificationsIcon from 'Shared/components/icons/NotificationsIcon';
-import VennDiagramIcon from 'Shared/components/icons/VennDiagramIcon';
-import PersonIcon from 'Shared/components/icons/PersonIcon';
-import SearchIcon from 'Shared/components/icons/SearchIcon';
+import PlusInSquareIcon from '@shared/components/icons/PlusInSquareIcon';
+import NotificationsIcon from '@shared/components/icons/NotificationsIcon';
+import VennDiagramIcon from '@shared/components/icons/VennDiagramIcon';
+import PersonIcon from '@shared/components/icons/PersonIcon';
+import SearchIcon from '@shared/components/icons/SearchIcon';
 
 const BottomTab = createBottomTabNavigator();
 

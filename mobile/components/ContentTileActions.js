@@ -12,16 +12,16 @@ import {
   FOCUS_CONTENTS,
 } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
-import StarFilledIcon from 'Shared/components/icons/StarFilledIcon';
-import CommentIcon from 'Shared/components/icons/CommentIcon';
-import ShareIcon from 'Shared/components/icons/ShareIcon';
-import KebabIcon from 'Shared/components/icons/KebabIcon';
-import PlayIcon from 'Shared/components/icons/PlayIcon';
-import PauseIcon from 'Shared/components/icons/PauseIcon';
-import FullscreenIcon from 'Shared/components/icons/FullscreenIcon';
-import NormalScreenIcon from 'Shared/components/icons/NormalScreenIcon';
-import AudioIcon from 'Shared/components/icons/AudioIcon';
-import NoAudioIcon from 'Shared/components/icons/NoAudioIcon';
+import StarFilledIcon from '@shared/components/icons/StarFilledIcon';
+import CommentIcon from '@shared/components/icons/CommentIcon';
+import ShareIcon from '@shared/components/icons/ShareIcon';
+import KebabIcon from '@shared/components/icons/KebabIcon';
+import PlayIcon from '@shared/components/icons/PlayIcon';
+import PauseIcon from '@shared/components/icons/PauseIcon';
+import FullscreenIcon from '@shared/components/icons/FullscreenIcon';
+import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
+import AudioIcon from '@shared/components/icons/AudioIcon';
+import NoAudioIcon from '@shared/components/icons/NoAudioIcon';
 
 const LIGHT_FILL = 'rgba(255,255,255,0.8)';
 const DARK_FILL = 'rgba(0,0,0,0.6)';

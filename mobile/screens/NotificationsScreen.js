@@ -14,7 +14,7 @@ const { REST_BASE_URL } = Constants.manifest.extra;
 import ScreenHeader from '~/components/ScreenHeader';
 import CallToActionButton from '~/components/CallToActionButton';
 import EmptyState from '~/components/EmptyState';
-import NoNotificationsIcon from 'Shared/components/icons/NoNotificationsIcon';
+import NoNotificationsIcon from '@shared/components/icons/NoNotificationsIcon';
 import { GRAY } from '~/constants';
 
 const MOCK_ITEMS = [

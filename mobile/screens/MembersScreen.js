@@ -13,7 +13,7 @@ import GetNetworkUsers from '~/queries/GetNetworkUsers';
 import ScreenHeader from '~/components/ScreenHeader';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
-import mapUser from 'Shared/mappings/mapUser';
+import mapUser from '@shared/mappings/mapUser';
 import MemberCard from '~/components/MemberCard';
 
 function MembersScreen({ navigation }) {

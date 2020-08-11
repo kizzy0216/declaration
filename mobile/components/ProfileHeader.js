@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import ScreenHeader from '~/components/ScreenHeader';
-import SettingsIcon from 'Shared/components/icons/SettingsIcon';
-import CloseIcon from 'Shared/components/icons/CloseIcon';
+import SettingsIcon from '@shared/components/icons/SettingsIcon';
+import CloseIcon from '@shared/components/icons/CloseIcon';
 import { WINDOW_WIDTH } from '~/constants';
 
 const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.5;

@@ -9,7 +9,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import DragHandle from '~/components/DragHandle';
 import Button from '~/components/Button';
-import CloseIcon from 'Shared/components/icons/CloseIcon';
+import CloseIcon from '@shared/components/icons/CloseIcon';
 import ScreenHeader from '~/components/ScreenHeader';
 
 const BORDER_RADIUS = 20;
