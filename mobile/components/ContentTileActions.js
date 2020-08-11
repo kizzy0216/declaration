@@ -32,7 +32,6 @@ function ContentTileActions({
   onCommentPress = () => {},
   onSharePress = () => {},
   onMenuPress = () => {},
-  onVideoPlayToggle = () => {},
   onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
@@ -109,26 +108,6 @@ function ContentTileActions({
                     />
                   ) : (
                     <AudioIcon
-                      width={24}
-                      height={24}
-                      fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                    />
-                  )
-                }
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.action}
-                onPress={() => onVideoPlayToggle(!controls.isVideoPlaying)}
-              >
-                {controls.isVideoPlaying
-                  ? (
-                    <PauseIcon
-                      width={24}
-                      height={24}
-                      fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                    />
-                  ) : (
-                    <PlayIcon
                       width={24}
                       height={24}
                       fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}

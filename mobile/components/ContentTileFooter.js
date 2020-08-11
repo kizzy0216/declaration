@@ -25,7 +25,6 @@ function ContentTileFooter({
   onCommentPress = () => {},
   onSharePress = () => {},
   onMenuPress = () => {},
-  onVideoPlayToggle = () => {},
   onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
@@ -56,7 +55,6 @@ function ContentTileFooter({
         onCommentPress={onCommentPress}
         onSharePress={onSharePress}
         onMenuPress={onMenuPress}
-        onVideoPlayToggle={onVideoPlayToggle}
         onVideoMuteToggle={onVideoMuteToggle}
         onFullscreenToggle={onFullscreenToggle}
       />

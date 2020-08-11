@@ -34,7 +34,7 @@ const REACH_OPTIONS = [
 ];
 
 function CreateContentMetaScreen({ navigation }) {
-  const [hashtags, setHashtags] = useState('');
+  const [description, setDescription] = useState('');
   const [mentions, setMentions] = useState('');
   const [selectedReach, setSelectedReach] = useState(NETWORK_REACH);
 
@@ -68,10 +68,10 @@ function CreateContentMetaScreen({ navigation }) {
               multiline={true}
               minHeight={75}
               maxHeight={75}
-              label="Add hashtags"
-              placeholder="#hashtag"
-              value={hashtags}
-              onChange={setHashtags}
+              label="Additional description and hashtags"
+              placeholder="Describe your post"
+              value={description}
+              onChange={setDescription}
               inputFooter={
                 <Button
                   theme="tertiary"

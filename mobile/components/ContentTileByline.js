@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import Avatar from '~/components/Avatar';
+import { hashtagRegex } from '@shared/utils/regex';
 
 function ContentTileByline({
   creator,
@@ -17,6 +18,15 @@ function ContentTileByline({
   onHashtagPress = () => {},
 }) {
   const { theme } = useContext(InterfaceContext);
+
+  const hasDescription = meta && meta.description;
+
+  let splitDescriptionByHashtags = [];
+  let matchedHashtags = [];
+  if (hasDescription) {
+    matchedHashtags = meta.description.match(hashtagRegex);
+    splitDescriptionByHashtags = meta.description.split(hashtagRegex);
+  }
 
   return (
     <>
@@ -40,35 +50,51 @@ function ContentTileByline({
                 styles[theme],
               ]}
             >
-              {creator.name}
+              {creator.name} // 0.0mi
             </Text>
           </TouchableOpacity>
         }
       </View>
-      {meta && meta.hashtags &&
-        <ScrollView
-          style={styles.hashtags}
-          horizontal={true}
-          pointerEvents="box-none"
-          showsHorizontalScrollIndicator={false}
-        >
-          {meta.hashtags.map((hashtag, index) => (
-            <TouchableOpacity
-              key={hashtag.text}
-              onPress={() => onHashtagPress(hashtag)}
-            >
-              <Text
-                style={[
-                  styles.hashtag,
-                  styles[theme],
-                  index === meta.hashtags.length - 1 && styles.lastHashtag,
-                ]}
-              >
-                {hashtag.text}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+      {hasDescription &&
+        <View style={styles.descriptionContainer}>
+          <ScrollView
+            style={styles.descriptionScrollView}
+            horizontal={true}
+            pointerEvents="box-none"
+            showsHorizontalScrollIndicator={false}
+          >
+            {splitDescriptionByHashtags.map((split, index) => (
+              <Fragment key={index}>
+                <Text
+                  style={[
+                    styles.description,
+                    styles[theme],
+                  ]}
+                >
+                  {split}
+                </Text>
+
+                {matchedHashtags[index] &&
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => onHashtagPress(matchedHashtags[index])}
+                  >
+                    <Text
+                      style={[
+                        styles.description,
+                        styles.hashtag,
+                        styles[theme],
+                        index === matchedHashtags.length - 1 && styles.lastHashtag,
+                      ]}
+                    >
+                      {matchedHashtags[index]}
+                    </Text>
+                  </TouchableOpacity>
+                }
+              </Fragment>
+            ))}
+          </ScrollView>
+        </View>
       }
     </>
   );
@@ -90,20 +116,21 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 5,
   },
-  hashtagsWrapper: {
+  descriptionContainer: {
     width: '100%',
+    paddingLeft: 30,
+    paddingRight: 30,
   },
-  hashtags: {
+  descriptionScrollView: {
     flexDirection: 'row',
-    paddingLeft: 20,
   },
-  hashtag: {
+  description: {
     fontSize: 12,
     lineHeight: 12,
     paddingTop: 10,
-    paddingRight: 5,
     paddingBottom: 10,
-    paddingLeft: 5,
+  },
+  hashtag: {
   },
   lastHashtag: {
     marginRight: 50,

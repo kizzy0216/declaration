@@ -23,44 +23,273 @@ import ContentCommentModal from '~/components/ContentCommentModal';
 import ContentShareModal from '~/components/ContentShareModal';
 import ContentMenuModal from '~/components/ContentMenuModal';
 import ContentTile from '~/components/ContentTile';
+import { TREE_ROOT_ID } from '~/constants';
+
+const SUSAN = {
+  id: 0,
+  name: 'Susan Mitchell',
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/0`
+  },
+};
+
+const EJ = {
+  id: 1,
+  name: 'EJ Dickson',
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/1`
+  },
+}
+
+const SARAH = {
+  id: 2,
+  name: 'Sarah Todd',
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/2`
+  },
+};
+
+const JUSTIN = {
+  id: 3,
+  name: 'Justin Ravitz',
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/3`
+  },
+};
+
+const JOHN = {
+  id: 4,
+  name: "John D'Ana",
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/4`
+  },
+}
+
+const YOGI = {
+  id: 5,
+  name: 'Yogi Naraine',
+  profile: {
+    photo: `${REST_BASE_URL}/avatar/5`
+  },
+}
+
+const ROOT_COMMENT = {
+  id: TREE_ROOT_ID,
+  author: null,
+  text: null,
+};
+
+const COMMENT_42 = {
+  parentId: ROOT_COMMENT.id,
+  id: 42,
+  author: EJ,
+  text: "Don't fill the silence; leaving pauses in the conversation often prompts sources to say more surprising things. 42",
+};
+
+const COMMENT_6 = {
+  parentId: COMMENT_42.id,
+  id: 6,
+  author: SARAH,
+  text: "This is EXCELLENT advice and something I wish people had told me when I started out 6",
+};
+
+const COMMENT_7 = {
+  parentId: COMMENT_42.id,
+  id: 7,
+  author: JUSTIN,
+  text: "Absolutely! (reply to EJ) 7",
+};
+
+const COMMENT_8 = {
+  parentId: COMMENT_7.id,
+  id: 8,
+  author: JOHN,
+  text: "Absolutely! (reply to Justin above) 8",
+};
+
+const COMMENT_8889 = {
+  parentId: COMMENT_8.id,
+  id: 8889,
+  author: SARAH,
+  text: "Absolutely! (nested reply to John above) 8889",
+};
+
+const COMMENT_88 = {
+  parentId: COMMENT_42.id,
+  id: 88,
+  author: JUSTIN,
+  text: "Absolutely, reply to EJ! 88",
+};
+
+const COMMENT_89 = {
+  parentId: COMMENT_42.id,
+  id: 89,
+  author: JOHN,
+  text: "Wow, it really do be like that sometimes 89",
+};
+
+const COMMENT_9 = {
+  parentId: COMMENT_89.id,
+  id: 9,
+  author: JUSTIN,
+  text: "Testing third level replies 9",
+};
+
+const COMMENT_99 = {
+  parentId: COMMENT_89.id,
+  id: 99,
+  author: JUSTIN,
+  text: "Testing third level replies take II 99",
+};
+
+const COMMENT_999 = {
+  parentId: COMMENT_89.id,
+  id: 999,
+  author: JUSTIN,
+  text: "Testing third level replies take III 999",
+};
+
+const COMMENT_8888 = {
+  parentId: COMMENT_42.id,
+  id: 8888,
+  author: JOHN,
+  text: "Wow 8888",
+};
+
+const COMMENT_1 = {
+  parentId: ROOT_COMMENT.id,
+  id: 1,
+  author: JUSTIN,
+  text: "Introduce yourself to EVERYONE, get their email, phone number (lol i'm old), follow up. 1",
+};
+
+const COMMENT_2 = {
+  parentId: COMMENT_42.id,
+  id: 2,
+  author: JOHN,
+  text: 'Use “Tell me” in phrasing your questions, as in ‘Tell me about what you saw’ instead of ‘What did you see?’ Or ‘Tell me about was going through your mind’ instead of ‘What did you think?’ It puts the subject in storytelling mode and invites much richer responses. 2',
+};
+
+const COMMENT_LOREM = {
+  parentId: COMMENT_42.id,
+  id: 3,
+  author: JOHN,
+  text: 'Lorem ipsum dolor sit amet et magn usually takes six months to be fulfilled and fulfilled in a reasonable     amount of time without    having to be fulfilled again every    time you think    it    is wrong or wrong and   you  should   be prepared to 3',
+};
 
 const MOCK_TILES = [
   {
     key: 0,
     id: 0,
     heading: "Journalists: what is the best reporting advice you've gotten during your career?",
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/0`
-      },
-    },
+    creator: SUSAN,
     meta: {
-      hashtags: [
+      description: '#journo #advice',
+      mentions: [],
+    },
+    commentsById: {
+      [ROOT_COMMENT.id]: ROOT_COMMENT,
+      42: COMMENT_42,
+      6: COMMENT_6,
+      7: COMMENT_7,
+      8: COMMENT_8,
+      88: COMMENT_88,
+      89: COMMENT_89,
+      9: COMMENT_9,
+      99: COMMENT_99,
+      999: COMMENT_999,
+      8888: COMMENT_8888,
+      8889: COMMENT_8889,
+      1: COMMENT_1,
+      2: COMMENT_2,
+      3: COMMENT_LOREM,
+    },
+    commentTree: {
+      parentId: null,
+      id: ROOT_COMMENT.id,
+      children: [
         {
-          id: 0,
-          text: '#journo',
+          parentId: ROOT_COMMENT.id,
+          id: COMMENT_42.id,
+          children: [
+            {
+              parentId: COMMENT_42.id,
+              id: COMMENT_6.id,
+              children: [],
+            },
+            {
+              parentId: COMMENT_42.id,
+              id: COMMENT_7.id,
+              children: [
+                {
+                  parentId: COMMENT_7.id,
+                  id: COMMENT_8.id,
+                  children: [
+                    {
+                      parentId: COMMENT_8.id,
+                      id: COMMENT_8889.id,
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              parentId: COMMENT_42.id,
+              id: COMMENT_89.id,
+              children: [
+                {
+                  parentId: COMMENT_89.id,
+                  id: COMMENT_9.id,
+                  children: [],
+                },
+                {
+                  parentId: COMMENT_89.id,
+                  id: COMMENT_99.id,
+                  children: [],
+                },
+                {
+                  parentId: COMMENT_89.id,
+                  id: COMMENT_999.id,
+                  children: [],
+                },
+              ],
+            },
+            {
+              parentId: COMMENT_42.id,
+              id: COMMENT_8888.id,
+              children: [],
+            },
+            {
+              parentId: COMMENT_42.id,
+              id: COMMENT_88.id,
+              children: [],
+            },
+          ],
         },
         {
-          id: 1,
-          text: '#advice',
+          parentId: ROOT_COMMENT.id,
+          id: COMMENT_1.id,
+          children: [],
+        },
+        {
+          parentId: ROOT_COMMENT.id,
+          id: COMMENT_2.id,
+          children: [],
+        },
+        {
+          parentId: ROOT_COMMENT.id,
+          id: COMMENT_LOREM.id,
+          children: [],
         },
       ],
-      mentions: [],
     },
   },
   {
     key: 1,
     id: 1,
     heading: 'Is it true that Series A financing usually takes six months to a year?',
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/1`
-      },
-    },
+    creator: SARAH,
     poll: {
       id: 0,
       options: [
@@ -79,13 +308,7 @@ const MOCK_TILES = [
     key: 111,
     id: 111,
     heading: 'Is it true that Series A financing usually takes six months to a year? I am really writing a lot here wowee maybe I should consider reducing this.',
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/111`
-      },
-    },
+    creator: EJ,
     poll: {
       id: 0,
       options: [
@@ -100,40 +323,7 @@ const MOCK_TILES = [
       ],
     },
     meta: {
-      hashtags: [
-        {
-          id: 0,
-          text: '#seriesA',
-        },
-        {
-          id: 1,
-          text: '#advice',
-        },
-        {
-          id: 2,
-          text: '#grind',
-        },
-        {
-          id: 3,
-          text: '#hashtag',
-        },
-        {
-          id: 4,
-          text: '#averylongoneman',
-        },
-        {
-          id: 5,
-          text: '#anotherone',
-        },
-        {
-          id: 6,
-          text: '#anotheroneone',
-        },
-        {
-          id: 7,
-          text: '#anotheroneoneanother',
-        },
-      ],
+      description: 'Looking to raise a round, hmu! #seriesA #advice #grind #hashtag #averylongoneman #anotherone #anotheroneone #anotheroneanother #anotheroneoneanother',
       mentions: [],
     },
   },
@@ -141,13 +331,7 @@ const MOCK_TILES = [
     key: 2,
     id: 2,
     heading: 'Should I hire a virtual assistant?',
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/2`
-      },
-    },
+    creator: JOHN,
     poll: {
       id: 1,
       options: [
@@ -170,24 +354,9 @@ const MOCK_TILES = [
     key: 3,
     id: 3,
     heading: "Journalists: what is the best reporting advice you've gotten during your career?",
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/3`
-      },
-    },
+    creator: SUSAN,
     meta: {
-      hashtags: [
-        {
-          id: 0,
-          text: '#journo',
-        },
-        {
-          id: 1,
-          text: '#advice',
-        },
-      ],
+      description: 'Just another aspiring journalist asking the easy questions. #journo #advice',
       mentions: [],
     },
     media: {uri: 'https://s3.amazonaws.com/stage.static.declaration.net/mock-jounralism-background.jpg'},
@@ -196,13 +365,7 @@ const MOCK_TILES = [
     key: 4,
     id: 4,
     heading: 'Is it true that Series A financing usually takes six months to a year?',
-    creator: {
-      id: 0,
-      name: 'Yogi Naraine',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/4`
-      },
-    },
+    creator: YOGI,
     poll: {
       id: 0,
       options: [
@@ -222,13 +385,7 @@ const MOCK_TILES = [
     key: 444,
     id: 444,
     heading: 'Is it true that Series A financing usually takes six months to a year? I am really writing a lot here wowee maybe I should consider reducing this.',
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/444`
-      },
-    },
+    creator: EJ,
     poll: {
       id: 0,
       options: [
@@ -248,13 +405,7 @@ const MOCK_TILES = [
     key: 5,
     id: 5,
     heading: 'Should I hire a virtual assistant?',
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/5`
-      },
-    },
+    creator: SUSAN,
     poll: {
       id: 1,
       options: [
@@ -277,25 +428,13 @@ const MOCK_TILES = [
   {
     key: 6,
     id: 6,
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/6`
-      },
-    },
+    creator: JOHN,
     media: {uri: 'https://s3.amazonaws.com/stage.static.declaration.net/mock-mosque-background.jpg'},
   },
   {
     key: 7,
     id: 7,
-    creator: {
-      id: 0,
-      name: 'Susan Mitchell',
-      profile: {
-        photo: `${REST_BASE_URL}/avatar/6`
-      },
-    },
+    creator: JOHN,
     media: {uri: 'https://s3.amazonaws.com/stage.static.declaration.net/mock-fashion-background.mp4'},
   },
 ];
@@ -319,6 +458,9 @@ function ContentTilePager({ children }) {
 
     setTheme((tile.media ? 'light' : 'dark'));
     setActiveTileIndex(position);
+    setIsMenuModalActive(false);
+    setIsCommentModalActive(false);
+    setIsShareModalActive(false);
   }
 
   return (

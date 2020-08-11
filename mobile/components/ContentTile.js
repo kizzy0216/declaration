@@ -63,11 +63,7 @@ function ContentTile({
   }, [isFullscreen]);
 
   function handleBackgroundPress() {
-    if (focus === FOCUS_ALL) {
-      setFocus(FOCUS_CONTENTS);
-    } else if (focus === FOCUS_CONTENTS) {
-      setFocus(FOCUS_ALL);
-    }
+    setIsVideoPlaying(!isVideoPlaying);
   }
 
   function handleCreatorPress() {
