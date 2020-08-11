@@ -7,26 +7,30 @@ import ContentTemplateScrollView from '~/components/ContentTemplateScrollView';
 
 const templatesByCategory = [
   {
-    heading: 'Typography',
+    heading: 'Text only',
     templates: [
       {
+        heading: 'Text',
         imageSource: require('~/assets/images/content-template-just-text-card.png'),
         screenName: 'CreateContentText',
       },
       {
+        heading: 'Single choice poll',
         imageSource: require('~/assets/images/content-template-just-single-choice-poll-card.png'),
         screenName: 'CreateContentSingleChoicePoll',
       },
       {
+        heading: 'Multiple choice poll',
         imageSource: require('~/assets/images/content-template-just-multiple-choice-poll-card.png'),
         screenName: 'CreateContentMultipleChoicePoll',
       },
     ],
   },
   {
-    heading: 'Media',
+    heading: 'Multimedia',
     templates: [
       {
+        heading: 'Image',
         imageSource: require('~/assets/images/content-template-just-image-card.png'),
         screenName: 'CreateContentMedia',
         screenOptions: {
@@ -34,18 +38,15 @@ const templatesByCategory = [
         },
       },
       {
+        heading: 'Video',
         videoSource: require('~/assets/videos/content-template-just-video-card.mp4'),
         screenName: 'CreateContentMedia',
         screenOptions: {
           isJustVideo: true,
         },
       },
-    ],
-  },
-  {
-    heading: 'Mixed media',
-    templates: [
       {
+        heading: 'Media + text',
         imageSource: require('~/assets/images/content-template-media-with-text-card.png'),
         videoSource: require('~/assets/videos/content-template-media-with-text-card.mp4'),
         screenName: 'CreateContentText',
@@ -54,6 +55,7 @@ const templatesByCategory = [
         },
       },
       {
+        heading: 'Media + single choice poll',
         imageSource: require('~/assets/images/content-template-media-with-single-choice-poll-card.png'),
         screenName: 'CreateContentSingleChoicePoll',
         screenOptions: {
@@ -61,6 +63,7 @@ const templatesByCategory = [
         },
       },
       {
+        heading: 'Media + multiple choice poll',
         imageSource: require('~/assets/images/content-template-media-with-multiple-choice-poll-card.png'),
         screenName: 'CreateContentMultipleChoicePoll',
         screenOptions: {
@@ -73,16 +76,24 @@ const templatesByCategory = [
     heading: 'Business',
     templates: [
       {
+        heading: 'Opportunity listing',
         imageSource: require('~/assets/images/content-template-opportunity-listing-card.png'),
         screenName: 'CreateContentOpportunityListing',
       },
       {
-        imageSource: require('~/assets/images/content-template-session-card.png'),
-        screenName: 'CreateContentSession',
-      },
-      {
+        heading: 'Availability listing',
         imageSource: require('~/assets/images/content-template-availability-listing-card.png'),
         screenName: 'CreateContentAvailabilityListing',
+      },
+    ],
+  },
+  {
+    heading: 'Sessions',
+    templates: [
+      {
+        heading: '1:1 Session',
+        videoSource: require('~/assets/videos/content-template-session-card.mp4'),
+        screenName: 'CreateContentSession',
       },
     ],
   },
@@ -90,7 +101,7 @@ const templatesByCategory = [
     heading: 'Events',
     templates: [
       {
-        imageSource: require('~/assets/images/content-template-event-card.png'),
+        heading: 'Event',
         videoSource: require('~/assets/videos/content-template-event-card.mp4'),
         screenName: 'CreateContentEvent',
       },

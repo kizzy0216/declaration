@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   View,
   StyleSheet,
   Text,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { GRAY } from '~/constants';
 
 function ContentTileForegroundPoll({
   poll,
@@ -29,28 +31,34 @@ function ContentTileForegroundPoll({
         ]}
       >
         {options.map((option, index) => (
-          <TouchableOpacity
-            key={option.id}
-            containerStyle={[
-              styles.touchableContainer,
-              isSingleChoice && styles.touchableRow,
-              isMultipleChoice && styles.touchableColumn,
-            ]}
-            onPress={() => onSelect(option)}
-          >
-            <Text
-              style={[
-                styles.text,
-                isSingleChoice && styles.textRow,
-                isMultipleChoice && styles.textColumn,
-                index === 0 && isSingleChoice && styles.textLeft,
-                index === 1 && isSingleChoice && styles.textRight,
-                index !== options.length - 1 && isMultipleChoice && styles.textWithGutter,
+          <Fragment key={option.id}>
+            <TouchableOpacity
+              key={option.id}
+              containerStyle={[
+                styles.touchableContainer,
+                isSingleChoice && styles.touchableRow,
+                isMultipleChoice && styles.touchableColumn,
               ]}
+              onPress={() => onSelect(option)}
             >
-              {option.text}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.text,
+                  isSingleChoice && styles.textRow,
+                  isMultipleChoice && styles.textColumn,
+                  index !== options.length - 1 && isMultipleChoice && styles.textWithGutter,
+                ]}
+              >
+                {option.text}
+              </Text>
+            </TouchableOpacity>
+            {index === 0 && isSingleChoice &&
+              <View style={styles.verticalSeparator} />
+            }
+            {(index != options.length - 1) && isMultipleChoice &&
+              <View style={styles.horizontalSeparator} />
+            }
+          </Fragment>
         ))}
       </View>
     </View>
@@ -60,10 +68,6 @@ function ContentTileForegroundPoll({
 const styles = StyleSheet.create({
   poll: {
     borderRadius: 17,
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
     marginTop: 30,
     shadowColor: "#000",
     shadowOffset: {
@@ -91,36 +95,45 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
+  touchableContainer: {
+  },
   touchableRow: {
     flex: 1,
     width: '50%',
+    paddingTop: 20,
+    paddingRight: 15,
+    paddingBottom: 20,
+    paddingLeft: 15,
   },
   touchableColumn: {
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingBottom: 15,
+    paddingLeft: 15,
   },
 
-  textRight: {
-    textAlign: 'right',
+  verticalSeparator: {
+    width: 1,
+    height: '100%',
+    backgroundColor: GRAY,
+    opacity: 0.3,
+  },
+  horizontalSeparator: {
+    width: '100%',
+    height: 1,
+    backgroundColor: GRAY,
+    opacity: 0.3,
+  },
+
+  text: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    lineHeight: 20,
   },
   textRow: {
-    paddingTop: 10,
-    paddingRight: 5,
-    paddingBottom: 10,
-    paddingLeft: 5,
-    fontSize: 13,
-    lineHeight: 20,
+    textAlign: 'center',
   },
   textColumn: {
-    paddingTop: 15,
-    paddingRight: 10,
-    paddingBottom: 15,
-    paddingLeft: 10,
-    fontSize: 13,
-    lineHeight: 20,
-  },
-  textWithGutter: {
-    marginBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
   },
 });
 

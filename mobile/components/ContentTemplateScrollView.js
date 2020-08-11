@@ -30,6 +30,7 @@ function ContentTemplateScrollView({
             style={styles.cardWrapper}
           >
             <ContentTemplateCard
+              heading={template.heading}
               imageSource={template.imageSource}
               videoSource={template.videoSource}
               onPress={() => onTemplatePress(template)}

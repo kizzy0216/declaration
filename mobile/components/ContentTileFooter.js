@@ -17,14 +17,16 @@ function ContentTileFooter({
   meta,
   controls = {
     hasVideo: false,
-    shouldPlayVideo: false,
+    isVideoPlaying: false,
   },
   onCreatorPress = () => {},
   onHashtagPress = () => {},
-  onLikePress = () => {},
+  onStarPress = () => {},
   onCommentPress = () => {},
+  onSharePress = () => {},
   onMenuPress = () => {},
   onVideoPlayToggle = () => {},
+  onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
   const { focus } = useContext(ContentTilePagerContext);
@@ -39,6 +41,7 @@ function ContentTileFooter({
           styles.bylineWrapper,
           (focus === FOCUS_MEDIA || focus === FOCUS_CONTENTS || controls.isFullscreen) && styles.hidden,
         ]}
+        pointerEvents="box-none"
       >
         <ContentTileByline
           creator={creator}
@@ -49,10 +52,12 @@ function ContentTileFooter({
       </View>
       <ContentTileActions
         controls={controls}
-        onLikePress={onLikePress}
+        onStarPress={onStarPress}
         onCommentPress={onCommentPress}
+        onSharePress={onSharePress}
         onMenuPress={onMenuPress}
         onVideoPlayToggle={onVideoPlayToggle}
+        onVideoMuteToggle={onVideoMuteToggle}
         onFullscreenToggle={onFullscreenToggle}
       />
     </View>

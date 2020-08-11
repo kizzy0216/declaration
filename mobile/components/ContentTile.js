@@ -36,20 +36,22 @@ function ContentTile({
   creator,
   meta,
   onMenuRequest = () => {},
+  onShareRequest = () => {},
+  onCommentRequest = () => {},
   ...props
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isModalActive, setIsModalActive] = useState(false);
   const {
     focus,
     setFocus,
     activeTileIndex,
   } = useContext(ContentTilePagerContext);
   const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
-  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
 
   useEffect(() => {
-    setShouldPlayVideo(index === activeTileIndex);
+    setIsVideoPlaying(index === activeTileIndex);
 
     if (isFullscreen) {
       setIsFullscreen(false);
@@ -59,10 +61,6 @@ function ContentTile({
   useEffect(() => {
     setIsInterfaceVisible(!isFullscreen);
   }, [isFullscreen]);
-
-  function handleLongPress() {
-    onMenuRequest({ id });
-  }
 
   function handleBackgroundPress() {
     if (focus === FOCUS_ALL) {
@@ -78,22 +76,7 @@ function ContentTile({
   function handleHashtagPress() {
   }
 
-  function handleLikePress() {
-  }
-
-  function handleCommentPress() {
-  }
-
-  function handleMenuPress() {
-    onMenuRequest({ id });
-  }
-
-  function handleVideoPlayToggle(updatedShouldPlayVideo) {
-    setShouldPlayVideo(updatedShouldPlayVideo);
-  }
-
-  function handleFullscreenToggle(updatedIsFullscreen) {
-    setIsFullscreen(updatedIsFullscreen);
+  function handleStarPress() {
   }
 
   const controls = {
@@ -112,7 +95,8 @@ function ContentTile({
       media.uri &&
       media.uri.includes('mp4')
     ),
-    shouldPlayVideo,
+    isVideoPlaying,
+    isVideoMuted,
     isFullscreen,
   }
 
@@ -120,7 +104,7 @@ function ContentTile({
     <LongPressGestureHandler
       onHandlerStateChange={({ nativeEvent }) => {
         if (nativeEvent.state === State.ACTIVE) {
-          handleLongPress();
+          onMenuRequest();
         }
       }}
       minDurationMs={800}
@@ -173,11 +157,13 @@ function ContentTile({
               controls={controls}
               onCreatorPress={handleCreatorPress}
               onHashtagPress={handleHashtagPress}
-              onLikePress={handleLikePress}
-              onCommentPress={handleCommentPress}
-              onMenuPress={handleMenuPress}
-              onVideoPlayToggle={handleVideoPlayToggle}
-              onFullscreenToggle={handleFullscreenToggle}
+              onStarPress={handleStarPress}
+              onCommentPress={onCommentRequest}
+              onSharePress={onShareRequest}
+              onMenuPress={onMenuRequest}
+              onVideoPlayToggle={setIsVideoPlaying}
+              onVideoMuteToggle={setIsVideoMuted}
+              onFullscreenToggle={setIsFullscreen}
             />
           </View>
         </View>

@@ -6,11 +6,12 @@ import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import {
   BLUE,
   LIGHT_GRAY,
+  RED,
 } from '~/constants';
 
 function Button({
   label,
-  theme = 'primary', // primary, secondary, tertiary, transparent
+  theme = 'primary', // primary, secondary, tertiary, transparent, danger
   size = 'medium', // tiny, small, medium
   leftIcon,
   rightIcon,
@@ -170,6 +171,13 @@ const styles = StyleSheet.create({
   transparentLabel: {
     backgroundColor: 'transparent',
     color: 'black',
+  },
+
+  danger: {
+    backgroundColor: RED,
+  },
+  dangerLabel: {
+    color: 'white',
   },
 
   tinyLabel: {

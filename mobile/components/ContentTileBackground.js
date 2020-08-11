@@ -53,8 +53,8 @@ function ContentTileBackground({
             <Video
               source={media}
               resizeMode="cover"
-              shouldPlay={controls.shouldPlayVideo}
-              isMuted={true}
+              shouldPlay={controls.isVideoPlaying}
+              isMuted={controls.isVideoMuted}
               isLooping={true}
               style={{
                 width: '100%',

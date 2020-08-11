@@ -19,7 +19,9 @@ import {
   FOCUS_MEDIA,
 } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
-import Modal from '~/components/Modal';
+import ContentCommentModal from '~/components/ContentCommentModal';
+import ContentShareModal from '~/components/ContentShareModal';
+import ContentMenuModal from '~/components/ContentMenuModal';
 import ContentTile from '~/components/ContentTile';
 
 const MOCK_TILES = [
@@ -299,17 +301,17 @@ const MOCK_TILES = [
 ];
 
 function ContentTilePager({ children }) {
-  const [isModalActive, setIsModalActive] = useState(false);
+  const [isMenuModalActive, setIsMenuModalActive] = useState(false);
+  const [isCommentModalActive, setIsCommentModalActive] = useState(false);
+  const [isShareModalActive, setIsShareModalActive] = useState(false);
+
   const { setTheme } = useContext(InterfaceContext);
   const {
     focus,
+    activeTileIndex,
     setActiveTileIndex,
     setFocus,
   } = useContext(ContentTilePagerContext);
-
-  function handleMenuRequest() {
-    setIsModalActive(true);
-  }
 
   function handlePageSelected({ nativeEvent }) {
     const { position } = nativeEvent;
@@ -321,14 +323,21 @@ function ContentTilePager({ children }) {
 
   return (
     <View style={styles.contentTilePager}>
-      <Modal
-        isVisible={isModalActive}
-        onClose={() => setIsModalActive(false)}
-      >
-        <Text>Share</Text>
-        <Text>Edit</Text>
-        <Text>Delete</Text>
-      </Modal>
+      <ContentCommentModal
+        content={MOCK_TILES[activeTileIndex]}
+        isVisible={isCommentModalActive}
+        onClose={() => setIsCommentModalActive(false)}
+      />
+      <ContentShareModal
+        content={MOCK_TILES[activeTileIndex]}
+        isVisible={isShareModalActive}
+        onClose={() => setIsShareModalActive(false)}
+      />
+      <ContentMenuModal
+        content={MOCK_TILES[activeTileIndex]}
+        isVisible={isMenuModalActive}
+        onClose={() => setIsMenuModalActive(false)}
+      />
 
       <ViewPager
         orientation="vertical"
@@ -342,7 +351,9 @@ function ContentTilePager({ children }) {
           <ContentTile
             {...tile}
             index={index}
-            onMenuRequest={handleMenuRequest}
+            onCommentRequest={() => setIsCommentModalActive(true)}
+            onShareRequest={() => setIsShareModalActive(true)}
+            onMenuRequest={() => setIsMenuModalActive(true)}
           />
         ))}
       </ViewPager>

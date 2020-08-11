@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 import { Video } from 'expo-av';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,6 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { WINDOW_WIDTH } from '~/constants';
 
 function ContentTemplateCard({
+  heading,
   imageSource,
   videoSource,
   onPress = () => {},
@@ -43,6 +45,9 @@ function ContentTemplateCard({
           />
         }
       </View>
+      <Text style={styles.heading}>
+        {heading}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -75,6 +80,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 1,
+  },
+  heading: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 16,
   },
 });
 

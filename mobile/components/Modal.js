@@ -16,6 +16,7 @@ const BORDER_RADIUS = 20;
 
 function Modal({
   position = 'bottom', // bottom or up
+  header,
   heading = '',
   isFetching = false,
   isVisible = false,
@@ -86,9 +87,9 @@ function Modal({
   );
 
   const dragHandlePaddingBottom = (
-    position === 'bottom' && heading.length == 0
+    position === 'bottom' && heading.length === 0 && !header
       ? 50
-      : heading.length > 0
+      : heading.length > 0 || header
       ? 0
       : 10
   );
@@ -132,6 +133,8 @@ function Modal({
         edges={edges}
       >
         {position === 'bottom' && dragHandleElement}
+
+        {header}
 
         {heading.length > 0 &&
           <View style={styles.headerWrapper}>
