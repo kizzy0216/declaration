@@ -7,6 +7,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Avatar from '~/components/Avatar';
+import { GRAY } from '~/constants';
 
 function Comment({
   id,
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   activeText: {
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 24,
   },
   children: {
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     marginLeft: 15,
-    backgroundColor: 'black',
+    backgroundColor: GRAY,
   },
 
   action: {

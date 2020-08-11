@@ -22,6 +22,7 @@ function Modal({
   isVisible = false,
   isSubmitDisabled = false,
   submitLabel = 'Save',
+  containerStyle,
   onClose = () => {},
   onSubmit = () => {},
   children,
@@ -129,6 +130,7 @@ function Modal({
           borderBottomRightRadius,
           borderBottomLeftRadius,
           borderTopLeftRadius,
+          ...containerStyle,
         }}
         edges={edges}
       >

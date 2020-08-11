@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   },
   creatorName: {
     fontSize: 12,
+    fontWeight: '600',
     paddingRight: 5,
     paddingLeft: 5,
   },

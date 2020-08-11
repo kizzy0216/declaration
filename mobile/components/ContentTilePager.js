@@ -164,14 +164,14 @@ const COMMENT_1 = {
 };
 
 const COMMENT_2 = {
-  parentId: COMMENT_42.id,
+  parentId: ROOT_COMMENT.id,
   id: 2,
   author: JOHN,
   text: 'Use “Tell me” in phrasing your questions, as in ‘Tell me about what you saw’ instead of ‘What did you see?’ Or ‘Tell me about was going through your mind’ instead of ‘What did you think?’ It puts the subject in storytelling mode and invites much richer responses. 2',
 };
 
 const COMMENT_LOREM = {
-  parentId: COMMENT_42.id,
+  parentId: ROOT_COMMENT.id,
   id: 3,
   author: JOHN,
   text: 'Lorem ipsum dolor sit amet et magn usually takes six months to be fulfilled and fulfilled in a reasonable     amount of time without    having to be fulfilled again every    time you think    it    is wrong or wrong and   you  should   be prepared to 3',

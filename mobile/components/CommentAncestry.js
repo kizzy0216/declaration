@@ -36,24 +36,28 @@ function CommentAncestry({
       }
 
       {parentComment && parentComment.id !== TREE_ROOT_ID &&
-        <View
-          style={[
-            styles.commentWrapper,
-            styles.parentCommentWrapper,
-          ]}
-        >
-          <Comment
-            id={parentComment.id}
-            author={parentComment.author}
-            text={parentComment.text}
-            children={parentComment.children}
-            commentsById={commentsById}
-            isParent={true}
-            onAuthorPress={onAuthorPress}
-            onViewReplies={onViewReplies}
-            onReply={onReply}
-          />
-        </View>
+        <>
+          <View
+            style={[
+              styles.commentWrapper,
+              styles.parentCommentWrapper,
+            ]}
+          >
+            <Comment
+              id={parentComment.id}
+              author={parentComment.author}
+              text={parentComment.text}
+              children={parentComment.children}
+              commentsById={commentsById}
+              isParent={true}
+              onAuthorPress={onAuthorPress}
+              onViewReplies={onViewReplies}
+              onReply={onReply}
+            />
+          <View style={styles.verticalSeparator} />
+          </View>
+
+        </>
       }
     </>
   );
@@ -61,12 +65,16 @@ function CommentAncestry({
 
 const styles = StyleSheet.create({
   commentWrapper: {
-    marginBottom: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
-  parentCommentWrapper: {
-    borderBottomColor: GRAY,
-    borderBottomWidth: 1,
-    paddingBottom: 20,
+  verticalSeparator: {
+    height: 20,
+    width: 1,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 15,
+    backgroundColor: GRAY,
   },
 });
 

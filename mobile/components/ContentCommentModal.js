@@ -25,6 +25,7 @@ import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 import {
   WINDOW_HEIGHT,
   GRAY,
+  LIGHT_GRAY,
   TREE_ROOT_ID,
 } from '~/constants';
 
@@ -138,6 +139,9 @@ function ContentCommentModal({
       }
       isVisible={isVisible}
       onClose={handleClose}
+      containerStyle={{
+        backgroundColor: LIGHT_GRAY,
+      }}
     >
       <View style={styles.container}>
         <ScrollView
@@ -201,20 +205,16 @@ function ContentCommentModal({
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 30,
-    paddingRight: 30,
     maxHeight: WINDOW_HEIGHT * 0.75,
+    backgroundColor: LIGHT_GRAY,
   },
   commentWrapper: {
     marginBottom: 20,
-  },
-  parentCommentWrapper: {
-    borderBottomColor: GRAY,
-    borderBottomWidth: 1,
-    paddingBottom: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   activeCommentWrapper: {
-    borderBottomColor: 'black',
+    borderBottomColor: GRAY,
     borderBottomWidth: 1,
     paddingBottom: 30,
     marginBottom: 30,
