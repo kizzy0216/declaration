@@ -7,21 +7,39 @@ import {
 import { SafeAreaView  } from 'react-native-safe-area-context';
 
 import ContentTileForegroundPoll from '~/components/ContentTileForegroundPoll';
+import ContentTileForegroundAvailabilityListing from '~/components/ContentTileForegroundAvailabilityListing';
+import ContentTileForegroundOpportunityListing from '~/components/ContentTileForegroundOpportunityListing';
 
 function ContentTileForeground({
   heading,
+  subHeading,
+  body,
   poll,
+  media,
+  availabilityListing,
+  opportunityListing,
+  creator,
   onPollOptionSelect = () => {},
 }) {
-  if (!heading && !poll) {
+  if (
+    !heading &&
+    !poll &&
+    !availabilityListing &&
+    !opportunityListing
+  ) {
     return null;
   }
 
   return (
     <SafeAreaView >
       <View style={styles.foreground}>
-        <View style={styles.header}>
-          {heading &&
+        <View
+          style={[
+            styles.header,
+            media && styles.headerBubbly,
+          ]}
+        >
+          {heading && !availabilityListing && !opportunityListing &&
             <Text style={styles.heading}>
               {heading}
             </Text>
@@ -32,6 +50,19 @@ function ContentTileForeground({
             onSelect={onPollOptionSelect}
           />
         </View>
+
+        <ContentTileForegroundAvailabilityListing
+          creator={creator}
+          heading={heading}
+          body={body}
+          availabilityListing={availabilityListing}
+        />
+
+        <ContentTileForegroundOpportunityListing
+          heading={heading}
+          subHeading={subHeading}
+          opportunityListing={opportunityListing}
+        />
       </View>
     </SafeAreaView>
   );
@@ -48,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
   },
-  header: {
+  headerBubbly: {
     borderRadius: 17,
     paddingTop: 15,
     paddingRight: 20,

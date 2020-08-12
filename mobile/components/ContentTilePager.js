@@ -179,6 +179,63 @@ const COMMENT_LOREM = {
 
 const MOCK_TILES = [
   {
+    key: -2,
+    id: -2,
+    heading: "We are hiring",
+    subHeading: "Senior Graphic Designer",
+    creator: JUSTIN,
+    opportunityListing: {
+      company: {
+        id: 0,
+        name: 'Apple',
+        photo: 'https://files-85hfqrnl6.vercel.app/apple.png',
+      },
+      callToAction: {
+        href: 'mailto:nickdandakis@gmail.com'
+      },
+      criteria: [
+        {
+          id: 0,
+          text: '5 years of experience',
+        },
+        {
+          id: 1,
+          text: 'Responsive web design',
+        },
+        {
+          id: 2,
+          text: 'Excellent time management',
+        },
+      ],
+    },
+  },
+  {
+    key: -1,
+    id: -1,
+    heading: "I'm available and looking for a new job as an interior designer",
+    body: "I've created, managed, and implemented every step of client projects including materials.",
+    creator: JOHN,
+    availabilityListing: {
+      callToAction: {
+        href: 'mailto:nickdandakis@gmail.com'
+      },
+      criteria: [
+        {
+          id: 0,
+          text: '3+ years of professional experience',
+        },
+        {
+          id: 1,
+          text: 'Strong knowledge of trade sources',
+        },
+        {
+          id: 2,
+          text: 'Extreme attention to detail',
+        },
+      ],
+    },
+  },
+  {
     key: 0,
     id: 0,
     heading: "Journalists: what is the best reporting advice you've gotten during your career?",
@@ -305,6 +362,27 @@ const MOCK_TILES = [
     },
   },
   {
+    key: 11112,
+    id: 11112,
+    heading: 'Is it true that Series A financing usually takes six months to a year?',
+    creator: SARAH,
+    poll: {
+      id: 0,
+      options: [
+        {
+          id: 0,
+          text: 'Yes',
+          count: 300,
+        },
+        {
+          id: 1,
+          text: 'No',
+          count: 46,
+        },
+      ],
+    },
+  },
+  {
     key: 111,
     id: 111,
     heading: 'Is it true that Series A financing usually takes six months to a year? I am really writing a lot here wowee maybe I should consider reducing this.',
@@ -346,6 +424,32 @@ const MOCK_TILES = [
         {
           id: 4,
           text: 'No, assistants are not worth it',
+        },
+      ],
+    },
+  },
+  {
+    key: 222,
+    id: 222,
+    heading: 'Should I hire a virtual assistant?',
+    creator: JOHN,
+    poll: {
+      id: 1,
+      options: [
+        {
+          id: 2,
+          text: 'Yes, definitely',
+          count: 230,
+        },
+        {
+          id: 3,
+          text: 'No, hire an IRL assistant',
+          count: 123,
+        },
+        {
+          id: 4,
+          text: 'No, assistants are not worth it',
+          count: 2,
         },
       ],
     },

@@ -124,7 +124,7 @@ function ContentTile({
           <View
             style={[
               styles.foregroundWrapper,
-              !media && styles.foregroundWrapperWithoutMedia,
+              !media && !availabilityListing && !opportunityListing && styles.loweredForegroundWrapper,
               (isFullscreen) && styles.hidden,
             ]}
           >
@@ -132,11 +132,13 @@ function ContentTile({
               heading={heading}
               subHeading={subHeading}
               body={body}
+              media={media}
               poll={poll}
               session={session}
               event={event}
               availabilityListing={availabilityListing}
               opportunityListing={opportunityListing}
+              creator={creator}
             />
           </View>
 
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: -1,
   },
-  foregroundWrapperWithoutMedia: {
+  loweredForegroundWrapper: {
     marginTop: '20%',
   },
   footerWrapper: {

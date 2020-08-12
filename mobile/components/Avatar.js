@@ -38,9 +38,9 @@ function Avatar({
     <View
       style={[
         styles.avatar,
-        hasLoaded && styles.imageLoaded,
         styles[theme],
         styles[size],
+        hasLoaded && styles.imageLoaded,
       ]}
     >
       <View style={hasLoaded && styles.initialsImageLoaded}>
@@ -89,6 +89,9 @@ const styles = StyleSheet.create({
   },
   secondary: {
     backgroundColor: GRAY,
+  },
+  imageLoaded: {
+    backgroundColor: 'white',
   },
   small: {
     width: 28,
