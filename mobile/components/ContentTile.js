@@ -21,9 +21,12 @@ import {
 import ContentTileForeground from '~/components/ContentTileForeground';
 import ContentTileBackground from '~/components/ContentTileBackground';
 import ContentTileFooter from '~/components/ContentTileFooter';
+import ContentTileFeedback from '~/components/ContentTileFeedback';
 import {
   WINDOW_WIDTH,
   WINDOW_HEIGHT,
+  FEEDBACK_PAUSED_VIDEO,
+  FEEDBACK_PLAYED_VIDEO,
 } from '~/constants';
 
 function ContentTile({
@@ -55,11 +58,45 @@ function ContentTile({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isFeedbackActive, setIsFeedbackActive] = useState(false);
+  const [feedbackType, setFeedbackType] = useState('');
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isStarring, setIsStarring] = useState(false);
 
+  const controls = {
+    hasImage: (
+      media &&
+      media.uri &&
+      (
+        media.uri.includes('jpg') ||
+        media.uri.includes('png') ||
+        media.uri.includes('gif') ||
+        media.uri.includes('jpeg')
+      )
+    ),
+    hasVideo: (
+      media &&
+      media.uri &&
+      media.uri.includes('mp4')
+    ),
+    isVideoPlaying,
+    isVideoMuted,
+    isFullscreen,
+  };
+
+  const hasForeground = (
+    heading ||
+    subHeading ||
+    body ||
+    poll ||
+    availabilityListing ||
+    opportunityListing ||
+    session ||
+    event
+  );
+
   useEffect(() => {
-    setIsVideoPlaying(index === activeTileIndex);
+    setIsVideoPlaying(index === activeTileIndex && controls.hasVideo);
 
     if (isFullscreen) {
       setIsFullscreen(false);
@@ -79,6 +116,20 @@ function ContentTile({
   }, [isFullscreen]);
 
   function handleBackgroundTap() {
+    if (!controls.hasVideo) {
+      return;
+    }
+
+    if (!isVideoPlaying) { // play
+      setIsFeedbackActive(true);
+      setFeedbackType(FEEDBACK_PLAYED_VIDEO);
+      setTimeout(() => setIsFeedbackActive(false), 1000);
+    } else { // pause
+      setIsFeedbackActive(true);
+      setFeedbackType(FEEDBACK_PAUSED_VIDEO);
+      setTimeout(() => setIsFeedbackActive(false), 1000);
+    }
+
     setIsVideoPlaying(!isVideoPlaying);
   }
 
@@ -113,136 +164,116 @@ function ContentTile({
     }, 500);
   }
 
-  const controls = {
-    hasImage: (
-      media &&
-      media.uri &&
-      (
-        media.uri.includes('jpg') ||
-        media.uri.includes('png') ||
-        media.uri.includes('gif') ||
-        media.uri.includes('jpeg')
-      )
-    ),
-    hasVideo: (
-      media &&
-      media.uri &&
-      media.uri.includes('mp4')
-    ),
-    isVideoPlaying,
-    isVideoMuted,
-    isFullscreen,
-  };
-
-  const hasForeground = (
-    heading ||
-    subHeading ||
-    body ||
-    poll ||
-    availabilityListing ||
-    opportunityListing ||
-    session ||
-    event
-  );
-
   return (
-      <View style={styles.contentTile}>
-        <View style={styles.container}>
-          <View
-            style={[
-              styles.backgroundWrapper,
-            ]}
-          >
-            <ContentTileBackground
-              index={index}
-              media={media}
-              controls={controls}
-              isFocused={isFullscreen}
-              hasForeground={hasForeground}
-              onTap={handleBackgroundTap}
-              onDoubleTap={handleBackgroundDoubleTap}
-              onLongPress={onMenuRequest}
-              onDoubleTapPanActive={handleStarPanActive}
-              onDoubleTapPan={Animated.event(
-                [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
-                { useNativeDriver: false },
-              )}
-              onDoubleTapPanEnd={handleStarPanEnd}
-            />
-          </View>
-
-          <Animated.View
-            style={{
-              ...styles.foregroundWrapper,
-              ...(!media && !availabilityListing && !opportunityListing && styles.loweredForegroundWrapper),
-              ...({
-                opacity: fullscreenAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 0],
-                }),
-                transform: [{
-                  translateY: fullscreenAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -50],
-                  }),
-                }],
-              }),
-            }}
-            pointerEvents={isFullscreen ? 'none' : 'box-none'}
-          >
-            <ContentTileForeground
-              heading={heading}
-              subHeading={subHeading}
-              body={body}
-              media={media}
-              poll={poll}
-              session={session}
-              event={event}
-              availabilityListing={availabilityListing}
-              opportunityListing={opportunityListing}
-              creator={creator}
-            />
-          </Animated.View>
-
-          <Animated.View
-            style={{
-              ...styles.footerWrapper,
-              ...({
-                transform: [{
-                  translateY: fullscreenAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-100, -10],
-                  }),
-                }],
-              }),
-            }}
-            pointerEvents={isFullscreen ? 'auto' : 'box-none'}
-          >
-            <ContentTileFooter
-              creator={creator}
-              meta={meta}
-              controls={controls}
-              starAnimation={starAnimation}
-              isStarring={isStarring}
-              onCreatorPress={handleCreatorPress}
-              onHashtagPress={handleHashtagPress}
-              onStarPress={handleStarPress}
-              onStarPan={Animated.event(
-                [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
-                { useNativeDriver: false },
-              )}
-              onStarPanActive={handleStarPanActive}
-              onStarPanEnd={handleStarPanEnd}
-              onCommentPress={onCommentRequest}
-              onSharePress={onShareRequest}
-              onMenuPress={onMenuRequest}
-              onVideoPlayToggle={setIsVideoPlaying}
-              onVideoMuteToggle={setIsVideoMuted}
-              onFullscreenToggle={setIsFullscreen}
-            />
-          </Animated.View>
+    <View style={styles.contentTile}>
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.backgroundWrapper,
+          ]}
+        >
+          <ContentTileBackground
+            index={index}
+            media={media}
+            controls={controls}
+            isFocused={isFullscreen}
+            hasForeground={hasForeground}
+            onTap={handleBackgroundTap}
+            onDoubleTap={handleBackgroundDoubleTap}
+            onLongPress={onMenuRequest}
+            onDoubleTapPanActive={handleStarPanActive}
+            onDoubleTapPan={Animated.event(
+              [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
+              { useNativeDriver: false },
+            )}
+            onDoubleTapPanEnd={handleStarPanEnd}
+          />
         </View>
+
+        <View
+          style={{
+            ...styles.feedbackWrapper,
+          }}
+          pointerEvents="box-none"
+        >
+          <ContentTileFeedback
+            isActive={isFeedbackActive}
+            type={feedbackType}
+          />
+        </View>
+
+        <Animated.View
+          style={{
+            ...styles.foregroundWrapper,
+            ...(!media && !availabilityListing && !opportunityListing && styles.loweredForegroundWrapper),
+            ...({
+              opacity: fullscreenAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+              }),
+              transform: [{
+                translateY: fullscreenAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -50],
+                }),
+              }],
+            }),
+          }}
+          pointerEvents={isFullscreen ? 'none' : 'box-none'}
+        >
+          <ContentTileForeground
+            heading={heading}
+            subHeading={subHeading}
+            body={body}
+            media={media}
+            poll={poll}
+            session={session}
+            event={event}
+            availabilityListing={availabilityListing}
+            opportunityListing={opportunityListing}
+            creator={creator}
+          />
+        </Animated.View>
+
+        <Animated.View
+          style={{
+            ...styles.footerWrapper,
+            ...({
+              transform: [{
+                translateY: fullscreenAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-100, -10],
+                }),
+              }],
+            }),
+          }}
+          pointerEvents={isFullscreen ? 'auto' : 'box-none'}
+        >
+          <ContentTileFooter
+            creator={creator}
+            meta={meta}
+            controls={controls}
+            starAnimation={starAnimation}
+            isStarring={isStarring}
+            onCreatorPress={handleCreatorPress}
+            onHashtagPress={handleHashtagPress}
+            onStarPress={handleStarPress}
+            onStarPan={Animated.event(
+              [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
+              { useNativeDriver: false },
+            )}
+            onStarPanActive={handleStarPanActive}
+            onStarPanEnd={handleStarPanEnd}
+            onCommentPress={onCommentRequest}
+            onSharePress={onShareRequest}
+            onMenuPress={onMenuRequest}
+            onVideoPlayToggle={setIsVideoPlaying}
+            onVideoMuteToggle={setIsVideoMuted}
+            onFullscreenToggle={setIsFullscreen}
+          />
+        </Animated.View>
       </View>
+    </View>
   );
 }
 
@@ -261,6 +292,15 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'absolute',
     zIndex: 0,
+  },
+  feedbackWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9,
   },
   loweredForegroundWrapper: {
     marginTop: '20%',

@@ -48,7 +48,8 @@
     "react-native-web": "~0.11.7",
     "urql": "^1.9.8",
     "expo-media-library": "~8.2.1",
-    "@react-native-community/viewpager": "3.3.0"
+    "@react-native-community/viewpager": "3.3.0",
+    "expo-blur": "~8.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
