@@ -14,7 +14,12 @@ function ContentTileForegroundOpportunityListing({
   heading,
   subHeading,
   opportunityListing,
+  hasMedia,
 }) {
+  const theme = (
+    hasMedia ? 'light' : 'dark'
+  );
+
   if (!opportunityListing) {
     return null;
   }
@@ -31,26 +36,47 @@ function ContentTileForegroundOpportunityListing({
                 imageSrc={opportunityListing.company.photo}
               />
             </View>
-            <Text style={styles.companyName}>
+            <Text
+              style={[
+                styles.companyName,
+                styles[theme],
+              ]}
+            >
               {opportunityListing.company.name}
             </Text>
           </View>
         }
 
-        <Text style={styles.heading}>
+        <Text
+          style={[
+            styles.heading,
+            styles[theme],
+          ]}
+        >
           {heading}
         </Text>
 
-        <Text style={styles.subHeading}>
+        <Text
+          style={[
+            styles.subHeading,
+            styles[theme],
+          ]}
+        >
           {subHeading}
         </Text>
 
         {opportunityListing.criteria &&
           <View style={styles.criteria}>
-            {opportunityListing.criteria.map((criterion) => (
-              <Text style={styles.criterion}>
+            {opportunityListing.criteria.map((criterion, index) => (
+              <Text
+                key={index}
+                style={[
+                  styles.criterion,
+                  styles[theme],
+                ]}
+              >
                 <CheckmarkIcon
-                  fill="black"
+                  fill={theme === 'light' ? 'white' : 'black'}
                 />
                 &nbsp;
                 {criterion.text}
@@ -110,6 +136,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     maxWidth: 200,
+  },
+  light: {
+    color: 'white',
+  },
+  dark: {
+    color: 'black',
   },
 });
 

@@ -1,3 +1,4 @@
+export const PUNCHY_BLUE = '#49D6CF'
 export const BLUE = '#3BBDB6';
 export const LIGHT_BLUE = '#D2ECEB';
 export const LIGHT_GRAY = '#F5F5F5';

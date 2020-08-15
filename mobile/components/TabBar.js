@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {
+  useRef,
+  useEffect,
+} from 'react';
 import {
+  Animated,
   View,
   Text,
   StyleSheet,
@@ -8,60 +12,82 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function TabBar({ state, descriptors, navigation }) {
+  const animation = useRef(new Animated.Value(1)).current;
   const focusedOptions = descriptors[state.routes[state.index].key].options;
+  const { tabBarVisible = true } = focusedOptions;
 
-  if (focusedOptions.tabBarVisible === false) {
-    return null;
-  }
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: (tabBarVisible ? 1 : 0),
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [tabBarVisible]);
 
   return (
-    <SafeAreaView
-      edges={["bottom"]}
-      style={styles.safeArea}
-      contentContainerStyle={styles.safeAreaContainer}
+    <Animated.View
+      style={{
+        opacity: animation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+        }),
+        transform: [{
+          translateY: animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [100, 0],
+          }),
+        }],
+      }}
+      pointerEvents={tabBarVisible ? 'auto' : 'none'}
     >
-      <View style={styles.tabBar}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
+      <SafeAreaView
+        edges={["bottom"]}
+        style={styles.safeArea}
+        contentContainerStyle={styles.safeAreaContainer}
+      >
+        <View style={styles.tabBar}>
+          {state.routes.map((route, index) => {
+            const { options } = descriptors[route.key];
 
-          const isFocused = (state.index === index);
+            const isFocused = (state.index === index);
 
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+            const onPress = () => {
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate(route.name);
+              }
+            };
 
-          const onLongPress = () => {
-            navigation.emit({
-              type: 'tabLongPress',
-              target: route.key,
-            });
-          };
+            const onLongPress = () => {
+              navigation.emit({
+                type: 'tabLongPress',
+                target: route.key,
+              });
+            };
 
-          return (
-            <TouchableOpacity
-              key={route.key}
-              accessibilityRole="button"
-              accessibilityStates={isFocused ? ['selected'] : []}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{ flex: 1 }}
-            >
-              {options.tabBarIcon({ isFocused })}
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </SafeAreaView>
+            return (
+              <TouchableOpacity
+                key={route.key}
+                accessibilityRole="button"
+                accessibilityStates={isFocused ? ['selected'] : []}
+                accessibilityLabel={options.tabBarAccessibilityLabel}
+                testID={options.tabBarTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={{ flex: 1 }}
+              >
+                {options.tabBarIcon({ isFocused })}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </SafeAreaView>
+    </Animated.View>
   );
 }
 

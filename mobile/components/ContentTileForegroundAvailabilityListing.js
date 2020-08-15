@@ -14,7 +14,12 @@ function ContentTileForegroundAvailabilityListing({
   heading,
   body,
   availabilityListing,
+  hasMedia = false,
 }) {
+  const theme = (
+    hasMedia ? 'light' : 'dark'
+  );
+
   if (!availabilityListing) {
     return null;
   }
@@ -29,18 +34,34 @@ function ContentTileForegroundAvailabilityListing({
           />
         </View>
 
-        <Text style={styles.heading}>
+        <Text
+          style={[
+            styles.heading,
+            styles[theme],
+          ]}
+        >
           {heading}
         </Text>
 
-        <Text style={styles.body}>
+        <Text
+          style={[
+            styles.body,
+            styles[theme],
+          ]}
+        >
           {body}
         </Text>
 
         {availabilityListing.criteria &&
           <View style={styles.criteria}>
-            {availabilityListing.criteria.map((criterion) => (
-              <Text style={styles.criterion}>
+            {availabilityListing.criteria.map((criterion, index) => (
+              <Text
+                key={index}
+                style={[
+                  styles.criterion,
+                  styles[theme],
+                ]}
+              >
                 {'\u2022 '}
                 {criterion.text}
               </Text>
@@ -91,6 +112,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     maxWidth: 200,
+  },
+  light: {
+    color: 'white',
+  },
+  dark: {
+    color: 'black',
   },
 });
 

@@ -10,6 +10,16 @@ import {
   GRAY,
   LIGHT_BLUE,
 } from '~/constants';
+import Badge from '~/components/Badge';
+
+const BADGE_LABELS = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+];
 
 function ContentTileForegroundPoll({
   poll,
@@ -49,16 +59,22 @@ function ContentTileForegroundPoll({
             <TouchableOpacity
               key={option.id}
               style={[
-                isMultipleChoice && option.count && styles.touchableColumnWithPercentages,
+                isMultipleChoice && styles.touchableColumn,
               ]}
               containerStyle={[
                 styles.touchableContainer,
-                isSingleChoice && styles.touchableRow,
-                isMultipleChoice && styles.touchableColumn,
+                isSingleChoice && styles.touchableContainerRow,
+                isMultipleChoice && styles.touchableContainerColumn,
               ]}
               disabled={!!option.count}
               onPress={() => onSelect(option)}
             >
+              {isMultipleChoice &&
+                <View style={styles.badgeWrapper}>
+                  <Badge label={BADGE_LABELS[index]} />
+                </View>
+              }
+
               <Text
                 style={[
                   styles.text,
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
 
   touchableContainer: {
   },
-  touchableRow: {
+  touchableContainerRow: {
     flex: 1,
     width: '50%',
     paddingTop: 20,
@@ -157,13 +173,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 15,
   },
-  touchableColumn: {
+  touchableContainerColumn: {
     paddingTop: 15,
     paddingRight: 15,
     paddingBottom: 15,
     paddingLeft: 15,
   },
-  touchableColumnWithPercentages: {
+  touchableColumn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -182,6 +198,11 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
 
+  badgeWrapper: {
+    marginRight: 5,
+    width: 18,
+  },
+
   text: {
     fontWeight: 'bold',
     fontSize: 13,
@@ -190,6 +211,7 @@ const styles = StyleSheet.create({
   textRow: {
   },
   textColumn: {
+    flex: 1,
   },
   textCenter: {
     textAlign: 'center',

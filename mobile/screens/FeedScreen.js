@@ -1,7 +1,10 @@
 import React, {
   useContext,
+  useRef,
+  useEffect,
 } from 'react';
 import {
+  Animated,
   View,
   StyleSheet,
 } from 'react-native';
@@ -13,17 +16,40 @@ import FeedHeader from '~/components/FeedHeader';
 import ContentTilePager from '~/components/ContentTilePager';
 
 function FeedScreen({ navigation }) {
+  const animation = useRef(new Animated.Value(1)).current;
   const {
     isVisible: isInterfaceVisible,
     theme,
   } = useContext(InterfaceContext);
 
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: (isInterfaceVisible ? 1 : 0),
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [isInterfaceVisible]);
+
   return (
     <View style={styles.screen}>
-      {isInterfaceVisible &&
-        <SafeAreaView
-          style={styles.safeArea}
-          contentContainerStyle={styles.contentContainer}
+      <SafeAreaView
+        style={styles.safeArea}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <Animated.View
+          style={{
+            opacity: animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+            transform: [{
+              translateY: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-100, 0],
+              }),
+            }],
+          }}
+          pointerEvents={isInterfaceVisible ? 'auto' : 'none'}
         >
           <FeedHeader
             theme={theme}
@@ -32,8 +58,8 @@ function FeedScreen({ navigation }) {
             onCalendarPress={() => navigation.navigate('Events')}
             onMessagesPress={() => navigation.navigate('Messaging')}
           />
-        </SafeAreaView>
-      }
+        </Animated.View>
+      </SafeAreaView>
 
       <View style={styles.pagerWrapper}>
         <ContentTilePagerContextProvider>

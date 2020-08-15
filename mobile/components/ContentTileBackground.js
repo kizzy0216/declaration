@@ -1,10 +1,21 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useRef,
+  useEffect,
+  useState,
+} from 'react';
 import {
+  Animated,
   View,
   StyleSheet,
   Image,
 } from 'react-native';
-import { State, TapGestureHandler } from 'react-native-gesture-handler';
+import {
+  State,
+  TapGestureHandler,
+  LongPressGestureHandler,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Video } from 'expo-av';
 
@@ -14,64 +25,184 @@ import {
   WINDOW_HEIGHT,
 } from '~/constants';
 
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+
 function ContentTileBackground({
   index,
   media = null,
   controls,
+  hasForeground = false,
   isFocused = false,
-  onPress = () => {},
+  onTap = () => {},
+  onDoubleTap = () => {},
+  onLongPress = () => {},
+  onDoubleTapPan = () => {},
+  onDoubleTapPanActive = () => {},
+  onDoubleTapPanEnd = () => {},
 }) {
+  const [canPan, setCanPan] = useState(false);
+  const [isPanning, setIsPanning] = useState(false);
+  const animation = useRef(new Animated.Value(0)).current;
+  const longPressRef = useRef();
+  const tapRef = useRef();
+  const doubleTapRef = useRef();
+  const doubleTapPanRef = useRef();
+
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: (isFocused ? 1 : 0),
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [isFocused]);
 
   return (
-    <TapGestureHandler
+    <LongPressGestureHandler
+      ref={longPressRef}
       onHandlerStateChange={({ nativeEvent }) => {
-        if (nativeEvent.state === State.END) {
-          onPress();
+        if (nativeEvent.state === State.ACTIVE) {
+          onLongPress();
         }
       }}
+      minDurationMs={800}
     >
-      <View style={styles.background}>
-        {media && !isFocused &&
-          <LinearGradient
-            colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0)']}
-            style={[styles.gradient, styles.topGradient]}
-          />
-        }
-
-        <View style={styles.media}>
-          {controls.hasImage &&
-            <Image
-              source={media}
-              resizeMode="cover"
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-            />
+      <TapGestureHandler
+        ref={tapRef}
+        onHandlerStateChange={({ nativeEvent }) => {
+          if (nativeEvent.state === State.BEGAN) {
+            setCanPan(true);
           }
-          {controls.hasVideo &&
-            <Video
-              source={media}
-              resizeMode="cover"
-              shouldPlay={controls.isVideoPlaying}
-              isMuted={controls.isVideoMuted}
-              isLooping={true}
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          }
-        </View>
 
-        {media && !isFocused &&
-          <LinearGradient
-            colors={['rgba(0,0,0,0)','rgba(0,0,0,0.7)']}
-            style={[styles.gradient, styles.bottomGradient]}
-          />
-        }
-      </View>
-    </TapGestureHandler>
+          if (nativeEvent.state === State.END && !isPanning) {
+            onTap();
+            setCanPan(false);
+          }
+
+          if (
+            (
+              nativeEvent.state === State.CANCELLED ||
+              nativeEvent.state === State.FAILED
+            ) &&
+            !isPanning
+          ) {
+            setCanPan(false);
+          }
+        }}
+        waitFor={[doubleTapRef]}
+        simultaneousHandlers={doubleTapPanRef}
+      >
+        <TapGestureHandler
+          ref={doubleTapRef}
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.END) {
+              onDoubleTap();
+              setCanPan(false);
+            }
+          }}
+          numberOfTaps={2}
+          maxDurationMs={1000}
+          simultaneousHandlers={doubleTapPanRef}
+        >
+          <PanGestureHandler
+            enabled={canPan}
+            ref={doubleTapPanRef}
+            onGestureEvent={onDoubleTapPan}
+            onHandlerStateChange={({ nativeEvent }) => {
+              setIsPanning(true);
+
+              if (nativeEvent.state === State.ACTIVE) {
+                onDoubleTapPanActive({
+                  x: nativeEvent.absoluteX,
+                  y: nativeEvent.absoluteY,
+                });
+              }
+
+              if (nativeEvent.state === State.END) {
+                onDoubleTapPanEnd({
+                  x: nativeEvent.absoluteX,
+                  y: nativeEvent.absoluteY,
+                });
+                setCanPan(false);
+                setIsPanning(false);
+              }
+            }}
+            maxPointers={1}
+          >
+            <View style={styles.background}>
+              {media &&
+                <AnimatedLinearGradient
+                  colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0)']}
+                  style={{
+                    ...styles.gradient,
+                    ...styles.topGradient,
+                    opacity: animation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 0],
+                    }),
+                  }}
+                  pointerEvents="none"
+                />
+              }
+
+              {media && hasForeground &&
+                <Animated.View
+                  style={{
+                    ...styles.overlay,
+                    opacity: animation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 0],
+                    }),
+                  }}
+                  pointerEvents="none"
+                />
+              }
+
+              <View style={styles.media}>
+                {controls.hasImage &&
+                  <Image
+                    source={media}
+                    resizeMode="cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                }
+
+                {controls.hasVideo &&
+                  <Video
+                    source={media}
+                    resizeMode="cover"
+                    shouldPlay={controls.isVideoPlaying}
+                    isMuted={controls.isVideoMuted}
+                    isLooping={true}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                }
+              </View>
+
+              {media &&
+                <AnimatedLinearGradient
+                  colors={['rgba(0,0,0,0)','rgba(0,0,0,0.7)']}
+                  style={{
+                    ...styles.gradient,
+                    ...styles.bottomGradient,
+                    opacity: animation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 0],
+                    }),
+                  }}
+                  pointerEvents="none"
+                />
+              }
+            </View>
+          </PanGestureHandler>
+        </TapGestureHandler>
+      </TapGestureHandler>
+    </LongPressGestureHandler>
   );
 }
 
@@ -101,6 +232,15 @@ const styles = StyleSheet.create({
   },
   bottomGradient: {
     bottom: 0,
+  },
+  overlay: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    zIndex: 2,
+    top: 0,
+    left: 0,
   },
 });
 

@@ -33,35 +33,43 @@ function ContentTileForeground({
   return (
     <SafeAreaView >
       <View style={styles.foreground}>
-        <View
-          style={[
-            styles.header,
-            media && styles.headerBubbly,
-          ]}
-        >
-          {heading && !availabilityListing && !opportunityListing &&
-            <Text style={styles.heading}>
-              {heading}
-            </Text>
-          }
+        {(heading || poll) && !availabilityListing && !opportunityListing &&
+          <View
+            style={[
+              styles.headingWrapper,
+              media && styles.headingBubbly,
+            ]}
+          >
+            {heading && !availabilityListing && !opportunityListing &&
+              <Text
+                style={[
+                  styles.heading,
+                ]}
+              >
+                {heading}
+              </Text>
+            }
+          </View>
+        }
 
-          <ContentTileForegroundPoll
-            poll={poll}
-            onSelect={onPollOptionSelect}
-          />
-        </View>
+        <ContentTileForegroundPoll
+          poll={poll}
+          onSelect={onPollOptionSelect}
+        />
 
         <ContentTileForegroundAvailabilityListing
           creator={creator}
           heading={heading}
           body={body}
           availabilityListing={availabilityListing}
+          hasMedia={!!media}
         />
 
         <ContentTileForegroundOpportunityListing
           heading={heading}
           subHeading={subHeading}
           opportunityListing={opportunityListing}
+          hasMedia={!!media}
         />
       </View>
     </SafeAreaView>
@@ -79,13 +87,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
   },
-  headerBubbly: {
+  headingBubbly: {
     borderRadius: 17,
     paddingTop: 15,
     paddingRight: 20,
     paddingBottom: 15,
     paddingLeft: 20,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: 'white',
   },
 });
 

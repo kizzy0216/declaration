@@ -11,6 +11,7 @@ import { LIGHT_GRAY } from '~/constants';
 function TextInputGroup({
   label = '',
   options = [],
+  renderPreInput = () => null,
   renderLabel = () => '',
   renderPlaceholder = (option, index) => `Enter option ${index + 1}`,
   onChange = () => {},
@@ -29,6 +30,8 @@ function TextInputGroup({
             style={styles.inputRow}
             key={index}
           >
+            {renderPreInput(option, index)}
+
             <View style={styles.inputWrapper}>
               <TextInput
                 label={renderLabel(option, index)}
@@ -60,9 +63,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: LIGHT_GRAY,
     borderRadius: 22,
-    paddingTop: 30,
+    paddingTop: 20,
     paddingRight: 30,
-    paddingBottom: 5,
+    paddingBottom: 20,
     paddingLeft: 30,
   },
   inputGroupLabel: {
@@ -80,7 +83,6 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexGrow: 1,
-    marginBottom: 20,
   },
 });
 

@@ -1,8 +1,11 @@
 import React, {
   useState,
   useContext,
+  useRef,
+  useEffect,
 } from 'react';
 import {
+  Animated,
   View,
   Text,
   StyleSheet,
@@ -28,6 +31,7 @@ function FeedHeader({
   onCalendarPress = () => {},
   onMessagesPress = () => {},
 }) {
+  const themeAnimation = useRef(new Animated.Value(0)).current;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const {
     activeNetwork,
@@ -35,6 +39,14 @@ function FeedHeader({
     setActiveNetwork,
   } = useContext(NetworkContext);
   const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    Animated.timing(themeAnimation, {
+      toValue: (theme === 'light' ? 1 : 0),
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [theme]);
 
   return (
     <View style={styles.container}>
@@ -69,7 +81,12 @@ function FeedHeader({
             <CalendarIcon
               width={22}
               height={22}
-              fill={theme === 'light' ? 'white' : 'black'}
+              fill={
+                themeAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#000000', '#FFFFFF'],
+                })
+              }
             />
           </BorderlessButton>
         )}
@@ -78,19 +95,27 @@ function FeedHeader({
             onPress={() => setIsModalVisible(true)}
           >
             <View style={styles.nameWrapper}>
-              <Text
+              <Animated.Text
                 style={{
                   ...styles.name,
-                  color: (theme === 'light' ? 'white' : 'black'),
+                  color: themeAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['#000000', '#FFFFFF'],
+                  })
                 }}
               >
                 {activeNetwork && activeNetwork.name}
-              </Text>
+              </Animated.Text>
               <View style={styles.chevronIconWrapper}>
                 <ChevronDownIcon
                   width={16}
                   height={16}
-                  fill={theme === 'light' ? 'white' : 'black'}
+                  fill={
+                    themeAnimation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['#000000', '#FFFFFF'],
+                    })
+                  }
                 />
               </View>
             </View>
@@ -101,7 +126,12 @@ function FeedHeader({
             <MessageIcon
               width={22}
               height={22}
-              fill={theme === 'light' ? 'white' : 'black'}
+              fill={
+                themeAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#000000', '#FFFFFF'],
+                })
+              }
             />
           </BorderlessButton>
         )}

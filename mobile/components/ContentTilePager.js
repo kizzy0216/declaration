@@ -184,6 +184,38 @@ const MOCK_TILES = [
     heading: "We are hiring",
     subHeading: "Senior Graphic Designer",
     creator: JUSTIN,
+    media: {uri: 'https://s3.amazonaws.com/stage.static.declaration.net/mock-jounralism-background.jpg'},
+    opportunityListing: {
+      company: {
+        id: 0,
+        name: 'Apple',
+        photo: 'https://files-85hfqrnl6.vercel.app/apple.png',
+      },
+      callToAction: {
+        href: 'mailto:nickdandakis@gmail.com'
+      },
+      criteria: [
+        {
+          id: 0,
+          text: '5 years of experience',
+        },
+        {
+          id: 1,
+          text: 'Responsive web design',
+        },
+        {
+          id: 2,
+          text: 'Excellent time management',
+        },
+      ],
+    },
+  },
+  {
+    key: -22,
+    id: -22,
+    heading: "We are hiring",
+    subHeading: "Senior Graphic Designer",
+    creator: JUSTIN,
     opportunityListing: {
       company: {
         id: 0,

@@ -11,7 +11,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CreateHeader from '~/components/CreateHeader';
 import TextInput from '~/components/TextInput';
 import TextInputGroup from '~/components/TextInputGroup';
+import Badge from '~/components/Badge';
 import { IS_IOS } from '~/constants';
+
+const BADGE_LABELS = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+];
 
 function CreateContentMultipleChoicePoll({ navigation, route }) {
   const { withMedia } = route.params || {};
@@ -67,6 +77,11 @@ function CreateContentMultipleChoicePoll({ navigation, route }) {
             <TextInputGroup
               label="Poll options"
               options={options}
+              renderPreInput={(_, index) => (
+                <View style={{marginRight: 20}}>
+                  <Badge label={BADGE_LABELS[index]} />
+                </View>
+              )}
               onChange={setOptions}
             />
           </View>

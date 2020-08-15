@@ -1,4 +1,6 @@
-import React, { Fragment, useContext } from 'react';
+import React, {
+  Fragment,
+} from 'react';
 import {
   View,
   Text,
@@ -7,19 +9,20 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { InterfaceContext } from '~/contexts/InterfaceContext';
 import Avatar from '~/components/Avatar';
 import { hashtagRegex } from '@shared/utils/regex';
 
 function ContentTileByline({
   creator,
   meta,
+  controls,
   onCreatorPress = () => {},
   onHashtagPress = () => {},
 }) {
-  const { theme } = useContext(InterfaceContext);
-
   const hasDescription = meta && meta.description;
+  const theme = (
+    (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
+  );
 
   let splitDescriptionByHashtags = [];
   let matchedHashtags = [];
@@ -45,12 +48,21 @@ function ContentTileByline({
             />
 
             <Text
-              style={[
-                styles.creatorName,
-                styles[theme],
-              ]}
+              style={{
+                ...styles.creatorName,
+                color: (theme === 'light' ? '#FFFFFF' : '#000000'),
+              }}
             >
-              {creator.name} // 0.0mi
+              {creator.name}
+              &nbsp;
+              //
+              &nbsp;
+              <Text>0.0mi</Text>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <Text>Connected</Text>
             </Text>
           </TouchableOpacity>
         }
@@ -66,10 +78,10 @@ function ContentTileByline({
             {splitDescriptionByHashtags.map((split, index) => (
               <Fragment key={index}>
                 <Text
-                  style={[
-                    styles.description,
-                    styles[theme],
-                  ]}
+                  style={{
+                    ...styles.description,
+                    color: (theme === 'light' ? '#FFFFFF' : '#000000'),
+                  }}
                 >
                   {split}
                 </Text>
@@ -83,7 +95,6 @@ function ContentTileByline({
                       style={[
                         styles.description,
                         styles.hashtag,
-                        styles[theme],
                         index === matchedHashtags.length - 1 && styles.lastHashtag,
                       ]}
                     >
@@ -135,12 +146,6 @@ const styles = StyleSheet.create({
   },
   lastHashtag: {
     marginRight: 50,
-  },
-  dark: {
-    color: 'black',
-  },
-  light: {
-    color: 'white',
   },
 });
 
