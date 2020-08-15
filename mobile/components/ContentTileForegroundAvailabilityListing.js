@@ -25,9 +25,18 @@ function ContentTileForegroundAvailabilityListing({
   }
 
   return (
-    <View style={styles.availabilityListing}>
-      <View style={styles.container}>
-        <View style={styles.avatarWrapper}>
+    <View
+      style={styles.availabilityListing}
+      pointerEvents="box-none"
+    >
+      <View
+        style={styles.container}
+        pointerEvents="box-none"
+      >
+        <View
+          style={styles.avatarWrapper}
+          pointerEvents="box-none"
+        >
           <Avatar
             name={creator.name}
             imageSrc={creator.profile.photo}
@@ -53,7 +62,10 @@ function ContentTileForegroundAvailabilityListing({
         </Text>
 
         {availabilityListing.criteria &&
-          <View style={styles.criteria}>
+          <View
+            style={styles.criteria}
+            pointerEvents="box-none"
+          >
             {availabilityListing.criteria.map((criterion, index) => (
               <Text
                 key={index}
@@ -70,7 +82,10 @@ function ContentTileForegroundAvailabilityListing({
         }
 
         {availabilityListing.callToAction &&
-          <View style={styles.callToAction}>
+          <View
+            style={styles.callToAction}
+            pointerEvents="box-none"
+          >
             <Button
               label="Contact me"
               theme="tertiary"

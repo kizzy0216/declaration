@@ -31,8 +31,11 @@ function ContentTileForeground({
   }
 
   return (
-    <SafeAreaView >
-      <View style={styles.foreground}>
+    <SafeAreaView pointerEvents="box-none">
+      <View
+        style={styles.foreground}
+        pointerEvents="box-none"
+      >
         {(heading || poll) && !availabilityListing && !opportunityListing &&
           <View
             style={[

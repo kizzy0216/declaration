@@ -25,11 +25,23 @@ function ContentTileForegroundOpportunityListing({
   }
 
   return (
-    <View style={styles.opportunityListing}>
-      <View style={styles.container}>
+    <View
+      style={styles.opportunityListing}
+      pointerEvents="box-none"
+    >
+      <View
+        style={styles.container}
+        pointerEvents="box-none"
+      >
         {opportunityListing.company &&
-          <View style={styles.company}>
-            <View style={styles.avatarWrapper}>
+          <View
+            style={styles.company}
+            pointerEvents="box-none"
+          >
+            <View
+              style={styles.avatarWrapper}
+              pointerEvents="box-none"
+            >
               <Avatar
                 theme="secondary"
                 name={opportunityListing.company.name}
@@ -66,7 +78,10 @@ function ContentTileForegroundOpportunityListing({
         </Text>
 
         {opportunityListing.criteria &&
-          <View style={styles.criteria}>
+          <View
+            style={styles.criteria}
+            pointerEvents="box-none"
+          >
             {opportunityListing.criteria.map((criterion, index) => (
               <Text
                 key={index}
@@ -86,7 +101,10 @@ function ContentTileForegroundOpportunityListing({
         }
 
         {opportunityListing.callToAction &&
-          <View style={styles.callToAction}>
+          <View
+            style={styles.callToAction}
+            pointerEvents="box-none"
+          >
             <Button
               label="Apply now"
               theme="tertiary"
