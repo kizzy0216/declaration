@@ -124,12 +124,6 @@ function ContentTileActions({
                   extrapolate: 'clamp',
                 }),
               }, {
-                rotate: starAnimation.x.interpolate({
-                  inputRange: [0, WINDOW_WIDTH - 90],
-                  outputRange: ['0deg', '45deg'],
-                  extrapolate: 'clamp',
-                }),
-              }, {
                 perspective: 1000,
               }],
               opacity: starAnimation.x.interpolate({

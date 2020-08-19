@@ -15,7 +15,7 @@ const SelectableList = ({
 
   function handlePress(item) {
     setSelectedItem(item);
-    item.onSelect();
+    item.onSelect && item.onSelect();
   }
 
   return (

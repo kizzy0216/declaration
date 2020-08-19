@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,8 +10,11 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import ConnectionsModalContainer from '~/containers/ConnectionsModalContainer';
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 import CreateHeader from '~/components/CreateHeader';
 import TextInput from '~/components/TextInput';
 import Button from '~/components/Button';
@@ -34,90 +41,128 @@ const REACH_OPTIONS = [
 ];
 
 function CreateContentMetaScreen({ navigation }) {
-  const [description, setDescription] = useState('');
-  const [mentions, setMentions] = useState('');
+  const [isConnectionsModalActive, setIsConnectionsModalActive] = useState(false);
+  const {
+    meta,
+    setMeta,
+    create,
+    isCreating,
+  } = useContext(CreateContentContext);
   const [selectedReach, setSelectedReach] = useState(NETWORK_REACH);
 
   const isDisabled = (false);
 
+  function handleConnectionsSubmit({ selected }) {
+    setMeta({
+      ...meta,
+      mentions: selected,
+    });
+  }
+
+  function handlePost() {
+    create().then(() => navigation.navigate('Feed'));
+  }
+
   return (
-    <SafeAreaView
-      style={{flex: 1}}
-      contentContainerStyle={{flex: 1}}
-    >
-      <CreateHeader
-        heading="Details"
-        canCancel={false}
-        canBack={true}
-        canNext={false}
-        canPost={true}
-        isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('Feed')}
-        onCancelOrBack={() => navigation.goBack()}
+    <>
+      <ConnectionsModalContainer
+        initialSelected={meta.mentions.map(({ uuid }) => uuid)}
+        isVisible={isConnectionsModalActive}
+        onSubmit={handleConnectionsSubmit}
+        onClose={() => setIsConnectionsModalActive(false)}
       />
-      <KeyboardAvoidingView
-        behavior={IS_IOS ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+
+      <SafeAreaView
+        style={{flex: 1}}
+        contentContainerStyle={{flex: 1}}
       >
-        <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={styles.contentContainer}
+        <CreateHeader
+          heading="Details"
+          canCancel={false}
+          canBack={true}
+          canNext={false}
+          canPost={true}
+          isNextOrPostDisabled={isDisabled}
+          isFetching={isCreating}
+          onNextOrPost={handlePost}
+          onCancelOrBack={() => navigation.goBack()}
+        />
+        <KeyboardAvoidingView
+          behavior={IS_IOS ? 'padding' : 'height'}
+          style={{ flex: 1 }}
         >
-          <View style={styles.row}>
-            <TextInput
-              multiline={true}
-              minHeight={75}
-              maxHeight={75}
-              label="Additional description and hashtags"
-              placeholder="Describe your post"
-              value={description}
-              onChange={setDescription}
-              inputFooter={
-                <Button
-                  theme="tertiary"
-                  size="small"
-                  label="#hashtags"
-                  buttonStyle={{
-                    width: 110,
-                  }}
-                />
-              }
-            />
-          </View>
+          <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <View style={styles.row}>
+              <TextInput
+                multiline={true}
+                minHeight={75}
+                maxHeight={75}
+                label="Additional description and hashtags"
+                placeholder="Describe your post"
+                value={meta.description}
+                onChange={description => setMeta({ ...meta, description })}
+                inputFooter={
+                  <Button
+                    theme="tertiary"
+                    size="small"
+                    label="#hashtags"
+                    buttonStyle={{
+                      width: 100,
+                    }}
+                  />
+                }
+              />
+            </View>
 
-          <View style={styles.row}>
-            <TextInput
-              multiline={true}
-              minHeight={50}
-              maxHeight={50}
-              label="Request member feedback"
-              placeholder="@mention"
-              value={mentions}
-              onChange={setMentions}
-              inputFooter={
-                <Button
-                  theme="tertiary"
-                  size="small"
-                  label="@mentions"
-                  buttonStyle={{
-                    width: 110,
-                  }}
+            <View style={styles.row}>
+              <TouchableOpacity
+                containerStyle={{
+                  overflow: 'visible',
+                }}
+                onPress={() => setIsConnectionsModalActive(true)}
+              >
+                <TextInput
+                  multiline={true}
+                  minHeight={80}
+                  maxHeight={80}
+                  label="Request member feedback"
+                  placeholder="@mention"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  editable={false}
+                  pointerEvents="none"
+                  value={meta.mentions.map(({ profile }) => '@' + profile.username).join(' ')}
+                  onChange={() => {}}
+                  inputFooter={
+                    <Button
+                      theme="tertiary"
+                      size="small"
+                      label="@connections"
+                      buttonStyle={{
+                        width: 120,
+                      }}
+                      onPress={() => setIsConnectionsModalActive(true)}
+                    />
+                  }
                 />
-              }
-            />
-          </View>
+              </TouchableOpacity>
+            </View>
 
-          {/* <View style={styles.row}> */}
-          {/*   <Picker */}
-          {/*     label="Who can view" */}
-          {/*     value={selectedReach} */}
-          {/*     onChange={setSelectedReach} */}
-          {/*     options={REACH_OPTIONS} */}
-          {/*   /> */}
-          {/* </View> */}
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            {/* <View style={styles.row}> */}
+            {/*   <Picker */}
+            {/*     label="Who can view" */}
+            {/*     value={selectedReach} */}
+            {/*     onChange={setSelectedReach} */}
+            {/*     options={REACH_OPTIONS} */}
+            {/*   /> */}
+            {/* </View> */}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </>
   );
 }
 

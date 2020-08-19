@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
   },
   creatorName: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     paddingRight: 5,
     paddingLeft: 5,
@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   description: {
-    fontSize: 12,
-    lineHeight: 12,
+    fontSize: 14,
+    lineHeight: 14,
     paddingTop: 10,
     paddingBottom: 10,
   },

@@ -1,0 +1,1 @@
+CREATE TABLE "public"."content_partial"("content_uuid" uuid NOT NULL, PRIMARY KEY ("content_uuid") , FOREIGN KEY ("content_uuid") REFERENCES "public"."content"("uuid") ON UPDATE restrict ON DELETE cascade, UNIQUE ("content_uuid"));

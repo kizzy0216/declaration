@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,21 +7,56 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 import CreateHeader from '~/components/CreateHeader';
 import { IS_IOS } from '~/constants';
 import TextInput from '~/components/TextInput';
 import TextInputGroup from '~/components/TextInputGroup';
+import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
+
+const COUNT_CREDENTIALS = 3;
 
 function CreateContentAvailabilityListingScreen({ navigation }) {
-  const [heading, setHeading] = useState('');
-  const [body, setBody] = useState('');
-  const [criteria, setCriteria] = useState([
-    '',
-    '',
-    '',
-  ]);
-  const isDisabled = (false);
+  const {
+    heading,
+    body,
+    availabilityListing,
+
+    setHeading,
+    setBody,
+    setAvailabilityListing,
+  } = useContext(CreateContentContext);
+
+  useFocusEffect(() => {
+    if (availabilityListing.credentials.length === 0) {
+      setAvailabilityListing({
+        ...availabilityListing,
+        credentials: [...new Array(COUNT_CREDENTIALS)].map(() => ''),
+      });
+    } else if (availabilityListing.credentials.length > COUNT_CREDENTIALS) {
+      setAvailabilityListing({
+        ...availabilityListing,
+        credentials: availabilityListing.credentials.slice(0, COUNT_CREDENTIALS),
+      });
+    } else if (availabilityListing.credentials.length < COUNT_CREDENTIALS) {
+      setAvailabilityListing({
+        ...availabilityListing,
+        credentials: [
+          ...availabilityListing.credentials,
+          ...[...new Array(COUNT_CREDENTIALS - availabilityListing.credentials.length)].map(() => ''),
+        ],
+      });
+    }
+  });
+
+  const isDisabled = (
+    heading.length === 0 ||
+    body.length === 0 ||
+    availabilityListing.credentials.length === 0 ||
+    availabilityListing.credentials.filter(c => c.length === 0).length > 0
+  );
 
   return (
     <SafeAreaView
@@ -73,9 +108,14 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
           <View style={styles.row}>
             <TextInputGroup
               label="Add highlights"
-              options={criteria}
+              options={availabilityListing.credentials}
+              renderPreInput={(_, index) => (
+                <View style={{marginRight: 20}}>
+                  <Text style={{fontSize: 30}}>{'\u2022 '}</Text>
+                </View>
+              )}
               renderPlaceholder={(option, index) => `Enter highlight ${index + 1}`}
-              onChange={setCriteria}
+              onChange={credentials => setAvailabilityListing({ ...availabilityListing, credentials })}
             />
           </View>
 

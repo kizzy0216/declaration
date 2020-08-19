@@ -1,9 +1,18 @@
-import * as React from 'react';
+import React, { useContext} from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 import CreateHeader from '~/components/CreateHeader';
 import ContentTemplateScrollView from '~/components/ContentTemplateScrollView';
+import {
+  BASE_CONTENT_TEMPLATE_TYPE,
+  POLL_CONTENT_TEMPLATE_TYPE,
+  AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE,
+  OPPORTUNITY_LISTING_CONTENT_TEMPLATE_TYPE,
+  EVENT_CONTENT_TEMPLATE_TYPE,
+  SESSION_CONTENT_TEMPLATE_TYPE,
+} from '@shared/constants';
 
 const templatesByCategory = [
   {
@@ -13,16 +22,27 @@ const templatesByCategory = [
         heading: 'Text',
         imageSource: require('~/assets/images/content-template-just-text-card.png'),
         screenName: 'CreateContentText',
+        type: BASE_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Single choice poll',
         imageSource: require('~/assets/images/content-template-just-single-choice-poll-card.png'),
-        screenName: 'CreateContentSingleChoicePoll',
+        screenName: 'CreateContentPoll',
+        screenOptions: {
+          withMedia: false,
+          countOptions: 2,
+        },
+        type: POLL_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Multiple choice poll',
         imageSource: require('~/assets/images/content-template-just-multiple-choice-poll-card.png'),
-        screenName: 'CreateContentMultipleChoicePoll',
+        screenName: 'CreateContentPoll',
+        screenOptions: {
+          withMedia: false,
+          countOptions: 3,
+        },
+        type: POLL_CONTENT_TEMPLATE_TYPE,
       },
     ],
   },
@@ -36,6 +56,7 @@ const templatesByCategory = [
         screenOptions: {
           isJustImage: true,
         },
+        type: BASE_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Video',
@@ -44,6 +65,7 @@ const templatesByCategory = [
         screenOptions: {
           isJustVideo: true,
         },
+        type: BASE_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Media + text',
@@ -53,22 +75,27 @@ const templatesByCategory = [
         screenOptions: {
           withMedia: true,
         },
+        type: BASE_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Media + single choice poll',
         imageSource: require('~/assets/images/content-template-media-with-single-choice-poll-card.png'),
-        screenName: 'CreateContentSingleChoicePoll',
+        screenName: 'CreateContentPoll',
         screenOptions: {
           withMedia: true,
+          countOptions: 2,
         },
+        type: POLL_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Media + multiple choice poll',
         imageSource: require('~/assets/images/content-template-media-with-multiple-choice-poll-card.png'),
-        screenName: 'CreateContentMultipleChoicePoll',
+        screenName: 'CreateContentPoll',
         screenOptions: {
           withMedia: true,
+          countOptions: 3,
         },
+        type: POLL_CONTENT_TEMPLATE_TYPE,
       },
     ],
   },
@@ -79,11 +106,13 @@ const templatesByCategory = [
         heading: 'Opportunity listing',
         imageSource: require('~/assets/images/content-template-opportunity-listing-card.png'),
         screenName: 'CreateContentOpportunityListing',
+        type: OPPORTUNITY_LISTING_CONTENT_TEMPLATE_TYPE,
       },
       {
         heading: 'Availability listing',
         imageSource: require('~/assets/images/content-template-availability-listing-card.png'),
         screenName: 'CreateContentAvailabilityListing',
+        type: AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE,
       },
     ],
   },
@@ -94,6 +123,7 @@ const templatesByCategory = [
         heading: '1:1 Session',
         videoSource: require('~/assets/videos/content-template-session-card.mp4'),
         screenName: 'CreateContentSession',
+        type: SESSION_CONTENT_TEMPLATE_TYPE,
       },
     ],
   },
@@ -104,12 +134,15 @@ const templatesByCategory = [
         heading: 'Event',
         videoSource: require('~/assets/videos/content-template-event-card.mp4'),
         screenName: 'CreateContentEvent',
+        type: EVENT_CONTENT_TEMPLATE_TYPE,
       },
     ],
   },
 ];
 
-function CreateOverviewScreen({ navigation }) {
+function CreateContentSelectTemplateScreen({ navigation }) {
+  const { setType } = useContext(CreateContentContext);
+
   return (
     <SafeAreaView>
       <CreateHeader
@@ -135,9 +168,10 @@ function CreateOverviewScreen({ navigation }) {
             <ContentTemplateScrollView
               heading={category.heading}
               templates={category.templates}
-              onTemplatePress={({ screenName, screenOptions }) =>
-                navigation.navigate(screenName, screenOptions)
-              }
+              onTemplatePress={({ screenName, screenOptions, type }) => {
+                setType(type);
+                navigation.navigate(screenName, screenOptions);
+              }}
             />
           </View>
         ))}
@@ -164,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateOverviewScreen;
+export default CreateContentSelectTemplateScreen;

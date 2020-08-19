@@ -73,6 +73,7 @@ function MemberScreen({ navigation, route }) {
     updateRelationshipResult,
     updateRelationship,
   ] = useMutation(UpdateNetworkUserRelationship);
+  // TODO combine the two following queries into one; GetUserWithRelationships
   const [
     getUserResult,
     getUser,

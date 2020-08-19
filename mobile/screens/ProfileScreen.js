@@ -35,7 +35,6 @@ import {
   PENDING_NETWORK_USER_RELATIONSHIP_TYPE,
   DECLINED_NETWORK_USER_RELATIONSHIP_TYPE,
 } from '@shared/constants';
-import mapNetworkUserRelationship from '@shared/mappings/mapNetworkUserRelationship';
 import { BLUE } from '~/constants';
 
 function ProfileScreen({ navigation }) {

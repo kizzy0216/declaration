@@ -1,7 +1,1287 @@
 - table:
     schema: public
+    name: availability_listing_credential
+  array_relationships:
+  - name: content_partial_availability_listing_credentials
+    using:
+      foreign_key_constraint_on:
+        column: availability_listing_credential_uuid
+        table:
+          schema: public
+          name: content_partial_availability_listing_credential
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - text
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - text
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: comment
+  object_relationships:
+  - name: content_comment
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_comment
+        column_mapping:
+          uuid: comment_uuid
+  - name: creator
+    using:
+      foreign_key_constraint_on: creator_uuid
+  - name: parent
+    using:
+      foreign_key_constraint_on: parent_comment_uuid
+  array_relationships:
+  - name: children
+    using:
+      foreign_key_constraint_on:
+        column: parent_comment_uuid
+        table:
+          schema: public
+          name: comment
+  - name: content_comments
+    using:
+      foreign_key_constraint_on:
+        column: comment_uuid
+        table:
+          schema: public
+          name: content_comment
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - creator_uuid
+      - id
+      - parent_comment_uuid
+      - text
+      - uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - creator_uuid
+      - parent_comment_uuid
+      - text
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - text
+      - created_at
+      - updated_at
+      - creator_uuid
+      - parent_comment_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - text
+      - created_at
+      - updated_at
+      - creator_uuid
+      - parent_comment_uuid
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - creator_uuid
+      - parent_comment_uuid
+      - text
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content
+  object_relationships:
+  - name: content_meta
+    using:
+      foreign_key_constraint_on: meta_uuid
+  - name: content_partial
+    using:
+      foreign_key_constraint_on: content_partial_uuid
+  - name: creator
+    using:
+      foreign_key_constraint_on: creator_uuid
+  - name: media
+    using:
+      foreign_key_constraint_on: media_uuid
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  array_relationships:
+  - name: content_comments
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_comment
+        column_mapping:
+          uuid: content_uuid
+  - name: content_stars
+    using:
+      foreign_key_constraint_on:
+        column: content_uuid
+        table:
+          schema: public
+          name: content_star
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - body
+      - content_partial_uuid
+      - creator_uuid
+      - heading
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - sub_heading
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - body
+      - content_partial_uuid
+      - creator_uuid
+      - heading
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - sub_heading
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - body
+      - heading
+      - sub_heading
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - creator_uuid
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - body
+      - heading
+      - sub_heading
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - creator_uuid
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - body
+      - content_partial_uuid
+      - creator_uuid
+      - heading
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - sub_heading
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - body
+      - content_partial_uuid
+      - heading
+      - media_uuid
+      - meta_uuid
+      - network_uuid
+      - sub_heading
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_comment
+  object_relationships:
+  - name: comment
+    using:
+      foreign_key_constraint_on: comment_uuid
+  - name: content
+    using:
+      foreign_key_constraint_on: content_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - comment_uuid
+      - content_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - content_uuid
+      - comment_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - comment_uuid
+      - content_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - content_uuid
+      - comment_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - comment_uuid
+      - content_uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - comment_uuid
+      - content_uuid
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_meta
+  object_relationships:
+  - name: content
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content
+        column_mapping:
+          uuid: meta_uuid
+  array_relationships:
+  - name: content_meta_hashtags
+    using:
+      foreign_key_constraint_on:
+        column: content_meta_uuid
+        table:
+          schema: public
+          name: content_meta_hashtag
+  - name: content_meta_mentions
+    using:
+      foreign_key_constraint_on:
+        column: content_meta_uuid
+        table:
+          schema: public
+          name: content_meta_mention
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - description
+      - created_at
+      - updated_at
+      - uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - description
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - description
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - description
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - description
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - description
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_meta_hashtag
+  object_relationships:
+  - name: content_meta
+    using:
+      foreign_key_constraint_on: content_meta_uuid
+  - name: hashtag
+    using:
+      foreign_key_constraint_on: hashtag_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_meta_uuid
+      - hashtag_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        content_meta:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+      columns:
+      - content_meta_uuid
+      - hashtag_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_meta_uuid
+      - hashtag_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_meta_uuid
+      - hashtag_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_meta_uuid
+      - hashtag_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        content_meta:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: content_meta_mention
+  object_relationships:
+  - name: content_meta
+    using:
+      foreign_key_constraint_on: content_meta_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_meta_uuid
+      - user_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - content_meta_uuid
+      - user_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_meta_uuid
+      - user_uuid
+      - created_at
+      - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - content_meta_uuid
+      - created_at
+      - updated_at
+      - user_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_meta_uuid
+      - user_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_partial
+  object_relationships:
+  - name: content
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content
+        column_mapping:
+          uuid: content_partial_uuid
+  - name: content_partial_availability_listing
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_availability_listing
+        column_mapping:
+          uuid: content_partial_uuid
+  - name: content_partial_opportunity_listing
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_opportunity_listing
+        column_mapping:
+          uuid: content_partial_uuid
+  - name: content_partial_poll
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_poll
+        column_mapping:
+          uuid: content_partial_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        _and:
+        - content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+        - content:
+            network:
+              network_users:
+                user_uuid:
+                  _eq: X-Hasura-User-Id
+      columns:
+      - uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - uuid
+      filter:
+        content:
+          network:
+            network_users:
+              user_uuid:
+                _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        _and:
+        - content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+        - content:
+            network:
+              network_users:
+                user_uuid:
+                  _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: content_partial_availability_listing
+  object_relationships:
+  - name: content_partial
+    using:
+      foreign_key_constraint_on: content_partial_uuid
+  array_relationships:
+  - name: content_partial_availability_listing_credentials
+    using:
+      foreign_key_constraint_on:
+        column: content_partial_availability_listing_uuid
+        table:
+          schema: public
+          name: content_partial_availability_listing_credential
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - uuid
+      filter:
+        content_partial:
+          content:
+            network:
+              network_users:
+                user_uuid:
+                  _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: content_partial_availability_listing_credential
+  object_relationships:
+  - name: availability_listing_credential
+    using:
+      foreign_key_constraint_on: availability_listing_credential_uuid
+  - name: content_partial_availability_listing
+    using:
+      foreign_key_constraint_on: content_partial_availability_listing_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_availability_listing_uuid
+      - availability_listing_credential_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - availability_listing_credential_uuid
+      - content_partial_availability_listing_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - availability_listing_credential_uuid
+      - content_partial_availability_listing_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - availability_listing_credential_uuid
+      - content_partial_availability_listing_uuid
+      filter: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_partial_opportunity_listing
+  object_relationships:
+  - name: content_partial
+    using:
+      foreign_key_constraint_on: content_partial_uuid
+  array_relationships:
+  - name: content_partial_opportunity_listing_criteria
+    using:
+      foreign_key_constraint_on:
+        column: content_partial_opportunity_listing_uuid
+        table:
+          schema: public
+          name: content_partial_opportunity_listing_criteria
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - uuid
+      filter:
+        content_partial:
+          content:
+            network:
+              network_users:
+                user_uuid:
+                  _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: content_partial_opportunity_listing_criteria
+  object_relationships:
+  - name: content_partial_opportunity_listing
+    using:
+      foreign_key_constraint_on: content_partial_opportunity_listing_uuid
+  - name: opportunity_listing_criteria
+    using:
+      foreign_key_constraint_on: opportunity_listing_criteria_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_opportunity_listing_uuid
+      - opportunity_listing_criteria_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - content_partial_opportunity_listing_uuid
+      - opportunity_listing_criteria_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_opportunity_listing_uuid
+      - opportunity_listing_criteria_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - content_partial_opportunity_listing_uuid
+      - opportunity_listing_criteria_uuid
+      filter: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_partial_poll
+  object_relationships:
+  - name: content_partial
+    using:
+      foreign_key_constraint_on: content_partial_uuid
+  array_relationships:
+  - name: content_partial_poll_options
+    using:
+      foreign_key_constraint_on:
+        column: content_partial_poll_uuid
+        table:
+          schema: public
+          name: content_partial_poll_option
+  - name: content_partial_poll_votes
+    using:
+      foreign_key_constraint_on:
+        column: content_partial_poll_uuid
+        table:
+          schema: public
+          name: content_partial_poll_vote
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+      columns:
+      - content_partial_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_uuid
+      - uuid
+      - created_at
+      - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - updated_at
+      - content_partial_uuid
+      - uuid
+      filter:
+        content_partial:
+          content:
+            network:
+              network_users:
+                user_uuid:
+                  _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns: []
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        content_partial:
+          content:
+            creator_uuid:
+              _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: content_partial_poll_option
+  object_relationships:
+  - name: content_partial_poll
+    using:
+      foreign_key_constraint_on: content_partial_poll_uuid
+  - name: poll_option
+    using:
+      foreign_key_constraint_on: poll_option_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_partial_poll_vote
+  object_relationships:
+  - name: content_partial_poll
+    using:
+      foreign_key_constraint_on: content_partial_poll_uuid
+  - name: poll_option
+    using:
+      foreign_key_constraint_on: poll_option_uuid
+  - name: voter
+    using:
+      foreign_key_constraint_on: voter_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - voter_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - voter_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - voter_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - voter_uuid
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - voter_uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: content_star
+  object_relationships:
+  - name: astronomer
+    using:
+      foreign_key_constraint_on: astronomer_uuid
+  - name: content
+    using:
+      foreign_key_constraint_on: content_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - content_uuid
+      - astronomer_uuid
+      - amount
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - amount
+      - astronomer_uuid
+      - content_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - amount
+      - astronomer_uuid
+      - content_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - amount
+      - astronomer_uuid
+      - content_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - amount
+      - astronomer_uuid
+      - content_uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - amount
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: hashtag
+  array_relationships:
+  - name: content_meta_hashtags
+    using:
+      foreign_key_constraint_on:
+        column: hashtag_uuid
+        table:
+          schema: public
+          name: content_meta_hashtag
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - uuid
+      - id
+      - text
+      - created_at
+      - updated_at
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: media
+  object_relationships:
+  - name: content
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content
+        column_mapping:
+          uuid: media_uuid
+  - name: uploader
+    using:
+      foreign_key_constraint_on: uploader_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - alt
+      - created_at
+      - id
+      - original_url
+      - type
+      - updated_at
+      - uploader_uuid
+      - uuid
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        uploader_uuid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - alt
+      - original_url
+      - type
+      - uploader_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - alt
+      - created_at
+      - id
+      - original_url
+      - type
+      - updated_at
+      - uploader_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - alt
+      - original_url
+      - type
+      - created_at
+      - updated_at
+      - uploader_uuid
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - alt
+      - created_at
+      - id
+      - original_url
+      - type
+      - updated_at
+      - uploader_uuid
+      - uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - alt
+      - original_url
+      - type
+      filter:
+        uploader_uuid:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        uploader_uuid:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
     name: network
   array_relationships:
+  - name: content
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: content
   - name: network_membership_invitations
     using:
       foreign_key_constraint_on:
@@ -706,6 +1986,144 @@
           name: network_user_relationship
 - table:
     schema: public
+    name: opportunity_listing_criteria
+  array_relationships:
+  - name: content_partial_opportunity_listing_criteria
+    using:
+      foreign_key_constraint_on:
+        column: opportunity_listing_criteria_uuid
+        table:
+          schema: public
+          name: content_partial_opportunity_listing_criteria
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - text
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - text
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: poll_option
+  array_relationships:
+  - name: content_partial_poll_options
+    using:
+      foreign_key_constraint_on:
+        column: poll_option_uuid
+        table:
+          schema: public
+          name: content_partial_poll_option
+  - name: content_partial_poll_votes
+    using:
+      foreign_key_constraint_on:
+        column: poll_option_uuid
+        table:
+          schema: public
+          name: content_partial_poll_vote
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - uuid
+      - text
+      - created_at
+      - updated_at
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - text
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: super_admin
   object_relationships:
   - name: user
@@ -743,6 +2161,34 @@
         column_mapping:
           uuid: user_uuid
   array_relationships:
+  - name: content
+    using:
+      foreign_key_constraint_on:
+        column: creator_uuid
+        table:
+          schema: public
+          name: content
+  - name: content_meta_mentions
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          schema: public
+          name: content_meta_mention
+  - name: content_partial_poll_votes
+    using:
+      foreign_key_constraint_on:
+        column: voter_uuid
+        table:
+          schema: public
+          name: content_partial_poll_vote
+  - name: content_stars
+    using:
+      foreign_key_constraint_on:
+        column: astronomer_uuid
+        table:
+          schema: public
+          name: content_star
   - name: from_network_user_relationships
     using:
       foreign_key_constraint_on:
@@ -750,6 +2196,13 @@
         table:
           schema: public
           name: network_user_relationship
+  - name: media
+    using:
+      foreign_key_constraint_on:
+        column: uploader_uuid
+        table:
+          schema: public
+          name: media
   - name: network_membership_requests
     using:
       foreign_key_constraint_on:

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 import CreateHeader from '~/components/CreateHeader';
 import { IS_IOS } from '~/constants';
 import MediaLibraryPickerContainer from '~/containers/MediaLibraryPickerContainer';
@@ -19,8 +20,16 @@ function CreateContentMediaScreen({ navigation, route }) {
   } = route.params || {};
   const isDisabled = (false);
   const canCancel = (isJustImage || isJustVideo);
+  const {
+    media,
+    setMedia,
+  } = useContext(CreateContentContext);
 
-  function handleMediaSelect(asset) {
+  async function handleMediaSelect(asset) {
+    setMedia({
+      ...media,
+      localAsset: asset,
+    });
   }
 
   return (

@@ -1,0 +1,1 @@
+CREATE TABLE "public"."content_meta_mention"("content_meta_uuid" uuid NOT NULL, "user_uuid" uuid NOT NULL, PRIMARY KEY ("content_meta_uuid","user_uuid") , FOREIGN KEY ("content_meta_uuid") REFERENCES "public"."content_meta"("uuid") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("user_uuid") REFERENCES "public"."user"("uuid") ON UPDATE restrict ON DELETE restrict);
