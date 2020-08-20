@@ -106,6 +106,8 @@
   - role: user
     permission:
       check: {}
+      set:
+        creator_uuid: x-hasura-User-Id
       columns:
       - creator_uuid
       - parent_comment_uuid
@@ -165,7 +167,12 @@
       foreign_key_constraint_on: meta_uuid
   - name: content_partial
     using:
-      foreign_key_constraint_on: content_partial_uuid
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial
+        column_mapping:
+          uuid: content_uuid
   - name: creator
     using:
       foreign_key_constraint_on: creator_uuid
@@ -195,9 +202,10 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        creator_uuid: x-hasura-User-Id
       columns:
       - body
-      - content_partial_uuid
       - creator_uuid
       - heading
       - media_uuid
@@ -208,9 +216,10 @@
   - role: user
     permission:
       check: {}
+      set:
+        creator_uuid: x-hasura-User-Id
       columns:
       - body
-      - content_partial_uuid
       - creator_uuid
       - heading
       - media_uuid
@@ -222,33 +231,31 @@
   - role: super_admin
     permission:
       columns:
-      - id
       - body
-      - heading
-      - sub_heading
       - created_at
-      - updated_at
-      - content_partial_uuid
       - creator_uuid
+      - heading
+      - id
       - media_uuid
       - meta_uuid
       - network_uuid
+      - sub_heading
+      - updated_at
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
-      - id
       - body
-      - heading
-      - sub_heading
       - created_at
-      - updated_at
-      - content_partial_uuid
       - creator_uuid
+      - heading
+      - id
       - media_uuid
       - meta_uuid
       - network_uuid
+      - sub_heading
+      - updated_at
       - uuid
       filter: {}
   update_permissions:
@@ -256,7 +263,6 @@
     permission:
       columns:
       - body
-      - content_partial_uuid
       - creator_uuid
       - heading
       - media_uuid
@@ -269,7 +275,6 @@
     permission:
       columns:
       - body
-      - content_partial_uuid
       - heading
       - media_uuid
       - meta_uuid
@@ -549,12 +554,7 @@
   object_relationships:
   - name: content
     using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: content
-        column_mapping:
-          uuid: content_partial_uuid
+      foreign_key_constraint_on: content_uuid
   - name: content_partial_availability_listing
     using:
       manual_configuration:
@@ -588,16 +588,7 @@
       backend_only: false
   - role: user
     permission:
-      check:
-        _and:
-        - content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
-        - content:
-            network:
-              network_users:
-                user_uuid:
-                  _eq: X-Hasura-User-Id
+      check: {}
       columns:
       - uuid
       backend_only: false
@@ -611,12 +602,7 @@
     permission:
       columns:
       - uuid
-      filter:
-        content:
-          network:
-            network_users:
-              user_uuid:
-                _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: super_admin
     permission:
@@ -630,16 +616,7 @@
       filter: {}
   - role: user
     permission:
-      filter:
-        _and:
-        - content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
-        - content:
-            network:
-              network_users:
-                user_uuid:
-                  _eq: X-Hasura-User-Id
+      filter: {}
 - table:
     schema: public
     name: content_partial_availability_listing
@@ -664,11 +641,7 @@
       backend_only: false
   - role: user
     permission:
-      check:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      check: {}
       columns:
       - content_partial_uuid
       backend_only: false
@@ -688,24 +661,14 @@
       - updated_at
       - content_partial_uuid
       - uuid
-      filter:
-        content_partial:
-          content:
-            network:
-              network_users:
-                user_uuid:
-                  _eq: X-Hasura-User-Id
+      filter: {}
   delete_permissions:
   - role: super_admin
     permission:
       filter: {}
   - role: user
     permission:
-      filter:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      filter: {}
 - table:
     schema: public
     name: content_partial_availability_listing_credential
@@ -775,11 +738,7 @@
       backend_only: false
   - role: user
     permission:
-      check:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      check: {}
       columns:
       - content_partial_uuid
       backend_only: false
@@ -799,24 +758,14 @@
       - updated_at
       - content_partial_uuid
       - uuid
-      filter:
-        content_partial:
-          content:
-            network:
-              network_users:
-                user_uuid:
-                  _eq: X-Hasura-User-Id
+      filter: {}
   delete_permissions:
   - role: super_admin
     permission:
       filter: {}
   - role: user
     permission:
-      filter:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      filter: {}
 - table:
     schema: public
     name: content_partial_opportunity_listing_criteria
@@ -893,11 +842,7 @@
       backend_only: false
   - role: user
     permission:
-      check:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      check: {}
       columns:
       - content_partial_uuid
       backend_only: false
@@ -917,30 +862,14 @@
       - updated_at
       - content_partial_uuid
       - uuid
-      filter:
-        content_partial:
-          content:
-            network:
-              network_users:
-                user_uuid:
-                  _eq: X-Hasura-User-Id
-  update_permissions:
-  - role: super_admin
-    permission:
-      columns: []
       filter: {}
-      check: null
   delete_permissions:
   - role: super_admin
     permission:
       filter: {}
   - role: user
     permission:
-      filter:
-        content_partial:
-          content:
-            creator_uuid:
-              _eq: X-Hasura-User-Id
+      filter: {}
 - table:
     schema: public
     name: content_partial_poll_option
@@ -1207,6 +1136,8 @@
       check:
         uploader_uuid:
           _eq: X-Hasura-User-Id
+      set:
+        uploader_uuid: x-hasura-User-Id
       columns:
       - alt
       - original_url

@@ -1,1 +1,0 @@
-alter table "public"."content_partial_opportunity_listing_criteria" drop constraint "content_partial_opportunity_listing_criteria_content_partial";

@@ -5,12 +5,11 @@ import React, {
 } from 'react';
 import { useMutation } from 'urql';
 
-import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import InsertContentOne from '~/mutations/InsertContentOne';
-import InsertContentPartialPollOne from '~/mutations/InsertContentPartialPollOne';
-import InsertContentPartialOpportunityListingOne from '~/mutations/InsertContentPartialOpportunityListingOne';
-import InsertContentPartialAvailabilityListingOne from '~/mutations/InsertContentPartialAvailabilityListingOne';
+import InsertContentPollOne from '~/mutations/InsertContentPollOne';
+import InsertContentOpportunityListingOne from '~/mutations/InsertContentOpportunityListingOne';
+import InsertContentAvailabilityListingOne from '~/mutations/InsertContentAvailabilityListingOne';
 
 import {
   BASE_CONTENT_TEMPLATE_TYPE,
@@ -47,7 +46,6 @@ const initialState = () => ({
 export const CreateContentContext = createContext(initialState());
 
 export const CreateContentContextProvider = ({ children }) => {
-  const { user: authenticatedUser } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
   const {
     isFetching: isFetchingMedia,
@@ -75,17 +73,17 @@ export const CreateContentContextProvider = ({ children }) => {
     insertContent,
   ] = useMutation(InsertContentOne);
   const [
-    insertPollPartialResult,
-    insertPollPartial,
-  ] = useMutation(InsertContentPartialPollOne);
+    insertPollResult,
+    insertPoll,
+  ] = useMutation(InsertContentPollOne);
   const [
-    insertOpportunityListingPartialResult,
-    insertOpportunityListingPartial,
-  ] = useMutation(InsertContentPartialOpportunityListingOne);
+    insertOpportunityListingResult,
+    insertOpportunityListing,
+  ] = useMutation(InsertContentOpportunityListingOne);
   const [
-    insertAvailabilityListingPartialResult,
-    insertAvailabilityListingPartial,
-  ] = useMutation(InsertContentPartialAvailabilityListingOne);
+    insertAvailabilityListingResult,
+    insertAvailabilityListing,
+  ] = useMutation(InsertContentAvailabilityListingOne);
 
   // NOTE: There's currently a Hasura bug when inserting nested 1:1 objects
   // https://github.com/hasura/graphql-engine/issues/2576
@@ -93,7 +91,6 @@ export const CreateContentContextProvider = ({ children }) => {
   // associate the partial with content
   async function create() {
     const params = {
-      creator_uuid: authenticatedUser.uuid,
       network_uuid: activeNetwork.uuid,
       heading,
       description: meta.description,
@@ -111,7 +108,6 @@ export const CreateContentContextProvider = ({ children }) => {
           original_height: uploadedAsset.height,
           original_url: uploadedAsset.url,
           type: uploadedAsset.type,
-          uploader_uuid: authenticatedUser.uuid,
         },
       };
     }
@@ -122,7 +118,9 @@ export const CreateContentContextProvider = ({ children }) => {
         ...mediaParams,
       });
     } else if (type === POLL_CONTENT_TEMPLATE_TYPE) {
-      const partialResult = await insertPollPartial({
+      return insertPoll({
+        ...params,
+        ...mediaParams,
         content_partial_poll_options: poll.options.map((optionText) => ({
           poll_option: {
             data: {
@@ -131,19 +129,10 @@ export const CreateContentContextProvider = ({ children }) => {
           },
         })),
       });
-
-      const { uuid: contentPartialUuid } = partialResult
-        .data
-        .insert_content_partial_poll_one
-        .content_partial;
-
-      return insertContent({
+    } else if (type === OPPORTUNITY_LISTING_CONTENT_TEMPLATE_TYPE) {
+      return insertOpportunityListing({
         ...params,
         ...mediaParams,
-        content_partial_uuid: contentPartialUuid,
-      });
-    } else if (type === OPPORTUNITY_LISTING_CONTENT_TEMPLATE_TYPE) {
-      const partialResult = await insertOpportunityListingPartial({
         content_partial_opportunity_listing_criteria: opportunityListing.criteria.map((criteriaText) => ({
           opportunity_listing_criteria: {
             data: {
@@ -152,19 +141,10 @@ export const CreateContentContextProvider = ({ children }) => {
           },
         })),
       });
-
-      const { uuid: contentPartialUuid } = partialResult
-        .data
-        .insert_content_partial_opportunity_listing_one
-        .content_partial;
-
-      return insertContent({
+    } else if (type === AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE) {
+      return insertAvailabilityListing({
         ...params,
         ...mediaParams,
-        content_partial_uuid: contentPartialUuid,
-      });
-    } else if (type === AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE) {
-      const partialResult = await insertAvailabilityListingPartial({
         content_partial_availability_listing_credentials: availabilityListing.credentials.map((credentialText) => ({
           availability_listing_credential: {
             data: {
@@ -172,17 +152,6 @@ export const CreateContentContextProvider = ({ children }) => {
             },
           },
         })),
-      });
-
-      const { uuid: contentPartialUuid } = partialResult
-        .data
-        .insert_content_partial_availability_listing_one
-        .content_partial;
-
-      return insertContent({
-        ...params,
-        ...mediaParams,
-        content_partial_uuid: contentPartialUuid,
       });
     }
   }
@@ -213,9 +182,9 @@ export const CreateContentContextProvider = ({ children }) => {
         create,
         isCreating: (
           insertContentResult.fetching ||
-          insertPollPartialResult.fetching ||
-          insertOpportunityListingPartialResult.fetching ||
-          insertAvailabilityListingPartialResult.fetching ||
+          insertPollResult.fetching ||
+          insertOpportunityListingResult.fetching ||
+          insertAvailabilityListingResult.fetching ||
           isFetchingMedia
         )
       }}

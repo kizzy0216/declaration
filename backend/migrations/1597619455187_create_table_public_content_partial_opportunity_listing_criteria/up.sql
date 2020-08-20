@@ -1,1 +1,0 @@
-CREATE TABLE "public"."content_partial_opportunity_listing_criteria"("content_partial_opportunity_listing_uuid" uuid NOT NULL, "opportunity_listing_criteria_uuid" uuid NOT NULL, PRIMARY KEY ("content_partial_opportunity_listing_uuid","opportunity_listing_criteria_uuid") );
