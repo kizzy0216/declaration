@@ -8,7 +8,7 @@ const mapContentPollOption = ({
 const mapContentPoll = ({
   uuid,
   content_partial_poll_options,
-  content_partial_poll_votes = [],
+  content_partial_poll_votes = [], // NOTE: this assumes we're fetching votes for one person
   content_partial_poll_vote_counts = [],
 }) => {
   if (!content_partial_poll_options || !uuid) {

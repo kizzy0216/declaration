@@ -33,6 +33,7 @@ function ContentTileBackground({
   controls,
   hasForeground = false,
   isFocused = false,
+  isStarred = false,
   onTap = () => {},
   onDoubleTap = () => {},
   onLongPress = () => {},
@@ -104,7 +105,7 @@ function ContentTileBackground({
           simultaneousHandlers={doubleTapPanRef}
         >
           <PanGestureHandler
-            enabled={canPan}
+            enabled={canPan && !isStarred}
             ref={doubleTapPanRef}
             onGestureEvent={onDoubleTapPan}
             onHandlerStateChange={({ nativeEvent }) => {

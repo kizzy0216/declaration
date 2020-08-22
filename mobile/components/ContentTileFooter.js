@@ -17,9 +17,6 @@ import {
 } from '~/contexts/ContentTilePagerContext';
 import ContentTileByline from '~/components/ContentTileByline';
 import ContentTileActions from '~/components/ContentTileActions';
-import { WINDOW_WIDTH } from '~/constants';
-import AnimatedText from '~/components/AnimatedText';
-import { getStarAmount } from '~/utils/star';
 
 function ContentTileFooter({
   creator,
@@ -27,7 +24,7 @@ function ContentTileFooter({
   controls = {},
   starAnimation,
   isStarring,
-  stars = 0,
+  isStarred = false,
   onCreatorPress = () => {},
   onHashtagPress = () => {},
   onStarPress = () => {},
@@ -42,13 +39,11 @@ function ContentTileFooter({
 }) {
   const animation = useRef(new Animated.Value(0)).current;
   const { focus } = useContext(ContentTilePagerContext);
-  const quickStarAnimation = useRef(new Animated.Value(0)).current;
 
   const isBylineHidden = (
     focus === FOCUS_MEDIA ||
     focus === FOCUS_CONTENTS ||
-    controls.isFullscreen ||
-    isStarring
+    controls.isFullscreen
   );
 
   useEffect(() => {
@@ -83,29 +78,11 @@ function ContentTileFooter({
         />
       </Animated.View>
 
-      <View style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}>
-        {isStarring &&
-          <AnimatedText
-            animatedValue={starAnimation.x}
-            formatValue={(value) => {
-              const interpolatedValue = getStarAmount({ value });
-              return String(interpolatedValue);
-            }}
-            style={{
-              color: 'gold',
-              fontWeight: 'bold',
-            }}
-          />
-        }
-      </View>
-
       <ContentTileActions
         controls={controls}
         starAnimation={starAnimation}
         isStarring={isStarring}
+        isStarred={isStarred}
         onStarPress={onStarPress}
         onStarPan={onStarPan}
         onStarPanActive={onStarPanActive}

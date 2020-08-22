@@ -84,6 +84,18 @@ const GetNetworkContent = `
         uuid
         description
       }
+      content_stars(
+        where: {astronomer_uuid: {_eq: $viewer_uuid}}
+      ) {
+        __typename
+        amount
+        astronomer_uuid
+        astronomer {
+          __typename
+          uuid
+          name
+        }
+      }
       created_at
     }
   }

@@ -32,6 +32,7 @@ function AnimatedText({
         value={formattedLabel}
         style={{
           fontSize: 16,
+          width: '100%',
           ...style,
         }}
       />

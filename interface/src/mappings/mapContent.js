@@ -53,6 +53,14 @@ const mapContentMeta = ({
   description,
 });
 
+const mapContentStar = ({
+  amount,
+  astronomer,
+}) => ({
+  amount,
+  astronomer: mapUser(astronomer),
+});
+
 const mapContent = ({
   uuid,
   heading,
@@ -62,6 +70,7 @@ const mapContent = ({
   media,
   content_meta = {},
   content_partial = {},
+  content_stars = [],
 }) => ({
   uuid,
   heading,
@@ -73,6 +82,11 @@ const mapContent = ({
   poll: mapContentPoll((content_partial || {}).content_partial_poll || {}),
   availabilityListing: mapContentAvailabilityListing((content_partial || {}).content_partial_availability_listing || {}),
   opportunityListing: mapContentOpportunityListing((content_partial || {}).content_partial_opportunity_listing || {}),
+  stars: content_stars.map(mapContentStar),
+  starsByAstronomerUuid: content_stars.reduce((accumulator, content_star) => {
+    accumulator[content_star.astronomer_uuid] = mapContentStar(content_star);
+    return accumulator;
+  }, {}),
 });
 
 export default mapContent;

@@ -16,12 +16,14 @@ import {
   TapGestureHandler,
   State,
 } from 'react-native-gesture-handler';
+import { BlurView } from 'expo-blur';
 
 import {
   ContentTilePagerContext,
   FOCUS_MEDIA,
   FOCUS_CONTENTS,
 } from '~/contexts/ContentTilePagerContext';
+import AnimatedText from '~/components/AnimatedText';
 import StarFilledIcon from '@shared/components/icons/StarFilledIcon';
 import CommentIcon from '@shared/components/icons/CommentIcon';
 import ShareIcon from '@shared/components/icons/ShareIcon';
@@ -36,6 +38,7 @@ import {
   WINDOW_WIDTH,
   PUNCHY_BLUE,
 } from '~/constants';
+import { getStarAmount } from '~/utils/star';
 
 const LIGHT_FILL = 'rgba(255,255,255, 0.8)';
 const DARK_FILL = 'rgba(0,0,0, 0.6)';
@@ -44,6 +47,7 @@ function ContentTileActions({
   controls = {},
   starAnimation,
   isStarring,
+  isStarred,
   onStarPress = () => {},
   onStarPan = () => {},
   onStarPanActive = () => {},
@@ -107,8 +111,10 @@ function ContentTileActions({
     >
       <Animated.View
         style={{
-          ...styles.left,
-          ...styles.container,
+          position: 'absolute',
+          zIndex: 2,
+          left: 20,
+          top: 5,
           opacity: hideLeftAnimation.interpolate({
             inputRange: [0, 1],
             outputRange: [1, 0],
@@ -116,22 +122,17 @@ function ContentTileActions({
         }}
       >
         <Animated.View
-            style={{
-              transform: [{
-                translateX: starAnimation.x.interpolate({
-                  inputRange: [0, WINDOW_WIDTH - 90],
-                  outputRange: [0, WINDOW_WIDTH - 90],
-                  extrapolate: 'clamp',
-                }),
-              }, {
-                perspective: 1000,
-              }],
-              opacity: starAnimation.x.interpolate({
+          style={{
+            transform: [{
+              translateX: starAnimation.x.interpolate({
                 inputRange: [0, WINDOW_WIDTH - 90],
-                outputRange: [1, 0.5],
+                outputRange: [0, WINDOW_WIDTH - 90],
                 extrapolate: 'clamp',
               }),
-            }}
+            }, {
+              perspective: 1000,
+            }],
+          }}
         >
           <TapGestureHandler
             ref={tapRef}
@@ -159,6 +160,7 @@ function ContentTileActions({
             maxDurationMs={200}
           >
             <PanGestureHandler
+              enabled={canPan && !isStarred}
               ref={panRef}
               onGestureEvent={onStarPan}
               onHandlerStateChange={({ nativeEvent }) => {
@@ -183,24 +185,84 @@ function ContentTileActions({
               maxPointers={1}
             >
               <View style={styles.action}>
+                <Animated.View
+                  style={{
+                    ...styles.starAmountIndicator,
+                    opacity: starAnimation.x.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  }}
+                  pointerEvents="none"
+                >
+                  <AnimatedText
+                    animatedValue={starAnimation.x}
+                    formatValue={(value) => {
+                      const interpolatedValue = getStarAmount({ value });
+                      return String(interpolatedValue);
+                    }}
+                    style={{
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: 12,
+                    }}
+                  />
+                </Animated.View>
+
                 <StarFilledIcon
                   width={24}
                   height={24}
-                  fill={starAnimation.x.interpolate({
-                    inputRange: [0, (WINDOW_WIDTH - 90)],
-                    outputRange: [(theme === 'light' ? LIGHT_FILL : DARK_FILL), PUNCHY_BLUE],
-                    extrapolate: 'clamp',
-                  })}
+                  fill={(
+                    isStarred
+                      ? PUNCHY_BLUE
+                      : (theme === 'light' ? LIGHT_FILL : DARK_FILL)
+                  )}
                 />
               </View>
             </PanGestureHandler>
           </TapGestureHandler>
         </Animated.View>
+      </Animated.View>
 
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 10,
+          left: 20,
+          height: '80%',
+          width: '100%',
+          zIndex: 1,
+          opacity: starAnimation.x.interpolate({
+            inputRange: [0, (WINDOW_WIDTH - 90) * 0.15],
+            outputRange: [0, 1],
+          }),
+        }}
+        pointerEvents="none"
+      >
+        <BlurView
+          intensity={100}
+          style={styles.starTrack}
+        >
+          <View
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        </BlurView>
+      </Animated.View>
+
+      <Animated.View
+        style={{
+          ...styles.left,
+          ...styles.container,
+        }}
+      >
         <Animated.View
           style={{
             ...styles.container,
-            opacity: hideRightAnimation.interpolate({
+            opacity: hideLeftAnimation.interpolate({
               inputRange: [0, 1],
               outputRange: [1, 0],
             }),
@@ -243,34 +305,30 @@ function ContentTileActions({
         style={{
           ...styles.right,
           ...styles.container,
-          opacity: hideRightAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
         }}
       >
         {controls.hasVideo &&
           <>
-              <TouchableOpacity
-                style={styles.action}
-                onPress={() => onVideoMuteToggle(!controls.isVideoMuted)}
-              >
-                {controls.isVideoMuted
-                  ? (
-                    <NoAudioIcon
-                      width={24}
-                      height={24}
-                      fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                    />
-                  ) : (
-                    <AudioIcon
-                      width={24}
-                      height={24}
-                      fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                    />
-                  )
-                }
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.action}
+              onPress={() => onVideoMuteToggle(!controls.isVideoMuted)}
+            >
+              {controls.isVideoMuted
+                ? (
+                  <NoAudioIcon
+                    width={24}
+                    height={24}
+                    fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
+                  />
+                ) : (
+                  <AudioIcon
+                    width={24}
+                    height={24}
+                    fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
+                  />
+                )
+              }
+            </TouchableOpacity>
           </>
         }
         {(controls.hasImage || controls.hasVideo) &&
@@ -302,23 +360,29 @@ function ContentTileActions({
 
 const styles = StyleSheet.create({
   actions: {
-    paddingTop: 0,
+    position: 'relative',
+    paddingTop: 5,
     paddingRight: 20,
     paddingLeft: 20,
-    paddingBottom: 5,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   action: {
+    position: 'relative',
     paddingTop: 10,
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     flexDirection: 'row',
   },
   left: {
+    marginLeft: 40,
     justifyContent: 'flex-start',
   },
   right: {
@@ -326,6 +390,23 @@ const styles = StyleSheet.create({
   },
   hidden: {
     opacity: 0,
+  },
+
+  starAmountIndicator: {
+    position: 'absolute',
+    opacity: 0,
+    top: -30,
+    backgroundColor: PUNCHY_BLUE,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    borderRadius: 5,
+  },
+  starTrack: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 17,
   },
 });
 

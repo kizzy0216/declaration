@@ -44,11 +44,13 @@ function ContentTile({
   opportunityListing,
   creator,
   meta,
+  isStarred,
   onMenuRequest = () => {},
   onShareRequest = () => {},
   onCommentRequest = () => {},
   onPollOptionSelect = () => {},
   onStar = () => {},
+  onUnStar = () => {},
   ...props
 }) {
   const starAnimation = useRef(new Animated.ValueXY()).current;
@@ -155,12 +157,26 @@ function ContentTile({
   }
 
   function handleStar() {
-    onStar({ amount: 10 });
+    if (isStarred) {
+      return onUnStar();
+    }
+
+    onStar({ amount: 5 });
 
     setIsStarring(true);
+    Animated.timing(starAnimation.x, {
+      toValue: (WINDOW_WIDTH - 90) * 0.05,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
 
     setTimeout(() => {
       setIsStarring(false);
+      Animated.timing(starAnimation.x, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
     }, 500);
   }
 
@@ -177,6 +193,7 @@ function ContentTile({
             media={media}
             controls={controls}
             isFocused={isFullscreen}
+            isStarred={isStarred}
             hasForeground={hasForeground}
             onTap={handleBackgroundTap}
             onDoubleTap={handleStar}
@@ -256,6 +273,7 @@ function ContentTile({
             controls={controls}
             starAnimation={starAnimation}
             isStarring={isStarring}
+            isStarred={isStarred}
             onCreatorPress={handleCreatorPress}
             onHashtagPress={handleHashtagPress}
             onStarPress={handleStar}
