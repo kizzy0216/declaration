@@ -8,6 +8,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Constants from 'expo-constants';
+
+const { REST_BASE_URL } = Constants.manifest.extra;
 
 import Avatar from '~/components/Avatar';
 import { hashtagRegex } from '@shared/utils/regex';
@@ -19,7 +22,7 @@ function ContentTileByline({
   onCreatorPress = () => {},
   onHashtagPress = () => {},
 }) {
-  const hasDescription = meta && meta.description;
+  const hasDescription = !!(meta && meta.description);
   const theme = (
     (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
   );
@@ -30,6 +33,12 @@ function ContentTileByline({
     matchedHashtags = meta.description.match(hashtagRegex);
     splitDescriptionByHashtags = meta.description.split(hashtagRegex);
   }
+
+  const profilePhoto = (
+    creator.profile.photo
+      ? creator.profile.photo
+      : `${REST_BASE_URL}/avatar/${creator.uuid}`
+  );
 
   return (
     <>
@@ -43,7 +52,7 @@ function ContentTileByline({
             onPress={onCreatorPress}
           >
             <Avatar
-              imageSrc={creator.profile.photo}
+              imageSrc={profilePhoto}
               size="small"
             />
 
@@ -86,7 +95,7 @@ function ContentTileByline({
                   {split}
                 </Text>
 
-                {matchedHashtags[index] &&
+                {matchedHashtags && matchedHashtags[index] &&
                   <TouchableOpacity
                     key={index}
                     onPress={() => onHashtagPress(matchedHashtags[index])}

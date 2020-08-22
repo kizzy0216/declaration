@@ -51,7 +51,9 @@ function ContentCommentModal({
   const [active, setActive] = useState();
 
   useEffect(() => {
-    setActive(content.commentTree);
+    if (content && content.commentTree) {
+      setActive(content.commentTree);
+    }
   }, [content]);
 
   function handleBack() {
@@ -92,7 +94,7 @@ function ContentCommentModal({
     onClose();
   }
 
-  if (!content.commentTree) {
+  if (!content || !content.commentTree) {
     return null;
   }
 

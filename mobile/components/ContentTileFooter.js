@@ -19,6 +19,7 @@ import ContentTileByline from '~/components/ContentTileByline';
 import ContentTileActions from '~/components/ContentTileActions';
 import { WINDOW_WIDTH } from '~/constants';
 import AnimatedText from '~/components/AnimatedText';
+import { getStarAmount } from '~/utils/star';
 
 function ContentTileFooter({
   creator,
@@ -90,16 +91,8 @@ function ContentTileFooter({
           <AnimatedText
             animatedValue={starAnimation.x}
             formatValue={(value) => {
-              const numberValue = Number(value);
-
-              let interpolatedValue = (numberValue * 100) / (WINDOW_WIDTH - 90);
-              if (interpolatedValue > 100) {
-                interpolatedValue = 100;
-              } else if (interpolatedValue < 0) {
-                interpolatedValue = 0;
-              }
-
-              return String(Math.round(interpolatedValue));
+              const interpolatedValue = getStarAmount({ value });
+              return String(interpolatedValue);
             }}
             style={{
               color: 'gold',

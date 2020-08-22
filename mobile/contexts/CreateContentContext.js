@@ -93,6 +93,8 @@ export const CreateContentContextProvider = ({ children }) => {
     const params = {
       network_uuid: activeNetwork.uuid,
       heading,
+      sub_heading: subHeading,
+      body,
       description: meta.description,
       content_meta_mentions: meta.mentions.map(({ uuid }) => ({ user_uuid: uuid })),
     };

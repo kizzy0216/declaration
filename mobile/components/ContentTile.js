@@ -28,6 +28,7 @@ import {
   FEEDBACK_PAUSED_VIDEO,
   FEEDBACK_PLAYED_VIDEO,
 } from '~/constants';
+import { getStarAmount } from '~/utils/star';
 
 function ContentTile({
   id,
@@ -46,6 +47,8 @@ function ContentTile({
   onMenuRequest = () => {},
   onShareRequest = () => {},
   onCommentRequest = () => {},
+  onPollOptionSelect = () => {},
+  onStar = () => {},
   ...props
 }) {
   const starAnimation = useRef(new Animated.ValueXY()).current;
@@ -133,19 +136,14 @@ function ContentTile({
     setIsVideoPlaying(!isVideoPlaying);
   }
 
-  function handleBackgroundDoubleTap() {
-    setIsStarring(true);
-
-    setTimeout(() => {
-      setIsStarring(false);
-    }, 500);
-  }
-
   function handleStarPanActive({ x: x1, y: y1 }) {
     setIsStarring(true);
   }
 
   function handleStarPanEnd({ x: x2, y: y2 }) {
+    const amount = getStarAmount({ value: x2 });
+    onStar({ amount });
+
     setIsStarring(false);
     starAnimation.setValue({ x: 0, y: 0});
   }
@@ -156,7 +154,9 @@ function ContentTile({
   function handleHashtagPress() {
   }
 
-  function handleStarPress() {
+  function handleStar() {
+    onStar({ amount: 10 });
+
     setIsStarring(true);
 
     setTimeout(() => {
@@ -179,7 +179,7 @@ function ContentTile({
             isFocused={isFullscreen}
             hasForeground={hasForeground}
             onTap={handleBackgroundTap}
-            onDoubleTap={handleBackgroundDoubleTap}
+            onDoubleTap={handleStar}
             onLongPress={onMenuRequest}
             onDoubleTapPanActive={handleStarPanActive}
             onDoubleTapPan={Animated.event(
@@ -232,6 +232,7 @@ function ContentTile({
             availabilityListing={availabilityListing}
             opportunityListing={opportunityListing}
             creator={creator}
+            onPollOptionSelect={onPollOptionSelect}
           />
         </Animated.View>
 
@@ -257,7 +258,7 @@ function ContentTile({
             isStarring={isStarring}
             onCreatorPress={handleCreatorPress}
             onHashtagPress={handleHashtagPress}
-            onStarPress={handleStarPress}
+            onStarPress={handleStar}
             onStarPan={Animated.event(
               [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
               { useNativeDriver: false },

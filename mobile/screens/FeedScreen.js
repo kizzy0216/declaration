@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ContentTilePagerContextProvider } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import FeedHeader from '~/components/FeedHeader';
-import ContentTilePager from '~/components/ContentTilePager';
+import ContentTilePagerContainer from '~/containers/ContentTilePagerContainer';
 
 function FeedScreen({ navigation }) {
   const animation = useRef(new Animated.Value(1)).current;
@@ -62,9 +61,7 @@ function FeedScreen({ navigation }) {
       </SafeAreaView>
 
       <View style={styles.pagerWrapper}>
-        <ContentTilePagerContextProvider>
-          <ContentTilePager />
-        </ContentTilePagerContextProvider>
+        <ContentTilePagerContainer />
       </View>
     </View>
   );

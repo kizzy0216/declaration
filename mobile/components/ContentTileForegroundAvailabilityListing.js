@@ -61,21 +61,21 @@ function ContentTileForegroundAvailabilityListing({
           {body}
         </Text>
 
-        {availabilityListing.criteria &&
+        {availabilityListing.credentials &&
           <View
-            style={styles.criteria}
+            style={styles.credential}
             pointerEvents="box-none"
           >
-            {availabilityListing.criteria.map((criterion, index) => (
+            {availabilityListing.credentials.map((credential, index) => (
               <Text
                 key={index}
                 style={[
-                  styles.criterion,
+                  styles.credential,
                   styles[theme],
                 ]}
               >
                 {'\u2022 '}
-                {criterion.text}
+                {credential.text}
               </Text>
             ))}
           </View>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '600',
   },
-  criteria: {
+  credential: {
     marginBottom: 20,
   },
   criterion: {

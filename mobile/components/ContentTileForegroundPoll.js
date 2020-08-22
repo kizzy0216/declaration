@@ -11,6 +11,7 @@ import {
   LIGHT_BLUE,
 } from '~/constants';
 import Badge from '~/components/Badge';
+import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 
 const BADGE_LABELS = [
   'A',
@@ -29,18 +30,26 @@ function ContentTileForegroundPoll({
     return null;
   }
 
-  const { options } = poll;
+  const {
+    options,
+    vote,
+    voteCounts,
+    voteCountsByOptionUuid,
+    totalVoteCounts,
+  } = poll;
 
+  const hasVoted = !!vote;
   const isSingleChoice = options.length === 2;
   const isMultipleChoice = options.length > 2;
 
   const percentages = options.map((option, index) => {
-    if (!option.count) {
+    const voteCount = voteCountsByOptionUuid[option.uuid];
+
+    if (!voteCount) {
       return '0%';
     }
 
-    const sumOptions = options.reduce((accumulator, { count }) => accumulator + count, 0); 
-    const percentageNumber = Math.round((option.count * 100) / sumOptions);
+    const percentageNumber = Math.round((voteCount * 100) / totalVoteCounts);
 
     return `${percentageNumber}%`;
   });
@@ -55,18 +64,18 @@ function ContentTileForegroundPoll({
         ]}
       >
         {options.map((option, index) => (
-          <Fragment key={option.id}>
+          <Fragment key={option.uuid}>
             <TouchableOpacity
-              key={option.id}
               style={[
                 isMultipleChoice && styles.touchableColumn,
               ]}
               containerStyle={[
                 styles.touchableContainer,
                 isSingleChoice && styles.touchableContainerRow,
+                isSingleChoice && hasVoted && styles.touchableContainerRowVoted,
                 isMultipleChoice && styles.touchableContainerColumn,
               ]}
-              disabled={!!option.count}
+              disabled={hasVoted}
               onPress={() => onSelect(option)}
             >
               {isMultipleChoice &&
@@ -79,21 +88,31 @@ function ContentTileForegroundPoll({
                 style={[
                   styles.text,
                   isSingleChoice && styles.textRow,
-                  isMultipleChoice && option.count && styles.textWithPercentage,
-                  isSingleChoice && !option.count && styles.textCenter,
-                  isSingleChoice && option.count && index === options.length - 1 && styles.textRight,
+                  isMultipleChoice && hasVoted && styles.textVoted,
+                  isSingleChoice && !hasVoted && styles.textCenter,
+                  isSingleChoice && hasVoted && index === options.length - 1 && styles.textRight,
                   isMultipleChoice && styles.textColumn,
                   index !== options.length - 1 && isMultipleChoice && styles.textWithGutter,
                 ]}
               >
                 {option.text}
+                {hasVoted && (vote.uuid === option.uuid) && (
+                  <>
+                    &nbsp;
+                    <CheckmarkIcon
+                      width={16}
+                      height={16}
+                      fill="black"
+                    />
+                  </>
+                )}
               </Text>
 
-              {option.count &&
+              {hasVoted &&
                 <Text
                   style={[
                     styles.textPercentage,
-                    isSingleChoice && option.count && index === options.length - 1 && styles.textRight,
+                    isSingleChoice && index === options.length - 1 && styles.textRight,
                   ]}
                 >
                   {percentages[index]}
@@ -101,11 +120,11 @@ function ContentTileForegroundPoll({
               }
             </TouchableOpacity>
 
-            {index === 0 && isSingleChoice && !option.count &&
+            {index === 0 && isSingleChoice && !hasVoted &&
               <View style={styles.verticalSeparator} />
             }
 
-            {(index != options.length - 1) && isMultipleChoice && !option.count &&
+            {(index != options.length - 1) && isMultipleChoice && !hasVoted &&
               <View style={styles.horizontalSeparator} />
             }
           </Fragment>
@@ -173,6 +192,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 15,
   },
+  touchableContainerRowVoted: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
   touchableContainerColumn: {
     paddingTop: 15,
     paddingRight: 15,
@@ -219,7 +242,7 @@ const styles = StyleSheet.create({
   textRight: {
     textAlign: 'right',
   },
-  textWithPercentage: {
+  textVoted: {
     flexGrow: 1,
   },
 

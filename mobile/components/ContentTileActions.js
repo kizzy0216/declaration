@@ -156,23 +156,28 @@ function ContentTileActions({
               }
             }}
             simultaneousHandlers={panRef}
+            maxDurationMs={200}
           >
             <PanGestureHandler
               ref={panRef}
               onGestureEvent={onStarPan}
               onHandlerStateChange={({ nativeEvent }) => {
+                setIsPanning(true);
+
                 if (nativeEvent.state === State.ACTIVE) {
                   onStarPanActive({
-                    x: nativeEvent.absoluteX,
-                    y: nativeEvent.absoluteY,
+                    x: nativeEvent.translationX,
+                    y: nativeEvent.translationY,
                   });
                 }
 
                 if (nativeEvent.state === State.END) {
                   onStarPanEnd({
-                    x: nativeEvent.absoluteX,
-                    y: nativeEvent.absoluteY,
+                    x: nativeEvent.translationX,
+                    y: nativeEvent.translationY,
                   });
+                  setCanPan(false);
+                  setIsPanning(false);
                 }
               }}
               maxPointers={1}

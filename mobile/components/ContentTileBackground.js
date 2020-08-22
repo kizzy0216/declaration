@@ -112,15 +112,15 @@ function ContentTileBackground({
 
               if (nativeEvent.state === State.ACTIVE) {
                 onDoubleTapPanActive({
-                  x: nativeEvent.absoluteX,
-                  y: nativeEvent.absoluteY,
+                  x: nativeEvent.translationX,
+                  y: nativeEvent.translationY,
                 });
               }
 
               if (nativeEvent.state === State.END) {
                 onDoubleTapPanEnd({
-                  x: nativeEvent.absoluteX,
-                  y: nativeEvent.absoluteY,
+                  x: nativeEvent.translationX,
+                  y: nativeEvent.translationY,
                 });
                 setCanPan(false);
                 setIsPanning(false);

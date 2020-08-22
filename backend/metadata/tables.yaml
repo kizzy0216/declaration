@@ -826,6 +826,14 @@
         table:
           schema: public
           name: content_partial_poll_option
+  - name: content_partial_poll_vote_counts
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_poll_vote_count
+        column_mapping:
+          uuid: content_partial_poll_uuid
   - name: content_partial_poll_votes
     using:
       foreign_key_constraint_on:
@@ -940,6 +948,8 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        voter_uuid: x-hasura-User-Id
       columns:
       - content_partial_poll_uuid
       - poll_option_uuid
@@ -948,6 +958,8 @@
   - role: user
     permission:
       check: {}
+      set:
+        voter_uuid: x-hasura-User-Id
       columns:
       - content_partial_poll_uuid
       - poll_option_uuid
@@ -984,6 +996,41 @@
       filter: {}
 - table:
     schema: public
+    name: content_partial_poll_vote_count
+  object_relationships:
+  - name: content_partial_poll
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_poll
+        column_mapping:
+          content_partial_poll_uuid: uuid
+  - name: poll_option
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: poll_option
+        column_mapping:
+          poll_option_uuid: uuid
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      - count
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - count
+      - content_partial_poll_uuid
+      - poll_option_uuid
+      filter: {}
+- table:
+    schema: public
     name: content_star
   object_relationships:
   - name: astronomer
@@ -996,6 +1043,8 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        astronomer_uuid: x-hasura-User-Id
       columns:
       - content_uuid
       - astronomer_uuid
@@ -1004,6 +1053,8 @@
   - role: user
     permission:
       check: {}
+      set:
+        astronomer_uuid: x-hasura-User-Id
       columns:
       - amount
       - astronomer_uuid
