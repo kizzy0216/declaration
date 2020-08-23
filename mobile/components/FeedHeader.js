@@ -23,9 +23,11 @@ import { UserContext } from '~/contexts/UserContext';
 import MessageIcon from '@shared/components/icons/MessageIcon';
 import CalendarIcon from '@shared/components/icons/CalendarIcon';
 import ChevronDownIcon from '@shared/components/icons/ChevronDownIcon';
+import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 
 function FeedHeader({
   theme = 'dark', // light or dark
+  isFetching = false,
   onNetworkAdd = () => {},
   onNetworkCreate = () => {},
   onCalendarPress = () => {},
@@ -125,17 +127,32 @@ function FeedHeader({
               >
                 {activeNetwork && activeNetwork.name}
               </Animated.Text>
-              <View style={styles.chevronIconWrapper}>
-                <ChevronDownIcon
-                  width={16}
-                  height={16}
-                  fill={
-                    themeAnimation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ['#000000', '#FFFFFF'],
-                    })
-                  }
-                />
+              <View style={styles.iconWrapper}>
+                {isFetching ?
+                  (
+                    <AnimatedSpinnerIcon
+                      width={16}
+                      height={16}
+                      fill={
+                        themeAnimation.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['#000000', '#FFFFFF'],
+                        })
+                      }
+                    />
+                  ) : (
+                    <ChevronDownIcon
+                      width={16}
+                      height={16}
+                      fill={
+                        themeAnimation.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['#000000', '#FFFFFF'],
+                        })
+                      }
+                    />
+                  )
+                }
               </View>
             </View>
           </TouchableOpacity>
@@ -156,7 +173,7 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: 'bold',
   },
-  chevronIconWrapper: {
+  iconWrapper: {
     marginLeft: 5,
   },
 });

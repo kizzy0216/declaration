@@ -1,74 +1,22 @@
-import React, {
-  useContext,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
+import React from 'react';
 import {
-  Animated,
   View,
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
 
-import { InterfaceContext } from '~/contexts/InterfaceContext';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
-import FeedHeader from '~/components/FeedHeader';
+import FeedHeaderContainer from '~/containers/FeedHeaderContainer';
 import ContentTilePager from '~/components/ContentTilePager';
 
 function FeedScreen({ navigation }) {
-  const animation = useRef(new Animated.Value(1)).current;
-  const {
-    isVisible: isInterfaceVisible,
-    theme,
-  } = useContext(InterfaceContext);
-  const {
-    getItems,
-    scrollToIndex,
-  } = useContext(ContentTilePagerContext);
-
-  useEffect(() => {
-    Animated.timing(animation, {
-      toValue: (isInterfaceVisible ? 1 : 0),
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isInterfaceVisible]);
-
-  useFocusEffect(useCallback(() => {
-    getItems();
-  }, []));
-
   return (
     <View style={styles.screen}>
       <SafeAreaView
         style={styles.safeArea}
         contentContainerStyle={styles.contentContainer}
       >
-        <Animated.View
-          style={{
-            opacity: animation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 1],
-            }),
-            transform: [{
-              translateY: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-100, 0],
-              }),
-            }],
-          }}
-          pointerEvents={isInterfaceVisible ? 'auto' : 'none'}
-        >
-          <FeedHeader
-            theme={theme}
-            onNetworkAdd={() => navigation.navigate('NetworkMembershipSelect')}
-            onNetworkCreate={() => navigation.navigate('NetworkAccessRequest')}
-            onCalendarPress={() => navigation.navigate('Events')}
-            onMessagesPress={() => navigation.navigate('Messaging')}
-          />
-        </Animated.View>
+        <FeedHeaderContainer />
       </SafeAreaView>
 
       <View style={styles.pagerWrapper}>

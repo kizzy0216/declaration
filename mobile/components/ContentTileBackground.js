@@ -101,7 +101,7 @@ function ContentTileBackground({
             }
           }}
           numberOfTaps={2}
-          maxDurationMs={1000}
+          maxDurationMs={200}
           simultaneousHandlers={doubleTapPanRef}
         >
           <PanGestureHandler

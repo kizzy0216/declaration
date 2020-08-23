@@ -3,6 +3,7 @@ import React, {
   useRef,
   useEffect,
   useState,
+  useCallback,
 } from 'react';
 import {
   Animated,
@@ -18,11 +19,7 @@ import {
 } from 'react-native-gesture-handler';
 import { BlurView } from 'expo-blur';
 
-import {
-  ContentTilePagerContext,
-  FOCUS_MEDIA,
-  FOCUS_CONTENTS,
-} from '~/contexts/ContentTilePagerContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import AnimatedText from '~/components/AnimatedText';
 import StarFilledIcon from '@shared/components/icons/StarFilledIcon';
 import CommentIcon from '@shared/components/icons/CommentIcon';
@@ -46,7 +43,6 @@ const DARK_FILL = 'rgba(0,0,0, 0.6)';
 function ContentTileActions({
   controls = {},
   starAnimation,
-  isStarring,
   isStarred,
   onStarPress = () => {},
   onStarPan = () => {},
@@ -60,33 +56,18 @@ function ContentTileActions({
 }) {
   const tapRef = useRef();
   const panRef = useRef();
-  const [canPan, setCanPan] = useState(false);
   const [isPanning, setIsPanning] = useState(false);
-  const quickStarAnimation = useRef(new Animated.Value(0)).current;
   const featureStarAnimation = useRef(new Animated.Value(0)).current;
   const hideLeftAnimation = useRef(new Animated.Value(0)).current;
-  const hideRightAnimation = useRef(new Animated.Value(0)).current
   const { focus } = useContext(ContentTilePagerContext);
 
   const isLeftHidden = (
-    focus === FOCUS_MEDIA ||
-    focus === FOCUS_CONTENTS ||
     controls.isFullscreen
   );
-
-  const isRightHidden = isStarring;
 
   const theme = (
     (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
   );
-
-  useEffect(() => {
-    Animated.timing(quickStarAnimation, {
-      toValue: (isStarring ? 1 : 0),
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isStarring]);
 
   useEffect(() => {
     Animated.timing(hideLeftAnimation, {
@@ -95,14 +76,6 @@ function ContentTileActions({
       useNativeDriver: true,
     }).start();
   }, [isLeftHidden]);
-
-  useEffect(() => {
-    Animated.timing(hideRightAnimation, {
-      toValue: (isRightHidden ? 1 : 0),
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isRightHidden]);
 
   return (
     <View
@@ -137,34 +110,21 @@ function ContentTileActions({
           <TapGestureHandler
             ref={tapRef}
             onHandlerStateChange={({ nativeEvent }) => {
-              if (nativeEvent.state === State.BEGAN) {
-                setCanPan(true);
-              }
-
               if (nativeEvent.state === State.END && !isPanning) {
                 onStarPress();
-                setCanPan(false);
-              }
-
-              if (
-                (
-                  nativeEvent.state === State.CANCELLED ||
-                  nativeEvent.state === State.FAILED
-                ) &&
-                !isPanning
-              ) {
-                setCanPan(false);
               }
             }}
             simultaneousHandlers={panRef}
             maxDurationMs={200}
           >
             <PanGestureHandler
-              enabled={canPan && !isStarred}
+              enabled={!isStarred}
               ref={panRef}
               onGestureEvent={onStarPan}
               onHandlerStateChange={({ nativeEvent }) => {
-                setIsPanning(true);
+                if (nativeEvent.state === State.BEGAN) {
+                  setIsPanning(true);
+                }
 
                 if (nativeEvent.state === State.ACTIVE) {
                   onStarPanActive({
@@ -178,7 +138,6 @@ function ContentTileActions({
                     x: nativeEvent.translationX,
                     y: nativeEvent.translationY,
                   });
-                  setCanPan(false);
                   setIsPanning(false);
                 }
               }}

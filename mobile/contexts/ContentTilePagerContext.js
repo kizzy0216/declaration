@@ -10,31 +10,37 @@ import { useQuery, useMutation } from 'urql';
 
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
-import GetNetworkContent from '~/queries/GetNetworkContent';
+import GetNetworkContentNewer from '~/queries/GetNetworkContentNewer';
+import GetNetworkContentOlder from '~/queries/GetNetworkContentOlder';
 import DeleteContent from '~/mutations/DeleteContent';
 import mapContent from '@shared/mappings/mapContent';
 
-export const FOCUS_ALL = 'FOCUS_ALL';
-export const FOCUS_CONTENTS = 'FOCUS_CONTENTS';
-
 export const ContentTilePagerContext = createContext({
-  items: [],
+  itemUuids: [],
+  items: {},
   activeIndex: 0,
-  focus: FOCUS_ALL,
   shouldReRender: 0,
+  isFetchingNewerItems: false,
+  isFetchingOlderItems: false,
 
   getItems: () => {},
+  getNewerItems: () => {},
   setActiveIndex: () => {},
-  setFocus: () => {},
   setShouldRefresh: () => {},
   setFlatListMethods: () => {},
   scrollToIndex: () => {},
   deleteItem: () => {},
 });
 
+const LIMIT = 20;
+const FETCH_LIMIT = 15;
+
 export const ContentTilePagerContextProvider = ({ children }) => {
   const [shouldReRender, setShouldReRender] = useState(0);
-  const [items, setItems] = useState([]);
+  const [itemUuids, setItemUuids] = useState([]);
+  const [items, setItems] = useState({});
+  const [firstItemCreatedAt, setFirstItemCreatedAt] = useState(null);
+  const [lastItemCreatedAt, setLastItemCreatedAt] = useState(null);
   // previously lifted the whole flatListRef up, but calling flatListRef
   // methods from here didn't work. So, we're creating a proxy object for
   // flatListRef methods here and actually calling FlatList methods in
@@ -43,17 +49,30 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     scrollToIndex: () => {},
   });
   const [activeIndex, setActiveIndex] = useState(0);
-  const [focus, setFocus] = useState(FOCUS_ALL);
   const { user: authenticatedUser } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
   const [
-    getContentResult,
-    getContent,
+    getContentOlderResult,
+    getContentOlder,
   ] = useQuery({
-    query: GetNetworkContent,
+    query: GetNetworkContentOlder,
     variables: {
       network_uuid: activeNetwork.uuid,
       viewer_uuid: authenticatedUser.uuid,
+      limit: LIMIT,
+      created_at_before: lastItemCreatedAt,
+    },
+    pause: !activeNetwork || !authenticatedUser,
+  });
+  const [
+    getContentNewerResult,
+    getContentNewer,
+  ] = useQuery({
+    query: GetNetworkContentNewer,
+    variables: {
+      network_uuid: activeNetwork.uuid,
+      viewer_uuid: authenticatedUser.uuid,
+      limit: LIMIT,
     },
     pause: !activeNetwork || !authenticatedUser,
   });
@@ -62,16 +81,70 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     deleteContent,
   ] = useMutation(DeleteContent);
 
+  const isFetchingNewerItems = getContentNewerResult.fetching;
+  const isFetchingOlderItems = getContentOlderResult.fetching;
+
   useEffect(() => {
-    if (getContentResult.data && !getContentResult.fetching) {
-      const items = getContentResult
+    if (getContentOlderResult.data && getContentOlderResult.data.content) {
+      const mappedContent = getContentOlderResult
         .data
         .content
         .map(mapContent);
 
-      setItems(items);
+      setItems({
+        ...items,
+        ...mappedContent.reduce((accumulator, content) => {
+          accumulator[content.uuid] = content;
+          return accumulator;
+        }, {}),
+      });
+
+      setItemUuids([
+        ...new Set([
+          ...itemUuids,
+          ...mappedContent.map(({ uuid }) => uuid),
+        ]),
+      ]);
     }
-  }, [getContentResult]);
+  }, [getContentOlderResult.data]);
+  useEffect(() => {
+    if (getContentNewerResult.data && getContentNewerResult.data.content) {
+      const mappedContent = getContentNewerResult
+        .data
+        .content
+        .map(mapContent);
+
+      setItems(
+        mappedContent.reduce((accumulator, content) => {
+          accumulator[content.uuid] = content;
+          return accumulator;
+        }, {}),
+      );
+
+      setItemUuids([
+        ...new Set(
+          mappedContent.map(({ uuid }) => uuid),
+        ),
+      ]);
+
+      setShouldReRender(new Date());
+    }
+  }, [getContentNewerResult.data]);
+
+  useEffect(() => {
+    const lastItemUuid = itemUuids[itemUuids.length - 1];
+    const lastItem = lastItemUuid && items[lastItemUuid];
+
+    if (!lastItem) {
+      return;
+    }
+
+    if (itemUuids.length - activeIndex <= FETCH_LIMIT) {
+      if (lastItemCreatedAt !== lastItem.createdAtTimestampTz) {
+        setLastItemCreatedAt(lastItem.createdAtTimestampTz);
+      }
+    }
+  }, [activeIndex]);
 
   function setFlatListMethods(methods) {
     flatListMethodsRef.current = methods;
@@ -91,14 +164,11 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     }
   }, [flatListMethodsRef.current]);
 
-  function getItems() {
-    getContent({
-      network_uuid: activeNetwork.uuid,
-      viewer_uuid: authenticatedUser.uuid,
-    }, {
+  const getItems = useCallback(() => {
+    getContentNewer({
       requestPolicy: 'cache-and-network',
     });
-  }
+  }, []);
 
   function deleteItem({ uuid }) {
     deleteContent({
@@ -106,17 +176,33 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     });
   }
 
+  function getNewerItems() {
+    const firstItemUuid = itemUuids[0];
+    const firstItem = firstItemUuid && items[firstItemUuid];
+
+    if (!firstItem) {
+      return;
+    }
+
+    setFirstItemCreatedAt(firstItem.createdAtTimestampTz);
+    getContentNewer({
+      requestPolicy: 'cache-and-network',
+    });
+  }
+
   return (
     <ContentTilePagerContext.Provider
       value={{
+        itemUuids,
         items,
         activeIndex,
-        focus,
         shouldReRender,
+        isFetchingOlderItems,
+        isFetchingNewerItems,
 
         getItems,
+        getNewerItems,
         setActiveIndex,
-        setFocus,
         reRender,
         setFlatListMethods,
         scrollToIndex,

@@ -4,6 +4,7 @@ import React, {
   useRef,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
 import {
   View,
@@ -15,7 +16,7 @@ import { setStatusBarStyle } from 'expo-status-bar';
 
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
-import ContentCommentModal from '~/components/ContentCommentModal';
+import ContentCommentModalContainer from '~/containers/ContentCommentModalContainer';
 import ContentMenuModalContainer from '~/containers/ContentMenuModalContainer';
 import ContentTileContainer from '~/containers/ContentTileContainer';
 import {
@@ -163,14 +164,14 @@ function ContentTilePager() {
 
   const { setTheme } = useContext(InterfaceContext);
   const {
+    itemUuids,
     items,
-    activeIndex,
     shouldReRender,
     setActiveIndex,
     setFlatListMethods,
+    isFetchingNewerItems,
+    getItems,
   } = useContext(ContentTilePagerContext);
-
-  const activeItem = items[activeIndex];
 
   useEffect(() => {
     if (flatListRef.current) {
@@ -181,6 +182,19 @@ function ContentTilePager() {
       });
     }
   }, [flatListRef.current]);
+
+  const handleCommentRequest = useCallback(() => setIsCommentModalActive(true), []);
+  const handleMenuRequest = useCallback(() => setIsMenuModalActive(true), []);
+
+  const renderItem = useCallback(({ item, index }) => (
+    <ContentTileContainer
+      {...item}
+      key={item.uuid}
+      index={index}
+      onCommentRequest={handleCommentRequest}
+      onMenuRequest={handleMenuRequest}
+    />
+  ), []);
 
   const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (!viewableItems || viewableItems.length === 0) {
@@ -204,19 +218,25 @@ function ContentTilePager() {
     index,
   }), [WINDOW_HEIGHT]);
 
-  if (items.length === 0) {
+  const keyExtractor = useCallback(({ uuid }) => uuid, []);
+
+  const onRefresh = useCallback(getItems, []);
+
+  const data = useMemo(() => {
+    return itemUuids.map((uuid) => items[uuid]);
+  }, [itemUuids]);
+
+  if (itemUuids.length === 0) {
     return null;
   }
 
   return (
     <View style={styles.contentTilePager}>
-      <ContentCommentModal
-        item={activeItem}
+      <ContentCommentModalContainer
         isVisible={isCommentModalActive}
         onClose={() => setIsCommentModalActive(false)}
       />
       <ContentMenuModalContainer
-        item={activeItem}
         isVisible={isMenuModalActive}
         onClose={() => setIsMenuModalActive(false)}
       />
@@ -225,22 +245,17 @@ function ContentTilePager() {
         ref={flatListRef}
         showPageIndicator={false}
         style={styles.flatList}
-        data={items}
+        data={data}
         getItemLayout={getItemLayout}
         initialScrollIndex={0}
-        renderItem={({ item, index }) => (
-          <ContentTileContainer
-            {...item}
-            key={item.uuid}
-            index={index}
-            onCommentRequest={() => setIsCommentModalActive(true)}
-            onMenuRequest={() => setIsMenuModalActive(true)}
-          />
-        )}
+        renderItem={renderItem}
         extraData={shouldReRender}
-        keyExtractor={({ uuid }) => uuid}
+        keyExtractor={keyExtractor}
         pagingEnabled={true}
         showsVerticalScrollIndicator={false}
+        refreshing={isFetchingNewerItems}
+        initialNumToRender={5}
+        onRefresh={onRefresh}
         onViewableItemsChanged={handleViewableItemsChanged}
       />
     </View>

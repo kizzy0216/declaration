@@ -10,11 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {
-  ContentTilePagerContext,
-  FOCUS_MEDIA,
-  FOCUS_CONTENTS,
-} from '~/contexts/ContentTilePagerContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import ContentTileByline from '~/components/ContentTileByline';
 import ContentTileActions from '~/components/ContentTileActions';
 
@@ -23,7 +19,6 @@ function ContentTileFooter({
   meta,
   controls = {},
   starAnimation,
-  isStarring,
   isStarred = false,
   onCreatorPress = () => {},
   onHashtagPress = () => {},
@@ -38,11 +33,8 @@ function ContentTileFooter({
   onFullscreenToggle = () => {},
 }) {
   const animation = useRef(new Animated.Value(0)).current;
-  const { focus } = useContext(ContentTilePagerContext);
 
   const isBylineHidden = (
-    focus === FOCUS_MEDIA ||
-    focus === FOCUS_CONTENTS ||
     controls.isFullscreen
   );
 
@@ -81,7 +73,6 @@ function ContentTileFooter({
       <ContentTileActions
         controls={controls}
         starAnimation={starAnimation}
-        isStarring={isStarring}
         isStarred={isStarred}
         onStarPress={onStarPress}
         onStarPan={onStarPan}

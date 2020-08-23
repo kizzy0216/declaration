@@ -1,4 +1,8 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useState,
+  useCallback,
+} from 'react';
 import { useMutation, useQuery } from 'urql';
 import { useNavigation } from '@react-navigation/native';
 
@@ -30,49 +34,46 @@ function ContentTileContainer({
     deleteStarResult,
     deleteStar,
   ] = useMutation(DeleteContentStar);
-
-  const isStarred = (
+  const [isStarred, setIsStarred] = useState(
     starsByAstronomerUuid[authenticatedUser.uuid] &&
     starsByAstronomerUuid[authenticatedUser.uuid].amount &&
     starsByAstronomerUuid[authenticatedUser.uuid].amount > 0
   );
 
-  function handlePollOptionSelect({ uuid }) {
+  const handlePollOptionSelect = useCallback(({ uuid }) => {
     insertPollVote({
       content_partial_poll_uuid: poll.uuid,
       poll_option_uuid: uuid,
     }, {
       additionalTypenames: ['content_partial_poll'],
-    }).then(() => {
-      reRender();
     });
-  }
+  }, [insertPollVote]);
 
-  function handleStar({ amount }) {
+  const handleStar = useCallback(({ amount }) => {
+    setIsStarred(true);
+
     insertStar({
       amount,
       content_uuid: contentUuid,
-    }).then(() => {
-      reRender();
     });
-  }
+  }, [insertStar]);
 
-  function handleUnStar() {
+  const handleUnStar = useCallback(() => {
+    setIsStarred(false);
+
     deleteStar({
       content_uuid: contentUuid,
       astronomer_uuid: authenticatedUser.uuid,
-    }).then(() => {
-      reRender();
     });
-  }
+  }, [deleteStar]);
 
-  function handleCreatorPress({ uuid }) {
+  const handleCreatorPress = useCallback(({ uuid }) => {
     if (uuid === authenticatedUser.uuid) {
       navigation.navigate('Profile');
     } else {
       navigation.navigate('Member', { uuid });
     }
-  }
+  }, []);
 
   return (
     <ContentTile

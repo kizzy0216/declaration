@@ -5,26 +5,37 @@ import { UserContext } from '~/contexts/UserContext';
 import ContentMenuModal from '~/components/ContentMenuModal';
 
 const ContentMenuModalContainer = ({
-  item,
   isVisible,
   onClose = () => {},
 }) => {
   const { user: authenticatedUser } = useContext(UserContext);
-  const { deleteItem } = useContext(ContentTilePagerContext);
+  const {
+    itemUuids,
+    items,
+    activeIndex,
+    deleteItem,
+  } = useContext(ContentTilePagerContext);
+
+  const activeItemUuid = itemUuids[activeIndex];
+  const activeItem = (
+    activeItemUuid ? items[activeItemUuid] : null
+  );
 
   const canDelete = (
-    authenticatedUser.uuid === item.creator.uuid
+    activeItem &&
+    activeItem.creator &&
+    authenticatedUser.uuid === activeItem.creator.uuid
   );
 
   return (
     <ContentMenuModal
-      item={item}
+      item={activeItem}
       isVisible={isVisible}
       canDelete={canDelete}
       onClose={onClose}
       onDelete={() => {
         onClose();
-        deleteItem(item);
+        deleteItem(activeItem);
       }}
     />
   );

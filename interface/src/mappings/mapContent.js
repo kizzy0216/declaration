@@ -71,6 +71,7 @@ const mapContent = ({
   content_meta = {},
   content_partial = {},
   content_stars = [],
+  created_at,
 }) => ({
   uuid,
   heading,
@@ -87,6 +88,8 @@ const mapContent = ({
     accumulator[content_star.astronomer_uuid] = mapContentStar(content_star);
     return accumulator;
   }, {}),
+  createdAt: created_at && mapDateTime(created_at),
+  createdAtTimestampTz: created_at,
 });
 
 export default mapContent;

@@ -1,3 +1,5 @@
+import '~/utils/whyDidYouRender';
+
 import React, {
   useState,
   useEffect,

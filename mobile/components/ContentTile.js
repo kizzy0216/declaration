@@ -2,6 +2,7 @@ import React, {
   useState,
   useContext,
   useEffect,
+  useCallback,
   useRef,
 } from 'react';
 import {
@@ -13,11 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InterfaceContext } from '~/contexts/InterfaceContext';
-import {
-  ContentTilePagerContext,
-  FOCUS_ALL,
-  FOCUS_CONTENTS,
-} from '~/contexts/ContentTilePagerContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import ContentTileForeground from '~/components/ContentTileForeground';
 import ContentTileBackground from '~/components/ContentTileBackground';
 import ContentTileFooter from '~/components/ContentTileFooter';
@@ -31,7 +28,6 @@ import {
 import { getStarAmount } from '~/utils/star';
 
 function ContentTile({
-  id,
   index,
   heading,
   subHeading,
@@ -56,18 +52,13 @@ function ContentTile({
 }) {
   const starAnimation = useRef(new Animated.ValueXY()).current;
   const fullscreenAnimation = useRef(new Animated.Value(0)).current;
-  const {
-    focus,
-    setFocus,
-    activeIndex,
-  } = useContext(ContentTilePagerContext);
+  const { activeIndex } = useContext(ContentTilePagerContext);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isFeedbackActive, setIsFeedbackActive] = useState(false);
   const [feedbackType, setFeedbackType] = useState('');
   const [isVideoMuted, setIsVideoMuted] = useState(true);
-  const [isStarring, setIsStarring] = useState(false);
 
   const controls = {
     hasImage: (
@@ -121,7 +112,7 @@ function ContentTile({
     }).start();
   }, [isFullscreen]);
 
-  function handleBackgroundTap() {
+  const handleBackgroundTap = useCallback(() => {
     if (!controls.hasVideo) {
       return;
     }
@@ -137,31 +128,32 @@ function ContentTile({
     }
 
     setIsVideoPlaying(!isVideoPlaying);
-  }
+  }, []);
 
-  function handleStarPanActive({ x: x1, y: y1 }) {
-    setIsStarring(true);
-  }
+  const handleStarPanActive = useCallback(({ x: x1, y: y1 }) => {
+  }, []);
 
-  function handleStarPanEnd({ x: x2, y: y2 }) {
+  const handleStarPanEnd = useCallback(({ x: x2, y: y2 }) => {
     const amount = getStarAmount({ value: x2 });
     onStar({ amount });
 
-    setIsStarring(false);
-    starAnimation.setValue({ x: 0, y: 0});
-  }
+    Animated.timing(starAnimation.x, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [onStar]);
 
-  function handleHashtagPress() {
-  }
+  const handleHashtagPress = useCallback(() => {
+  }, []);
 
-  function handleStar() {
+  const handleStar = useCallback(() => {
     if (isStarred) {
       return onUnStar();
     }
 
     onStar({ amount: 5 });
 
-    setIsStarring(true);
     Animated.timing(starAnimation.x, {
       toValue: (WINDOW_WIDTH - 90) * 0.05,
       duration: 200,
@@ -169,14 +161,13 @@ function ContentTile({
     }).start();
 
     setTimeout(() => {
-      setIsStarring(false);
       Animated.timing(starAnimation.x, {
         toValue: 0,
         duration: 200,
         useNativeDriver: false,
       }).start();
     }, 500);
-  }
+  }, [isStarred]);
 
   return (
     <View style={styles.contentTile}>
@@ -270,7 +261,6 @@ function ContentTile({
             meta={meta}
             controls={controls}
             starAnimation={starAnimation}
-            isStarring={isStarring}
             isStarred={isStarred}
             onCreatorPress={onCreatorPress}
             onHashtagPress={handleHashtagPress}
