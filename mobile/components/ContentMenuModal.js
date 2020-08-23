@@ -11,7 +11,9 @@ import Button from '~/components/Button';
 function ContentMenuModal({
   content,
   isVisible,
+  canDelete,
   onClose = () => {},
+  onDelete = () => {},
 }) {
   return (
     <Modal
@@ -19,30 +21,15 @@ function ContentMenuModal({
       onClose={onClose}
     >
       <View style={styles.container}>
-        <View style={styles.row}>
-          <Button
-            label="Edit"
-            theme="secondary"
-          />
-        </View>
-        <View style={styles.row}>
-          <Button
-            label="Mute"
-            theme="secondary"
-          />
-        </View>
-        <View style={styles.row}>
-          <Button
-            label="Report Abuse"
-            theme="secondary"
-          />
-        </View>
-        <View style={styles.row}>
-          <Button
-            label="Delete"
-            theme="danger"
-          />
-        </View>
+        {canDelete &&
+          <View style={styles.row}>
+            <Button
+              label="Delete"
+              theme="danger"
+              onPress={onDelete}
+            />
+          </View>
+        }
       </View>
     </Modal>
   );

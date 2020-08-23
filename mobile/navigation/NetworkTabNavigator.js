@@ -9,6 +9,7 @@ import StorybookScreen from '~/screens/StorybookScreen';
 import TabBar from '~/components/TabBar';
 import TabBarIcon from '~/components/TabBarIcon';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 
 import PlusInSquareIcon from '@shared/components/icons/PlusInSquareIcon';
 import NotificationsIcon from '@shared/components/icons/NotificationsIcon';
@@ -29,6 +30,7 @@ function NetworkTabNavigator({ navigation, route }) {
   const {
     isVisible: isInterfaceVisible,
   } = useContext(InterfaceContext);
+  const { scrollToIndex } = useContext(ContentTilePagerContext);
 
   return (
     <BottomTab.Navigator
@@ -50,6 +52,14 @@ function NetworkTabNavigator({ navigation, route }) {
           ),
           tabBarVisible: isInterfaceVisible,
         }}
+        listeners={() => ({
+          tabPress: () => {
+            // scroll to top on press and FeedScreen visible
+            if (route.state.index === 0) {
+              scrollToIndex({ index: 0, withAnimation: true });
+            }
+          }
+        })}
       />
       <BottomTab.Screen
         name="Archive"
@@ -60,11 +70,16 @@ function NetworkTabNavigator({ navigation, route }) {
               <SearchIcon
                 width={24}
                 height={24}
-                fill="black"
+                fill="rgba(0,0,0,0.2)"
               />
             </TabBarIcon>
           ),
         }}
+        listeners={() => ({
+          tabPress: (event) => {
+            event.preventDefault();
+          }
+        })}
       />
       <BottomTab.Screen
         name="DummyCreate"

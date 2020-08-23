@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { useMutation, useQuery } from 'urql';
+import { useNavigation } from '@react-navigation/native';
 
 import { UserContext } from '~/contexts/UserContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import InsertContentStar from '~/mutations/InsertContentStar';
 import InsertContentPollVote from '~/mutations/InsertContentPollVote';
 import DeleteContentStar from '~/mutations/DeleteContentStar';
@@ -13,7 +15,9 @@ function ContentTileContainer({
   starsByAstronomerUuid = {},
   ...props
 }) {
+  const navigation = useNavigation();
   const { user: authenticatedUser } = useContext(UserContext);
+  const { reRender } = useContext(ContentTilePagerContext);
   const [
     insertPollVoteResult,
     insertPollVote,
@@ -39,6 +43,8 @@ function ContentTileContainer({
       poll_option_uuid: uuid,
     }, {
       additionalTypenames: ['content_partial_poll'],
+    }).then(() => {
+      reRender();
     });
   }
 
@@ -46,6 +52,8 @@ function ContentTileContainer({
     insertStar({
       amount,
       content_uuid: contentUuid,
+    }).then(() => {
+      reRender();
     });
   }
 
@@ -53,7 +61,17 @@ function ContentTileContainer({
     deleteStar({
       content_uuid: contentUuid,
       astronomer_uuid: authenticatedUser.uuid,
+    }).then(() => {
+      reRender();
     });
+  }
+
+  function handleCreatorPress({ uuid }) {
+    if (uuid === authenticatedUser.uuid) {
+      navigation.navigate('Profile');
+    } else {
+      navigation.navigate('Member', { uuid });
+    }
   }
 
   return (
@@ -64,6 +82,7 @@ function ContentTileContainer({
       onPollOptionSelect={handlePollOptionSelect}
       onStar={handleStar}
       onUnStar={handleUnStar}
+      onCreatorPress={handleCreatorPress}
       {...props}
     />
   );

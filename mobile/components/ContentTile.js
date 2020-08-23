@@ -49,6 +49,7 @@ function ContentTile({
   onShareRequest = () => {},
   onCommentRequest = () => {},
   onPollOptionSelect = () => {},
+  onCreatorPress = () => {},
   onStar = () => {},
   onUnStar = () => {},
   ...props
@@ -58,7 +59,7 @@ function ContentTile({
   const {
     focus,
     setFocus,
-    activeTileIndex,
+    activeIndex,
   } = useContext(ContentTilePagerContext);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
@@ -101,12 +102,12 @@ function ContentTile({
   );
 
   useEffect(() => {
-    setIsVideoPlaying(index === activeTileIndex && controls.hasVideo);
+    setIsVideoPlaying(index === activeIndex && controls.hasVideo);
 
     if (isFullscreen) {
       setIsFullscreen(false);
     }
-  }, [activeTileIndex]);
+  }, [activeIndex]);
 
   useEffect(() => {
     setIsInterfaceVisible(!isFullscreen);
@@ -148,9 +149,6 @@ function ContentTile({
 
     setIsStarring(false);
     starAnimation.setValue({ x: 0, y: 0});
-  }
-
-  function handleCreatorPress() {
   }
 
   function handleHashtagPress() {
@@ -274,7 +272,7 @@ function ContentTile({
             starAnimation={starAnimation}
             isStarring={isStarring}
             isStarred={isStarred}
-            onCreatorPress={handleCreatorPress}
+            onCreatorPress={onCreatorPress}
             onHashtagPress={handleHashtagPress}
             onStarPress={handleStar}
             onStarPan={Animated.event(
@@ -300,6 +298,7 @@ const styles = StyleSheet.create({
   contentTile: {
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   container: {
     width: '100%',

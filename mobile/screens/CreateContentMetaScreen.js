@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ConnectionsModalContainer from '~/containers/ConnectionsModalContainer';
 import { CreateContentContext } from '~/contexts/CreateContentContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import CreateHeader from '~/components/CreateHeader';
 import TextInput from '~/components/TextInput';
 import Button from '~/components/Button';
@@ -49,6 +50,7 @@ function CreateContentMetaScreen({ navigation }) {
     isCreating,
   } = useContext(CreateContentContext);
   const [selectedReach, setSelectedReach] = useState(NETWORK_REACH);
+  const { scrollToIndex } = useContext(ContentTilePagerContext);
 
   const isDisabled = (false);
 
@@ -60,7 +62,10 @@ function CreateContentMetaScreen({ navigation }) {
   }
 
   function handlePost() {
-    create().then(() => navigation.navigate('Feed'));
+    create().then(() => {
+      scrollToIndex({ index: 0, withAnimation: false });
+      navigation.navigate('Feed');
+    });
   }
 
   return (

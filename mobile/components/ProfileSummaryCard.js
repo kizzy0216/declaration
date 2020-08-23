@@ -6,14 +6,8 @@ import {
 } from 'react-native';
 
 import LocationPinIcon from '@shared/components/icons/LocationPinIcon';
-import LocationPinEditIcon from '@shared/components/icons/LocationPinEditIcon';
-import LocationPinAddIcon from '@shared/components/icons/LocationPinAddIcon';
 import BriefCaseIcon from '@shared/components/icons/BriefCaseIcon';
-import BriefCaseEditIcon from '@shared/components/icons/BriefCaseEditIcon';
-import BriefCaseAddIcon from '@shared/components/icons/BriefCaseAddIcon';
 import MortarboardIcon from '@shared/components/icons/MortarboardIcon';
-import MortarboardEditIcon from '@shared/components/icons/MortarboardEditIcon';
-import MortarboardAddIcon from '@shared/components/icons/MortarboardAddIcon';
 import ProfileSummaryCardRow from '~/components/ProfileSummaryCardRow';
 import {
   LIGHT_GRAY,
@@ -29,16 +23,12 @@ function ProfileSummaryCard({
   let items = [
     {
       icon: <LocationPinIcon fill="#000" />,
-      editIcon: <LocationPinEditIcon fill="#000" />,
-      addIcon: <LocationPinAddIcon fill="#000" />,
       label: profile.location,
       fallbackLabel: 'Add location',
       onPress: onEditLocation,
     },
     {
       icon: <BriefCaseIcon fill="#000" />,
-      editIcon: <BriefCaseEditIcon fill="#000" />,
-      addIcon: <BriefCaseAddIcon fill="#000" />,
       label: [
         (
           profile.workTitle &&
@@ -56,8 +46,6 @@ function ProfileSummaryCard({
     },
     {
       icon: <MortarboardIcon fill="#000" />,
-      editIcon: <MortarboardEditIcon fill="#000" />,
-      addIcon: <MortarboardAddIcon fill="#000" />,
       label: profile.educationalInstitution,
       fallbackLabel: 'Add education',
       onPress: onEditEducation,
@@ -77,8 +65,6 @@ function ProfileSummaryCard({
           >
             <ProfileSummaryCardRow
               icon={item.icon}
-              editIcon={item.editIcon}
-              addIcon={item.addIcon}
               label={item.label}
               fallbackLabel={item.fallbackLabel}
               isEditable={isEditable}

@@ -278,16 +278,16 @@ function ContentTileActions({
               fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.action}
-            onPress={() => onSharePress()}
-          >
-            <ShareIcon
-              width={24}
-              height={24}
-              fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-            />
-          </TouchableOpacity>
+          {/* <TouchableOpacity */}
+          {/*   style={styles.action} */}
+          {/*   onPress={() => onSharePress()} */}
+          {/* > */}
+          {/*   <ShareIcon */}
+          {/*     width={24} */}
+          {/*     height={24} */}
+          {/*     fill={theme === 'light' ? LIGHT_FILL : DARK_FILL} */}
+          {/*   /> */}
+          {/* </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.action}
             onPress={() => onMenuPress()}

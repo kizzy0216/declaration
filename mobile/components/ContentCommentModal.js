@@ -44,23 +44,23 @@ const find = ({ node, id }) => {
 }
 
 function ContentCommentModal({
-  content,
+  item,
   isVisible,
   onClose = () => {},
 }) {
   const [active, setActive] = useState();
 
   useEffect(() => {
-    if (content && content.commentTree) {
-      setActive(content.commentTree);
+    if (item && item.commentTree) {
+      setActive(item.commentTree);
     }
-  }, [content]);
+  }, [item]);
 
   function handleBack() {
     const { parentId } = active;
 
     const parent = find({
-      node: content.commentTree,
+      node: item.commentTree,
       id: parentId,
     });
 
@@ -78,7 +78,7 @@ function ContentCommentModal({
 
     if (!comment) {
       comment = find({
-        node: content.commentTree,
+        node: item.commentTree,
         id,
       });
     }
@@ -90,18 +90,18 @@ function ContentCommentModal({
   }
 
   function handleClose() {
-    setActive(content.commentTree);
+    setActive(item.commentTree);
     onClose();
   }
 
-  if (!content || !content.commentTree) {
+  if (!item || !item.commentTree) {
     return null;
   }
 
   const activeComment = (
     active &&
     active.id &&
-    content.commentsById[active.id]
+    item.commentsById[active.id]
   );
 
   const isActiveRoot = (
@@ -153,7 +153,7 @@ function ContentCommentModal({
             <View>
               <CommentAncestry
                 comment={activeComment}
-                commentsById={content.commentsById}
+                commentsById={item.commentsById}
                 onAuthorPress={handleAuthorPress}
                 onViewReplies={handleViewReplies}
                 onReply={handleReply}
@@ -171,7 +171,7 @@ function ContentCommentModal({
                     author={activeComment.author}
                     text={activeComment.text}
                     children={[]}
-                    commentsById={content.commentsById}
+                    commentsById={item.commentsById}
                     isActive={true}
                     onAuthorPress={handleAuthorPress}
                     onViewReplies={handleViewReplies}
@@ -187,10 +187,10 @@ function ContentCommentModal({
                 >
                   <Comment
                     id={child.id}
-                    author={content.commentsById[child.id].author}
-                    text={content.commentsById[child.id].text}
+                    author={item.commentsById[child.id].author}
+                    text={item.commentsById[child.id].text}
                     children={child.children}
-                    commentsById={content.commentsById}
+                    commentsById={item.commentsById}
                     onAuthorPress={handleAuthorPress}
                     onViewReplies={handleViewReplies}
                     onReply={handleReply}

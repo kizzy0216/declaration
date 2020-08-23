@@ -9,7 +9,7 @@ import Modal from '~/components/Modal';
 import ScreenHeader from '~/components/ScreenHeader';
 
 function ContentShareModal({
-  content,
+  item,
   isVisible,
   onClose = () => {},
 }) {

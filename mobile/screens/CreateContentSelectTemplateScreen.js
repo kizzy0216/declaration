@@ -116,28 +116,6 @@ const templatesByCategory = [
       },
     ],
   },
-  {
-    heading: 'Sessions',
-    templates: [
-      {
-        heading: '1:1 Session',
-        videoSource: require('~/assets/videos/content-template-session-card.mp4'),
-        screenName: 'CreateContentSession',
-        type: SESSION_CONTENT_TEMPLATE_TYPE,
-      },
-    ],
-  },
-  {
-    heading: 'Events',
-    templates: [
-      {
-        heading: 'Event',
-        videoSource: require('~/assets/videos/content-template-event-card.mp4'),
-        screenName: 'CreateContentEvent',
-        type: EVENT_CONTENT_TEMPLATE_TYPE,
-      },
-    ],
-  },
 ];
 
 function CreateContentSelectTemplateScreen({ navigation }) {

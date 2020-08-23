@@ -48,6 +48,38 @@ function FeedHeader({
     }).start();
   }, [theme]);
 
+  // const leftElement = (
+  //   <BorderlessButton onPress={onCalendarPress}>
+  //     <CalendarIcon
+  //       width={22}
+  //       height={22}
+  //       fill={
+  //         themeAnimation.interpolate({
+  //           inputRange: [0, 1],
+  //           outputRange: ['#000000', '#FFFFFF'],
+  //         })
+  //       }
+  //     />
+  //   </BorderlessButton>
+  // );
+  const leftElement = null;
+
+  // const rightElement = (
+  //   <BorderlessButton onPress={onMessagesPress}>
+  //     <MessageIcon
+  //       width={22}
+  //       height={22}
+  //       fill={
+  //         themeAnimation.interpolate({
+  //           inputRange: [0, 1],
+  //           outputRange: ['#000000', '#FFFFFF'],
+  //         })
+  //       }
+  //     />
+  //   </BorderlessButton>
+  // );
+  const rightElement = <></>;
+
   return (
     <View style={styles.container}>
       <NetworkSwitcherModal
@@ -76,20 +108,7 @@ function FeedHeader({
       />
 
       <ScreenHeader
-        leftElement={(
-          <BorderlessButton onPress={onCalendarPress}>
-            <CalendarIcon
-              width={22}
-              height={22}
-              fill={
-                themeAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['#000000', '#FFFFFF'],
-                })
-              }
-            />
-          </BorderlessButton>
-        )}
+        leftElement={leftElement}
         headingElement={(
           <TouchableOpacity
             onPress={() => setIsModalVisible(true)}
@@ -121,20 +140,7 @@ function FeedHeader({
             </View>
           </TouchableOpacity>
         )}
-        rightElement={(
-          <BorderlessButton onPress={onMessagesPress}>
-            <MessageIcon
-              width={22}
-              height={22}
-              fill={
-                themeAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['#000000', '#FFFFFF'],
-                })
-              }
-            />
-          </BorderlessButton>
-        )}
+        rightElement={rightElement}
       />
     </View>
   );

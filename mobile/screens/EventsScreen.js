@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function EventsScreen({ navigation }) {
   return (
     <SafeAreaView>
-      <Text>Events</Text>
     </SafeAreaView>
   );
 }

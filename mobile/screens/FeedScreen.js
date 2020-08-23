@@ -2,6 +2,7 @@ import React, {
   useContext,
   useRef,
   useEffect,
+  useCallback,
 } from 'react';
 import {
   Animated,
@@ -9,10 +10,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { InterfaceContext } from '~/contexts/InterfaceContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import FeedHeader from '~/components/FeedHeader';
-import ContentTilePagerContainer from '~/containers/ContentTilePagerContainer';
+import ContentTilePager from '~/components/ContentTilePager';
 
 function FeedScreen({ navigation }) {
   const animation = useRef(new Animated.Value(1)).current;
@@ -20,6 +23,10 @@ function FeedScreen({ navigation }) {
     isVisible: isInterfaceVisible,
     theme,
   } = useContext(InterfaceContext);
+  const {
+    getItems,
+    scrollToIndex,
+  } = useContext(ContentTilePagerContext);
 
   useEffect(() => {
     Animated.timing(animation, {
@@ -28,6 +35,10 @@ function FeedScreen({ navigation }) {
       useNativeDriver: true,
     }).start();
   }, [isInterfaceVisible]);
+
+  useFocusEffect(useCallback(() => {
+    getItems();
+  }, []));
 
   return (
     <View style={styles.screen}>
@@ -61,7 +72,7 @@ function FeedScreen({ navigation }) {
       </SafeAreaView>
 
       <View style={styles.pagerWrapper}>
-        <ContentTilePagerContainer />
+        <ContentTilePager />
       </View>
     </View>
   );

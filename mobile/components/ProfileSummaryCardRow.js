@@ -8,8 +8,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function ProfileSummaryCardRow({
   icon,
-  editIcon,
-  addIcon,
   label,
   fallbackLabel,
   isEditable = false,
@@ -20,13 +18,7 @@ function ProfileSummaryCardRow({
   const rowElement = (
     <View style={styles.row}>
       <View style={styles.icon}>
-        {(
-          isEditable && hasLabel
-            ? editIcon
-            : isEditable && !hasLabel
-            ? addIcon
-            : icon
-        )}
+        {icon}
       </View>
       <Text style={styles.label}>
         {hasLabel ? label : fallbackLabel}

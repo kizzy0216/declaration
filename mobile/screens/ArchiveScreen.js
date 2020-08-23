@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function ArchiveScreen({ navigation }) {
   return (
     <SafeAreaView>
-      <Text>Archive</Text>
     </SafeAreaView>
   );
 }

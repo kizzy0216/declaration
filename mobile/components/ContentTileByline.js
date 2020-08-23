@@ -49,7 +49,7 @@ function ContentTileByline({
         {creator &&
           <TouchableOpacity
             style={styles.creator}
-            onPress={onCreatorPress}
+            onPress={() => onCreatorPress(creator)}
           >
             <Avatar
               imageSrc={profilePhoto}
@@ -63,15 +63,6 @@ function ContentTileByline({
               }}
             >
               {creator.name}
-              &nbsp;
-              //
-              &nbsp;
-              <Text>0.0mi</Text>
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              <Text>Connected</Text>
             </Text>
           </TouchableOpacity>
         }
