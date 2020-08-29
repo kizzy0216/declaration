@@ -102,11 +102,14 @@ function UserOnboardingPhotoScreen({ navigation }) {
         <DisplayHeading style={styles.heading}>
           Add your profile photo
         </DisplayHeading>
-        <AvatarPicker
-          user={user}
-          photo={photo}
-          onChange={handleChange}
-        />
+
+        <View style={styles.avatarPickerWrapper}>
+          <AvatarPicker
+            name={user.name}
+            photo={photo}
+            onChange={handleChange}
+          />
+        </View>
       </View>
       <UserOnboardingFooter
         isFetching={isFetching || updatePhotoResult.fetching}
@@ -134,6 +137,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 20,
+  },
+  avatarPickerWrapper: {
+    paddingTop: 100,
   },
 });
 

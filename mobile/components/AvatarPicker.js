@@ -13,7 +13,7 @@ import {
 } from '~/constants';
 
 function AvatarPicker({
-  user,
+  name,
   photo,
   onChange = () => {},
 }) {
@@ -53,7 +53,7 @@ function AvatarPicker({
   return (
     <View style={styles.avatarPicker}>
       <Avatar
-        name={user.name}
+        name={name}
         imageSrc={(
           localPhoto
             ? localPhoto
@@ -70,9 +70,9 @@ function AvatarPicker({
 
 const styles = StyleSheet.create({
   avatarPicker: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
-    paddingTop: 100,
+    alignItems: 'center',
   },
 });
 

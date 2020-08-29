@@ -15,6 +15,7 @@ import { IS_IOS } from '~/constants';
 import TextInput from '~/components/TextInput';
 import TextInputGroup from '~/components/TextInputGroup';
 import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
+import isValidURL from '@shared/utils/isValidURL';
 
 const COUNT_CREDENTIALS = 3;
 
@@ -51,11 +52,20 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
     }
   });
 
+  const callToActionHrefError = (
+    availabilityListing.callToAction.href.length > 0
+      ? isValidURL(availabilityListing.callToAction.href)
+        ? ''
+        : 'Invalid URL'
+      : ''
+  );
+
   const isDisabled = (
     heading.length === 0 ||
     body.length === 0 ||
     availabilityListing.credentials.length === 0 ||
-    availabilityListing.credentials.filter(c => c.length === 0).length > 0
+    availabilityListing.credentials.filter(c => c.length === 0).length > 0 ||
+    callToActionHrefError.length > 0
   );
 
   return (
@@ -70,7 +80,7 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('CreateContentMeta')}
+        onNextOrPost={() => navigation.navigate('CreateContentMedia')}
         onCancelOrBack={() => navigation.goBack()}
       />
       <KeyboardAvoidingView
@@ -120,6 +130,23 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
           </View>
 
           <View style={styles.row}>
+            <TextInput
+              label="Add link"
+              placeholder="yoursite.com"
+              value={availabilityListing.callToAction.href}
+              onChange={href =>
+                setAvailabilityListing({
+                  ...availabilityListing,
+                  callToAction: {
+                    ...availabilityListing.callToAction,
+                    href,
+                  },
+                })
+              }
+              error={callToActionHrefError}
+              autoCompleteType="off"
+              autoCapitalize="none"
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

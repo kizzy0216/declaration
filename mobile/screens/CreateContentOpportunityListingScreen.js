@@ -13,8 +13,10 @@ import { CreateContentContext } from '~/contexts/CreateContentContext';
 import CreateHeader from '~/components/CreateHeader';
 import TextInput from '~/components/TextInput';
 import TextInputGroup from '~/components/TextInputGroup';
+import AvatarPicker from '~/components/AvatarPicker';
 import { IS_IOS } from '~/constants';
 import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
+import isValidURL from '@shared/utils/isValidURL';
 
 const COUNT_CRITERIA = 3;
 
@@ -51,11 +53,34 @@ function CreateContentOpportunityListingScreen({ navigation }) {
     }
   });
 
+  const handleAvatarChange = (asset) => {
+    console.dir(asset);
+    setOpportunityListing({
+      ...opportunityListing,
+      company: {
+        ...opportunityListing.company,
+        localPhotoAsset: {
+          ...asset,
+          mediaType: 'photo',
+        },
+      },
+    });
+  }
+
+  const callToActionHrefError = (
+    opportunityListing.callToAction.href.length > 0
+      ? isValidURL(opportunityListing.callToAction.href)
+        ? ''
+        : 'Invalid URL'
+      : ''
+  );
+
   const isDisabled = (
     heading.length === 0 ||
     subHeading.length === 0 ||
     opportunityListing.criteria.length === 0 ||
-    opportunityListing.criteria.filter(c => c.length === 0).length > 0
+    opportunityListing.criteria.filter(c => c.length === 0).length > 0 ||
+    callToActionHrefError.length > 0
   );
 
   return (
@@ -70,7 +95,7 @@ function CreateContentOpportunityListingScreen({ navigation }) {
         canNext={true}
         canPost={false}
         isNextOrPostDisabled={isDisabled}
-        onNextOrPost={() => navigation.navigate('CreateContentMeta')}
+        onNextOrPost={() => navigation.navigate('CreateContentMedia')}
         onCancelOrBack={() => navigation.goBack()}
       />
       <KeyboardAvoidingView
@@ -116,7 +141,54 @@ function CreateContentOpportunityListingScreen({ navigation }) {
               onChange={criteria => setOpportunityListing({ ...opportunityListing, criteria })}
             />
           </View>
+
           <View style={styles.row}>
+            <TextInput
+              label="Add link"
+              placeholder="yoursite.com"
+              value={opportunityListing.callToAction.href}
+              onChange={href =>
+                setOpportunityListing({
+                  ...opportunityListing,
+                  callToAction: {
+                    ...opportunityListing.callToAction,
+                    href,
+                  },
+                })
+              }
+              error={callToActionHrefError}
+              autoCompleteType="off"
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={[styles.row, styles.companyRow]}>
+            <View style={styles.companyNameWrapper}>
+              <TextInput
+                label="Add the company name"
+                placeholder="Declaration"
+                value={opportunityListing.company.name}
+                onChange={name =>
+                  setOpportunityListing({
+                    ...opportunityListing,
+                    company: {
+                      ...opportunityListing.company,
+                      name,
+                    },
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.avatarPickerWrapper}>
+              <Text style={styles.label}>
+                Upload a company photo
+              </Text>
+              <AvatarPicker
+                name={opportunityListing.company.name}
+                onChange={handleAvatarChange}
+              />
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -133,6 +205,13 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   row: {
+    marginBottom: 30,
+  },
+  avatarPickerWrapper: {
+    paddingTop: 30,
+  },
+  label: {
+    fontWeight: 'bold',
     marginBottom: 30,
   },
 });

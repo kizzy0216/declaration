@@ -61,6 +61,84 @@
       filter: {}
 - table:
     schema: public
+    name: call_to_action
+  object_relationships:
+  - name: content_partial_availability_listing
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_availability_listing
+        column_mapping:
+          uuid: call_to_action_uuid
+  - name: content_partial_opportunity_listing
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: content_partial_opportunity_listing
+        column_mapping:
+          uuid: call_to_action_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - href
+      - label
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - href
+      - label
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - href
+      - label
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - href
+      - label
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - href
+      - label
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - href
+      - label
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: comment
   object_relationships:
   - name: content_comment
@@ -217,6 +295,75 @@
       - created_at
       - ancestor_uuid
       - comment_uuid
+      filter: {}
+- table:
+    schema: public
+    name: company
+  array_relationships:
+  - name: content_partial_opportunity_listings
+    using:
+      foreign_key_constraint_on:
+        column: company_uuid
+        table:
+          schema: public
+          name: content_partial_opportunity_listing
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - name
+      - photo
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - name
+      - photo
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - id
+      - name
+      - photo
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - name
+      - photo
+      - created_at
+      - updated_at
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - name
+      - photo
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - name
+      - photo
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
       filter: {}
 - table:
     schema: public
@@ -684,6 +831,9 @@
     schema: public
     name: content_partial_availability_listing
   object_relationships:
+  - name: call_to_action
+    using:
+      foreign_key_constraint_on: call_to_action_uuid
   - name: content_partial
     using:
       foreign_key_constraint_on: content_partial_uuid
@@ -700,29 +850,33 @@
     permission:
       check: {}
       columns:
+      - call_to_action_uuid
       - content_partial_uuid
       backend_only: false
   - role: user
     permission:
       check: {}
       columns:
+      - call_to_action_uuid
       - content_partial_uuid
       backend_only: false
   select_permissions:
   - role: super_admin
     permission:
       columns:
+      - call_to_action_uuid
+      - content_partial_uuid
       - created_at
       - updated_at
-      - content_partial_uuid
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
+      - call_to_action_uuid
+      - content_partial_uuid
       - created_at
       - updated_at
-      - content_partial_uuid
       - uuid
       filter: {}
   delete_permissions:
@@ -781,6 +935,12 @@
     schema: public
     name: content_partial_opportunity_listing
   object_relationships:
+  - name: call_to_action
+    using:
+      foreign_key_constraint_on: call_to_action_uuid
+  - name: company
+    using:
+      foreign_key_constraint_on: company_uuid
   - name: content_partial
     using:
       foreign_key_constraint_on: content_partial_uuid
@@ -797,29 +957,37 @@
     permission:
       check: {}
       columns:
+      - call_to_action_uuid
+      - company_uuid
       - content_partial_uuid
       backend_only: false
   - role: user
     permission:
       check: {}
       columns:
+      - call_to_action_uuid
+      - company_uuid
       - content_partial_uuid
       backend_only: false
   select_permissions:
   - role: super_admin
     permission:
       columns:
+      - call_to_action_uuid
+      - company_uuid
+      - content_partial_uuid
       - created_at
       - updated_at
-      - content_partial_uuid
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
+      - call_to_action_uuid
+      - company_uuid
+      - content_partial_uuid
       - created_at
       - updated_at
-      - content_partial_uuid
       - uuid
       filter: {}
   delete_permissions:
@@ -2208,6 +2376,13 @@
         column_mapping:
           uuid: user_uuid
   array_relationships:
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: creator_uuid
+        table:
+          schema: public
+          name: comment
   - name: content
     using:
       foreign_key_constraint_on:

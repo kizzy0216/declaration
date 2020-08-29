@@ -1,0 +1,1 @@
+alter table "public"."content_partial_availability_listing" drop constraint "content_partial_availability_listing_call_to_action_uuid_fke";

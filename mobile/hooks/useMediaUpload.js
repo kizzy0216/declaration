@@ -9,13 +9,9 @@ function useMediaUpload() {
   const [isFetching, setIsFetching] = useState(false);
 
   async function handleUpload({ asset }) {
-    const {
-      uri,
-      mediaType,
-    } = asset;
     const type = (
       (asset.mediaType === 'photo' ? 'image/' : 'video/') +
-      asset.filename.split('.').pop().toLowerCase()
+      (asset.filename || asset.uri).split('.').pop().toLowerCase()
     );
 
     setIsFetching(true);
@@ -37,7 +33,7 @@ function useMediaUpload() {
     formData.append('file', {
       name: policy.fields.key,
       type,
-      uri: (IS_IOS ? uri.replace('file://', '') : uri),
+      uri: (IS_IOS ? asset.uri.replace('file://', '') : asset.uri),
     });
 
     await fetch(policy.url, {

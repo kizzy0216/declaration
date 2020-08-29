@@ -2,6 +2,8 @@ import mapDateTime from './mapDateTime';
 import mapUser from './mapUser';
 import mapMedia from './mapMedia';
 import mapContentPoll from './mapContentPoll';
+import mapCompany from './mapCompany';
+import mapCallToAction from './mapCallToAction';
 
 const mapContentOpportunityListingCriteria = ({
   opportunity_listing_criteria,
@@ -13,6 +15,8 @@ const mapContentOpportunityListingCriteria = ({
 const mapContentOpportunityListing = ({
   uuid,
   content_partial_opportunity_listing_criteria,
+  company,
+  call_to_action,
 }) => {
   if (!uuid || !content_partial_opportunity_listing_criteria) {
     return null;
@@ -21,6 +25,8 @@ const mapContentOpportunityListing = ({
   return {
     uuid,
     criteria: content_partial_opportunity_listing_criteria.map(mapContentOpportunityListingCriteria),
+    callToAction: call_to_action && mapCallToAction(call_to_action),
+    company: company && mapCompany(company),
   };
 };
 
@@ -34,6 +40,7 @@ const mapContentAvailabilityListingCredential = ({
 const mapContentAvailabilityListing = ({
   uuid,
   content_partial_availability_listing_credentials,
+  call_to_action,
 }) => {
   if (!uuid || !content_partial_availability_listing_credentials) {
     return null;
@@ -42,6 +49,7 @@ const mapContentAvailabilityListing = ({
   return {
     uuid,
     credentials: content_partial_availability_listing_credentials.map(mapContentAvailabilityListingCredential),
+    callToAction: call_to_action && mapCallToAction(call_to_action),
   }
 };
 

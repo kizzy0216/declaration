@@ -19,6 +19,16 @@ const ContentFragment = `
             text
           }
         }
+        company {
+          __typename
+          name
+          photo
+        }
+        call_to_action {
+          __typename
+          label
+          href
+        }
       }
       content_partial_availability_listing {
         __typename
@@ -30,6 +40,11 @@ const ContentFragment = `
             uuid
             text
           }
+        }
+        call_to_action {
+          __typename
+          label
+          href
         }
       }
       content_partial_poll {

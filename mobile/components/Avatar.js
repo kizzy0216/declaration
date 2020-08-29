@@ -34,6 +34,10 @@ function Avatar({
     setHasLoaded(true);
   }
 
+  const hasImage = !!(
+    imageSrc && imageSrc.length > 0
+  );
+
   const avatarElement = (
     <View
       style={[
@@ -47,7 +51,7 @@ function Avatar({
         <Text style={styles.initials}>{initials}</Text>
       </View>
 
-      {imageSrc &&
+      {hasImage &&
         <Image
           style={[
             styles.image,

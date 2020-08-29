@@ -106,7 +106,7 @@ function ContentTileForegroundOpportunityListing({
             pointerEvents="box-none"
           >
             <Button
-              label="Apply now"
+              label={opportunityListing.callToAction.label}
               theme="tertiary"
               size="small"
               onPress={() => Linking.openURL(opportunityListing.callToAction.href)}

@@ -37,9 +37,22 @@ const initialState = () => ({
   },
   opportunityListing: {
     criteria: [],
+    callToAction: {
+      label: 'Apply now',
+      href: '',
+    },
+    company: {
+      name: '',
+      photo: '',
+      localPhotoAsset: null,
+    },
   },
   availabilityListing: {
     credentials: [],
+    callToAction: {
+      label: 'Contact me',
+      href: '',
+    },
   },
 });
 
@@ -113,6 +126,10 @@ export const CreateContentContextProvider = ({ children }) => {
         },
       };
     }
+    if (opportunityListing.company.localPhotoAsset) {
+      const uploadedPhotoAsset = await handleUpload({ asset: opportunityListing.company.localPhotoAsset });
+      opportunityListing.company.photo = uploadedPhotoAsset.url;
+    }
 
     if (type === BASE_CONTENT_TEMPLATE_TYPE) {
       return insertContent({
@@ -142,6 +159,11 @@ export const CreateContentContextProvider = ({ children }) => {
             },
           },
         })),
+        company: {
+          name: opportunityListing.company.name,
+          photo: opportunityListing.company.photo,
+        },
+        call_to_action: opportunityListing.callToAction,
       });
     } else if (type === AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE) {
       return insertAvailabilityListing({
@@ -154,6 +176,7 @@ export const CreateContentContextProvider = ({ children }) => {
             },
           },
         })),
+        call_to_action: availabilityListing.callToAction,
       });
     }
   }
