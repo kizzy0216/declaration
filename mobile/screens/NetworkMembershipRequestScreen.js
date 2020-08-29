@@ -40,7 +40,7 @@ function NetworkMembershipRequestScreen({ route, navigation }) {
     insertMembershipRequest,
   ] = useMutation(InsertNetworkMembershipRequestOne);
 
-  const isKeyboardShowing = useIsKeyboardShowing();
+  const { isKeyboardShowing } = useIsKeyboardShowing();
   const translateYAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

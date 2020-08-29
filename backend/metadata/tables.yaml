@@ -85,6 +85,20 @@
         table:
           schema: public
           name: comment
+  - name: comment_ancestors
+    using:
+      foreign_key_constraint_on:
+        column: comment_uuid
+        table:
+          schema: public
+          name: comment_ancestor
+  - name: comment_descendants
+    using:
+      foreign_key_constraint_on:
+        column: ancestor_uuid
+        table:
+          schema: public
+          name: comment_ancestor
   - name: content_comments
     using:
       foreign_key_constraint_on:
@@ -96,6 +110,8 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        creator_uuid: x-hasura-User-Id
       columns:
       - creator_uuid
       - id
@@ -125,6 +141,7 @@
       - parent_comment_uuid
       - uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -136,6 +153,7 @@
       - parent_comment_uuid
       - uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
@@ -157,6 +175,48 @@
       filter: {}
   - role: user
     permission:
+      filter: {}
+- table:
+    schema: public
+    name: comment_ancestor
+  object_relationships:
+  - name: ancestor
+    using:
+      foreign_key_constraint_on: ancestor_uuid
+  - name: comment
+    using:
+      foreign_key_constraint_on: comment_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - created_at
+      - ancestor_uuid
+      - comment_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - created_at
+      - ancestor_uuid
+      - comment_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - comment_uuid
+      - ancestor_uuid
+      - created_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - ancestor_uuid
+      - comment_uuid
       filter: {}
 - table:
     schema: public
@@ -397,6 +457,9 @@
     permission:
       columns:
       - description
+      - created_at
+      - updated_at
+      - uuid
       filter: {}
   - role: user
     permission:
@@ -1172,6 +1235,8 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        uploader_uuid: x-hasura-User-Id
       columns:
       - alt
       - created_at

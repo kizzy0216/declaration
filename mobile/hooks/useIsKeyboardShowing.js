@@ -3,6 +3,7 @@ import { Keyboard } from 'react-native';
 
 function useIsKeyboardShowing() {
   const [isKeyboardShowing, setIsKeyboardShowing] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(300);
 
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", handleKeyboardShow);
@@ -14,7 +15,8 @@ function useIsKeyboardShowing() {
     };
   }, []);
 
-  function handleKeyboardShow() {
+  function handleKeyboardShow(event) {
+    setKeyboardHeight(event.endCoordinates.height);
     setIsKeyboardShowing(true);
   };
 
@@ -22,7 +24,7 @@ function useIsKeyboardShowing() {
     setIsKeyboardShowing(false);
   };
 
-  return isKeyboardShowing;
+  return { isKeyboardShowing, keyboardHeight };
 }
 
 export default useIsKeyboardShowing;

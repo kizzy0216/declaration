@@ -13,52 +13,43 @@ import Comment from '~/components/Comment';
 function CommentAncestry({
   comment,
   commentsById,
-  onAuthorPress = () => {},
+  onCreatorPress = () => {},
   onViewReplies = () => {},
   onReply = () => {},
 }) {
-  const parentComment = (
-    comment &&
-    comment.parentId &&
-    commentsById[comment.parentId]
-  );
+  if (!comment) {
+    return null;
+  }
+
+  const { ancestors } = comment;
+  if (!ancestors || ancestors.length === 0) {
+    return null;
+  }
 
   return (
     <>
-      {parentComment && parentComment.parentId &&
-        <CommentAncestry
-          comment={parentComment}
-          commentsById={commentsById}
-          onAuthorPress={onAuthorPress}
-          onViewReplies={onViewReplies}
-          onReply={onReply}
-        />
-      }
-
-      {parentComment && parentComment.id !== TREE_ROOT_ID &&
-        <>
-          <View
-            style={[
-              styles.commentWrapper,
-              styles.parentCommentWrapper,
-            ]}
-          >
-            <Comment
-              id={parentComment.id}
-              author={parentComment.author}
-              text={parentComment.text}
-              children={parentComment.children}
-              commentsById={commentsById}
-              isParent={true}
-              onAuthorPress={onAuthorPress}
-              onViewReplies={onViewReplies}
-              onReply={onReply}
-            />
+      {ancestors.map((ancestor) => (
+        <View
+          style={[
+            styles.commentWrapper,
+          ]}
+          key={ancestor.uuid}
+        >
+          <Comment
+            id={ancestor.uuid}
+            creator={ancestor.creator}
+            text={ancestor.text}
+            createdAt={ancestor.createdAt}
+            children={ancestor.children}
+            commentsById={commentsById}
+            isParent={true}
+            onCreatorPress={onCreatorPress}
+            onViewReplies={onViewReplies}
+            onReply={onReply}
+          />
           <View style={styles.verticalSeparator} />
-          </View>
-
-        </>
-      }
+        </View>
+      ))}
     </>
   );
 }

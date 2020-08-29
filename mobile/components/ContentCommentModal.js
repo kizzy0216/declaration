@@ -1,10 +1,11 @@
 // my brain broke with this one
 // sometimes im reference a comment tree node (with parentId, id, children only),
-// sometimes im referencing a comment (with parentId, id, text, author, etc).
+// sometimes im referencing a comment (with parentId, id, text, creator, etc).
 // TODO clean up
 import React, {
   useState,
   useEffect,
+  useRef,
 } from 'react';
 import {
   View,
@@ -17,6 +18,9 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 
+import KeyboardSpacer from '~/components/KeyboardSpacer';
+import Button from '~/components/Button';
+import TextInput from '~/components/TextInput';
 import Comment from '~/components/Comment';
 import CommentAncestry from '~/components/CommentAncestry';
 import Modal from '~/components/Modal';
@@ -26,105 +30,48 @@ import {
   WINDOW_HEIGHT,
   GRAY,
   LIGHT_GRAY,
-  TREE_ROOT_ID,
 } from '~/constants';
 
-const find = ({ node, id }) => {
-  if (node.id === id) {
-    return node;
-  }
-
-  return (node.children || [])
-    .reduce((accumulator, node) => {
-      if (!accumulator) {
-        accumulator = find({ node, id });
-      }
-      return accumulator;
-    }, undefined);
-}
-
 function ContentCommentModal({
-  item,
+  content,
+  activeComment,
+  commentsById = {},
+  commentTree,
+  countComments = 0,
   isVisible,
+  isFetchingItems = false,
+  isFetchingInsert = false,
+  isActiveRoot = false,
+  onSubmit = () => {},
+  onCreatorPress = () => {},
+  onBack = () => {},
+  onViewReplies = () => {},
   onClose = () => {},
 }) {
-  const [active, setActive] = useState();
+  const textInputRef = useRef();
+  const [reply, setReply] = useState('');
 
-  useEffect(() => {
-    if (item && item.commentTree) {
-      setActive(item.commentTree);
-    }
-  }, [item]);
-
-  function handleBack() {
-    const { parentId } = active;
-
-    const parent = find({
-      node: item.commentTree,
-      id: parentId,
+  function handleSubmit() {
+    onSubmit({
+      text: reply,
     });
-
-    setActive(parent);
+    setReply('');
   }
 
-  function handleAuthorPress() {
+  function handleReply(params) {
+    onViewReplies(params);
+    textInputRef.current.focus();
   }
 
-  function handleViewReplies({ id }) {
-    let comment = find({
-      node: active,
-      id,
-    });
-
-    if (!comment) {
-      comment = find({
-        node: item.commentTree,
-        id,
-      });
-    }
-
-    setActive(comment);
-  }
-
-  function handleReply() {
-  }
-
-  function handleClose() {
-    setActive(item.commentTree);
-    onClose();
-  }
-
-  if (!item || !item.commentTree) {
-    return null;
-  }
-
-  const activeComment = (
-    active &&
-    active.id &&
-    item.commentsById[active.id]
-  );
-
-  const isActiveRoot = (
-    active &&
-    active.id &&
-    active.id === TREE_ROOT_ID
-  );
-
-  const count = (
-    (active && active.children)
-      ? active.children.length
-      : 0
-  );
-
-  const heading = `${count} ${(isActiveRoot ? 'Comments' : 'Replies')}`;
+  const heading = `${countComments} ${(isActiveRoot ? 'Comments' : 'Replies')}`;
 
   return (
     <Modal
       header={
         <ScreenHeader
           leftElement={
-            active && active.parentId ? (
-              <TouchableOpacity onPress={handleBack}>
+            commentTree && commentTree.parentId ? (
+              <TouchableOpacity onPress={onBack}>
                 <ArrowLeftIcon
                   width={22}
                   height={22}
@@ -136,30 +83,33 @@ function ContentCommentModal({
             )
           }
           heading={heading}
-          onClose={handleClose}
+          onClose={onClose}
         />
       }
       isVisible={isVisible}
-      onClose={handleClose}
       containerStyle={{
         backgroundColor: LIGHT_GRAY,
       }}
+      shouldAvoidKeyboard={false}
+      onClose={onClose}
     >
       <View style={styles.container}>
         <ScrollView
+          style={{flex: 1}}
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="never"
         >
           <TouchableWithoutFeedback>
             <View>
               <CommentAncestry
                 comment={activeComment}
-                commentsById={item.commentsById}
-                onAuthorPress={handleAuthorPress}
-                onViewReplies={handleViewReplies}
+                commentsById={commentsById}
+                onCreatorPress={onCreatorPress}
+                onViewReplies={onViewReplies}
                 onReply={handleReply}
               />
 
-              {active && !isActiveRoot &&
+              {activeComment && !isActiveRoot &&
                 <View
                   style={[
                     styles.commentWrapper,
@@ -167,32 +117,35 @@ function ContentCommentModal({
                   ]}
                 >
                   <Comment
-                    id={active.id}
-                    author={activeComment.author}
+                    id={activeComment.uuid}
+                    creator={activeComment.creator}
                     text={activeComment.text}
+                    createdAt={activeComment.createdAt}
                     children={[]}
-                    commentsById={item.commentsById}
+                    commentsById={commentsById}
                     isActive={true}
-                    onAuthorPress={handleAuthorPress}
-                    onViewReplies={handleViewReplies}
+                    canReply={false}
+                    onCreatorPress={onCreatorPress}
+                    onViewReplies={onViewReplies}
                     onReply={handleReply}
                   />
                 </View>
               }
 
-              {active && active.children.map(child => (
+              {commentTree && commentTree.children.map(child => (
                 <View
                   key={child.id}
                   style={styles.commentWrapper}
                 >
                   <Comment
                     id={child.id}
-                    author={item.commentsById[child.id].author}
-                    text={item.commentsById[child.id].text}
+                    creator={commentsById[child.id].creator}
+                    text={commentsById[child.id].text}
+                    createdAt={commentsById[child.id].createdAt}
                     children={child.children}
-                    commentsById={item.commentsById}
-                    onAuthorPress={handleAuthorPress}
-                    onViewReplies={handleViewReplies}
+                    commentsById={commentsById}
+                    onCreatorPress={onCreatorPress}
+                    onViewReplies={onViewReplies}
                     onReply={handleReply}
                   />
                 </View>
@@ -200,6 +153,33 @@ function ContentCommentModal({
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
+
+        <View style={styles.inputFooter}>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              ref={textInputRef}
+              placeholder="Add a comment"
+              multiline={true}
+              minHeight={30}
+              maxHeight={100}
+              value={reply}
+              theme="secondary"
+              onChange={setReply}
+            />
+          </View>
+          <View style={styles.buttonWrapper}>
+            <Button
+              label="Reply"
+              size="small"
+              theme="transparent"
+              isFetching={isFetchingInsert}
+              onPress={handleSubmit}
+            />
+          </View>
+        </View>
+
+        <KeyboardSpacer />
+
       </View>
     </Modal>
   );
@@ -207,7 +187,7 @@ function ContentCommentModal({
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: WINDOW_HEIGHT * 0.75,
+    height: WINDOW_HEIGHT * 0.8,
     backgroundColor: LIGHT_GRAY,
   },
   commentWrapper: {
@@ -221,6 +201,22 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     marginBottom: 30,
   },
+  inputFooter: {
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+  },
+  inputWrapper: {
+    flex: 1,
+  },
+  buttonWrapper: {
+    width: 100,
+  }
 });
 
 export default ContentCommentModal;

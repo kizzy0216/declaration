@@ -12,7 +12,7 @@ import {
   RED,
 } from '~/constants';
 
-function TextInput({
+const TextInput = React.forwardRef(({
   label = '',
   error = '',
   placeholder,
@@ -21,7 +21,7 @@ function TextInput({
   onChange = () => {},
   value,
   ...props
-}) {
+}, ref) => {
   return (
     <View style={[styles.container, props.style]}>
       {label.length > 0 &&
@@ -38,6 +38,7 @@ function TextInput({
       >
         <RNTextInput
           {...props}
+          ref={ref}
           placeholder={placeholder}
           style={[styles.textInput, props.textInputStyle]}
           onChangeText={onChange}
@@ -58,7 +59,7 @@ function TextInput({
       }
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

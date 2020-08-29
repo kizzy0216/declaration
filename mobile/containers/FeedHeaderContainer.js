@@ -5,13 +5,15 @@ import React, {
 } from 'react';
 import {
   Animated,
-}  from 'react-native';
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import FeedHeader from '~/components/FeedHeader';
 
 function FeedHeaderContainer() {
+  const navigation = useNavigation();
   const animation = useRef(new Animated.Value(1)).current;
   const {
     isVisible: isInterfaceVisible,

@@ -5,23 +5,39 @@ import {
   StyleSheet,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Constants from 'expo-constants';
+
+const { REST_BASE_URL } = Constants.manifest.extra;
 
 import Avatar from '~/components/Avatar';
 import { GRAY } from '~/constants';
+import { formatDateTimeAgo } from '@shared/utils/formatDate';
 
 function Comment({
   id,
-  author,
+  creator,
   text,
   children = [],
   commentsById = {},
   isParent = false,
   isActive = false,
   isFirstChild = false,
-  onAuthorPress = () => {},
+  canReply = true,
+  createdAt,
+  onCreatorPress = () => {},
   onViewReplies = () => {},
   onReply = () => {},
 }) {
+  const profilePhoto = (
+    creator && creator.profile && creator.profile.photo
+      ? creator.profile.photo
+      : `${REST_BASE_URL}/avatar/${creator.uuid}`
+  );
+
+  const verbalizedCreatedAt = formatDateTimeAgo(createdAt);
+  const fullComment = commentsById[id];
+  const countChildren = fullComment && fullComment.countChildren;
+
   return (
     <View style={styles.comment}>
       <TouchableOpacity
@@ -31,18 +47,18 @@ function Comment({
             : () => {}
         }
       >
-        {author &&
+        {creator &&
           <TouchableOpacity
-            style={styles.author}
-            onPress={() => onAuthorPress(author)}
+            style={styles.creator}
+            onPress={() => onCreatorPress(creator)}
           >
             <Avatar
-              imageSrc={author.profile.photo}
+              imageSrc={profilePhoto}
               size="small"
             />
 
-            <Text style={styles.authorName} >
-              {author.name}
+            <Text style={styles.creatorName} >
+              {creator.name}
             </Text>
           </TouchableOpacity>
         }
@@ -58,13 +74,17 @@ function Comment({
       </TouchableOpacity>
 
       <View style={styles.footer}>
-        <Text style={styles.createdAt}>1m</Text>
+        <Text style={styles.createdAt}>
+          {verbalizedCreatedAt}
+        </Text>
 
-        <TouchableOpacity onPress={() => onReply({ id })}>
-          <Text style={styles.action}>
-            Reply {(children.length > 1 || (children.length > 0 && isFirstChild)) && `(${children.length})`}
-          </Text>
-        </TouchableOpacity>
+        {canReply &&
+          <TouchableOpacity onPress={() => onReply({ id })}>
+            <Text style={styles.action}>
+              Reply {(countChildren > 1 || (countChildren > 0 && isFirstChild)) && `(${countChildren})`}
+            </Text>
+          </TouchableOpacity>
+        }
       </View>
 
       {children.length > 0 && !isFirstChild && !isParent &&
@@ -72,15 +92,16 @@ function Comment({
           <View style={styles.verticalSeparator} />
 
           <Comment
-            id={children[0].id}
-            author={commentsById[children[0].id].author}
-            text={commentsById[children[0].id].text}
+            id={children[0].uuid}
+            creator={children[0].creator}
+            text={children[0].text}
+            createdAt={children[0].createdAt}
             children={children[0].children}
             commentsById={commentsById}
             isFirstChild={true}
-            onAuthorPress={() => onAuthorPress(commentsById[children[0].id].author)}
-            onViewReplies={() => onViewReplies({ id: children[0].id })}
-            onReply={() => onReply({ id: children[0].id })}
+            onCreatorPress={() => onCreatorPress(children[0].creator)}
+            onViewReplies={() => onViewReplies({ id: children[0].uuid })}
+            onReply={() => onReply({ id: children[0].uuid })}
           />
 
           {children.length > 1 &&
@@ -101,13 +122,13 @@ function Comment({
 }
 
 const styles = StyleSheet.create({
-  author: {
+  creator: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 3,
     marginBottom: 5,
   },
-  authorName: {
+  creatorName: {
     fontSize: 12,
     fontWeight: '600',
     paddingRight: 5,

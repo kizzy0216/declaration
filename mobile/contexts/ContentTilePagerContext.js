@@ -165,7 +165,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   }, [flatListMethodsRef.current]);
 
   const getItems = useCallback(() => {
-    getContentNewer({
+    getContentOlder({
       requestPolicy: 'cache-and-network',
     });
   }, []);

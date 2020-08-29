@@ -18,11 +18,12 @@ function Modal({
   position = 'bottom', // bottom or up
   header,
   heading = '',
+  submitLabel = 'Save',
+  containerStyle,
   isFetching = false,
   isVisible = false,
   isSubmitDisabled = false,
-  submitLabel = 'Save',
-  containerStyle,
+  shouldAvoidKeyboard = true,
   onClose = () => {},
   onSubmit = () => {},
   children,
@@ -71,7 +72,7 @@ function Modal({
 
   const edges = (
     position === 'bottom'
-      ? ['bottom']
+      ? ['left', 'right']
       : ['top']
   );
 
@@ -121,7 +122,7 @@ function Modal({
       onSwipeComplete={onClose}
       onBackdropPress={onClose}
       propagateSwipe={true}
-      avoidKeyboard={true}
+      avoidKeyboard={shouldAvoidKeyboard}
     >
       <SafeAreaView
         style={{

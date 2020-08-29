@@ -32,7 +32,7 @@ import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 function UserOnboardingPersonalBioScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [personalBio, setPersonalBio] = useState(user.profile.personalBio || '');
-  const isKeyboardShowing = useIsKeyboardShowing();
+  const { isKeyboardShowing } = useIsKeyboardShowing();
   const translateYAnimation = useRef(new Animated.Value(0)).current;
   const [
     updatePersonalBioResult,
