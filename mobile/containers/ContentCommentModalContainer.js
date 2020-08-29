@@ -152,6 +152,12 @@ const ContentCommentModalContainer = ({
     onClose();
   }
 
+  function handleRefresh() {
+    getComments({
+      requestPolicy: 'cache-and-network',
+    });
+  }
+
   return (
     <ContentCommentModal
       content={content}
@@ -167,6 +173,7 @@ const ContentCommentModalContainer = ({
       onCreatorPress={handleCreatorPress}
       onBack={handleBack}
       onViewReplies={handleViewReplies}
+      onRefresh={handleRefresh}
       onClose={handleClose}
     />
   );

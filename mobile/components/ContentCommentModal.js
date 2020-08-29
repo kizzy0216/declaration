@@ -13,6 +13,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
+  RefreshControl,
 } from 'react-native';
 import {
   TouchableOpacity,
@@ -46,6 +47,7 @@ function ContentCommentModal({
   onCreatorPress = () => {},
   onBack = () => {},
   onViewReplies = () => {},
+  onRefresh = () => {},
   onClose = () => {},
 }) {
   const textInputRef = useRef();
@@ -98,6 +100,12 @@ function ContentCommentModal({
           style={{flex: 1}}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="never"
+          refreshControl={
+            <RefreshControl
+              refreshing={isFetchingItems}
+              onRefresh={onRefresh}
+            />
+          }
         >
           <TouchableWithoutFeedback>
             <View>
