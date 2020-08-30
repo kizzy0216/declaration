@@ -51,6 +51,7 @@ function ConnectionsModal({
 const styles = StyleSheet.create({
   mentionsModal: {
     height: WINDOW_HEIGHT * 0.75,
+    paddingBottom: 30,
   },
 });
 
