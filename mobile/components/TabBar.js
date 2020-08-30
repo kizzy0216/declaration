@@ -94,7 +94,7 @@ function TabBar({ state, descriptors, navigation }) {
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    paddingTop: 30,
+    paddingTop: 22.5,
     paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,

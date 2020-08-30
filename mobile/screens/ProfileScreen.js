@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   personalBioWrapper: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   row: {
     marginBottom: 30,

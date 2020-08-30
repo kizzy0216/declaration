@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 40,
     fontSize: 24,
-    fontFamily: 'Requiem-Display',
+    fontFamily: 'Orpheus',
     fontWeight: 'bold',
   },
   scrollView: {

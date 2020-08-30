@@ -43,6 +43,7 @@ const GetUser = `
           uuid
           id
           name
+          avatar
         }
         created_at
         updated_at
@@ -58,6 +59,7 @@ const GetUser = `
           uuid
           id
           name
+          avatar
         }
       }
     }

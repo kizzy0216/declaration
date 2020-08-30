@@ -19,9 +19,9 @@ function Dot({
 
 const styles = StyleSheet.create({
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 10,
+    width: 7,
+    height: 7,
+    borderRadius: 7,
     backgroundColor: '#C5C5C5',
   },
   active: {

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 8,
     },
     shadowOpacity: 0.2,
     shadowRadius: 40,
@@ -57,9 +57,9 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   container: {
-    paddingTop: 30,
+    paddingTop: 25,
     paddingRight: 20,
-    paddingBottom: 30,
+    paddingBottom: 35,
     paddingLeft: 20,
   },
   headingWrapper: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30,
     lineHeight: 35,
-    fontFamily: 'Requiem-Display',
+    fontFamily: 'Orpheus',
   },
 });
 

@@ -21,8 +21,8 @@ function AuthenticationHomeScreen({ navigation }) {
         <View style={styles.header}>
           <View style={styles.logoWrapper}>
             <Logo
-              width={161}
-              height={15}
+              width={171}
+              height={16}
               fill="white"
             />
           </View>
@@ -42,7 +42,6 @@ function AuthenticationHomeScreen({ navigation }) {
             onPress={() => navigation.navigate('AuthenticationLogIn', { email: null, code: null })}
             style={{
               width: '100%',
-              marginBottom: 40,
             }}
           />
           <Button
@@ -81,15 +80,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 40,
     textAlign: 'center',
-    fontFamily: 'Requiem-Display',
-    marginBottom: 10,
+    fontFamily: 'Orpheus',
+    marginBottom: 25,
   },
   subHeading: {
     color: 'white',
     fontSize: 18,
     lineHeight: 28,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 50,
   },
   footer: {
     flexDirection: 'column',

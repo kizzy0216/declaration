@@ -16,7 +16,7 @@ import { JWT_COOKIE_KEY } from '~/constants';
 
 let inMemoryJWT;
 function Application({ Component, pageProps, jwt }) {
-  if (jwt.length > 0) {
+  if (jwt && jwt.length > 0) {
     inMemoryJWT = jwt;
   }
 

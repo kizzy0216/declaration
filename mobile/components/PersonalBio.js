@@ -25,10 +25,14 @@ function PersonalBio({
 
 const styles = StyleSheet.create({
   personalBio: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   username: {
     fontWeight: 'bold',
     marginRight: 10,
+    fontSize: 14,
+    lineHeight: 20,
   },
 });
 

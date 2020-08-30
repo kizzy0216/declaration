@@ -62,8 +62,9 @@ function StatementSection({
         }
 
         h2 {
-          font-family: var(--font-family-serif-fine);
+          font-family: var(--font-family-serif);
           font-size: 52px;
+          font-weight: 300;
           line-height: 1.2;
           width: 100%;
 

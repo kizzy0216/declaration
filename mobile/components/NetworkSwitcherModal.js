@@ -53,8 +53,8 @@ function NetworkSwitcherModal({
         image={(
           <View style={styles.plusIconWrapper}>
             <PlusIcon
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               fill="black"
             />
           </View>
@@ -67,8 +67,8 @@ function NetworkSwitcherModal({
         image={(
           <View style={styles.plusIconWrapper}>
             <PlusIcon
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               fill="black"
             />
           </View>
@@ -83,9 +83,9 @@ function NetworkSwitcherModal({
 const styles = StyleSheet.create({
   plusIconWrapper: {
     paddingTop: 10,
-    paddingRight: 20,
+    paddingRight: 15,
     paddingBottom: 10,
-    paddingLeft: 10,
+    paddingLeft: 15,
   },
 });
 

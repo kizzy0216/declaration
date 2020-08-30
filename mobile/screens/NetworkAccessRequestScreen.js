@@ -8,15 +8,18 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 import { StackActions } from '@react-navigation/native';
 
+import ScreenHeader from '~/components/ScreenHeader';
 import NetworkAccessRequestForm from '~/components/NetworkAccessRequestForm';
 import DisplayHeading from '~/components/DisplayHeading';
 import InsertNetworkAccessRequest from '@shared/mutations/InsertNetworkAccessRequest';
 import Button from '~/components/Button';
 import { IS_IOS } from '~/constants';
+import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 
 function NetworkAccessRequestScreen({ navigation }) {
   const [
@@ -55,6 +58,19 @@ function NetworkAccessRequestScreen({ navigation }) {
       style={{ flex: 1 }}
     >
       <SafeAreaView>
+        <ScreenHeader
+          leftElement={
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <ArrowLeftIcon
+                width={22}
+                height={22}
+                fill="black"
+              />
+            </TouchableOpacity>
+          }
+          heading="Create Network"
+          rightElement={<></>}
+        />
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.headingWrapper}>
             <DisplayHeading style={styles.heading}>
@@ -85,7 +101,7 @@ function NetworkAccessRequestScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    paddingTop: 20,
     paddingRight: 20,
     paddingBottom: 100,
     paddingLeft: 20,

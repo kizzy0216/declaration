@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 
 import UpdateUserProfileUsername from '~/mutations/UpdateUserProfileUsername';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
 import { UserContext } from '~/contexts/UserContext';
@@ -66,10 +66,10 @@ function UserOnboardingUsernameScreen({ navigation }) {
         style={styles.safeArea}
         contentContainerStyle={styles.contentContainer}
       >
-        <ScreenHeader
+        <OnboardingHeader
           activePageIndex={1}
           countPages={COUNT_USER_ONBOARDING_REQUIRED_PAGES}
-          rightElement={<></>}
+          navigation={navigation}
         />
         <View style={styles.container}>
           <DisplayHeading style={styles.heading}>
@@ -104,15 +104,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   heading: {
-    marginBottom: 20,
+    marginBottom: 50,
   },
   footer: {
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
 });
 

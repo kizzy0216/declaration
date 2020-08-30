@@ -163,7 +163,7 @@ function Table({
           justify-content: center;
           align-items: center;
           transition: transform 0.111s ease-in-out;
-          transform: rotate(180deg);
+          transform: rotate(0deg);
         }
 
         .sub-headings-wrapper {

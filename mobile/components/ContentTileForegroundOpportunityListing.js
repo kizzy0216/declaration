@@ -119,6 +119,9 @@ function ContentTileForegroundOpportunityListing({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingRight: 80,
+  },
   company: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
   },
   criterion: {
     fontSize: 16,
-    lineHeight: 28,
+    lineHeight: 20,
     marginBottom: 10,
   },
   callToAction: {

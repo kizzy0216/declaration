@@ -115,7 +115,7 @@ function CreateContentMetaScreen({ navigation }) {
                     size="small"
                     label="#hashtags"
                     buttonStyle={{
-                      width: 100,
+                      width: 120,
                     }}
                   />
                 }
@@ -147,7 +147,7 @@ function CreateContentMetaScreen({ navigation }) {
                       size="small"
                       label="@connections"
                       buttonStyle={{
-                        width: 120,
+                        width: 140,
                       }}
                       onPress={() => setIsConnectionsModalActive(true)}
                     />

@@ -133,8 +133,8 @@ function NetworkMembershipSelectScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   scrollView: {
     overflow: 'visible',

@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 
+import KeyboardSpacer from '~/components/KeyboardSpacer';
 import Modal from '~/components/Modal';
 import TextInput from '~/components/TextInput';
 import GenderInput from '~/components/GenderInput';
@@ -59,11 +60,12 @@ function ProfileEditModal({
       isVisible={isVisible}
       isFetching={isFetching || isFetchingUsername}
       isSubmitDisabled={isDisabled}
+      shouldAvoidKeyboard={false}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
           <TouchableWithoutFeedback>
             <View>
               <View style={styles.row}>
@@ -110,6 +112,7 @@ function ProfileEditModal({
               </View>
             </View>
           </TouchableWithoutFeedback>
+          <KeyboardSpacer />
         </ScrollView>
       </View>
     </Modal>

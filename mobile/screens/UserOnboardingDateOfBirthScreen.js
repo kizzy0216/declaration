@@ -14,7 +14,7 @@ import { useMutation } from 'urql';
 
 import InsertUserProfilePrivate from '~/mutations/InsertUserProfilePrivate';
 import UpdateUserProfilePrivateDateOfBirth from '~/mutations/UpdateUserProfilePrivateDateOfBirth';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
 import DateTimePicker from '~/components/DateTimePicker';
@@ -83,17 +83,17 @@ function UserOnboardingDateOfBirthScreen({ navigation }) {
       style={styles.safeArea}
       contentContainerStyle={styles.contentContainer}
     >
-      <ScreenHeader
+      <OnboardingHeader
         activePageIndex={2}
         countPages={COUNT_USER_ONBOARDING_REQUIRED_PAGES}
-        rightElement={<></>}
+        navigation={navigation}
       />
       <View style={styles.container}>
         <DisplayHeading style={styles.heading}>
-          What's your date of birth?
+          Enter your{'\n'}date of birth
         </DisplayHeading>
         <Text style={styles.subHeading}>
-          This information will not be made public.
+          This information will not be made public{'\n'}and you must be 16 years old.
         </Text>
         <DateTimePicker
           mode="date"
@@ -132,13 +132,12 @@ const styles = StyleSheet.create({
   },
   heading: {
     width: 300,
-    marginBottom: 20,
+    marginBottom: 50,
   },
   subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 50,
   },
   footer: {
     paddingRight: 20,

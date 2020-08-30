@@ -14,12 +14,7 @@ function useCachedResources() {
 
         // Load fonts
         await Font.loadAsync({
-          'Requiem': Asset.fromModule(require('~/shared/fonts/Requiem-Text-Roman.ttf')).uri,
-          'Requiem-Italic': require('~/shared/fonts/Requiem-Text-Italic.ttf'),
-          'Requiem-Display': require('~/shared/fonts/Requiem-Display-Roman.ttf'),
-          'Requiem-Display-Italic': require('~/shared/fonts/Requiem-Display-Italic.ttf'),
-          'Requiem-Fine': require('~/shared/fonts/Requiem-Fine-Roman.ttf'),
-          'Requiem-Fine-Italic': require('~/shared/fonts/Requiem-Fine-Italic.ttf'),
+          'Orpheus': Asset.fromModule(require('~/shared/fonts/Orpheus.ttf')).uri,
         });
       } catch (event) {
         // We might want to provide this error information to an error reporting service

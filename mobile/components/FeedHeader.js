@@ -91,7 +91,7 @@ function FeedHeader({
           networks.map((network) => ({
             uuid: network.uuid,
             label: network.name,
-            imageSrc: `${REST_BASE_URL}/avatar/${network.uuid}`,
+            imageSrc: network.avatar,
             onPress: () => {
               setActiveNetwork(network);
               setIsModalVisible(false);

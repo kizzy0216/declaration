@@ -64,9 +64,16 @@ const TextInput = React.forwardRef(({
 const styles = StyleSheet.create({
   container: {
   },
+  textInput: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
   textInputWrapper: {
     borderRadius: 17,
-    padding: 20,
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingBottom: 23,
+    paddingLeft: 20,
   },
   primaryTextInputWrapper: {
     backgroundColor: LIGHT_GRAY,
@@ -77,6 +84,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     marginBottom: 5,
+    fontSize: 14,
   },
   error: {
     color: RED,

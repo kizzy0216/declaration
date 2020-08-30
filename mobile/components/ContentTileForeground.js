@@ -88,13 +88,14 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 17,
+    fontWeight: '600',
     lineHeight: 24,
   },
   headingBubbly: {
     borderRadius: 17,
-    paddingTop: 15,
+    paddingTop: 20,
     paddingRight: 20,
-    paddingBottom: 15,
+    paddingBottom: 20,
     paddingLeft: 20,
     backgroundColor: 'white',
   },

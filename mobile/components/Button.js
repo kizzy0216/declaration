@@ -4,6 +4,7 @@ import { TouchableOpacity, BorderlessButton } from 'react-native-gesture-handler
 
 import AnimatedSpinnerIcon from '~/components/AnimatedSpinnerIcon';
 import {
+  BLACK,
   BLUE,
   LIGHT_GRAY,
   RED,
@@ -25,7 +26,7 @@ function Button({
 }) {
   const spinnerFill = (
     theme === 'transparent' || theme === 'tertiary'
-    ? 'black'
+    ? BLACK
     : 'white'
   );
 
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: '600',
   },
   hasIconLabel: {
     justifyContent: 'flex-start',
@@ -155,14 +156,14 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_GRAY,
   },
   secondaryLabel: {
-    color: 'black',
+    color: BLACK,
   },
 
   tertiary: {
     backgroundColor: 'white',
   },
   tertiaryLabel: {
-    color: 'black',
+    color: BLACK,
   },
 
   transparent: {
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
   },
   transparentLabel: {
     backgroundColor: 'transparent',
-    color: 'black',
+    color: BLACK,
   },
 
   danger: {
@@ -191,10 +192,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   smallLabelWrapper: {
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
+    paddingTop: 12,
+    paddingRight: 20,
+    paddingBottom: 12,
+    paddingLeft: 20,
   },
   smallShadow: {
     shadowColor: "#000",
@@ -208,9 +209,9 @@ const styles = StyleSheet.create({
   },
 
   mediumLabelWrapper: {
-    paddingTop: 20,
+    paddingTop: 20.5,
     paddingRight: 20,
-    paddingBottom: 20,
+    paddingBottom: 20.5,
     paddingLeft: 20,
   },
   mediumShadow: {

@@ -17,7 +17,7 @@ import { useMutation } from 'urql';
 
 import UpdateUserProfileLocation from '~/mutations/UpdateUserProfileLocation';
 import UserOnboardingFooter from '~/components/UserOnboardingFooter';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
 import LocationInputContainer from '~/containers/LocationInputContainer';
@@ -85,10 +85,10 @@ function UserOnboardingLocationScreen({ navigation }) {
         style={styles.safeArea}
         contentContainerStyle={styles.contentContainer}
       >
-        <ScreenHeader
+        <OnboardingHeader
           activePageIndex={1}
           countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
-          rightElement={<></>}
+          navigation={navigation}
         />
         <Animated.View
           style={{
@@ -97,11 +97,12 @@ function UserOnboardingLocationScreen({ navigation }) {
               {
                 translateY: translateYAnimation.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0, -50],
+                  outputRange: [0, -100],
                 }),
               },
             ],
           }}
+          pointerEvents="box-none"
         >
           <DisplayHeading style={styles.heading}>
             Where do you live currently?
@@ -140,17 +141,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   heading: {
-    marginBottom: 20,
+    marginBottom: 50,
   },
   subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 50,
   },
 });
 

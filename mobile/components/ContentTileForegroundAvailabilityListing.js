@@ -52,6 +52,13 @@ function ContentTileForegroundAvailabilityListing({
           {heading}
         </Text>
 
+        <View
+          style={[
+            styles.horizontalSeperator,
+            styles[`${theme}Background`],
+          ]}
+        />
+
         <Text
           style={[
             styles.body,
@@ -61,9 +68,16 @@ function ContentTileForegroundAvailabilityListing({
           {body}
         </Text>
 
+        <View
+          style={[
+            styles.horizontalSeperator,
+            styles[`${theme}Background`],
+          ]}
+        />
+
         {availabilityListing.credentials &&
           <View
-            style={styles.credential}
+            style={styles.credentials}
             pointerEvents="box-none"
           >
             {availabilityListing.credentials.map((credential, index) => (
@@ -100,6 +114,9 @@ function ContentTileForegroundAvailabilityListing({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingRight: 80,
+  },
   avatarWrapper: {
     marginBottom: 20,
   },
@@ -109,16 +126,21 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontWeight: '600',
   },
+  horizontalSeperator: {
+    height: 2,
+    width: '100%',
+    marginBottom: 20,
+  },
   body: {
     marginBottom: 20,
     fontSize: 15,
     lineHeight: 20,
     fontWeight: '600',
   },
-  credential: {
+  credentials: {
     marginBottom: 20,
   },
-  criterion: {
+  credential: {
     fontSize: 15,
     lineHeight: 20,
     marginBottom: 5,
@@ -131,8 +153,14 @@ const styles = StyleSheet.create({
   light: {
     color: 'white',
   },
+  lightBackground: {
+    backgroundColor: 'white',
+  },
   dark: {
     color: 'black',
+  },
+  darkBackground: {
+    backgroundColor: 'black',
   },
 });
 

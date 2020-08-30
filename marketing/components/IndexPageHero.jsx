@@ -86,7 +86,8 @@ function IndexPageHero() {
           max-width: 40ch;
           font-size: 50px;
           margin-bottom: 20px;
-          font-family: var(--font-family-serif-fine);
+          font-family: var(--font-family-serif);
+          font-weight: 300;
 
           @media (--small) {
             font-size: 36px;

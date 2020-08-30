@@ -52,11 +52,11 @@ function GenderInput({
 const styles = StyleSheet.create({
   tags: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 20,
   },
   tag: {
     textDecorationLine: 'underline',
-    fontSize: 16,
+    fontSize: 14,
     marginRight: 10,
   },
 });

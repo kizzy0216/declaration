@@ -67,13 +67,15 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: 'transparent',
+    overflow: 'visible',
   },
   headingWrapper: {
     flex: 1,
   },
   heading: {
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '500',
+    fontSize: 16,
   },
   dotsWrapper: {
     flexDirection: 'row',
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 30,
     zIndex: 1,
+    overflow: 'visible',
   },
 });
 

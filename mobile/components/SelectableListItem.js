@@ -84,8 +84,6 @@ const styles = StyleSheet.create({
   actionWrapper: {
     backgroundColor: 'white',
     borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: GRAY,
     overflow: 'hidden',
   },
   actionSelected: {
@@ -102,6 +100,8 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'left',
+    fontSize: 16,
+    lineHeight: 20,
   },
 });
 

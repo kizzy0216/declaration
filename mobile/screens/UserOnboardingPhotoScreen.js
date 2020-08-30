@@ -10,7 +10,7 @@ import Constants from 'expo-constants';
 import { useMutation } from 'urql';
 
 import UpdateUserProfilePhoto from '~/mutations/UpdateUserProfilePhoto';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import UserOnboardingFooter from '~/components/UserOnboardingFooter';
 import Button from '~/components/Button';
@@ -93,10 +93,10 @@ function UserOnboardingPhotoScreen({ navigation }) {
       style={styles.safeArea}
       contentContainerStyle={styles.contentContainer}
     >
-      <ScreenHeader
+      <OnboardingHeader
         activePageIndex={0}
         countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
-        rightElement={<></>}
+        navigation={navigation}
       />
       <View style={styles.container}>
         <DisplayHeading style={styles.heading}>
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   heading: {
-    marginBottom: 20,
+    marginBottom: 50,
   },
   avatarPickerWrapper: {
-    paddingTop: 100,
+    paddingTop: 50,
   },
 });
 

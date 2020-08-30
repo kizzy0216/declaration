@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   buttonLabelStyle: {
     fontWeight: 'normal',
     color: GRAY,
+    fontSize: 14,
   },
   buttonLabelStyleSelected: {
     color: 'black',

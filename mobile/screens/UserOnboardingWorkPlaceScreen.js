@@ -1,8 +1,11 @@
 import React, {
   useContext,
   useState,
+  useRef,
+  useEffect,
 } from 'react';
 import {
+  Animated,
   StyleSheet,
   View,
   Text,
@@ -14,7 +17,7 @@ import { useMutation } from 'urql';
 
 import UpdateUserProfileWorkPlace from '~/mutations/UpdateUserProfileWorkPlace';
 import UserOnboardingFooter from '~/components/UserOnboardingFooter';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
 import TextInput from '~/components/TextInput';
@@ -24,6 +27,7 @@ import {
   IS_IOS,
 } from '~/constants';
 import { UserContext } from '~/contexts/UserContext';
+import useIsKeyboardShowing from '~/hooks/useIsKeyboardShowing';
 
 function UserOnboardingWorkPlaceScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -32,6 +36,16 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
     updateWorkPlaceResult,
     updateWorkPlace,
   ] = useMutation(UpdateUserProfileWorkPlace);
+  const { isKeyboardShowing } = useIsKeyboardShowing();
+  const translateYAnimation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(translateYAnimation, {
+      toValue: (isKeyboardShowing ? 1 : 0),
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isKeyboardShowing]);
 
   const handleSubmit = () => {
     if (user.profile.workPlace === workPlace) {
@@ -55,12 +69,25 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
         style={styles.safeArea}
         contentContainerStyle={styles.contentContainer}
       >
-        <ScreenHeader
+        <OnboardingHeader
           activePageIndex={3}
           countPages={COUNT_USER_ONBOARDING_OPTIONAL_PAGES}
-          rightElement={<></>}
+          navigation={navigation}
         />
-        <View style={styles.container}>
+        <Animated.View
+          style={{
+            ...styles.container,
+            transform: [
+              {
+                translateY: translateYAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -80],
+                }),
+              },
+            ],
+          }}
+          pointerEvents="box-none"
+        >
           <DisplayHeading style={styles.heading}>
             Where do you work?
           </DisplayHeading>
@@ -73,7 +100,7 @@ function UserOnboardingWorkPlaceScreen({ navigation }) {
             value={workPlace}
             onChange={setWorkPlace}
           />
-        </View>
+        </Animated.View>
         <UserOnboardingFooter
           isFetching={updateWorkPlaceResult.fetching}
           onSkip={() => navigation.navigate('UserOnboardingWorkTitle')}
@@ -96,17 +123,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   heading: {
-    marginBottom: 20,
+    marginBottom: 50,
   },
   subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 50,
   },
 });
 

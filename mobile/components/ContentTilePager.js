@@ -20,36 +20,8 @@ import ContentCommentModalContainer from '~/containers/ContentCommentModalContai
 import ContentMenuModalContainer from '~/containers/ContentMenuModalContainer';
 import ContentTileContainer from '~/containers/ContentTileContainer';
 import {
-  TREE_ROOT_ID,
   WINDOW_HEIGHT,
 } from '~/constants';
-
-//   {
-//     key: -1,
-//     id: -1,
-//     heading: "I'm available and looking for a new job as an interior designer",
-//     body: "I've created, managed, and implemented every step of client projects including materials.",
-//     creator: JOHN,
-//     availabilityListing: {
-//       callToAction: {
-//         href: 'mailto:nickdandakis@gmail.com'
-//       },
-//       criteria: [
-//         {
-//           id: 0,
-//           text: '3+ years of professional experience',
-//         },
-//         {
-//           id: 1,
-//           text: 'Strong knowledge of trade sources',
-//         },
-//         {
-//           id: 2,
-//           text: 'Extreme attention to detail',
-//         },
-//       ],
-//     },
-//   },
 
 function ContentTilePager() {
   const flatListRef = useRef();
@@ -159,6 +131,7 @@ function ContentTilePager() {
 const styles = StyleSheet.create({
   contentTilePager: {
     flex: 1,
+    backgroundColor: 'white',
   },
   flatList: {
     flex: 1,

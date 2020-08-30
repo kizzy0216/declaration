@@ -66,7 +66,7 @@ const ContentCommentModalContainer = ({
       parent_comment_uuid: activeCommentId,
       parent_comment_is_null: activeCommentId ? false : true,
     },
-    pause: !contentUuid,
+    pause: !contentUuid || !isVisible,
   });
 
   const isActiveRoot = (commentTreeRef.current.id === TREE_ROOT_ID);
@@ -99,6 +99,13 @@ const ContentCommentModalContainer = ({
         uuid,
         ...comment,
       };
+
+      comment.children.forEach(({ uuid, ...childComment }) => {
+        commentsByIdRef.current[uuid] = {
+          uuid,
+          ...childComment,
+        };
+      });
     });
   }
 

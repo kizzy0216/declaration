@@ -22,10 +22,10 @@ function DisplayHeading({
 
 const styles = StyleSheet.create({
   displayHeading: {
-    fontFamily: 'Requiem-Display',
+    fontFamily: 'Orpheus',
   },
   medium: {
-    fontSize: 40,
+    fontSize: 36,
     lineHeight: 40,
   },
   large: {

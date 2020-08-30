@@ -24,7 +24,7 @@ function App(props) {
   const hasLoadedResources = useCachedResources();
 
   if (!hasLoadedResources) {
-    return null;
+    return <View style={styles.container} />;
   } else {
     return (
       <UrqlProvider value={urqlClient}>
@@ -68,7 +68,7 @@ function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
 });
 

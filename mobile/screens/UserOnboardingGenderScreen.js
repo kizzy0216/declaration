@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 
 import UpdateUserProfilePrivateGender from '~/mutations/UpdateUserProfilePrivateGender';
-import ScreenHeader from '~/components/ScreenHeader';
+import OnboardingHeader from '~/components/OnboardingHeader';
 import GenderInput from '~/components/GenderInput';
 import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
@@ -56,10 +56,10 @@ function UserOnboardingGenderScreen({ navigation }) {
         style={styles.safeArea}
         contentContainerStyle={styles.contentContainer}
       >
-        <ScreenHeader
+        <OnboardingHeader
           activePageIndex={3}
           countPages={COUNT_USER_ONBOARDING_REQUIRED_PAGES}
-          rightElement={<></>}
+          navigation={navigation}
         />
         <View style={styles.container}>
           <DisplayHeading style={styles.heading}>
@@ -99,21 +99,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   heading: {
-    marginBottom: 20,
+    marginBottom: 50,
   },
   subHeading: {
-    fontSize: 14,
-    lineHeight: 24,
-    marginBottom: 5,
-    color: GRAY,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 50,
   },
   footer: {
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
 });
 
