@@ -88,7 +88,8 @@ function ContentTileForegroundPoll({
                 style={[
                   styles.text,
                   isSingleChoice && styles.textRow,
-                  isMultipleChoice && hasVoted && styles.textVoted,
+                  hasVoted && styles.textVoted,
+                  isMultipleChoice && hasVoted && styles.textVotedMultipleChoice,
                   isSingleChoice && !hasVoted && styles.textCenter,
                   isSingleChoice && hasVoted && index === options.length - 1 && styles.textRight,
                   isMultipleChoice && styles.textColumn,
@@ -154,7 +155,7 @@ function ContentTileForegroundPoll({
 const styles = StyleSheet.create({
   poll: {
     borderRadius: 17,
-    marginTop: 30,
+    marginTop: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     elevation: 20,
     overflow: 'visible',
     backgroundColor: 'white',
-    width: '85%',
+    width: '75%',
   },
 
   container: {
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
 
   text: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 16,
     lineHeight: 20,
   },
   textRow: {
@@ -243,13 +244,17 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   textVoted: {
+    fontSize: 13,
+    lineHeight: 20,
+  },
+  textVotedMultipleChoice: {
     flexGrow: 1,
   },
 
   textPercentage: {
-    fontSize: 16,
+    fontSize: 13,
     lineHeight: 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
   },
 
   percentagesWrapper: {

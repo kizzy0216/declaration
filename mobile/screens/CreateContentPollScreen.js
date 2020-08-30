@@ -44,10 +44,6 @@ function CreateContentPoll({ navigation, route }) {
     setType,
   } = useContext(CreateContentContext);
 
-  const headerHeading = (
-    countOptions > 2 ? 'Add multiple choice poll' : 'Add single choice poll'
-  );
-
   const isDisabled = (
     heading === ''
   );
@@ -96,7 +92,7 @@ function CreateContentPoll({ navigation, route }) {
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
-        heading={headerHeading}
+        heading="Add text"
         canCancel={true}
         canBack={false}
         canNext={true}
@@ -116,8 +112,8 @@ function CreateContentPoll({ navigation, route }) {
           <View style={styles.row}>
             <TextInput
               multiline={true}
-              minHeight={100}
-              maxHeight={150}
+              minHeight={80}
+              maxHeight={100}
               label="Add your question or idea"
               placeholder="Be specific with your idea or question"
               value={heading}

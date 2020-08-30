@@ -7,6 +7,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BLUE } from '~/constants';
+import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 
 function MediaLibraryTile({
   index,
@@ -35,7 +36,13 @@ function MediaLibraryTile({
         ]}
       >
         {selectedItem.id === item.id &&
-          <View style={styles.selectedOverlay} />
+          <View style={styles.selectedOverlay}>
+            <CheckmarkIcon
+              width={32}
+              height={32}
+              fill="white"
+            />
+          </View>
         }
 
         <Image
@@ -80,6 +87,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

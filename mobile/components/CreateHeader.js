@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Button from '~/components/Button';
 import ScreenHeader from '~/components/ScreenHeader';
 import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
+import { GRAY } from '~/constants';
 
 function CreateHeader ({
   heading,
@@ -26,6 +27,9 @@ function CreateHeader ({
             onPress={onCancelOrBack}
             label="Cancel"
             labelWrapperStyle={{ paddingLeft: 0 }}
+            labelStyle={{
+              color: GRAY,
+            }}
           />
         ) : canBack ? (
           <TouchableOpacity onPress={onCancelOrBack}>

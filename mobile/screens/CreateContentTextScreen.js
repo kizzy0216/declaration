@@ -31,8 +31,8 @@ function CreateContentTextScreen({ navigation, route }) {
       <View style={styles.container}>
         <TextInput
           multiline={true}
-          minHeight={100}
-          maxHeight={150}
+          minHeight={80}
+          maxHeight={100}
           label="Add your question or idea"
           placeholder="Be specific with your idea or question"
           value={heading}

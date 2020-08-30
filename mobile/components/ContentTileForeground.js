@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
   heading: {
-    fontSize: 17,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '500',
     lineHeight: 24,
   },
   headingBubbly: {
