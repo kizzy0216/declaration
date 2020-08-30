@@ -104,7 +104,7 @@ function Comment({
             onReply={() => onReply({ id: children[0].uuid })}
           />
 
-          {children.length > 1 &&
+          {countChildren > 1 &&
             <>
               <View style={styles.verticalSeparator} />
 
