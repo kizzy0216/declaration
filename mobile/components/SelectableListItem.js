@@ -4,7 +4,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import {
   BLUE,
-  GRAY,
+  LIGHT_GRAY,
 } from '~/constants';
 import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 
@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 15,
-    paddingBottom: 15,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: GRAY,
+    paddingTop: 25,
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: LIGHT_GRAY,
   },
   actionWrapper: {
     backgroundColor: 'white',
