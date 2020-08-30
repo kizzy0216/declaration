@@ -17,6 +17,9 @@ import {
 } from 'react-native';
 import {
   TouchableOpacity,
+  FlingGestureHandler,
+  Directions,
+  State,
 } from 'react-native-gesture-handler';
 
 import KeyboardSpacer from '~/components/KeyboardSpacer';
@@ -95,100 +98,109 @@ function ContentCommentModal({
       shouldAvoidKeyboard={false}
       onClose={onClose}
     >
-      <View style={styles.container}>
-        <ScrollView
-          style={{flex: 1}}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="never"
-          refreshControl={
-            <RefreshControl
-              refreshing={isFetchingItems}
-              onRefresh={onRefresh}
-            />
+      <FlingGestureHandler
+        direction={Directions.RIGHT}
+        onHandlerStateChange={({ nativeEvent }) => {
+          if (nativeEvent.state === State.ACTIVE) {
+            onBack();
           }
-        >
-          <TouchableWithoutFeedback>
-            <View>
-              <CommentAncestry
-                comment={activeComment}
-                commentsById={commentsById}
-                onCreatorPress={onCreatorPress}
-                onViewReplies={onViewReplies}
-                onReply={handleReply}
+        }}
+      >
+        <View style={styles.container}>
+          <ScrollView
+            style={{flex: 1}}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="never"
+            refreshControl={
+              <RefreshControl
+                refreshing={isFetchingItems}
+                onRefresh={onRefresh}
               />
+            }
+          >
+            <TouchableWithoutFeedback>
+              <View>
+                <CommentAncestry
+                  comment={activeComment}
+                  commentsById={commentsById}
+                  onCreatorPress={onCreatorPress}
+                  onViewReplies={onViewReplies}
+                  onReply={handleReply}
+                />
 
-              {activeComment && !isActiveRoot &&
-                <View
-                  style={[
-                    styles.commentWrapper,
-                    styles.activeCommentWrapper,
-                  ]}
-                >
-                  <Comment
-                    id={activeComment.uuid}
-                    creator={activeComment.creator}
-                    text={activeComment.text}
-                    createdAt={activeComment.createdAt}
-                    children={[]}
-                    commentsById={commentsById}
-                    isActive={true}
-                    canReply={false}
-                    onCreatorPress={onCreatorPress}
-                    onViewReplies={onViewReplies}
-                    onReply={handleReply}
-                  />
-                </View>
-              }
+                {activeComment && !isActiveRoot &&
+                  <View
+                    style={[
+                      styles.commentWrapper,
+                      styles.activeCommentWrapper,
+                    ]}
+                  >
+                    <Comment
+                      id={activeComment.uuid}
+                      creator={activeComment.creator}
+                      text={activeComment.text}
+                      createdAt={activeComment.createdAt}
+                      children={[]}
+                      commentsById={commentsById}
+                      isActive={true}
+                      canReply={false}
+                      onCreatorPress={onCreatorPress}
+                      onViewReplies={onViewReplies}
+                      onReply={handleReply}
+                    />
+                  </View>
+                }
 
-              {commentTree && commentTree.children.map(child => (
-                <View
-                  key={child.id}
-                  style={styles.commentWrapper}
-                >
-                  <Comment
-                    id={child.id}
-                    creator={commentsById[child.id].creator}
-                    text={commentsById[child.id].text}
-                    createdAt={commentsById[child.id].createdAt}
-                    children={child.children}
-                    commentsById={commentsById}
-                    onCreatorPress={onCreatorPress}
-                    onViewReplies={onViewReplies}
-                    onReply={handleReply}
-                  />
-                </View>
-              ))}
+                {commentTree && commentTree.children.map(child => (
+                  <View
+                    key={child.id}
+                    style={styles.commentWrapper}
+                  >
+                    <Comment
+                      id={child.id}
+                      creator={commentsById[child.id].creator}
+                      text={commentsById[child.id].text}
+                      createdAt={commentsById[child.id].createdAt}
+                      children={child.children}
+                      commentsById={commentsById}
+                      onCreatorPress={onCreatorPress}
+                      onViewReplies={onViewReplies}
+                      onReply={handleReply}
+                    />
+                  </View>
+                ))}
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+
+          <View style={styles.inputFooter}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                ref={textInputRef}
+                placeholder="Add a comment"
+                multiline={true}
+                minHeight={30}
+                maxHeight={100}
+                value={reply}
+                theme="secondary"
+                onChange={setReply}
+              />
             </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
+            <View style={styles.buttonWrapper}>
+              <Button
+                label="Reply"
+                size="small"
+                theme="transparent"
+                isFetching={isFetchingInsert}
+                onPress={handleSubmit}
+              />
+            </View>
+          </View>
 
-        <View style={styles.inputFooter}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              ref={textInputRef}
-              placeholder="Add a comment"
-              multiline={true}
-              minHeight={30}
-              maxHeight={100}
-              value={reply}
-              theme="secondary"
-              onChange={setReply}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              label="Reply"
-              size="small"
-              theme="transparent"
-              isFetching={isFetchingInsert}
-              onPress={handleSubmit}
-            />
-          </View>
+          <KeyboardSpacer />
+
         </View>
-
-        <KeyboardSpacer />
-
-      </View>
+      </FlingGestureHandler>
     </Modal>
   );
 }

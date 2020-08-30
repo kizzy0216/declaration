@@ -110,7 +110,7 @@ function Comment({
 
               <TouchableOpacity onPress={() => onViewReplies({ id })}>
                 <Text style={styles.action}>
-                  View replies ({(children.length - 1).toLocaleString()})
+                  View replies ({(countChildren - 1).toLocaleString()})
                 </Text>
               </TouchableOpacity>
             </>
