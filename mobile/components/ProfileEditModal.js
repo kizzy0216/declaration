@@ -14,6 +14,7 @@ import TextInput from '~/components/TextInput';
 import GenderInput from '~/components/GenderInput';
 import DateTimePicker from '~/components/DateTimePicker';
 import UserProfileUsernameInputContainer from '~/containers/UserProfileUsernameInputContainer';
+import { WINDOW_HEIGHT } from '~/constants';
 
 function ProfileEditModal({
   user,
@@ -117,7 +118,7 @@ function ProfileEditModal({
 
 const styles = StyleSheet.create({
   container: {
-    height: 350,
+    height: WINDOW_HEIGHT * 0.7,
     paddingLeft: 30,
     paddingRight: 30,
   },

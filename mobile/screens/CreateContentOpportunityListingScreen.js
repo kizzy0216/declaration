@@ -54,7 +54,6 @@ function CreateContentOpportunityListingScreen({ navigation }) {
   });
 
   const handleAvatarChange = (asset) => {
-    console.dir(asset);
     setOpportunityListing({
       ...opportunityListing,
       company: {

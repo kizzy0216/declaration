@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTable } from 'react-table';
 
 import EmptyState from './EmptyState';
-import ChevronIcon from './icons/ChevronIcon';
+import ChevronRightIcon from './icons/ChevronRightIcon';
 
 // Create a default prop getter
 const defaultPropGetter = () => ({})
@@ -55,7 +55,7 @@ function Table({
             href="#collapse"
             className="collapse-toggle"
           >
-            <ChevronIcon fill="inherit" />
+            <ChevronRightIcon fill="inherit" />
           </a>
         }
 

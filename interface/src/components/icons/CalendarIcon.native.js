@@ -1,13 +1,15 @@
 import * as React from "react";
 import { Animated } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, Circle } from 'react-native-svg';
 
 class CalendarIcon extends React.Component {
   render () {
     const { props } = this;
     return (
-      <Svg viewBox="0 0 50 50" width={16} height={16} {...props}>
-        <Path d="M12 0c-1.094 0-2 .906-2 2v2H4c-.523 0-1.055.191-1.43.57C2.191 4.945 2 5.477 2 6v40c0 .523.191 1.055.57 1.434.375.375.907.566 1.43.566h42c.523 0 1.055-.191 1.434-.566.375-.38.566-.91.566-1.434V6c0-.523-.191-1.055-.566-1.43-.38-.379-.91-.57-1.434-.57h-6V2c0-1.094-.906-2-2-2h-2c-1.094 0-2 .906-2 2v2H16V2c0-1.094-.906-2-2-2zm0 2h2v6h-2zm24 0h2v6h-2zM4 6h6v2c0 1.094.906 2 2 2h2c1.094 0 2-.906 2-2V6h18v2c0 1.094.906 2 2 2h2c1.094 0 2-.906 2-2V6h6v7H4zm0 9h42v31H4zm6 4v23h30V19zm2 2h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5zm-21 7h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5zm-21 7h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5zm7 0h5v5h-5z" />
+      <Svg viewBox="0 0 24 24" width={16} height={16} {...props}>
+        <Path d="M18.615 2H5.385C3.515 2 2 3.539 2 5.438v13.125C2 20.46 3.515 22 5.385 22h13.23C20.485 22 22 20.461 22 18.562V5.438C22 3.54 20.485 2 18.615 2zM5.135 3.538h13.73c.882 0 1.597.731 1.597 1.632v3.753H3.538V5.17c0-.901.715-1.632 1.597-1.632zm13.73 16.863H5.135c-.882 0-1.597-.766-1.597-1.71v-8.383h16.924v8.382c0 .945-.715 1.71-1.597 1.71z" />
+        <Circle cx={8.308} cy={6.308} r={1.538} />
+        <Circle cx={15.692} cy={6.308} r={1.538} />
       </Svg>
     );
   }

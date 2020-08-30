@@ -143,7 +143,7 @@ function ContentTileActions({
               }}
               maxPointers={1}
             >
-              <View style={styles.action}>
+              <View style={[styles.action, styles.starAction]}>
                 <Animated.View
                   style={{
                     ...styles.starAmountIndicator,
@@ -169,8 +169,8 @@ function ContentTileActions({
                 </Animated.View>
 
                 <StarFilledIcon
-                  width={24}
-                  height={24}
+                  width={36}
+                  height={36}
                   fill={(
                     isStarred
                       ? PUNCHY_BLUE
@@ -351,6 +351,12 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
 
+  starAction: {
+    paddingTop: 5,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+  },
   starAmountIndicator: {
     position: 'absolute',
     opacity: 0,
