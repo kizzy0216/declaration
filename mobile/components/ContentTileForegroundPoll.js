@@ -131,7 +131,7 @@ function ContentTileForegroundPoll({
           </Fragment>
         ))}
 
-        {percentages.length > 0 &&
+        {hasVoted && percentages.length > 0 &&
           <View style={styles.percentagesWrapper}>
             {(isMultipleChoice ? percentages : [percentages[0]]).map((percentage, index) => (
               <View
