@@ -19,7 +19,7 @@ const templatesByCategory = [
     heading: 'Text only',
     templates: [
       {
-        heading: 'Text',
+        heading: 'Text only',
         imageSource: require('~/assets/images/content-template-just-text-card.png'),
         screenName: 'CreateContentText',
         type: BASE_CONTENT_TEMPLATE_TYPE,
@@ -50,7 +50,7 @@ const templatesByCategory = [
     heading: 'Multimedia',
     templates: [
       {
-        heading: 'Image',
+        heading: 'Image only',
         imageSource: require('~/assets/images/content-template-just-image-card.png'),
         screenName: 'CreateContentMedia',
         screenOptions: {
@@ -59,7 +59,7 @@ const templatesByCategory = [
         type: BASE_CONTENT_TEMPLATE_TYPE,
       },
       {
-        heading: 'Video',
+        heading: 'Video only',
         videoSource: require('~/assets/videos/content-template-just-video-card.mp4'),
         screenName: 'CreateContentMedia',
         screenOptions: {
@@ -90,6 +90,7 @@ const templatesByCategory = [
       {
         heading: 'Media + multiple choice poll',
         imageSource: require('~/assets/images/content-template-media-with-multiple-choice-poll-card.png'),
+        videoSource: require('~/assets/videos/content-template-media-with-multiple-choice-poll-card.mp4'),
         screenName: 'CreateContentPoll',
         screenOptions: {
           withMedia: true,
@@ -103,13 +104,13 @@ const templatesByCategory = [
     heading: 'Business',
     templates: [
       {
-        heading: 'Opportunity listing',
+        heading: 'Opportunity',
         imageSource: require('~/assets/images/content-template-opportunity-listing-card.png'),
         screenName: 'CreateContentOpportunityListing',
         type: OPPORTUNITY_LISTING_CONTENT_TEMPLATE_TYPE,
       },
       {
-        heading: 'Availability listing',
+        heading: 'Availability',
         imageSource: require('~/assets/images/content-template-availability-listing-card.png'),
         screenName: 'CreateContentAvailabilityListing',
         type: AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE,
@@ -160,12 +161,12 @@ function CreateContentSelectTemplateScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   title: {
-    marginBottom: 80,
+    marginBottom: 70,
     fontSize: 40,
     lineHeight: 40,
     fontWeight: '600',
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
     paddingTop: 50,
   },
   contentContainer: {

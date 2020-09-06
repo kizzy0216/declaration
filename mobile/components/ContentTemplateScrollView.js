@@ -27,7 +27,10 @@ function ContentTemplateScrollView({
         {templates.map((template, index) => (
           <View
             key={index}
-            style={styles.cardWrapper}
+            style={[
+              styles.cardWrapper,
+              index === 0 && styles.cardWrapperFirst
+            ]}
           >
             <ContentTemplateCard
               heading={template.heading}
@@ -46,9 +49,9 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontWeight: '600',
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginBottom: 30,
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginBottom: 20,
   },
   scrollView: {
     overflow: 'visible',
@@ -59,8 +62,10 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 15,
+  },
+  cardWrapperFirst: {
+    marginLeft: 30,
   },
 });
 

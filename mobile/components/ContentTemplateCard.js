@@ -8,7 +8,7 @@ import {
 import { Video } from 'expo-av';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { WINDOW_WIDTH } from '~/constants';
+import { WINDOW_WIDTH, GRAY } from '~/constants';
 
 function ContentTemplateCard({
   heading,
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
   contentTemplateCard: {
     position: 'relative',
     overflow: 'visible',
-    width: WINDOW_WIDTH / 1.8,
-    aspectRatio: 155/245,
+    width: WINDOW_WIDTH / 2.05,
+    aspectRatio: 180/287,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -84,7 +84,9 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: 'center',
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 12,
+    fontWeight: '600',
+    color: GRAY,
   },
 });
 
