@@ -74,7 +74,7 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
-        heading="Add availability listing"
+        heading="Add details"
         canCancel={true}
         canBack={false}
         canNext={true}

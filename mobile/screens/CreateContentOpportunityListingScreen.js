@@ -88,7 +88,7 @@ function CreateContentOpportunityListingScreen({ navigation }) {
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
-        heading="Add opportunity listing"
+        heading="Add details"
         canCancel={true}
         canBack={false}
         canNext={true}

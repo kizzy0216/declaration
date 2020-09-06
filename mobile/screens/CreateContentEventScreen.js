@@ -45,7 +45,7 @@ function CreateContentEventScreen({ navigation }) {
       contentContainerStyle={{flex: 1}}
     >
       <CreateHeader
-        heading="Add event"
+        heading="Add details"
         canCancel={true}
         canBack={false}
         canNext={true}
