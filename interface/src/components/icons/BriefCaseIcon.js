@@ -3,9 +3,18 @@ import * as React from "react";
 function BriefCaseIcon(props) {
   return (
     <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-      <path
-        d="M20.75 7h-5V4.5a.625.625 0 00-.625-.625h-6.25a.625.625 0 00-.625.625V7h-5C2.56 7 2 7.56 2 8.25v10.625c0 .69.56 1.25 1.25 1.25h17.5c.69 0 1.25-.56 1.25-1.25V8.25C22 7.56 21.44 7 20.75 7zM9.5 5.125h5V7h-5V5.125zM3.25 8.25h17.5v2.813a2.5 2.5 0 01-2.5 2.5h-4.375v-.626c0-.69-.56-1.25-1.25-1.25h-1.25c-.69 0-1.25.56-1.25 1.25v.626H5.75a2.5 2.5 0 01-2.5-2.5V8.25zm9.375 7.188h-1.25v-2.5h1.25v2.5zM3.25 18.875V13.85a3.75 3.75 0 002.5.963h4.375v.624c0 .69.56 1.25 1.25 1.25h1.25c.69 0 1.25-.56 1.25-1.25v-.624h4.375c.924 0 1.815-.343 2.5-.963v5.025H3.25z"
-      />
+      <g
+        transform="translate(2 3)"
+        stroke={props.fill}
+        strokeWidth={1.5}
+        fill="none"
+        fillRule="evenodd"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect y={4} width={20} height={14} rx={2} />
+        <path d="M14 18V2a2 2 0 00-2-2H8a2 2 0 00-2 2v16" />
+      </g>
     </svg>
   );
 }

@@ -1,11 +1,17 @@
 import * as React from "react";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, G, Rect } from 'react-native-svg';
 
 function PlusInSquareIcon(props) {
   return (
     <Svg viewBox="0 0 24 24" width={16} height={16} {...props}>
-      <Path d="M18.615 2H5.385C3.515 2 2 3.539 2 5.438v13.125C2 20.46 3.515 22 5.385 22h13.23C20.485 22 22 20.461 22 18.562V5.438C22 3.54 20.485 2 18.615 2zM5.005 3.538h13.93c.894 0 1.619.731 1.619 1.632v5.138H3.384V5.17c0-.901.726-1.632 1.62-1.632zm13.928 16.933H5.004c-.894 0-1.62-.771-1.62-1.722v-8.441h17.169v8.44c0 .952-.725 1.723-1.62 1.723z" />
-      <Path d="M12 7.37a.679.679 0 00-.679.678v3.224H8.097a.679.679 0 100 1.358h3.224v3.224a.679.679 0 101.358 0V12.63h3.224a.679.679 0 100-1.358h-3.224V8.048A.679.679 0 0012 7.37z" />
+      <G fill="none" fillRule="evenodd">
+        <Rect fill={props.fill} width={24} height={24} rx={6} />
+        <Path
+          d="M12 6.5a.815.815 0 00-.815.815v3.87h-3.87a.815.815 0 100 1.63h3.87v3.87a.815.815 0 101.63 0v-3.87h3.87a.815.815 0 100-1.63h-3.87v-3.87A.815.815 0 0012 6.5z"
+          fill="#FFF"
+          fillRule="nonzero"
+        />
+      </G>
     </Svg>
   );
 }

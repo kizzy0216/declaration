@@ -134,7 +134,11 @@ function AuthenticationLogInScreen({ route, navigation }) {
             ? null
             : 2
         )}
-        onClose={() => navigation.goBack()}
+        onClose={() => 
+          navigation.dispatch(
+            StackActions.replace('AuthenticationHome')
+          )
+        }
       />
 
       <View style={styles.container}>

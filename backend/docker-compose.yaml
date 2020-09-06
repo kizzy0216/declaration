@@ -33,5 +33,12 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous'
       NETWORK_MEMBERSHIP_INVITATION_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/network-membership-invitation'
       VERIFICATION_CODE_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/verification-code'
+      USER_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/user'
+      NETWORK_USER_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/network-user'
+      NETWORK_USER_RELATIONSHIP_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/network-user-relationship'
+      COMMENT_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/comment'
+      CONTENT_STAR_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/content-star'
+      CONTENT_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/content'
+      MEDIA_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/media'
 volumes:
   db_data:

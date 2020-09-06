@@ -254,6 +254,28 @@
   - role: user
     permission:
       filter: {}
+  event_triggers:
+  - name: comment
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - id
+        - text
+        - created_at
+        - updated_at
+        - creator_uuid
+        - parent_comment_uuid
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: COMMENT_WEBHOOK_URL
 - table:
     schema: public
     name: comment_ancestor
@@ -496,6 +518,32 @@
   - role: user
     permission:
       filter: {}
+  event_triggers:
+  - name: content
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - id
+        - body
+        - heading
+        - sub_heading
+        - created_at
+        - updated_at
+        - creator_uuid
+        - media_uuid
+        - meta_uuid
+        - network_uuid
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: CONTENT_WEBHOOK_URL
 - table:
     schema: public
     name: content_comment
@@ -1328,6 +1376,24 @@
   - role: user
     permission:
       filter: {}
+  event_triggers:
+  - name: content-star
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - amount
+        - astronomer_uuid
+        - content_uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: CONTENT_STAR_WEBHOOK_URL
 - table:
     schema: public
     name: hashtag
@@ -1486,6 +1552,31 @@
       filter:
         uploader_uuid:
           _eq: X-Hasura-User-Id
+  event_triggers:
+  - name: media
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - original_height
+        - original_width
+        - id
+        - alt
+        - original_url
+        - type
+        - created_at
+        - updated_at
+        - uploader_uuid
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: MEDIA_WEBHOOK_URL
 - table:
     schema: public
     name: network
@@ -1970,6 +2061,27 @@
   - role: super_admin
     permission:
       filter: {}
+  event_triggers:
+  - name: network-user
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - is_blocked
+        - role
+        - created_at
+        - updated_at
+        - network_uuid
+        - user_uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: NETWORK_USER_WEBHOOK_URL
 - table:
     schema: public
     name: network_user_profile
@@ -2187,6 +2299,29 @@
                 _in:
                 - CONNECTED
                 - PENDING
+  event_triggers:
+  - name: network-user-relationship
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - id
+        - type
+        - created_at
+        - updated_at
+        - from_user_uuid
+        - network_uuid
+        - to_user_uuid
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: NETWORK_USER_RELATIONSHIP_WEBHOOK_URL
 - table:
     schema: public
     name: network_user_relationship_type
@@ -2514,6 +2649,28 @@
   - role: super_admin
     permission:
       filter: {}
+  event_triggers:
+  - name: user
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+      delete:
+        columns: '*'
+      update:
+        columns:
+        - is_verified
+        - id
+        - email
+        - name
+        - created_at
+        - updated_at
+        - uuid
+    retry_conf:
+      num_retries: 3
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: USER_WEBHOOK_URL
 - table:
     schema: public
     name: user_profile

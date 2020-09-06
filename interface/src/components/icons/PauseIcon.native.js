@@ -1,11 +1,21 @@
 import * as React from "react";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, G, Circle } from 'react-native-svg';
 
 function PauseIcon(props) {
   return (
     <Svg viewBox="0 0 24 24" width={16} height={16} {...props}>
-      <Path d="M11.983.172C5.46.172.173 5.46.173 11.982c0 6.524 5.287 11.811 11.81 11.811 6.523 0 11.81-5.287 11.81-11.81 0-6.523-5.287-11.81-11.81-11.81zm0 22.242c-5.761 0-10.431-4.67-10.431-10.431 0-5.761 4.67-10.431 10.43-10.431 5.762 0 10.432 4.67 10.432 10.43 0 5.762-4.67 10.432-10.431 10.432z" />
-      <Path d="M11.078 16.336a1.465 1.465 0 11-2.931 0V8.19a1.466 1.466 0 112.931 0v8.146zM15.905 16.336a1.465 1.465 0 11-2.931 0V8.19a1.465 1.465 0 112.931 0v8.146z" />
+      <G
+        transform="translate(2.024 2)"
+        stroke={props.fill}
+        strokeWidth={1.5}
+        fill="none"
+        fillRule="evenodd"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <Circle cx={10} cy={10} r={10} />
+        <Path d="M8 13V7M12 13V7" />
+      </G>
     </Svg>
   );
 }

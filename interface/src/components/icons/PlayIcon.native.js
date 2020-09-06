@@ -1,11 +1,21 @@
 import * as React from "react";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, Circle, G } from 'react-native-svg';
 
 function PlayIcon(props) {
   return (
     <Svg viewBox="0 0 24 24" width={16} height={16} {...props}>
-      <Path d="M11.984 1.984a9.98 9.98 0 00-10 10 9.98 9.98 0 0010 10 9.98 9.98 0 0010-10 9.98 9.98 0 00-10-10zm0 18.33c-4.594 0-8.33-3.759-8.33-8.33 0-4.572 3.736-8.33 8.33-8.33 4.593 0 8.33 3.736 8.33 8.33 0 4.593-3.737 8.33-8.33 8.33z" />
-      <Path d="M16.577 11.258l-6.681-3.89a.931.931 0 00-.835 0 .84.84 0 00-.418.726v7.78a.84.84 0 00.418.725c.131.088.285.11.417.11a.746.746 0 00.418-.11l6.66-3.89a.84.84 0 00.417-.725c0-.308-.154-.594-.396-.726z" />
+      <G
+        transform="translate(2 2)"
+        stroke={props.fill}
+        strokeWidth={1.5}
+        fill="none"
+        fillRule="evenodd"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <Circle cx={10} cy={10} r={10} />
+        <Path d="M8 6l6 4-6 4z" />
+      </G>
     </Svg>
   );
 }

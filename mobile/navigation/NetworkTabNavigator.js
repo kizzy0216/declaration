@@ -13,9 +13,10 @@ import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 
 import PlusInSquareIcon from '@shared/components/icons/PlusInSquareIcon';
 import NotificationsIcon from '@shared/components/icons/NotificationsIcon';
-import VennDiagramIcon from '@shared/components/icons/VennDiagramIcon';
+import HomeIcon from '@shared/components/icons/HomeIcon';
 import PersonIcon from '@shared/components/icons/PersonIcon';
 import SearchIcon from '@shared/components/icons/SearchIcon';
+import { BLACK } from '~/constants';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -43,10 +44,10 @@ function NetworkTabNavigator({ navigation, route }) {
         options={{
           tabBarIcon: ({ isFocused }) => (
             <TabBarIcon isFocused={isFocused}>
-              <VennDiagramIcon
+              <HomeIcon
                 width={24}
                 height={24}
-                fill="black"
+                fill={BLACK}
               />
             </TabBarIcon>
           ),
@@ -92,7 +93,7 @@ function NetworkTabNavigator({ navigation, route }) {
               <PlusInSquareIcon
                 width={24}
                 height={24}
-                fill="black"
+                fill={BLACK}
               />
             </TabBarIcon>
           ),
@@ -116,7 +117,7 @@ function NetworkTabNavigator({ navigation, route }) {
               <NotificationsIcon
                 width={24}
                 height={24}
-                fill="black"
+                fill={BLACK}
               />
             </TabBarIcon>
           ),
@@ -131,7 +132,7 @@ function NetworkTabNavigator({ navigation, route }) {
               <PersonIcon
                 width={24}
                 height={24}
-                fill="black"
+                fill={BLACK}
               />
             </TabBarIcon>
           ),
