@@ -6,10 +6,10 @@ import React, {
 import { useMutation } from 'urql';
 
 import { NetworkContext } from '~/contexts/NetworkContext';
-import InsertContentOne from '@shared/mutations/InsertContentOne';
-import InsertContentPollOne from '@shared/mutations/InsertContentPollOne';
-import InsertContentOpportunityListingOne from '@shared/mutations/InsertContentOpportunityListingOne';
-import InsertContentAvailabilityListingOne from '@shared/mutations/InsertContentAvailabilityListingOne';
+import InsertContentOne from '~/mutations/InsertContentOne';
+import InsertContentPollOne from '~/mutations/InsertContentPollOne';
+import InsertContentOpportunityListingOne from '~/mutations/InsertContentOpportunityListingOne';
+import InsertContentAvailabilityListingOne from '~/mutations/InsertContentAvailabilityListingOne';
 
 import {
   BASE_CONTENT_TEMPLATE_TYPE,
