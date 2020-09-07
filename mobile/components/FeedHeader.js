@@ -171,7 +171,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    fontWeight: 'bold',
+    fontWeight: '500',
+    fontSize: 16,
   },
   iconWrapper: {
     marginLeft: 5,

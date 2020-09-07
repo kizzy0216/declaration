@@ -78,10 +78,10 @@ function ContentTileByline({
             {splitDescriptionByHashtags.map((split, index) => (
               <Fragment key={index}>
                 <Text
-                  style={{
-                    ...styles.description,
-                    color: (theme === 'light' ? '#FFFFFF' : '#000000'),
-                  }}
+                  style={[
+                    styles.description,
+                    styles[theme],
+                  ]}
                 >
                   {split}
                 </Text>
@@ -96,6 +96,7 @@ function ContentTileByline({
                         styles.description,
                         styles.hashtag,
                         index === matchedHashtags.length - 1 && styles.lastHashtag,
+                        styles[theme],
                       ]}
                     >
                       {matchedHashtags[index]}
@@ -146,6 +147,12 @@ const styles = StyleSheet.create({
   },
   lastHashtag: {
     marginRight: 50,
+  },
+  light: {
+    color: 'white',
+  },
+  dark: {
+    color: 'black',
   },
 });
 

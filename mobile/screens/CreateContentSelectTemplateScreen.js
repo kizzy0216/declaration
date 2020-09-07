@@ -51,7 +51,7 @@ const templatesByCategory = [
     templates: [
       {
         heading: 'Image only',
-        imageSource: require('~/assets/images/content-template-just-image-card.png'),
+        imageSource: require('~/assets/images/content-template-just-image-card.jpg'),
         screenName: 'CreateContentMedia',
         screenOptions: {
           isJustImage: true,
@@ -117,6 +117,23 @@ const templatesByCategory = [
       },
     ],
   },
+  {
+    heading: 'Coming soon',
+    templates: [
+      {
+        heading: '1:1 Session',
+        videoSource: require('~/assets/videos/content-template-session-card.mp4'),
+        screenName: '',
+        type: SESSION_CONTENT_TEMPLATE_TYPE,
+      },
+      {
+        heading: 'Event',
+        imageSource: require('~/assets/images/content-template-event-card.jpg'),
+        screenName: '',
+        type: EVENT_CONTENT_TEMPLATE_TYPE,
+      },
+    ],
+  },
 ];
 
 function CreateContentSelectTemplateScreen({ navigation }) {
@@ -148,8 +165,10 @@ function CreateContentSelectTemplateScreen({ navigation }) {
               heading={category.heading}
               templates={category.templates}
               onTemplatePress={({ screenName, screenOptions, type }) => {
-                setType(type);
-                navigation.navigate(screenName, screenOptions);
+                if (screenName && screenName.length > 0) {
+                  setType(type);
+                  navigation.navigate(screenName, screenOptions);
+                }
               }}
             />
           </View>

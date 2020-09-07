@@ -8,13 +8,18 @@
     "aws-sdk": "^2.717.0",
     "color": "^3.1.2",
     "cookie": "^0.4.1",
+    "esm": "^3.2.25",
+    "ffprobe": "^1.1.0",
+    "ffprobe-static": "^3.0.0",
     "graphql": "^15.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mime-types": "^2.1.27",
     "sharp": "^0.25.4",
     "uuid": "^8.2.0"
   },
   "devDependencies": {
-    "@vercel/node": "^1.7.1"
+    "@vercel/node": "^1.7.1",
+    "minimist": "^1.2.5"
   }
 }

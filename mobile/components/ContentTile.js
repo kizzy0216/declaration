@@ -128,7 +128,7 @@ function ContentTile({
     }
 
     setIsVideoPlaying(!isVideoPlaying);
-  }, []);
+  }, [isVideoPlaying]);
 
   const handleStarPanActive = useCallback(({ x: x1, y: y1 }) => {
   }, []);
