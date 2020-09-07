@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as UrqlProvider} from 'urql';
+import { Audio } from 'expo-av';
 
 import useCachedResources from '~/hooks/useCachedResources';
 import RootNavigator from '~/navigation/RootNavigator';
@@ -22,6 +23,20 @@ const Stack = createStackNavigator();
 
 function App(props) {
   const hasLoadedResources = useCachedResources();
+
+  useEffect(() => {
+    (async () => {
+      const t = Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: false,
+        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+        shouldDuckAndroid: false,
+      });
+      console.dir(t);
+    })();
+  }, []);
 
   if (!hasLoadedResources) {
     return <View style={styles.container} />;

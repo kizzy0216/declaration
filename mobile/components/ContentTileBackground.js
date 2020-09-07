@@ -181,7 +181,6 @@ function ContentTileBackground({
                       width: '100%',
                       height: '100%',
                     }}
-                    playsInSilentModeIOS={true}
                   />
                 }
               </View>
