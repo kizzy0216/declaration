@@ -21,7 +21,7 @@ export default {
     'ios',
     'android',
   ],
-  version: '0.0.1',
+  version: '0.0.2',
   orientation: 'portrait',
   icon: process.env.APPLICATION_ICON,
   scheme: process.env.APPLICATION_SCHEME,
@@ -45,12 +45,12 @@ export default {
     bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    buildNumber: '10',
+    buildNumber: '1',
   },
   android: {
     package: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    versionCode: 10,
+    versionCode: 1,
   },
 }

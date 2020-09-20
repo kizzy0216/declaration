@@ -172,6 +172,9 @@ HASURA_ADMIN_SECRET_KEY=
 JWT_SECRET_KEY=
 NODE_ENV="production"
 SENDGRID_API_KEY=
+DECLARATION_AWS_ACCESS_KEY=
+DECLARATION_AWS_SECRET_KEY=
+DECLARATION_AWS_BUCKET_NAME=
 ```
 
 See `./backend/.env` for examples of the above environment variables. Updating

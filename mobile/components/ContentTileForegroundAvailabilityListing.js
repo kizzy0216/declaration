@@ -115,7 +115,6 @@ function ContentTileForegroundAvailabilityListing({
 
 const styles = StyleSheet.create({
   container: {
-    paddingRight: 80,
   },
   avatarWrapper: {
     marginBottom: 20,

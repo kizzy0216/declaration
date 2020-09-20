@@ -17,28 +17,29 @@ import EmptyState from '~/components/EmptyState';
 import NoNotificationsIcon from '@shared/components/icons/NoNotificationsIcon';
 import { GRAY } from '~/constants';
 
-const MOCK_ITEMS = [
-  {
-    id: 0,
-    imageSrc: `${REST_BASE_URL}/avatar/0`,
-    heading: 'Agatha Sohn',
-    subHeading: 'Wants to connect',
-    actionLabel: 'Connect',
-  },
-  {
-    id: 1,
-    imageSrc: `${REST_BASE_URL}/avatar/1`,
-    heading: 'Danesh Chowritmootoo',
-    subHeading: 'Mentioned you',
-  },
-  {
-    id: 2,
-    imageSrc: `${REST_BASE_URL}/avatar/2`,
-    heading: 'Leonidas Papadopoulou',
-    subHeading: 'Wants to connect',
-    actionLabel: 'Connect',
-  },
-];
+const MOCK_ITEMS = [];
+// const MOCK_ITEMS = [
+//   {
+//     id: 0,
+//     imageSrc: `${REST_BASE_URL}/avatar/0`,
+//     heading: 'Agatha Sohn',
+//     subHeading: 'Wants to connect',
+//     actionLabel: 'Connect',
+//   },
+//   {
+//     id: 1,
+//     imageSrc: `${REST_BASE_URL}/avatar/1`,
+//     heading: 'Danesh Chowritmootoo',
+//     subHeading: 'Mentioned you',
+//   },
+//   {
+//     id: 2,
+//     imageSrc: `${REST_BASE_URL}/avatar/2`,
+//     heading: 'Leonidas Papadopoulou',
+//     subHeading: 'Wants to connect',
+//     actionLabel: 'Connect',
+//   },
+// ];
 
 function NotificationsScreen({ navigation }) {
   const [isFetching, setIsFetching] = useState(false);
