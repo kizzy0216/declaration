@@ -25,6 +25,7 @@ function GenderInput({
       <TextInput
         label={withLabel ? 'Gender' : ''}
         placeholder="Gender"
+        editable={false}
         value={gender}
         onChange={setGender}
       />

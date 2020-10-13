@@ -39,6 +39,7 @@ services:
       COMMENT_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/comment'
       CONTENT_STAR_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/content-star'
       CONTENT_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/content'
+      CONTENT_META_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/content-meta'
       MEDIA_WEBHOOK_URL: 'http://host.docker.internal:3000/api/webhooks/media'
 volumes:
   db_data:

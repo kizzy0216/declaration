@@ -7,11 +7,34 @@ const GetNetworkUsers = `
       __typename
       user {
         __typename
-        name
         uuid
+        id
+        name
+        email
+        created_at
+        updated_at
         user_profile {
           __typename
           photo
+          username
+          location
+          personal_bio
+          work_place
+          work_title
+          work_bio
+          educational_institution
+          photo
+          created_at
+          updated_at
+          user_profile_private {
+            __typename
+            uuid
+            id
+            date_of_birth
+            gender
+            created_at
+            updated_at
+          }
         }
       }
     }

@@ -22,7 +22,6 @@
     "@react-navigation/native": "^5.2.1",
     "@react-navigation/stack": "^5.2.16",
     "currency.js": "^2.0.3",
-    "expo": "^38.0.0",
     "expo-asset": "~8.1.7",
     "expo-av": "~8.2.1",
     "expo-blur": "~8.1.2",
@@ -62,6 +61,7 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-expo": "^8.2.3",
     "dotenv": "^8.2.0",
+    "expo": "^38.0.10",
     "jest-expo": "^38.0.0"
   },
   "private": true

@@ -2,8 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FeedScreen from '~/screens/FeedScreen';
-import ArchiveScreen from '~/screens/ArchiveScreen';
 import NotificationsScreen from '~/screens/NotificationsScreen';
+import SearchScreen from '../screens/SearchScreen';
 import ProfileScreen from '~/screens/ProfileScreen';
 import StorybookScreen from '~/screens/StorybookScreen';
 import TabBar from '~/components/TabBar';
@@ -65,24 +65,24 @@ function NetworkTabNavigator({ navigation, route }) {
         })}
       />
       <BottomTab.Screen
-        name="Archive"
-        component={ArchiveScreen}
+        name="Search"
+        component={SearchScreen}
         options={{
           tabBarIcon: ({ isFocused }) => (
             <TabBarIcon isFocused={isFocused}>
               <SearchIcon
                 width={24}
                 height={24}
-                fill="rgba(0,0,0,0.2)"
+                fill={BLACK}
               />
             </TabBarIcon>
           ),
         }}
-        listeners={() => ({
-          tabPress: (event) => {
-            event.preventDefault();
-          }
-        })}
+        // listeners={() => ({
+        //   tabPress: (event) => {
+        //     event.preventDefault()
+        //   }
+        // })}
       />
       <BottomTab.Screen
         name="DummyCreate"

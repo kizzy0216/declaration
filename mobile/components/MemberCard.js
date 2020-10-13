@@ -3,6 +3,7 @@ import {
   View,
   Image,
   StyleSheet,
+  Text
 } from 'react-native';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,6 +19,7 @@ function MemberCard({
   name,
   profile: {
     photo,
+    username
   },
   onPress = () => {},
 }) {
@@ -26,7 +28,6 @@ function MemberCard({
     ? photo
     : `${REST_BASE_URL}/avatar/${uuid}`
   );
-
   return (
     <TouchableOpacity
       onPress={() => onPress({ uuid })}
@@ -49,6 +50,9 @@ function MemberCard({
           >
             {name}
           </Paragraph>
+          <Text style={[styles.heading, styles.subheading]}>
+            {`@${username}`}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -73,9 +77,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: 'white',
     fontWeight: 'bold',
-    paddingBottom: 20,
+    paddingBottom: 24,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  subheading: {
+    fontSize: 14,
+    lineHeight: 14,
+    paddingBottom: 8,
   },
   gradient: {
     position: 'absolute',
