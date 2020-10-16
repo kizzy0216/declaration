@@ -137,11 +137,11 @@ function NetworkTabNavigator({ navigation, route }) {
             </TabBarIcon>
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabLongPress: () => {
-            navigation.navigate('Members');
-          }
-        })}
+        // listeners={({ navigation }) => ({
+        //   tabLongPress: () => {
+        //     navigation.navigate('Members');
+        //   }
+        // })}
       />
       {process.env.NODE_ENV !== 'production' && RENDER_STORYBOOK_TAB &&
         <BottomTab.Screen

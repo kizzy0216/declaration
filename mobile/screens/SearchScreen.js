@@ -1,21 +1,24 @@
-import React, { useState, useContext } from 'react';
+import React, { useMemo, useState, useContext, useCallback } from 'react';
 import {
   View,
   TextInput,
+  Text,
   ScrollView,
   StyleSheet,
   RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from 'urql';
-
+import { useFocusEffect } from '@react-navigation/native';
 import GetNetworkUsers from '~/queries/GetNetworkUsers';
 // import ScreenHeader from '~/components/ScreenHeader';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import SearchIcon from '@shared/components/icons/SearchIcon';
 // import OtherIcon from '@shared/components/icons/FilterIcon';
 import mapUser from '@shared/mappings/mapUser';
+import ContentCard from '~/components/ContentCard';
 import MemberCard from '~/components/MemberCard';
 import {
   LIGHT_GRAY,
@@ -24,12 +27,14 @@ import {
 // import SearchFilterModal from '../components/SearchFilterModal';
 
 function SearchScreen({ navigation }) {
-  const [searchValue, setSearchValue] = useState('');
   // const [filters, setFilters] = useState({})
   // const [ showFilter, setShowFilter ] = useState(false);
   const { user } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
-
+  const { getItems, itemUuids: postIds, items: posts, scrollToIndex } = useContext(ContentTilePagerContext);
+  const [searchValue, setSearchValue] = useState('');
+  const [activeMembers, setActiveMembers] = useState([]);
+  const [popularPosts, setPopularPosts] = useState([]);
   const [
     getUsersResult,
     getUsers,
@@ -41,24 +46,41 @@ function SearchScreen({ navigation }) {
     },
     pause: !activeNetwork.uuid,
   });
+  
+  useFocusEffect(useCallback(() => {
+    getItems();
+    getUsers({ requestPolicy: 'network-only' });
+  }, []));
 
   const {
-    data,
+    data: usersData,
     fetching: isFetching,
   } = getUsersResult;
 
-  let items = [];
-  if (!isFetching) {
-    // console.log('DATA', data)
-    items = data
-      .network_user
-      .map(({ user }) => mapUser(user))
-    if (searchValue) {
-      items = items.filter(x => x.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0 ||
-              (x.profile && x.profile.username && x.profile.username.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0))
+  const mappedPosts = useMemo(() => {
+    return postIds.map((uuid) => posts[uuid]);
+  }, [postIds]);
+
+  React.useEffect(() => {
+    if (!isFetching) {
+      let memberData = usersData
+        .network_user
+        .map(({ user }) => mapUser(user))
+      let postData = mappedPosts
+      if (searchValue) {
+        const testValue = searchValue.toLowerCase()
+        memberData = memberData.filter(x => x.name.toLowerCase().indexOf(testValue) >= 0 ||
+                (x.profile && x.profile.username && x.profile.username.toLowerCase().indexOf(testValue) >= 0))
+        postData = postData.filter(x => (x.heading || '').toLowerCase().indexOf(testValue) >= 0 ||
+                  (x.meta && x.meta.description && x.meta.description.toLowerCase().indexOf(testValue) >= 0) ||
+                  (x.poll && x.poll.options && x.poll.options.some(y => y.text.toLowerCase().indexOf(testValue) >= 0))
+                )
+      }
+      setActiveMembers(memberData)
+      setPopularPosts(postData)
     }
-    // console.log('ITEMS', items)
-  }
+  }, [searchValue, usersData, isFetching, mappedPosts]);
+  
 
   function handleRefresh() {
     setSearchValue('')
@@ -84,9 +106,10 @@ function SearchScreen({ navigation }) {
           style={
             {
               flex: 1, 
-              lineHeight: 18,
-              paddingVertical: 12,
-              paddingHorizontal: 12,
+              lineHeight: 20,
+              fontSize: 16,
+              paddingVertical: 20,
+              paddingHorizontal: 20,
             }
           }
           placeholder="Search"
@@ -104,7 +127,6 @@ function SearchScreen({ navigation }) {
         </TouchableOpacity> */}
       </View>
       <ScrollView
-        style={styles.container}
         refreshControl={
           <RefreshControl
             refreshing={isFetching}
@@ -112,19 +134,66 @@ function SearchScreen({ navigation }) {
           />
         }
       >
-        {items.map((item) => (
-          <View
-            style={styles.memberCardWrapper}
-            key={item.uuid}
+        <View>
+          <Text style={styles.heading}>
+            Most active members
+          </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollView}
+            contentContainerStyle={styles.contentContainer}
           >
-            <MemberCard
-              {...item}
-              onPress={
-                ({ uuid }) => navigation.navigate('Member', { uuid })
-              }
-            />
-          </View>
-        ))}
+            {activeMembers.map((activeMember, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.cardWrapper,
+                  index === 0 && styles.cardWrapperFirst
+                ]}
+              >
+                <MemberCard
+                  {...activeMember}
+                  onPress={
+                    ({ uuid }) => navigation.navigate('Member', { uuid })
+                  }
+                />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+        <View style={{marginTop: 32}}>
+          <Text style={styles.heading}>
+            Popular posts
+          </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollView}
+            contentContainerStyle={styles.contentContainer}
+          >
+            {popularPosts.map((post, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.cardWrapper,
+                  index === 0 && styles.cardWrapperFirst
+                ]}
+              >
+                <ContentCard
+                  content={post}
+                  onPress={({uuid}) =>  {
+                    scrollToIndex({ index: postIds.indexOf(uuid), withAnimation: false })
+                    navigation.navigate('Feed')
+                  }}
+                  // onPress={
+                  //   ({ uuid }) => navigation.navigate('Member', { uuid })
+                  // }
+                />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -135,29 +204,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 17,
-    marginHorizontal: 20,
+    borderRadius: 16,
+    marginHorizontal: 24,
+    marginBottom: 32,
     paddingHorizontal: 16,
     backgroundColor: LIGHT_GRAY
   },
-  container: {
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingLeft: 20,
+  scrollView: {
+    overflow: 'visible'
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    overflow: 'visible',
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: '600',
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginBottom: 20,
   },
   textInput: {
     fontSize: 14,
     lineHeight: 20,
   },
   textInputWrapper: {
-    borderRadius: 17,
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingBottom: 23,
-    paddingLeft: 20,
+    borderRadius: 16,
+    padding: 24
   },
-  memberCardWrapper: {
-    marginBottom: 20,
+  cardWrapper: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  cardWrapperFirst: {
+    marginLeft: 32,
   },
 });
 

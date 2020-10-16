@@ -24,6 +24,7 @@ const BADGE_LABELS = [
 
 function ContentTileForegroundPoll({
   poll,
+  pollStyle = {},
   onSelect = () => {},
 }) {
   if (!poll) {
@@ -55,7 +56,7 @@ function ContentTileForegroundPoll({
   });
 
   return (
-    <View style={styles.poll}>
+    <View style={[styles.poll, pollStyle]}>
       <View
         style={[
           styles.container,

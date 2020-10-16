@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const { REST_BASE_URL } = Constants.manifest.extra;
 
 import Paragraph from '~/components/Paragraph';
-import { LIGHT_GRAY } from '~/constants';
+import { WINDOW_WIDTH, LIGHT_GRAY } from '~/constants';
 
 function MemberCard({
   uuid,
@@ -31,9 +31,10 @@ function MemberCard({
   return (
     <TouchableOpacity
       onPress={() => onPress({ uuid })}
+      containerStyle={{overflow: 'visible'}}
     >
-      <View style={styles.memberCard}>
-        <View style={styles.container}>
+      <View style={styles.contentTemplateCard}>
+        <View style={styles.memberContainer}>
           <Image
             style={styles.backgroundImage}
             source={{ uri: imageSrc }}
@@ -48,7 +49,7 @@ function MemberCard({
             style={styles.heading}
             size="huge"
           >
-            {name}
+            {name.split(' ')[0]}
           </Paragraph>
           <Text style={[styles.heading, styles.subheading]}>
             {`@${username}`}
@@ -60,8 +61,22 @@ function MemberCard({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 17,
+  contentTemplateCard: {
+    position: 'relative',
+    overflow: 'visible',
+    width: WINDOW_WIDTH / 2.65,
+    aspectRatio: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 30,
+    elevation: 20,
+  },
+  memberContainer: {
+    borderRadius: 32,
     position: 'relative',
     flexDirection: 'column',
     justifyContent: 'flex-end',
@@ -71,15 +86,15 @@ const styles = StyleSheet.create({
   backgroundImage: {
     backgroundColor: LIGHT_GRAY,
     width: '100%',
-    aspectRatio: 1.5,
+    aspectRatio: 1,
   },
   heading: {
     position: 'absolute',
     color: 'white',
     fontWeight: 'bold',
     paddingBottom: 24,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 24,
+    paddingRight: 24,
   },
   subheading: {
     fontSize: 14,
