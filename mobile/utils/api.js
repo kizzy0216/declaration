@@ -10,7 +10,12 @@ const {
 let inMemoryJWT;
 
 export const hydrateJWT = async () => {
-  const jwt = await SecureStore.getItemAsync('jwt');
+  let jwt;
+  try {
+    jwt = await SecureStore.getItemAsync('jwt');
+  } catch {
+    console.error('Failed to get JWT from local storage');
+  }
   inMemoryJWT = JSON.parse(jwt);
 
   return Promise.resolve();
@@ -31,7 +36,12 @@ export const saveUser = (user) => {
 };
 
 export const loadUser = async () => {
-  const user = await SecureStore.getItemAsync('user');
+  let user;
+  try {
+    user = await SecureStore.getItemAsync('user');
+  } catch {
+    console.error('Failed to get user from local storage');
+  }
   return Promise.resolve(JSON.parse(user));
 }
 
