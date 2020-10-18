@@ -23,6 +23,7 @@ export default {
   ],
   version: '0.0.2',
   orientation: 'portrait',
+  owner: 'nickdandakis',
   icon: process.env.APPLICATION_ICON,
   scheme: process.env.APPLICATION_SCHEME,
   splash: {
