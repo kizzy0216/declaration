@@ -63,18 +63,22 @@ function SearchScreen({ navigation }) {
 
   React.useEffect(() => {
     if (!isFetching) {
+      // console.log('usersdata', usersData.network_user.map(x => x.user_profile))
       let memberData = usersData
         .network_user
         .map(({ user }) => mapUser(user))
       let postData = mappedPosts
+      // console.log('memberData', memberData.map(x => x.profile))
       if (searchValue) {
         const testValue = searchValue.toLowerCase()
         memberData = memberData.filter(x => x.name.toLowerCase().indexOf(testValue) >= 0 ||
-                (x.profile && x.profile.username && x.profile.username.toLowerCase().indexOf(testValue) >= 0))
+                  (x.profile && x.profile.username && x.profile.username.toLowerCase().indexOf(testValue) >= 0) ||
+                  (x.profile && x.profile.workTitle && x.profile.workTitle.toLowerCase().indexOf(testValue) >= 0)
+        )
         postData = postData.filter(x => (x.heading || '').toLowerCase().indexOf(testValue) >= 0 ||
                   (x.meta && x.meta.description && x.meta.description.toLowerCase().indexOf(testValue) >= 0) ||
                   (x.poll && x.poll.options && x.poll.options.some(y => y.text.toLowerCase().indexOf(testValue) >= 0))
-                )
+        )
       }
       setActiveMembers(memberData)
       setPopularPosts(postData)

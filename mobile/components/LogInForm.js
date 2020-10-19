@@ -12,7 +12,7 @@ function LogInForm({
 
   function handleSubmit() {
     if (email.length > 0) {
-      onSubmit({ email });
+      onSubmit({ email: email.toLowerCase().trim() });
     }
   }
 

@@ -35,13 +35,14 @@ const handlers = {
   },
   POST: async (request, response) => {
     const {
-      email,
+      email: username,
       redirect,
       code,
       withCookies = true,
     } = request.body;
     const { cookies } = request;
 
+    const email = (username || '').trim().toLowerCase()
     // email is required
     if (!email || email.length === 0) {
       return response.status(400).json({ error: 'Email required' });
