@@ -6,6 +6,7 @@ const ContentFragment = `
     heading
     sub_heading
     body
+    screenshot
     content_partial {
       __typename
       content_partial_opportunity_listing {

@@ -11,10 +11,11 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
+// import { SafeAreaView } from 'react-native-safe-area-context';
+import ViewShot from 'react-native-view-shot';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 import ContentTileForeground from '~/components/ContentTileForeground';
 import ContentTileBackground from '~/components/ContentTileBackground';
 import ContentTileFooter from '~/components/ContentTileFooter';
@@ -28,10 +29,12 @@ import {
 import { getStarAmount } from '~/utils/star';
 
 function ContentTile({
+  uuid,
   index,
   heading,
   subHeading,
   body,
+  screenshot,
   media,
   poll,
   session,
@@ -52,7 +55,9 @@ function ContentTile({
 }) {
   const starAnimation = useRef(new Animated.ValueXY()).current;
   const fullscreenAnimation = useRef(new Animated.Value(0)).current;
+  const viewPanel = useRef();
   const { activeIndex } = useContext(ContentTilePagerContext);
+  const { updateScreenshot } = useContext(CreateContentContext);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { setIsVisible: setIsInterfaceVisible } = useContext(InterfaceContext);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -68,7 +73,8 @@ function ContentTile({
         media.uri.includes('jpg') ||
         media.uri.includes('png') ||
         media.uri.includes('gif') ||
-        media.uri.includes('jpeg')
+        media.uri.includes('jpeg') ||
+        media.uri.includes('heic')
       )
     ),
     hasVideo: (
@@ -91,6 +97,21 @@ function ContentTile({
     session ||
     event
   );
+
+  useEffect(() => {
+    if (viewPanel && viewPanel.current && !media && !screenshot) {
+      viewPanel.current.capture().then(uri => {
+        updateScreenshot(uuid, uri)
+      })
+    }
+  }, [])
+  const handleMediaLoaded = () => {
+    if (viewPanel && viewPanel.current && !screenshot) {
+      viewPanel.current.capture().then(uri => {
+        updateScreenshot(uuid, uri)
+      })
+    }
+  }
 
   useEffect(() => {
     setIsVideoPlaying(index === activeIndex && controls.hasVideo);
@@ -170,6 +191,7 @@ function ContentTile({
   }, [isStarred]);
 
   return (
+    <ViewShot ref={viewPanel} options={{ format: 'png', quality: 0.8 }}>
     <View style={styles.contentTile}>
       <View style={styles.container}>
         <View
@@ -184,6 +206,7 @@ function ContentTile({
             isFocused={isFullscreen}
             isStarred={isStarred}
             hasForeground={hasForeground}
+            onMediaLoaded={handleMediaLoaded}
             onTap={handleBackgroundTap}
             onDoubleTap={handleStar}
             onLongPress={onMenuRequest}
@@ -281,6 +304,7 @@ function ContentTile({
         </Animated.View>
       </View>
     </View>
+    </ViewShot>
   );
 }
 

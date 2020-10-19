@@ -18,6 +18,7 @@ import {
   AVAILABILITY_LISTING_CONTENT_TEMPLATE_TYPE,
 } from '@shared/constants';
 import useMediaUpload from '~/hooks/useMediaUpload';
+import useContentScreenshotUpload from '../hooks/useContentScreenshotUpload';
 
 const initialState = () => ({
   type: '',
@@ -53,7 +54,7 @@ const initialState = () => ({
       label: 'Contact me',
       href: '',
     },
-  },
+  }
 });
 
 export const CreateContentContext = createContext(initialState());
@@ -65,6 +66,11 @@ export const CreateContentContextProvider = ({ children }) => {
     handleUpload,
   } = useMediaUpload();
 
+  const {
+    isFetching: isSavingScreenshot,
+    handleScreenshotUpload,
+  } = useContentScreenshotUpload();
+
   const [type, setType] = useState(initialState().type);
   const [heading, setHeading] = useState(initialState().heading);
   const [subHeading, setSubHeading] = useState(initialState().subHeading);
@@ -72,6 +78,7 @@ export const CreateContentContextProvider = ({ children }) => {
   const [meta, setMeta] = useState(initialState().meta);
   const [media, setMedia] = useState(initialState().media);
   const [poll, setPoll] = useState(initialState().poll);
+
   const [
     opportunityListing,
     setOpportunityListing,
@@ -97,6 +104,11 @@ export const CreateContentContextProvider = ({ children }) => {
     insertAvailabilityListingResult,
     insertAvailabilityListing,
   ] = useMutation(InsertContentAvailabilityListingOne);
+
+
+  const updateScreenshot = (uuid, uri) => {
+    handleScreenshotUpload(uuid, uri)
+  }
 
   // NOTE: There's currently a Hasura bug when inserting nested 1:1 objects
   // https://github.com/hasura/graphql-engine/issues/2576
@@ -203,7 +215,7 @@ export const CreateContentContextProvider = ({ children }) => {
         setPoll,
         setOpportunityListing,
         setAvailabilityListing,
-
+        updateScreenshot,
         create,
         isCreating: (
           insertContentResult.fetching ||

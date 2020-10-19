@@ -108,7 +108,7 @@ function SearchScreen({ navigation }) {
               flex: 1, 
               lineHeight: 20,
               fontSize: 16,
-              paddingVertical: 20,
+              paddingVertical: 16,
               paddingHorizontal: 20,
             }
           }

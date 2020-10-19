@@ -44,16 +44,14 @@ function MemberCard({
             colors={['rgba(0,0,0,0)','rgba(0,0,0,0.4)']}
             style={styles.gradient}
           />
-
-          <Paragraph
-            style={styles.heading}
-            size="huge"
-          >
-            {name.split(' ')[0]}
-          </Paragraph>
-          <Text style={[styles.heading, styles.subheading]}>
-            {`@${username}`}
-          </Text>
+          <View style={styles.memberText}>
+            <Text style={styles.heading}>
+              {name.split(' ')[0]}
+            </Text>
+            <Text style={styles.subheading}>
+              {`@${username}`}
+            </Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -88,18 +86,21 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1,
   },
-  heading: {
+  memberText: {
     position: 'absolute',
+    bottom: 16,
+    left: 8
+  },
+  heading: {
     color: 'white',
     fontWeight: 'bold',
-    paddingBottom: 24,
-    paddingLeft: 24,
-    paddingRight: 24,
+    fontSize: 18,
   },
   subheading: {
-    fontSize: 14,
-    lineHeight: 14,
-    paddingBottom: 8,
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 10,
+    flexWrap: 'nowrap'
   },
   gradient: {
     position: 'absolute',

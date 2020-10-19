@@ -25,49 +25,28 @@ function ContentCard({
     >
       <View style={styles.contentTemplateCard}>
         <View style={styles.memberContainer}>
-          {content.media && content.media.uri ?
-            <View style={{}}>
-              <Image
-                source={{uri: content.media.uri}}
+          {content.screenshot 
+            ? <Image
+                source={{uri: content.screenshot}}
                 resizeMode={'cover'}
                 style={{
                   borderRadius: 32,
                   width: '100%',
                   height: '100%'
                 }}
-              ></Image>
-              {content.meta && content.meta.description ? 
-                <Text
-                  style={[styles.heading, { 
-                    position: 'absolute',
-                    alignSelf: 'center',
-                    transform: [{ scale: .5 }] }]}
-                  >
-                  {content.meta.description}
-              </Text> : <></> }
-            </View>
-          : <></>
-          }
-          <View style={{transform: [{ scale: 0.4 }, { translateX: -80 }, { translateY: -20 }]}}>
-            {content.heading ? <View style={{width: 280}}>
-              <Paragraph
-                style={styles.heading}
-                size="huge"
-                >
-                {content.heading}
-              </Paragraph>
-            </View> : <></> }
-            {content.poll 
-              ? <View style={{ }}>
-                  <ContentTileForegroundPoll
-                    poll={content.poll}
-                    pollStyle={{shadowOpacity: 0, borderWidth: 1, borderColor: '#F0F0F0', width: 280, flexWrap: 'nowrap', marginTop: 0}}
-                    onSelect={() => onPress({uuid: content.uuid})}
-                  />
-                </View>
-              : <></>
-            }
-          </View>
+              />
+            : (content.heading 
+                ? <View style={{width: 280}}>
+                    <Paragraph
+                      style={styles.heading}
+                      size="huge"
+                      >
+                      {content.heading}
+                    </Paragraph>
+                  </View> 
+                : <></>
+              )
+         }
         </View>
       </View>
     </TouchableOpacity>

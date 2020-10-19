@@ -34,6 +34,7 @@ function ContentTileBackground({
   hasForeground = false,
   isFocused = false,
   isStarred = false,
+  onMediaLoaded = () => {},
   onTap = () => {},
   onDoubleTap = () => {},
   onLongPress = () => {},
@@ -129,77 +130,79 @@ function ContentTileBackground({
             }}
             maxPointers={1}
           >
-            <View style={styles.background}>
-              {media &&
-                <AnimatedLinearGradient
-                  colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0)']}
-                  style={{
-                    ...styles.gradient,
-                    ...styles.topGradient,
-                    opacity: animation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 0],
-                    }),
-                  }}
-                  pointerEvents="none"
-                />
-              }
-
-              {media && hasForeground &&
-                <Animated.View
-                  style={{
-                    ...styles.overlay,
-                    opacity: animation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 0],
-                    }),
-                  }}
-                  pointerEvents="none"
-                />
-              }
-
-              <View style={styles.media}>
-                {controls.hasImage &&
-                  <Image
-                    source={media}
-                    resizeMode="cover"
+              <View style={styles.background}>
+                {media &&
+                  <AnimatedLinearGradient
+                    colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0)']}
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      ...styles.gradient,
+                      ...styles.topGradient,
+                      opacity: animation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                      }),
                     }}
+                    pointerEvents="none"
                   />
                 }
 
-                {controls.hasVideo &&
-                  <Video
-                    source={media}
-                    resizeMode="cover"
-                    shouldPlay={controls.isVideoPlaying}
-                    isMuted={controls.isVideoMuted}
-                    isLooping={true}
+                {media && hasForeground &&
+                  <Animated.View
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      ...styles.overlay,
+                      opacity: animation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                      }),
                     }}
+                    pointerEvents="none"
+                  />
+                }
+
+                <View style={styles.media}>
+                  {controls.hasImage &&
+                    <Image
+                      source={media}
+                      onLoadEnd={onMediaLoaded}
+                      resizeMode="cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  }
+
+                  {controls.hasVideo &&
+                    <Video
+                      source={media}
+                      resizeMode="cover"
+                      onLoadEnd={onMediaLoaded}
+                      shouldPlay={controls.isVideoPlaying}
+                      isMuted={controls.isVideoMuted}
+                      isLooping={true}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  }
+                </View>
+
+                {media &&
+                  <AnimatedLinearGradient
+                    colors={['rgba(0,0,0,0)','rgba(0,0,0,0.7)']}
+                    style={{
+                      ...styles.gradient,
+                      ...styles.bottomGradient,
+                      opacity: animation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                      }),
+                    }}
+                    pointerEvents="none"
                   />
                 }
               </View>
-
-              {media &&
-                <AnimatedLinearGradient
-                  colors={['rgba(0,0,0,0)','rgba(0,0,0,0.7)']}
-                  style={{
-                    ...styles.gradient,
-                    ...styles.bottomGradient,
-                    opacity: animation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 0],
-                    }),
-                  }}
-                  pointerEvents="none"
-                />
-              }
-            </View>
           </PanGestureHandler>
         </TapGestureHandler>
       </TapGestureHandler>
