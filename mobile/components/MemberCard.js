@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   memberText: {
     position: 'absolute',
     bottom: 16,
-    left: 8
+    left: 16
   },
   heading: {
     color: 'white',

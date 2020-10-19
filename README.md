@@ -18,10 +18,10 @@ devices on hand.
 ```bash
 cd backend
 docker-compose up -d # start services
-hasura console --admin-secret <HASURA_ADMIN_SECRET> # start hasura console
+`npm run dev` or `hasura console --admin-secret <HASURA_ADMIN_SECRET> --envfile ".env.development"`  # start hasura console. https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_console.html
 vercel dev # start REST API server
 
-# additionally
+# additionally, to initialize your local database, run the following only once: 
 hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
 hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```
