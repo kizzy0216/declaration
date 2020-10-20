@@ -16,6 +16,7 @@ import { NetworkContext } from '~/contexts/NetworkContext';
 import ArrowRightIcon from '@shared/components/icons/ArrowRightIcon';
 import LogOutIcon from '@shared/components/icons/LogOutIcon';
 import EmailSendIcon from '@shared/components/icons/EmailSendIcon';
+import { version } from '../package.json';
 
 function SettingsScreen({ navigation }) {
   const { logOut } = useContext(UserContext);
@@ -196,8 +197,10 @@ function SettingsScreen({ navigation }) {
               )}
             />
           </View>
+          <View style={{margin: 8}}>
+            <Text style={{fontWeight: 'bold', fontSize: 12, color: '#000'}}>{version}</Text>
+          </View>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );

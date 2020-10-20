@@ -13,7 +13,7 @@ function useContentScreenshotUpload() {
   async function uploadScreenshot({ contentUuid, uri }) {
     setIsFetching(true);
 
-    const type = 'image/jpeg';
+    const type = 'image/png';
 
     const policyResponse = await fetchREST('/signed-s3-post-policy', {
       method: 'POST',
@@ -40,25 +40,26 @@ function useContentScreenshotUpload() {
       body: formData,
     });
 
-    setIsFetching(false);
-
     await updateScreenshot({
       uuid: contentUuid,
       screenshot: uploadedPhotoUrl,
     });
+
   }
 
   async function handleScreenshotUpload(contentUuid, uri) {
     // if (IS_IOS) {
     //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     //   if (status !== 'granted') {
+    //     alert('Sorry, we need camera roll permissions to upload media.');
     //     return;
     //   }
     // }
     try {
-      uploadScreenshot({contentUuid, uri});
+      await uploadScreenshot({contentUuid, uri});
     } catch (error) {
       console.error(error);
+      alert('ERROR: ' + error.message);
     }
   }
 

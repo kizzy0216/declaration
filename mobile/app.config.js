@@ -46,12 +46,12 @@ export default {
     bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    buildNumber: '3',
+    buildNumber: '5',
   },
   android: {
     package: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    versionCode: 3,
+    versionCode: 5,
   },
 }

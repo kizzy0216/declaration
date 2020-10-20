@@ -468,6 +468,7 @@
       - media_uuid
       - meta_uuid
       - network_uuid
+      - screenshot
       - sub_heading
       - updated_at
       - uuid
@@ -498,6 +499,7 @@
       - media_uuid
       - meta_uuid
       - network_uuid
+      - screenshot
       - sub_heading
       filter: {}
       check: null
