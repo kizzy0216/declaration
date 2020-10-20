@@ -158,6 +158,11 @@ was just provisioned.
 The Hasura server should now be working on HTTP and HTTPS, both on the Elastic
 Beanstalk provisioned URL, as well as the declaration.net subdomain.
 
+For incremental deployments:
+
+`hasura migrate apply`
+`hasura metadata apply`
+
 ### Deploying REST API functions
 
 The REST API is coded as serverless functions that are intended to run on the
