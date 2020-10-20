@@ -20,11 +20,11 @@ export const ContentTilePagerContext = createContext({
   items: {},
   activeIndex: 0,
   shouldReRender: 0,
-  isFetchingNewerItems: false,
+  // isFetchingNewerItems: false,
   isFetchingOlderItems: false,
 
   getItems: () => {},
-  getNewerItems: () => {},
+  // getNewerItems: () => {},
   setActiveIndex: () => {},
   setShouldRefresh: () => {},
   setFlatListMethods: () => {},
@@ -64,24 +64,24 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     },
     pause: !activeNetwork || !authenticatedUser,
   });
-  const [
-    getContentNewerResult,
-    getContentNewer,
-  ] = useQuery({
-    query: GetNetworkContentNewer,
-    variables: {
-      network_uuid: activeNetwork.uuid,
-      viewer_uuid: authenticatedUser.uuid,
-      limit: LIMIT,
-    },
-    pause: !activeNetwork || !authenticatedUser,
-  });
+  // const [
+  //   getContentNewerResult,
+  //   getContentNewer,
+  // ] = useQuery({
+  //   query: GetNetworkContentNewer,
+  //   variables: {
+  //     network_uuid: activeNetwork.uuid,
+  //     viewer_uuid: authenticatedUser.uuid,
+  //     limit: LIMIT,
+  //   },
+  //   pause: !activeNetwork || !authenticatedUser,
+  // });
   const [
     deleteContentResult,
     deleteContent,
   ] = useMutation(DeleteContent);
 
-  const isFetchingNewerItems = getContentNewerResult.fetching;
+  // const isFetchingNewerItems = getContentNewerResult.fetching;
   const isFetchingOlderItems = getContentOlderResult.fetching;
 
   useEffect(() => {
@@ -107,29 +107,29 @@ export const ContentTilePagerContextProvider = ({ children }) => {
       ]);
     }
   }, [getContentOlderResult.data]);
-  useEffect(() => {
-    if (getContentNewerResult.data && getContentNewerResult.data.content) {
-      const mappedContent = getContentNewerResult
-        .data
-        .content
-        .map(mapContent);
+  // useEffect(() => {
+  //   if (getContentNewerResult.data && getContentNewerResult.data.content) {
+  //     const mappedContent = getContentNewerResult
+  //       .data
+  //       .content
+  //       .map(mapContent);
 
-      setItems(
-        mappedContent.reduce((accumulator, content) => {
-          accumulator[content.uuid] = content;
-          return accumulator;
-        }, {}),
-      );
+  //     setItems(
+  //       mappedContent.reduce((accumulator, content) => {
+  //         accumulator[content.uuid] = content;
+  //         return accumulator;
+  //       }, {}),
+  //     );
 
-      setItemUuids([
-        ...new Set(
-          mappedContent.map(({ uuid }) => uuid),
-        ),
-      ]);
+  //     setItemUuids([
+  //       ...new Set(
+  //         mappedContent.map(({ uuid }) => uuid),
+  //       ),
+  //     ]);
 
-      setShouldReRender(new Date());
-    }
-  }, [getContentNewerResult.data]);
+  //     setShouldReRender(new Date());
+  //   }
+  // }, [getContentNewerResult.data]);
 
   useEffect(() => {
     const lastItemUuid = itemUuids[itemUuids.length - 1];
@@ -154,19 +154,19 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     setShouldReRender(new Date());
   }
 
-  const scrollToIndex = useCallback(({ index, withAnimation = false }) => {
+  const scrollToIndex = useCallback(({ index, withAnimation = false, viewPosition = 0.5 }) => {
     if (flatListMethodsRef.current.scrollToIndex) {
       flatListMethodsRef.current.scrollToIndex({
         index,
         animated: withAnimation,
-        viewPosition: 0.5,
+        viewPosition: viewPosition,
       });
     }
   }, [flatListMethodsRef.current]);
 
   const getItems = useCallback(() => {
     getContentOlder({
-      requestPolicy: 'cache-and-network',
+      requestPolicy: 'network-only'
     });
   }, []);
 
@@ -176,19 +176,19 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     });
   }
 
-  function getNewerItems() {
-    const firstItemUuid = itemUuids[0];
-    const firstItem = firstItemUuid && items[firstItemUuid];
+  // function getNewerItems() {
+  //   const firstItemUuid = itemUuids[0];
+  //   const firstItem = firstItemUuid && items[firstItemUuid];
 
-    if (!firstItem) {
-      return;
-    }
+  //   if (!firstItem) {
+  //     return;
+  //   }
 
-    setFirstItemCreatedAt(firstItem.createdAtTimestampTz);
-    getContentNewer({
-      requestPolicy: 'cache-and-network',
-    });
-  }
+  //   setFirstItemCreatedAt(firstItem.createdAtTimestampTz);
+  //   getContentNewer({
+  //     requestPolicy: 'cache-and-network',
+  //   });
+  // }
 
   return (
     <ContentTilePagerContext.Provider
@@ -198,10 +198,10 @@ export const ContentTilePagerContextProvider = ({ children }) => {
         activeIndex,
         shouldReRender,
         isFetchingOlderItems,
-        isFetchingNewerItems,
+        // isFetchingNewerItems,
 
         getItems,
-        getNewerItems,
+        // getNewerItems,
         setActiveIndex,
         reRender,
         setFlatListMethods,

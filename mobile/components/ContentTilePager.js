@@ -35,7 +35,7 @@ function ContentTilePager() {
     shouldReRender,
     setActiveIndex,
     setFlatListMethods,
-    isFetchingNewerItems,
+    isFetchingOlderItems,
     getItems,
   } = useContext(ContentTilePagerContext);
 
@@ -119,7 +119,7 @@ function ContentTilePager() {
         keyExtractor={keyExtractor}
         pagingEnabled={true}
         showsVerticalScrollIndicator={false}
-        refreshing={isFetchingNewerItems}
+        refreshing={isFetchingOlderItems}
         initialNumToRender={5}
         onRefresh={onRefresh}
         onViewableItemsChanged={handleViewableItemsChanged}

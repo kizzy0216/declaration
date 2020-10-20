@@ -13,7 +13,7 @@ import ContentTilePager from '~/components/ContentTilePager';
 function FeedScreen({ navigation }) {
   const { getItems } = useContext(ContentTilePagerContext);
   useFocusEffect(useCallback(() => {
-    getItems();
+    getItems({ requestPolicy: 'network-only' });
   }, []));
 
   return (

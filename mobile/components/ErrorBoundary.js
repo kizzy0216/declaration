@@ -23,14 +23,16 @@ class ErrorBoundary extends React.Component {
     console.log(error, errorInfo);
 
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
-    saveUser(null);
-    saveJWT(null);
+    if (process.env.NODE_ENV !== 'development') {
+      saveUser(null);
+      saveJWT(null);
+    }
   }
 
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <Text>Something went wrong.</Text>;
+      return <Text style={{marginTop: 80, marginLeft: 40}}>Something went wrong.</Text>;
     }
 
     return this.props.children; 

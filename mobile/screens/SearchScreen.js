@@ -186,13 +186,11 @@ function SearchScreen({ navigation }) {
               >
                 <ContentCard
                   content={post}
-                  onPress={({uuid}) =>  {
-                    scrollToIndex({ index: postIds.indexOf(uuid), withAnimation: false })
-                    navigation.navigate('Feed')
-                  }}
-                  // onPress={
-                  //   ({ uuid }) => navigation.navigate('Member', { uuid })
-                  // }
+                  onPress={({uuid}) =>  navigation.navigate('ContentViewer', {
+                    heading: 'Popular Posts',
+                    activeIndex: postIds.indexOf(uuid) 
+                  })}
+                    // scrollToIndex({ index: postIds.indexOf(uuid), withAnimation: false })
                 />
               </View>
             ))}

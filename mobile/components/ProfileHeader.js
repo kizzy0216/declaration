@@ -4,7 +4,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import ScreenHeader from '~/components/ScreenHeader';
 import SettingsIcon from '@shared/components/icons/SettingsIcon';
-import CloseIcon from '@shared/components/icons/CloseIcon';
+import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 import { WINDOW_WIDTH } from '~/constants';
 
 const PULL_UP_DISTANCE = WINDOW_WIDTH * 0.5;
@@ -31,6 +31,23 @@ function ProfileHeader({
           extrapolate: 'clamp',
         }),
       }}
+      leftElement={
+        showClose ? (
+          <BorderlessButton onPress={onClose}>
+            <ArrowLeftIcon
+              width={22}
+              height={22}
+              fill={
+                scrollAnimation.interpolate({
+                  inputRange: [0, PULL_UP_DISTANCE],
+                  outputRange: ['#FFFFFF', '#000000'],
+                  extrapolate: 'clamp',
+                })
+              }
+            />
+          </BorderlessButton>
+        ) : <></>
+      }
       rightElement={showSettings ? (
         <BorderlessButton onPress={onSettingsPress}>
           <SettingsIcon
@@ -45,21 +62,8 @@ function ProfileHeader({
             }
           />
         </BorderlessButton>
-      ) : showClose ? (
-        <BorderlessButton onPress={onClose}>
-          <CloseIcon
-            width={22}
-            height={22}
-            fill={
-              scrollAnimation.interpolate({
-                inputRange: [0, PULL_UP_DISTANCE],
-                outputRange: ['#FFFFFF', '#000000'],
-                extrapolate: 'clamp',
-              })
-            }
-          />
-        </BorderlessButton>
-      ) : <></>}
+      ) : <></> 
+      }
     />
   );
 }
