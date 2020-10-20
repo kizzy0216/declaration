@@ -12,5 +12,6 @@
       "src": "^\/(?!api).*",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "scope": "declaration"
 }
