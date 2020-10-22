@@ -24,7 +24,7 @@ function ContentViewerScreen({ navigation, route }) {
   const { scrollToIndex } = useContext(ContentTilePagerContext);
 
   React.useEffect(() => {
-    scrollToIndex({ index: activeIndex, withAnimation: false, viewPosition: 0 })
+    scrollToIndex({ index: activeIndex, withAnimation: false })
   }, [activeIndex]);
 
   // console.log('Active index', activeIndex)

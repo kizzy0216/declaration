@@ -128,7 +128,7 @@ function FeedHeader({
                 {activeNetwork && activeNetwork.name}
               </Animated.Text>
               <View style={styles.iconWrapper}>
-                {isFetching ?
+                {/* {isFetching ?
                   (
                     <AnimatedSpinnerIcon
                       width={16}
@@ -140,7 +140,7 @@ function FeedHeader({
                         })
                       }
                     />
-                  ) : (
+                  ) : ( */}
                     <ChevronDownIcon
                       width={16}
                       height={16}
@@ -151,8 +151,8 @@ function FeedHeader({
                         })
                       }
                     />
-                  )
-                }
+                  {/* )
+                } */}
               </View>
             </View>
           </TouchableOpacity>

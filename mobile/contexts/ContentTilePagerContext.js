@@ -154,12 +154,12 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     setShouldReRender(new Date());
   }
 
-  const scrollToIndex = useCallback(({ index, withAnimation = false, viewPosition = 0.5 }) => {
+  const scrollToIndex = useCallback(({ index, withAnimation = false }) => {
     if (flatListMethodsRef.current.scrollToIndex) {
       flatListMethodsRef.current.scrollToIndex({
         index,
         animated: withAnimation,
-        viewPosition: viewPosition,
+        viewPosition: 0,
       });
     }
   }, [flatListMethodsRef.current]);

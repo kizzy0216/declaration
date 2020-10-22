@@ -31,7 +31,7 @@ function SearchScreen({ navigation }) {
   // const [ showFilter, setShowFilter ] = useState(false);
   const { user } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
-  const { getItems, itemUuids: postIds, items: posts, scrollToIndex } = useContext(ContentTilePagerContext);
+  const { getItems, itemUuids: postIds, items: posts } = useContext(ContentTilePagerContext);
   const [searchValue, setSearchValue] = useState('');
   const [activeMembers, setActiveMembers] = useState([]);
   const [popularPosts, setPopularPosts] = useState([]);
@@ -49,7 +49,7 @@ function SearchScreen({ navigation }) {
   
   useFocusEffect(useCallback(() => {
     getItems();
-    getUsers({ requestPolicy: 'network-only' });
+    getUsers();
   }, []));
 
   const {
@@ -88,6 +88,7 @@ function SearchScreen({ navigation }) {
 
   function handleRefresh() {
     setSearchValue('')
+    getItems({ requestPolicy: 'network-only' });
     getUsers({ requestPolicy: 'network-only' });
   }
 
@@ -190,7 +191,6 @@ function SearchScreen({ navigation }) {
                     heading: 'Popular Posts',
                     activeIndex: postIds.indexOf(uuid) 
                   })}
-                    // scrollToIndex({ index: postIds.indexOf(uuid), withAnimation: false })
                 />
               </View>
             ))}

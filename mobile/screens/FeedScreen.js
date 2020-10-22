@@ -1,21 +1,26 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useEffect, useCallback, useContext } from 'react';
 import {
   View,
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+// import { useFocusEffect } from '@react-navigation/native';
 
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import FeedHeaderContainer from '~/containers/FeedHeaderContainer';
 import ContentTilePager from '~/components/ContentTilePager';
 
 function FeedScreen({ navigation }) {
-  const { getItems } = useContext(ContentTilePagerContext);
-  useFocusEffect(useCallback(() => {
-    getItems({ requestPolicy: 'network-only' });
-  }, []));
+  const { getItems, scrollToIndex } = useContext(ContentTilePagerContext);
+  // useFocusEffect(useCallback(() => {
+  //   getItems({ requestPolicy: 'network-only' });
+  // }, []));
 
+
+  useEffect(() => {
+    getItems();
+    scrollToIndex({ index: 0, withAnimation: false });
+  }, []);
   return (
     <View style={styles.screen}>
       <SafeAreaView
