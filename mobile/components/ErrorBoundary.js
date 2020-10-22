@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import {
   saveJWT,
@@ -10,7 +10,8 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      errorMessage: '',
+      error: null,
+      errorInfo: null,
       hasError: false
     };
   }
@@ -23,14 +24,17 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // You can also log the error to an error reporting service
     // logErrorToMyService(error, errorInfo);
-    console.log(error, errorInfo);
-    
+    // console.log(error, errorInfo);
+    this.setState({
+      error: error,
+      errorInfo: errorInfo
+    })
     // alert(error.message)
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
       saveUser(null);
       saveJWT(null);
-    }
+    // }
     // }
   }
 
@@ -39,7 +43,8 @@ class ErrorBoundary extends React.Component {
       // You can render any custom fallback UI
       return (<View style={{marginTop: 80, marginLeft: 40}}>
           <Text>Something went wrong... Please close and reopen the app.</Text>
-          <Text>{errorMessage}</Text>
+          <Text>{this.state.error ? this.state.error.toString() : ''}</Text>
+          <Text>{this.state.errorInfo ? this.state.errorInfo.componentStack || '' : ''}</Text>
         </View>)
     }
 
