@@ -5,10 +5,11 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { State, LongPressGestureHandler } from 'react-native-gesture-handler';
 import Logo from '@shared/components/Logo';
 import VideoBackground from '~/components/VideoBackground';
 import Button from '~/components/Button';
+import { version } from '../package.json';
 
 function AuthenticationHomeScreen({ navigation }) {
   return (
@@ -19,13 +20,22 @@ function AuthenticationHomeScreen({ navigation }) {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <View style={styles.logoWrapper}>
-            <Logo
-              width={171}
-              height={16}
-              fill="white"
-            />
-          </View>
+         <LongPressGestureHandler
+            onHandlerStateChange={({ nativeEvent }) => {
+              if (nativeEvent.state === State.ACTIVE) {
+                alert('Version: ' + version)
+              }
+            }}
+            minDurationMs={2000}
+          >
+            <View style={styles.logoWrapper}>
+              <Logo
+                width={171}
+                height={16}
+                fill="white"
+              />
+            </View>
+          </LongPressGestureHandler>
         </View>
         <View style={styles.footer}>
           <Text style={styles.heading}>

@@ -35,7 +35,7 @@ function App(props) {
         interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         shouldDuckAndroid: false,
       });
-      console.dir(t);
+      // console.dir(t);
     })();
   }, []);
 
