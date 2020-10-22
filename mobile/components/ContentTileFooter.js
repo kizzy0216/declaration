@@ -18,7 +18,7 @@ function ContentTileFooter({
   creator,
   meta,
   controls = {},
-  starAnimation,
+  // starAnimation,
   isStarred = false,
   onCreatorPress = () => {},
   onHashtagPress = () => {},
@@ -72,7 +72,7 @@ function ContentTileFooter({
 
       <ContentTileActions
         controls={controls}
-        starAnimation={starAnimation}
+        // starAnimation={starAnimation}
         isStarred={isStarred}
         onStarPress={onStarPress}
         onStarPan={onStarPan}

@@ -286,7 +286,7 @@ Ensure you are a part of the Declaration Apple team, and Declaration Google
 Play team.
 
 Update the `package.json` version.  The version number can then be found at the bottom of the Settings screen in the app
-
+Update the `app.config.js` version, buildNumber, and versionCode for the Apple/Google deployment. 
 ```bash
 # to publish production iOS
 BUILD_ENVIRONMENT_MODE="production" expo publish:ios

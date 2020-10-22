@@ -53,7 +53,7 @@ function ContentTile({
   onUnStar = () => {},
   ...props
 }) {
-  const starAnimation = useRef(new Animated.ValueXY()).current;
+  // const starAnimation = useRef(new Animated.ValueXY()).current;
   const fullscreenAnimation = useRef(new Animated.Value(0)).current;
   const viewPanel = useRef();
   const { activeIndex } = useContext(ContentTilePagerContext);
@@ -151,19 +151,19 @@ function ContentTile({
     setIsVideoPlaying(!isVideoPlaying);
   }, [isVideoPlaying]);
 
-  const handleStarPanActive = useCallback(({ x: x1, y: y1 }) => {
-  }, []);
+  // const handleStarPanActive = useCallback(({ x: x1, y: y1 }) => {
+  // }, []);
 
-  const handleStarPanEnd = useCallback(({ x: x2, y: y2 }) => {
-    const amount = getStarAmount({ value: x2 });
-    onStar({ amount });
+  // const handleStarPanEnd = useCallback(({ x: x2, y: y2 }) => {
+  //   const amount = getStarAmount({ value: x2 });
+  //   onStar({ amount });
 
-    Animated.timing(starAnimation.x, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  }, [onStar]);
+  //   Animated.timing(starAnimation.x, {
+  //     toValue: 0,
+  //     duration: 200,
+  //     useNativeDriver: false,
+  //   }).start();
+  // }, [onStar]);
 
   const handleHashtagPress = useCallback(() => {
   }, []);
@@ -175,19 +175,19 @@ function ContentTile({
 
     onStar({ amount: 5 });
 
-    Animated.timing(starAnimation.x, {
-      toValue: (WINDOW_WIDTH - 90) * 0.05,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
+    // Animated.timing(starAnimation.x, {
+    //   toValue: (WINDOW_WIDTH - 90) * 0.05,
+    //   duration: 200,
+    //   useNativeDriver: false,
+    // }).start();
 
-    setTimeout(() => {
-      Animated.timing(starAnimation.x, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false,
-      }).start();
-    }, 500);
+    // setTimeout(() => {
+    //   Animated.timing(starAnimation.x, {
+    //     toValue: 0,
+    //     duration: 200,
+    //     useNativeDriver: false,
+    //   }).start();
+    // }, 500);
   }, [isStarred]);
 
   return (
@@ -208,14 +208,7 @@ function ContentTile({
             hasForeground={hasForeground}
             onMediaLoaded={handleMediaLoaded}
             onTap={handleBackgroundTap}
-            onDoubleTap={handleStar}
             onLongPress={onMenuRequest}
-            onDoubleTapPanActive={handleStarPanActive}
-            onDoubleTapPan={Animated.event(
-              [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
-              { useNativeDriver: false },
-            )}
-            onDoubleTapPanEnd={handleStarPanEnd}
           />
         </View>
 
@@ -283,17 +276,11 @@ function ContentTile({
             creator={creator}
             meta={meta}
             controls={controls}
-            starAnimation={starAnimation}
+            // starAnimation={starAnimation}
             isStarred={isStarred}
             onCreatorPress={onCreatorPress}
             onHashtagPress={handleHashtagPress}
             onStarPress={handleStar}
-            onStarPan={Animated.event(
-              [{ nativeEvent: { translationX: starAnimation.x, translationY: starAnimation.y } }],
-              { useNativeDriver: false },
-            )}
-            onStarPanActive={handleStarPanActive}
-            onStarPanEnd={handleStarPanEnd}
             onCommentPress={onCommentRequest}
             onSharePress={onShareRequest}
             onMenuPress={onMenuRequest}

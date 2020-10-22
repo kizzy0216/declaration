@@ -120,7 +120,7 @@ function ContentTilePager() {
         pagingEnabled={true}
         showsVerticalScrollIndicator={false}
         refreshing={isFetchingOlderItems}
-        initialNumToRender={5}
+        initialNumToRender={15}
         onRefresh={onRefresh}
         onViewableItemsChanged={handleViewableItemsChanged}
       />

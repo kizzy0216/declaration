@@ -21,7 +21,7 @@ export default {
     'ios',
     'android',
   ],
-  version: '0.0.2',
+  version: '1.3.0',
   orientation: 'portrait',
   owner: 'nickdandakis',
   icon: process.env.APPLICATION_ICON,
@@ -46,12 +46,12 @@ export default {
     bundleIdentifier: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    buildNumber: '5',
+    buildNumber: '2',
   },
   android: {
     package: process.env.APPLICATION_PACKAGE_ID,
     // irrelevant to version number, this is a build identifier
     // just increment per build of a version
-    versionCode: 5,
+    versionCode: 2,
   },
 }
