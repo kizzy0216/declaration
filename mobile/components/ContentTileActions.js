@@ -8,6 +8,7 @@ import KebabIcon from '@shared/components/icons/KebabIcon';
 import FullscreenIcon from '@shared/components/icons/FullscreenIcon';
 import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import AudioIcon from '@shared/components/icons/AudioIcon';
+import NoAudioIcon from '@shared/components/icons/NoAudioIcon';
 
 import { GREEN } from '~/constants';
 
