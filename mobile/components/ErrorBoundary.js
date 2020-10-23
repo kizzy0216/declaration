@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import * as Sentry from "@sentry/react-native";
 
 import {
   saveJWT,
@@ -29,6 +30,7 @@ class ErrorBoundary extends React.Component {
       error: error,
       errorInfo: errorInfo
     })
+    Sentry.captureException(error);
     // alert(error.message)
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
     // if (process.env.NODE_ENV !== 'development') {

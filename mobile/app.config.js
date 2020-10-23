@@ -37,6 +37,18 @@ export default {
   assetBundlePatterns: [
     '**/*'
   ],
+  hooks: {
+    postPublish: [
+      {
+        file: "sentry-expo/upload-sourcemaps",
+        config: {
+          organization: "declaration",
+          project: process.env.APPLICATION_SLUG,
+          authToken: "dc567a7733994c8bbe04c26ad60706c50fa8d4f885974d0881dcc84d72a52632"
+        }
+      }
+    ]
+  },
   extra: {
     HASURA_BASE_URL: process.env.HASURA_BASE_URL,
     REST_BASE_URL: process.env.REST_BASE_URL,

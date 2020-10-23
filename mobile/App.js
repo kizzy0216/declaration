@@ -10,6 +10,7 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as UrqlProvider} from 'urql';
 import { Audio } from 'expo-av';
+import * as Sentry from 'sentry-expo';
 
 import useCachedResources from '~/hooks/useCachedResources';
 import RootNavigator from '~/navigation/RootNavigator';
@@ -37,6 +38,11 @@ function App(props) {
       });
       // console.dir(t);
     })();
+    Sentry.init({
+      dsn: 'https://18ec0126955c43f9a3ef8e7fe3f2c081@o465757.ingest.sentry.io/5479011', // STAGE
+      enableInExpoDevelopment: false,
+      debug: false, // Sentry will try to print out useful debugging information if something goes wrong with sending an event. Set this to `false` in production.
+    });
   }, []);
 
   if (!hasLoadedResources) {
