@@ -18,9 +18,6 @@ import DisplayHeading from '~/components/DisplayHeading';
 import PersonalBio from '~/components/PersonalBio';
 import EditIcon from '@shared/components/icons/EditIcon';
 import CameraIcon from '@shared/components/icons/CameraIcon';
-import PlusIcon from '@shared/components/icons/PlusIcon';
-import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
-import DoubleConfirmModal from '~/components/DoubleConfirmModal';
 import ProfileEditModalContainer from '~/containers/ProfileEditModalContainer';
 import NetworkProfileSolutionBioCardContainer from '~/containers/NetworkProfileSolutionBioCardContainer';
 import NetworkProfileProblemBioCardContainer from '~/containers/NetworkProfileProblemBioCardContainer';
@@ -29,16 +26,17 @@ import ProfileSummaryCardContainer from '~/containers/ProfileSummaryCardContaine
 import useProfilePhotoUpload from '~/hooks/useProfilePhotoUpload';
 import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
-import mapUser from '@shared/mappings/mapUser';
-import {
-  CONNECTED_NETWORK_USER_RELATIONSHIP_TYPE,
-  PENDING_NETWORK_USER_RELATIONSHIP_TYPE,
-  DECLINED_NETWORK_USER_RELATIONSHIP_TYPE,
-} from '@shared/constants';
-import { BLUE } from '~/constants';
+import ProfileTabBar from '../components/ProfileTabBar';
+import UserContentList from '../components/UserContentList';
 
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0)
+  const profileTabItems = React.useMemo(() => [
+      { id: 'about', title: 'About' },
+      { id: 'posts', title: 'Posts' },
+      { id: 'Likes', title: 'Likes' }
+  ], []);
   const {
     user: authenticatedUser,
     refresh: refreshAuthenticatedUser,
@@ -121,29 +119,47 @@ function ProfileScreen({ navigation }) {
               personalBio={authenticatedUser.profile.personalBio}
             />
           </View>
-          <View style={styles.row}>
-            <ProfileSummaryCardContainer
-              user={authenticatedUser}
-              isEditable={true}
-              onUpdate={refreshAuthenticatedUser}
+          <View style={{marginVertical: 30}}>
+            <ProfileTabBar 
+              tabList={profileTabItems}
+              activeIndex={activeIndex}
+              onChangeIndex={setActiveIndex}
             />
           </View>
-          <View style={styles.row}>
-            <NetworkProfileProblemBioCardContainer
-              user={authenticatedUser}
-              network={activeNetwork}
-              isEditable={true}
-              onUpdate={refreshAuthenticatedUser}
-            />
-          </View>
-          <View style={styles.row}>
-            <NetworkProfileSolutionBioCardContainer
-              user={authenticatedUser}
-              network={activeNetwork}
-              isEditable={true}
-              onUpdate={refreshAuthenticatedUser}
-            />
-          </View>
+          {activeIndex === 0 ? 
+            <View>
+              <View style={styles.row}>
+                <ProfileSummaryCardContainer
+                  user={authenticatedUser}
+                  isEditable={true}
+                  onUpdate={refreshAuthenticatedUser}
+                />
+              </View>
+              <View style={styles.row}>
+                <NetworkProfileProblemBioCardContainer
+                  user={authenticatedUser}
+                  network={activeNetwork}
+                  isEditable={true}
+                  onUpdate={refreshAuthenticatedUser}
+                />
+              </View>
+              <View style={styles.row}>
+                <NetworkProfileSolutionBioCardContainer
+                  user={authenticatedUser}
+                  network={activeNetwork}
+                  isEditable={true}
+                  onUpdate={refreshAuthenticatedUser}
+                />
+              </View>
+            </View>
+          : <></>}
+          {activeIndex === 1 ?
+            <View>
+              <UserContentList
+                user={authenticatedUser}
+              />
+            </View>
+          : <></>}
         </View>
       </ScreenCard>
     </>
@@ -153,6 +169,7 @@ function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 100,
+    
   },
   nameWrapper: {
     marginBottom: 10,

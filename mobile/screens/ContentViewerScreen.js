@@ -11,50 +11,15 @@ import { useQuery } from 'urql';
 
 import GetNetworkUsers from '~/queries/GetNetworkUsers';
 import { NetworkContext } from '~/contexts/NetworkContext';
-import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import mapUser from '@shared/mappings/mapUser';
 import ContentTilePager from '../components/ContentTilePager';
 import AnimatedHeader from '../components/AnimatedHeader';
 
-function ContentViewerScreen({ navigation, route }) {
+function ContentViewerScreen({ route }) {
 
-  const { heading, activeIndex } = route.params;
+  const { heading, activeIndex, filters } = route.params;
 
   const { activeNetwork } = useContext(NetworkContext);
-  const { scrollToIndex } = useContext(ContentTilePagerContext);
-
-  React.useEffect(() => {
-    scrollToIndex({ index: activeIndex, withAnimation: false })
-  }, [activeIndex]);
-
-  // console.log('Active index', activeIndex)
-  // const [
-  //   getUsersResult,
-  //   getUsers,
-  // ] = useQuery({
-  //   query: GetNetworkUsers,
-  //   variables: {
-  //     network_uuid: activeNetwork.uuid,
-  //     not_user_uuid: user.uuid,
-  //   },
-  //   pause: !activeNetwork.uuid,
-  // });
-
-  // const {
-  //   data,
-  //   fetching: isFetching,
-  // } = getUsersResult;
-
-  // let items = [];
-  // if (!isFetching) {
-  //   items = data
-  //     .network_user
-  //     .map(({ user }) => mapUser(user))
-  // }
-
-  // function handleRefresh() {
-  //   getUsers({ requestPolicy: 'network-only' });
-  // }
 
   return (
     <View style={styles.screen}>
@@ -67,7 +32,9 @@ function ContentViewerScreen({ navigation, route }) {
         />
       </SafeAreaView>
       <View style={styles.pagerWrapper}>
-        <ContentTilePager />
+        <ContentTilePager
+          filters={filters}
+        />
       </View>
     </View>
   );

@@ -12,7 +12,6 @@ import InsertContentStar from '~/mutations/InsertContentStar';
 import InsertContentPollVote from '~/mutations/InsertContentPollVote';
 import DeleteContentStar from '~/mutations/DeleteContentStar';
 import ContentTile from '~/components/ContentTile';
-import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
 
 function ContentTileContainer({
   uuid: contentUuid,
@@ -77,7 +76,6 @@ function ContentTileContainer({
   }, []);
 
   return (
-    <CreateContentContextProvider>
       <ContentTile
         uuid={contentUuid}
         poll={poll}
@@ -88,8 +86,6 @@ function ContentTileContainer({
         onCreatorPress={handleCreatorPress}
         {...props}
       />
-    </CreateContentContextProvider>
-
   );
 }
 

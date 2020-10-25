@@ -60,6 +60,10 @@ npm run dev
 expo start
 ```
 
+To run URQL tools for monitoring database queries:
+
+`npx urql-devtools`
+
 To run simulators:
 
 ```bash

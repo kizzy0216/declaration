@@ -39,6 +39,8 @@ import {
 } from '@shared/constants';
 import mapNetworkUserRelationship from '@shared/mappings/mapNetworkUserRelationship';
 import { BLUE } from '~/constants';
+import ProfileTabBar from '../components/ProfileTabBar';
+import UserContentList from '../components/UserContentList';
 
 function MemberScreen({ navigation, route }) {
   const { uuid } = route.params;
@@ -46,6 +48,13 @@ function MemberScreen({ navigation, route }) {
   if (!uuid) {
     return null;
   }
+
+  const [activeIndex, setActiveIndex] = React.useState(0)
+  const memberTabItems = React.useMemo(() => [
+      { id: 'about', title: 'About' },
+      { id: 'posts', title: 'Posts' },
+      { id: 'Likes', title: 'Likes' }
+  ], []);
 
   const [
     isDoubleConfirmConnectionModalActive, 
@@ -280,26 +289,44 @@ function MemberScreen({ navigation, route }) {
               personalBio={user.profile.personalBio}
             />
           </View>
-          <View style={styles.row}>
-            <ProfileSummaryCardContainer
-              user={user}
-              isEditable={false}
+          <View style={{marginVertical: 30}}>
+            <ProfileTabBar
+              tabList={memberTabItems}
+              activeIndex={activeIndex}
+              onChangeIndex={setActiveIndex}
             />
           </View>
-          <View style={styles.row}>
-            <NetworkProfileProblemBioCardContainer
-              user={user}
-              network={activeNetwork}
-              isEditable={false}
-            />
-          </View>
-          <View style={styles.row}>
-            <NetworkProfileSolutionBioCardContainer
-              user={user}
-              network={activeNetwork}
-              isEditable={false}
-            />
-          </View>
+          {activeIndex === 0 ? 
+            <View>
+              <View style={styles.row}>
+                <ProfileSummaryCardContainer
+                  user={user}
+                  isEditable={false}
+                />
+              </View>
+              <View style={styles.row}>
+                <NetworkProfileProblemBioCardContainer
+                  user={user}
+                  network={activeNetwork}
+                  isEditable={false}
+                />
+              </View>
+              <View style={styles.row}>
+                <NetworkProfileSolutionBioCardContainer
+                  user={user}
+                  network={activeNetwork}
+                  isEditable={false}
+                />
+              </View>
+            </View>
+          : <></> }
+          {activeIndex === 1 ?
+            <View>
+              <UserContentList
+                user={user}
+              />
+            </View>
+          : <></>}
         </View>
       </ScreenCard>
     </>

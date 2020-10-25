@@ -23,6 +23,8 @@ import MemberCard from '~/components/MemberCard';
 import {
   LIGHT_GRAY,
 } from '~/constants';
+import SearchContentScroller from '../components/SearchContentScroller';
+import SearchContentItem from '../components/SearchContentItem';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 // import SearchFilterModal from '../components/SearchFilterModal';
 
@@ -139,63 +141,36 @@ function SearchScreen({ navigation }) {
           />
         }
       >
-        <View>
-          <Text style={styles.heading}>
-            Most active members
-          </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={styles.scrollView}
-            contentContainerStyle={styles.contentContainer}
-          >
-            {activeMembers.map((activeMember, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.cardWrapper,
-                  index === 0 && styles.cardWrapperFirst
-                ]}
-              >
-                <MemberCard
-                  {...activeMember}
-                  onPress={
-                    ({ uuid }) => navigation.navigate('Member', { uuid })
-                  }
-                />
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-        <View style={{marginTop: 32}}>
-          <Text style={styles.heading}>
-            Popular posts
-          </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={styles.scrollView}
-            contentContainerStyle={styles.contentContainer}
-          >
-            {popularPosts.map((post, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.cardWrapper,
-                  index === 0 && styles.cardWrapperFirst
-                ]}
-              >
-                <ContentCard
-                  content={post}
-                  onPress={({uuid}) =>  navigation.navigate('ContentViewer', {
-                    heading: 'Popular Posts',
-                    activeIndex: postIds.indexOf(uuid) 
-                  })}
-                />
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+        <SearchContentScroller
+          title={'Most active members'}
+          viewStyle={{marginTop: 32}}
+        >
+          {activeMembers.map((activeMember, index) => (
+            <SearchContentItem key={index}>
+              <MemberCard
+                {...activeMember}
+                onPress={({ uuid }) => navigation.navigate('Member', { uuid })}
+              />
+            </SearchContentItem>
+          ))}
+        </SearchContentScroller>
+        <SearchContentScroller
+          title={'Popular Posts'}
+          viewStyle={{marginTop: 32}}
+        >
+          {popularPosts.map((post, index) => (
+            <SearchContentItem key={index}>
+              <ContentCard
+                content={post}
+                onPress={({uuid}) =>  navigation.navigate('ContentViewer', {
+                  heading: 'Popular Posts',
+                  activeIndex: index,
+                  filters: {}
+                })}
+              />
+            </SearchContentItem>
+          ))}
+        </SearchContentScroller>
       </ScrollView>
     </SafeAreaView>
   );
@@ -208,7 +183,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 16,
     marginHorizontal: 24,
-    marginBottom: 32,
     paddingHorizontal: 16,
     backgroundColor: LIGHT_GRAY
   },
@@ -233,13 +207,6 @@ const styles = StyleSheet.create({
   textInputWrapper: {
     borderRadius: 16,
     padding: 24
-  },
-  cardWrapper: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  cardWrapperFirst: {
-    marginLeft: 32,
   },
 });
 

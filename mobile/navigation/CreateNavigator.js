@@ -11,7 +11,6 @@ import CreateContentSessionScreen from '~/screens/CreateContentSessionScreen';
 import CreateContentEventScreen from '~/screens/CreateContentEventScreen';
 import CreateContentPaylockScreen from '~/screens/CreateContentPaylockScreen';
 import CreateContentMetaScreen from '~/screens/CreateContentMetaScreen';
-import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
 
 const Stack = createStackNavigator();
 

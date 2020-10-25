@@ -23,7 +23,7 @@ import {
   WINDOW_HEIGHT,
 } from '~/constants';
 
-function ContentTilePager() {
+function ContentTilePager({filters}) {
   const flatListRef = useRef();
   const [isMenuModalActive, setIsMenuModalActive] = useState(false);
   const [isCommentModalActive, setIsCommentModalActive] = useState(false);
@@ -89,8 +89,14 @@ function ContentTilePager() {
   const onRefresh = useCallback(getItems, []);
 
   const data = useMemo(() => {
-    return itemUuids.map((uuid) => items[uuid]);
-  }, [itemUuids]);
+    const itemList = itemUuids.map((uuid) => items[uuid]);
+    if (filters) {
+      if (filters.creator_uuid) {
+        return itemList.filter(x => x.creator && x.creator.uuid === filters.creator_uuid)
+      }
+    }
+    return itemList
+  }, [itemUuids, filters]);
 
   if (itemUuids.length === 0) {
     return null;

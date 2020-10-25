@@ -27,6 +27,7 @@ function LogInForm({
           autoCompleteType="email"
           returnKeyType="done"
           onChange={setEmail}
+          onSubmitEditing={handleSubmit}
         />
       </View>
 
