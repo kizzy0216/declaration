@@ -2,7 +2,7 @@
   "name": "declaration-backend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "hasura console --admin-secret secret --envfile '.env.development'"
+    "dev": "hasura console --admin-secret secret"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.1",

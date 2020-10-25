@@ -56,10 +56,14 @@ function NetworkTabNavigator({ navigation, route }) {
         listeners={() => ({
           tabPress: () => {
             // scroll to top on press and FeedScreen visible
-            if (!route.state) {
-              scrollToIndex({ index: 0, withAnimation: true });
-            } else if (route.state.index === 0) {
-              scrollToIndex({ index: 0, withAnimation: true });
+            try {
+              if (!route.state) {
+                scrollToIndex({ index: 0, withAnimation: true });
+              } else if (route.state.index === 0) {
+                scrollToIndex({ index: 0, withAnimation: true });
+              }
+            } catch (error) {
+              console.warn('Could not scroll', error)
             }
           }
         })}

@@ -14,13 +14,19 @@ import { NetworkContext } from '~/contexts/NetworkContext';
 import mapUser from '@shared/mappings/mapUser';
 import ContentTilePager from '../components/ContentTilePager';
 import AnimatedHeader from '../components/AnimatedHeader';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 
 function ContentViewerScreen({ route }) {
-
+  
   const { heading, activeIndex, filters } = route.params;
-
+  
   const { activeNetwork } = useContext(NetworkContext);
-
+  
+  const { scrollToIndex } = useContext(ContentTilePagerContext);
+  
+  React.useEffect(() => {
+    scrollToIndex({ index: activeIndex, withAnimation: false })
+  }, [activeIndex]);
   return (
     <View style={styles.screen}>
       <SafeAreaView

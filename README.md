@@ -18,7 +18,7 @@ devices on hand.
 ```bash
 cd backend
 docker-compose up -d # start services
-`npm run dev` or `hasura console --admin-secret <HASURA_ADMIN_SECRET> --envfile ".env.development"`  # start hasura console. https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_console.html
+`npm run dev` or `hasura console --admin-secret <HASURA_ADMIN_SECRET>`  # start hasura console. https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_console.html
 vercel dev # start REST API server
 
 # additionally, to initialize your local database, run the following only once: 
@@ -26,9 +26,13 @@ hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
 hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```
 
-Expected environment variables:
+Create a .env file with expected environment variables:
 
 ```bash
+HASURA_BASE_URL="http://localhost:8080/v1/graphql"
+HASURA_ADMIN_SECRET_KEY=
+JWT_SECRET_KEY=
+NODE_ENV='development'
 SENDGRID_API_KEY=
 DECLARATION_AWS_ACCESS_KEY=
 DECLARATION_AWS_SECRET_KEY=

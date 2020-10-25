@@ -20,7 +20,7 @@ export const ContentTilePagerContext = createContext({
   items: {},
   activeIndex: 0,
   shouldReRender: 0,
-  // isFetchingNewerItems: false,
+  isFetching: false,
   isFetchingOlderItems: false,
 
   getItems: () => {},
@@ -39,7 +39,8 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   const [shouldReRender, setShouldReRender] = useState(0);
   const [itemUuids, setItemUuids] = useState([]);
   const [items, setItems] = useState({});
-  const [firstItemCreatedAt, setFirstItemCreatedAt] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  // const [firstItemCreatedAt, setFirstItemCreatedAt] = useState(null);
   const [lastItemCreatedAt, setLastItemCreatedAt] = useState(null);
   // previously lifted the whole flatListRef up, but calling flatListRef
   // methods from here didn't work. So, we're creating a proxy object for
@@ -81,7 +82,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     deleteContent,
   ] = useMutation(DeleteContent);
 
-  // const isFetchingNewerItems = getContentNewerResult.fetching;
+  // const isFetchingNewerItems = false; // getContentNewerResult.fetching;
   const isFetchingOlderItems = getContentOlderResult.fetching;
 
   useEffect(() => {
@@ -106,6 +107,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
         ]),
       ]);
     }
+    setIsFetching(false)
   }, [getContentOlderResult.data]);
   // useEffect(() => {
   //   if (getContentNewerResult.data && getContentNewerResult.data.content) {
@@ -165,6 +167,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   }, [flatListMethodsRef.current]);
 
   const getItems = useCallback(() => {
+    setIsFetching(true)
     getContentOlder({
       requestPolicy: 'network-only'
     });
@@ -185,9 +188,9 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   //   }
 
   //   setFirstItemCreatedAt(firstItem.createdAtTimestampTz);
-  //   getContentNewer({
-  //     requestPolicy: 'cache-and-network',
-  //   });
+  //   // getContentNewer({
+  //   //   requestPolicy: 'cache-and-network',
+  //   // });
   // }
 
   return (
@@ -197,6 +200,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
         items,
         activeIndex,
         shouldReRender,
+        isFetching,
         isFetchingOlderItems,
         // isFetchingNewerItems,
 

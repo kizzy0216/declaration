@@ -35,12 +35,12 @@ function ContentTilePager({filters}) {
     shouldReRender,
     setActiveIndex,
     setFlatListMethods,
-    isFetchingOlderItems,
+    isFetching,
     getItems,
   } = useContext(ContentTilePagerContext);
 
   useEffect(() => {
-    if (flatListRef.current) {
+    if (flatListRef && flatListRef.current) {
       setFlatListMethods({
         scrollToIndex: (params) => {
           flatListRef.current.scrollToIndex(params);
@@ -125,7 +125,7 @@ function ContentTilePager({filters}) {
         keyExtractor={keyExtractor}
         pagingEnabled={true}
         showsVerticalScrollIndicator={false}
-        refreshing={isFetchingOlderItems}
+        refreshing={false} // THERE'S A SCROLLING BUG WHEN THE LIST TRIES TO SHOW THE REFRESH ICON.  IF YOU TRY TO CHANGE THIS TO A "FETCHING" VARIABLE, BE SURE TO TEST SCROLLIING, CLICKING BETWEEN TAB SCREENS AND THE FEED SCREEN
         initialNumToRender={5}
         onRefresh={onRefresh}
         onViewableItemsChanged={handleViewableItemsChanged}

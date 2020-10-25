@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
+// import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import FeedHeader from '~/components/FeedHeader';
 
@@ -19,10 +19,6 @@ function FeedHeaderContainer() {
     isVisible: isInterfaceVisible,
     theme,
   } = useContext(InterfaceContext);
-  const {
-    isFetchingNewerItems,
-    isFetchingOlderItems,
-  } = useContext(ContentTilePagerContext);
 
   useEffect(() => {
     Animated.timing(animation, {
@@ -50,7 +46,6 @@ function FeedHeaderContainer() {
     >
       <FeedHeader
         theme={theme}
-        isFetching={isFetchingNewerItems || isFetchingOlderItems}
         onNetworkAdd={() => navigation.navigate('NetworkMembershipSelect')}
         onNetworkCreate={() => navigation.navigate('NetworkAccessRequest')}
         onCalendarPress={() => navigation.navigate('Events')}
