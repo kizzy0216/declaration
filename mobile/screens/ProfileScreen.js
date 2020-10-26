@@ -160,6 +160,13 @@ function ProfileScreen({ navigation }) {
               />
             </View>
           : <></>}
+          {activeIndex === 2 ?
+            <View>
+              <UserContentList
+                astronomer={authenticatedUser}
+              />
+            </View>
+          : <></>}
         </View>
       </ScreenCard>
     </>

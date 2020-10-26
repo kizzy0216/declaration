@@ -1,6 +1,6 @@
 {
   "name": "declaration-mobile",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -12,7 +12,8 @@
     "storybook": "start-storybook -p 7007",
     "nuke-and-pave": "rm -rf node_modules && npm cache clear --force && watchman watch-del-all && rm -rf $TMPDIR/metro* && rm -rf $TMPDIR/react-native* && npm install",
     "versionPatch": "npm version --no-git-tag-version patch",
-    "publish": "npm run versionPatch && BUILD_ENVIRONMENT_MODE='stage' expo publish"
+    "publish": "npm run versionPatch && BUILD_ENVIRONMENT_MODE='stage' expo publish",
+    "watch": "npx urql-devtools"
   },
   "jest": {
     "preset": "jest-expo"

@@ -1,35 +1,17 @@
 import React, { useMemo, useState, useContext, useCallback } from 'react';
 import {
   View,
-  TextInput,
   Text,
-  ScrollView,
   StyleSheet,
-  RefreshControl,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useQuery } from 'urql';
 import { useFocusEffect } from '@react-navigation/native';
-import GetNetworkUsers from '~/queries/GetNetworkUsers';
-// import ScreenHeader from '~/components/ScreenHeader';
-import { NetworkContext } from '~/contexts/NetworkContext';
-import { UserContext } from '~/contexts/UserContext';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
-import SearchIcon from '@shared/components/icons/SearchIcon';
-// import OtherIcon from '@shared/components/icons/FilterIcon';
-import mapUser from '@shared/mappings/mapUser';
 import ContentCard from '~/components/ContentCard';
-import MemberCard from '~/components/MemberCard';
-import {
-  LIGHT_GRAY,
-} from '~/constants';
-import SearchContentScroller from '../components/SearchContentScroller';
-import SearchContentItem from '../components/SearchContentItem';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 // import SearchFilterModal from '../components/SearchFilterModal';
 import { useNavigation } from '@react-navigation/native';
 
-function UserContentList({user}) {
+function UserContentList({user, astronomer}) {
   
   const navigation = useNavigation();
   const [contentList, setContentList] = useState();
@@ -47,6 +29,9 @@ function UserContentList({user}) {
       let postData = mappedPosts
       if (user && user.uuid) {
         postData = postData.filter(x => x.creator && x.creator.uuid === user.uuid)
+      }
+      if (astronomer && astronomer.uuid) {
+        postData = postData.filter(x => x.starsByAstronomerUuid && x.starsByAstronomerUuid[astronomer.uuid])
       }
       setContentList(postData)
   }, [user, mappedPosts]);

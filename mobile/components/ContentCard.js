@@ -2,22 +2,66 @@ import React from 'react';
 import {
   View,
   Image,
-  StyleSheet,
-  Text
+  StyleSheet
 } from 'react-native';
-import Constants from 'expo-constants';
+
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Video } from 'expo-av';
 
 import Paragraph from '~/components/Paragraph';
 import { WINDOW_WIDTH, LIGHT_GRAY } from '~/constants';
-import ContentTileForegroundPoll from './ContentTileForegroundPoll';
 
 function ContentCard({
   content,
   onPress = () => {},
 }) {
-  // console.log('content poll', content.poll)
+  const thumbnail = React.useMemo(() => {
+    if (content.screenshot) {
+      return <Image
+        source={{uri: content.screenshot}}
+        resizeMode={'cover'}
+        style={{
+          borderRadius: 32,
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    }
+    if (content.media && content.media.uri && (
+        content.media.uri.indexOf('.mp4') > 0 || content.media.uri.indexOf('.mov') > 0 )) {
+      return <Video
+        source={content.media}
+        resizeMode="cover"
+        shouldPlay={true}
+        isMuted={true}
+        isLooping={false}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      />
+    }
+    if (content.media && content.uri) {
+      return <Image
+        source={{uri: content.uri}}
+        resizeMode={'cover'}
+        style={{
+          borderRadius: 32,
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    }
+    return <View style={{width: 280}}>
+      <Paragraph
+        style={styles.heading}
+        size="huge"
+        >
+        {content.heading}
+      </Paragraph>
+    </View> 
+  }, [content])
+
   return (
     <TouchableOpacity
       onPress={() => onPress({ uuid: content.uuid })}
@@ -25,28 +69,7 @@ function ContentCard({
     >
       <View style={styles.contentTemplateCard}>
         <View style={styles.memberContainer}>
-          {content.screenshot 
-            ? <Image
-                source={{uri: content.screenshot}}
-                resizeMode={'cover'}
-                style={{
-                  borderRadius: 32,
-                  width: '100%',
-                  height: '100%'
-                }}
-              />
-            : (content.heading 
-                ? <View style={{width: 280}}>
-                    <Paragraph
-                      style={styles.heading}
-                      size="huge"
-                      >
-                      {content.heading}
-                    </Paragraph>
-                  </View> 
-                : <></>
-              )
-         }
+          {thumbnail}
         </View>
       </View>
     </TouchableOpacity>

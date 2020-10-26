@@ -327,6 +327,13 @@ function MemberScreen({ navigation, route }) {
               />
             </View>
           : <></>}
+          {activeIndex === 2 ?
+            <View>
+              <UserContentList
+                astronomer={user}
+              />
+            </View>
+          : <></>}
         </View>
       </ScreenCard>
     </>

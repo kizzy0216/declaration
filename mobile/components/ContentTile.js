@@ -70,17 +70,19 @@ function ContentTile({
       media &&
       media.uri &&
       (
-        media.uri.includes('jpg') ||
-        media.uri.includes('png') ||
-        media.uri.includes('gif') ||
-        media.uri.includes('jpeg') ||
-        media.uri.includes('heic')
+        media.uri.includes('.jpg') ||
+        media.uri.includes('.png') ||
+        media.uri.includes('.gif') ||
+        media.uri.includes('.jpeg') ||
+        media.uri.includes('.heic')
       )
     ),
     hasVideo: (
       media &&
-      media.uri &&
-      media.uri.includes('mp4')
+      media.uri && (
+        media.uri.includes('.mp4') ||
+        media.uri.includes('.mov') 
+      )
     ),
     isVideoPlaying,
     isVideoMuted,
