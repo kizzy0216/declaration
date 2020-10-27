@@ -37,14 +37,23 @@ function UserContentList({user, astronomer}) {
   
   return (
       <View style={styles.profileContentContainer}>
-        <View style={styles.container}>
+        <View style={[styles.container, {
+          justifyContent: 'flex-start',
+          paddingHorizontal: 2,
+        }]}>
           {contentList && contentList.length === 0 ? 
             <View style={{width: '100%', flexDirection: 'row', justifyContent: 'center'}}>
               <Text>No posts added to the network yet</Text>
             </View>
           : <></>}
           {contentList && contentList.map((post, index) => (
-            <View key={index} style={{width: '31%', marginHorizontal: 4, marginBottom: 4}}>
+            <View key={index} style={{
+              minWidth: '28%',
+              maxWidth: '30%', 
+              flex: 1, 
+              marginLeft: index % 3 !== 0 ? 16 : 0, 
+              marginBottom: 12
+            }}>
               <ContentCard
                 cardStyle={{width: '100%'}}
                 content={post}
@@ -73,7 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     flexWrap: 'wrap',
-    justifyContent: 'flex-start'
     // paddingRight: 20,
     // paddingLeft: 20,
   },
