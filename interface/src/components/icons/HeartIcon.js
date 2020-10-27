@@ -2,7 +2,7 @@ import * as React from "react";
 
 function HeartIcon(props) {
   return (
-    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg viewBox="0 0 24 24" width={24} height={24} {...props}>
       <g
         stroke={props.fill}
         strokeWidth={1.5}

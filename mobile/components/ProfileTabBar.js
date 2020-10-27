@@ -6,8 +6,6 @@ const ProfileTabBar = ({tabList, activeIndex, onChangeIndex}) => {
     return (
         <View style={{
             borderRadius: 17,
-            borderWidth: 1,
-            borderColor: 'transparent',
             padding: 0,
             backgroundColor: '#F5F5F5',
             flexDirection: "row",
@@ -17,10 +15,11 @@ const ProfileTabBar = ({tabList, activeIndex, onChangeIndex}) => {
             {tabList.map((tab, index) => {
                 return (
                     <ProfileTab
-                    key={index}
-                    isActive={activeIndex === index}
-                    title={tab.title}
-                    onPress={() => onChangeIndex(index)}
+                        key={index}
+                        isActive={activeIndex === index}
+                        title={tab.title}
+                        icon={tab.icon}
+                        onPress={() => onChangeIndex(index)}
                     />
                 )
             })}

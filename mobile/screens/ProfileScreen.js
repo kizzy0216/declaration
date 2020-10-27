@@ -28,14 +28,18 @@ import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import ProfileTabBar from '../components/ProfileTabBar';
 import UserContentList from '../components/UserContentList';
+import { BLACK } from '~/constants';
+import PersonIcon from '@shared/components/icons/PersonIcon';
+import PostsIcon from '@shared/components/icons/PostsIcon';
+import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
 
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0)
   const profileTabItems = React.useMemo(() => [
-      { id: 'about', title: 'About' },
-      { id: 'posts', title: 'Posts' },
-      { id: 'Likes', title: 'Likes' }
+      { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK}/> },
+      { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK}/> },
+      { id: 'Likes', title: 'Likes', icon: <HeartEmptyIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
   ], []);
   const {
     user: authenticatedUser,
@@ -187,10 +191,6 @@ const styles = StyleSheet.create({
   row: {
     marginBottom: 30,
     overflow: 'visible',
-  },
-  paragraph: {
-    fontSize: 14,
-    lineHeight: 20,
   },
 });
 

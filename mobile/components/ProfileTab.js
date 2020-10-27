@@ -2,7 +2,7 @@
 import * as React from "react"
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
 
-const ProfileTab = ({ isActive, title, onPress }) => {
+const ProfileTab = ({ isActive, title, icon, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -13,11 +13,7 @@ const ProfileTab = ({ isActive, title, onPress }) => {
             }
         ]}
       >
-        <Text
-          style={{
-            color: '#222'
-          }}
-        >{title}</Text>
+        {icon ? icon :  <Text style={{ color: '#222'}}>{title}</Text>}
       </View>
     </TouchableOpacity>
   )
@@ -25,16 +21,19 @@ const ProfileTab = ({ isActive, title, onPress }) => {
 
 const styles = StyleSheet.create({
     smallShadow: {
-        paddingVertical: 15,
-        paddingHorizontal: 30,
+        // paddingVertical: 15,
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 40,
         borderRadius: 17,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 2,
+          height: 10,
         },
-        shadowOpacity: 0.1,
-        shadowRadius: 16,
+        shadowOpacity: 0.3,
+        shadowRadius: 40,
         elevation: 20,
     },    
 })

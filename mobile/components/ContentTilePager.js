@@ -94,6 +94,9 @@ function ContentTilePager({filters}) {
       if (filters.creator_uuid) {
         return itemList.filter(x => x.creator && x.creator.uuid === filters.creator_uuid)
       }
+      if (filters.astronomer_uuid) {
+        return itemList.filter(x => x.starsByAstronomerUuid && x.starsByAstronomerUuid[filters.astronomer_uuid])
+      }
     }
     return itemList
   }, [itemUuids, filters]);

@@ -13,6 +13,7 @@ import { WINDOW_WIDTH, LIGHT_GRAY } from '~/constants';
 
 function ContentCard({
   content,
+  cardStyle,
   onPress = () => {},
 }) {
   const thumbnail = React.useMemo(() => {
@@ -30,12 +31,13 @@ function ContentCard({
     if (content.media && content.media.uri && (
         content.media.uri.indexOf('.mp4') > 0 || content.media.uri.indexOf('.mov') > 0 )) {
       return <Video
-        source={content.media}
+        source={{uri: content.media.uri}}
         resizeMode="cover"
         shouldPlay={true}
         isMuted={true}
-        isLooping={false}
+        isLooping={true}
         style={{
+          borderRadius: 32,
           width: '100%',
           height: '100%',
         }}
@@ -67,7 +69,7 @@ function ContentCard({
       onPress={() => onPress({ uuid: content.uuid })}
       containerStyle={{overflow: 'visible'}}
     >
-      <View style={styles.contentTemplateCard}>
+      <View style={[styles.contentTemplateCard, {...cardStyle}]}>
         <View style={styles.memberContainer}>
           {thumbnail}
         </View>
@@ -78,6 +80,7 @@ function ContentCard({
 
 const styles = StyleSheet.create({
   contentTemplateCard: {
+    backgroundColor: 'transparent',
     position: 'relative',
     overflow: 'visible',
     width: WINDOW_WIDTH / 2.65,
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   },
   memberContainer: {
     borderRadius: 32,
-    aspectRatio: 1/1.4,
+    aspectRatio: 1/1.5,
     width: '100%',
     // borderColor: 'blue',
     // borderWidth: 1
