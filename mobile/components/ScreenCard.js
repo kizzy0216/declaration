@@ -1,12 +1,10 @@
 import React, {
-  useEffect,
-  useState,
   useRef,
   useCallback,
+  useMemo,
 } from 'react';
 import {
   Animated,
-  ScrollView,
   View,
   Text,
   StyleSheet,
@@ -42,7 +40,7 @@ function ScreenCard({
   );
 
   const statusBarStyle = useRef('light');
-  const scrollAnimation = useRef(new Animated.Value(0)).current;
+  const scrollAnimation = useMemo(() => new Animated.Value(0), [uuid])
 
   useFocusEffect(useCallback(() => {
     setStatusBarStyle('light');
@@ -132,7 +130,7 @@ function ScreenCard({
       </Animated.View>
 
       <Animated.ScrollView
-        contentContainerStyle={styles.scrollView}
+        contentContainerStyle={{}}
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollAnimation } } }],
@@ -234,8 +232,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Orpheus',
     fontWeight: 'bold',
-  },
-  scrollView: {
   },
   header: {
     position: 'absolute',

@@ -6,13 +6,14 @@ import React, {
 import {
   StyleSheet,
   View,
+  Text
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
-import { useQuery, useMutation } from 'urql';
+// import { useQuery, useMutation } from 'urql';
 
-import GetUser from '~/queries/GetUser';
+// import GetUser from '~/queries/GetUser';
 import ScreenCard from '~/components/ScreenCard';
 import DisplayHeading from '~/components/DisplayHeading';
 import PersonalBio from '~/components/PersonalBio';
@@ -28,18 +29,19 @@ import { UserContext } from '~/contexts/UserContext';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import ProfileTabBar from '../components/ProfileTabBar';
 import UserContentList from '../components/UserContentList';
-import { BLACK } from '~/constants';
+import { BLACK, WINDOW_HEIGHT } from '~/constants';
 import PersonIcon from '@shared/components/icons/PersonIcon';
 import PostsIcon from '@shared/components/icons/PostsIcon';
+import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
-
+import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0)
   const profileTabItems = React.useMemo(() => [
       { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK}/> },
       { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK}/> },
-      { id: 'Likes', title: 'Likes', icon: <HeartEmptyIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
+      { id: 'Likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
   ], []);
   const {
     user: authenticatedUser,
@@ -130,8 +132,8 @@ function ProfileScreen({ navigation }) {
               onChangeIndex={setActiveIndex}
             />
           </View>
-          {activeIndex === 0 ? 
-            <View>
+          <View style={{flex: 1, minHeight: (WINDOW_HEIGHT * 0.6) }}>
+            <View style={{display: activeIndex === 0 ? 'flex' : 'none'}}>
               <View style={styles.row}>
                 <ProfileSummaryCardContainer
                   user={authenticatedUser}
@@ -156,21 +158,29 @@ function ProfileScreen({ navigation }) {
                 />
               </View>
             </View>
-          : <></>}
-          {activeIndex === 1 ?
-            <View>
+            <View style={{display: activeIndex === 1 ? 'flex' : 'none'}}>
               <UserContentList
                 user={authenticatedUser}
+                emptyComponent={
+                  <View style={{width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <PostsEmptyIcon style={{marginTop: 40, marginBottom: 8}} />
+                    <Text>No posts added to the network yet</Text>
+                  </View>
+                }
               />
             </View>
-          : <></>}
-          {activeIndex === 2 ?
-            <View>
+            <View style={{display: activeIndex === 2 ? 'flex' : 'none'}}>
               <UserContentList
                 astronomer={authenticatedUser}
+                emptyComponent={
+                  <View style={{width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <HeartEmptyIcon style={{marginTop: 40, marginBottom: 8}} />
+                    <Text>You haven't liked any posts yet</Text>
+                  </View>
+                }
               />
             </View>
-          : <></>}
+          </View>
         </View>
       </ScreenCard>
     </>

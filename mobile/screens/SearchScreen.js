@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 17,
     marginHorizontal: 24,
     paddingHorizontal: 16,
     backgroundColor: LIGHT_GRAY
@@ -199,14 +199,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     marginBottom: 20,
-  },
-  textInput: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  textInputWrapper: {
-    borderRadius: 16,
-    padding: 24
   },
 });
 

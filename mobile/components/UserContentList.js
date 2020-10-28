@@ -10,7 +10,7 @@ import ContentCard from '~/components/ContentCard';
 
 import { useNavigation } from '@react-navigation/native';
 
-function UserContentList({user, astronomer}) {
+function UserContentList({user, astronomer, emptyComponent}) {
   
   const navigation = useNavigation();
   const [contentList, setContentList] = useState();
@@ -42,9 +42,9 @@ function UserContentList({user, astronomer}) {
           paddingHorizontal: 2,
         }]}>
           {contentList && contentList.length === 0 ? 
-            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'center'}}>
-              <Text>No posts added to the network yet</Text>
-            </View>
+            <>
+              {emptyComponent ? emptyComponent : <Text>Nothing to see here</Text>}
+            </>
           : <></>}
           {contentList && contentList.map((post, index) => (
             <View key={index} style={{

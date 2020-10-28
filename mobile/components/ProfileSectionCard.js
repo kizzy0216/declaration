@@ -45,7 +45,7 @@ function ProfileSectionCard({
 const styles = StyleSheet.create({
   profileSectionCard: {
     backgroundColor: 'white',
-    borderRadius: 23,
+    borderRadius: 17,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

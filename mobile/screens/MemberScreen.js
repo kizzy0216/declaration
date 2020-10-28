@@ -6,8 +6,9 @@ import React, {
 import {
   StyleSheet,
   View,
+  Text
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { useQuery, useMutation } from 'urql';
@@ -19,8 +20,6 @@ import UpdateNetworkUserRelationship from '~/mutations/UpdateNetworkUserRelation
 import ScreenCard from '~/components/ScreenCard';
 import DisplayHeading from '~/components/DisplayHeading';
 import PersonalBio from '~/components/PersonalBio';
-import EditIcon from '@shared/components/icons/EditIcon';
-import CameraIcon from '@shared/components/icons/CameraIcon';
 import PlusIcon from '@shared/components/icons/PlusIcon';
 import CheckmarkIcon from '@shared/components/icons/CheckmarkIcon';
 import DoubleConfirmModal from '~/components/DoubleConfirmModal';
@@ -40,9 +39,10 @@ import {
 import mapNetworkUserRelationship from '@shared/mappings/mapNetworkUserRelationship';
 import ProfileTabBar from '../components/ProfileTabBar';
 import UserContentList from '../components/UserContentList';
-import { BLACK, BLUE } from '~/constants';
+import { BLACK, BLUE, WINDOW_HEIGHT } from '~/constants';
 import PersonIcon from '@shared/components/icons/PersonIcon';
 import PostsIcon from '@shared/components/icons/PostsIcon';
+import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
 
 function MemberScreen({ navigation, route }) {
@@ -56,7 +56,7 @@ function MemberScreen({ navigation, route }) {
   const memberTabItems = React.useMemo(() => [
     { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK}/> },
     { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK}/> },
-    { id: 'Likes', title: 'Likes', icon: <HeartEmptyIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
+    { id: 'likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
   ], []);
 
   const [
@@ -299,8 +299,8 @@ function MemberScreen({ navigation, route }) {
               onChangeIndex={setActiveIndex}
             />
           </View>
-          {activeIndex === 0 ? 
-            <View>
+          <View style={{flex: 1, minHeight: (WINDOW_HEIGHT * 0.6) }}>
+            <View style={{display: activeIndex === 0 ? 'flex' : 'none'}}>
               <View style={styles.row}>
                 <ProfileSummaryCardContainer
                   user={user}
@@ -322,21 +322,28 @@ function MemberScreen({ navigation, route }) {
                 />
               </View>
             </View>
-          : <></> }
-          {activeIndex === 1 ?
-            <View>
+            <View style={{display: activeIndex === 1 ? 'flex' : 'none'}}>
               <UserContentList
                 user={user}
+                emptyComponent={
+                  <View style={{width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <Text>No posts added to the network yet</Text>
+                  </View>
+                }
               />
             </View>
-          : <></>}
-          {activeIndex === 2 ?
-            <View>
+            <View style={{display: activeIndex === 2 ? 'flex' : 'none'}}>
               <UserContentList
                 astronomer={user}
+                emptyComponent={
+                  <View style={{width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <HeartEmptyIcon style={{marginTop: 40, marginBottom: 8}} />
+                    <Text>You haven't liked any posts yet</Text>
+                  </View>
+                }
               />
             </View>
-          : <></>}
+          </View>
         </View>
       </ScreenCard>
     </>
