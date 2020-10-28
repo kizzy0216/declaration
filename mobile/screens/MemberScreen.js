@@ -42,6 +42,7 @@ import UserContentList from '../components/UserContentList';
 import { BLACK, BLUE, WINDOW_HEIGHT } from '~/constants';
 import PersonIcon from '@shared/components/icons/PersonIcon';
 import PostsIcon from '@shared/components/icons/PostsIcon';
+import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
 
@@ -327,6 +328,7 @@ function MemberScreen({ navigation, route }) {
                 user={user}
                 emptyComponent={
                   <View style={{width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <PostsEmptyIcon style={{marginTop: 40, marginBottom: 8}} />
                     <Text>No posts added to the network yet</Text>
                   </View>
                 }

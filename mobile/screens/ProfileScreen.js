@@ -32,9 +32,9 @@ import UserContentList from '../components/UserContentList';
 import { BLACK, WINDOW_HEIGHT } from '~/constants';
 import PersonIcon from '@shared/components/icons/PersonIcon';
 import PostsIcon from '@shared/components/icons/PostsIcon';
+import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
-import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0)
