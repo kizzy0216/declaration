@@ -9,7 +9,7 @@ import Avatar from '~/components/Avatar';
 import MultiSelectableList from '~/components/MultiSelectableList';
 import { WINDOW_HEIGHT } from '~/constants';
 
-function ConnectionsModal({
+function HashtagsModal({
   items,
   initialSelected = [],
   isFetching = false,
@@ -20,7 +20,7 @@ function ConnectionsModal({
 }) {
   return (
     <Modal
-      heading="@connections"
+      heading="#hashtags"
       isFetching={isFetching}
       isVisible={isVisible}
       onSubmit={onSubmit}
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionsModal;
+export default HashtagsModal;

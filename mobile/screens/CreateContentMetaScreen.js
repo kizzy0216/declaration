@@ -14,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ConnectionsModalContainer from '~/containers/ConnectionsModalContainer';
+import HashtagsModalContainer from '~/containers/HashtagsModalContainer';
 import { CreateContentContext } from '~/contexts/CreateContentContext';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import CreateHeader from '~/components/CreateHeader';
@@ -26,30 +27,31 @@ const NETWORK_REACH = 'NETWORK_REACH';
 const CONNECTIONS_REACH = 'CONNECTIONS_REACH';
 const PRIVATE_REACH = 'PRIVATE_REACH';
 
-const REACH_OPTIONS = [
-  {
-    label: 'Network',
-    value: NETWORK_REACH,
-  },
-  {
-    label: 'Connections only',
-    value: CONNECTIONS_REACH,
-  },
-  {
-    label: 'Private to me',
-    value: PRIVATE_REACH,
-  },
-];
+// const REACH_OPTIONS = [
+//   {
+//     label: 'Network',
+//     value: NETWORK_REACH,
+//   },
+//   {
+//     label: 'Connections only',
+//     value: CONNECTIONS_REACH,
+//   },
+//   {
+//     label: 'Private to me',
+//     value: PRIVATE_REACH,
+//   },
+// ];
 
 function CreateContentMetaScreen({ navigation }) {
   const [isConnectionsModalActive, setIsConnectionsModalActive] = useState(false);
+  const [isHashtagsModalActive, setIsHashtagsModalActive] = useState(false);
   const {
     meta,
     setMeta,
     create,
     isCreating,
   } = useContext(CreateContentContext);
-  const [selectedReach, setSelectedReach] = useState(NETWORK_REACH);
+  // const [selectedReach, setSelectedReach] = useState(NETWORK_REACH);
   const { scrollToIndex } = useContext(ContentTilePagerContext);
 
   const isDisabled = (false);
@@ -59,6 +61,10 @@ function CreateContentMetaScreen({ navigation }) {
       ...meta,
       mentions: selected,
     });
+  }
+
+  function handleHashtagsSubmit({ selected }) {
+    console.log('SELECTED', selected)
   }
 
   function handlePost() {
@@ -76,7 +82,12 @@ function CreateContentMetaScreen({ navigation }) {
         onSubmit={handleConnectionsSubmit}
         onClose={() => setIsConnectionsModalActive(false)}
       />
-
+      <HashtagsModalContainer
+        initialSelected={meta.mentions.map(({ uuid }) => uuid)}
+        isVisible={isHashtagsModalActive}
+        onSubmit={handleHashtagsSubmit}
+        onClose={() => setIsHashtagsModalActive(false)}
+      />
       <SafeAreaView
         style={{flex: 1}}
         contentContainerStyle={{flex: 1}}
@@ -117,6 +128,7 @@ function CreateContentMetaScreen({ navigation }) {
                     buttonStyle={{
                       width: 120,
                     }}
+                    onPress={() => setIsHashtagsModalActive(true)}
                   />
                 }
               />
