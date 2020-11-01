@@ -66,21 +66,21 @@ function FeedHeader({
   // );
   const leftElement = null;
 
-  // const rightElement = (
-  //   <BorderlessButton onPress={onMessagesPress}>
-  //     <MessageIcon
-  //       width={22}
-  //       height={22}
-  //       fill={
-  //         themeAnimation.interpolate({
-  //           inputRange: [0, 1],
-  //           outputRange: ['#000000', '#FFFFFF'],
-  //         })
-  //       }
-  //     />
-  //   </BorderlessButton>
-  // );
-  const rightElement = <></>;
+  const rightElement = (
+    <BorderlessButton onPress={onMessagesPress}>
+      <MessageIcon
+        width={22}
+        height={22}
+        fill={
+          themeAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['#000000', '#FFFFFF'],
+          })
+        }
+      />
+    </BorderlessButton>
+  );
+  // const rightElement = <></>;
 
   return (
     <View style={styles.container}>
