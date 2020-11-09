@@ -1,5 +1,116 @@
 # Declaration
 
+## Architecture
+
+This project is structured as a monorepo with five core properties:
+
+- Backend
+- Dashboard
+- Shared (aka Interface)
+- Marketing
+- Mobile
+
+
+### Backend architecture
+
+The Backend is architected as two main components with the underlying data
+layer being powered by a Postgres database. These are the Hasura/GraphQL
+engine, and the Node.js REST API.
+
+While everything *can* be fully built on Hasura, we have opted for the best
+tool for the job and fallback to REST API endpoints for functionality that is
+more well-suited for a REST implementation. A great example of that is
+authentication, which is implemented with the `/api/authenticate.js`, and
+`/api/log-out.js` endpoints.
+
+Please fully read Hasura documentation to understand the architecture of the
+primary API. We currently use Hasura's automatically-generated GraphQL API,
+permissions, and events (webhooks). Hasura also manages data migrations and
+other metadata (like relationships, permissions, event configuration).
+
+### Dashboard architecture
+
+The Dashboard is architected as an isomorphic web application powered by Next.js.
+
+### Interface architecture
+
+We utilize certain technologies across the entire platform (Javascript, React,
+GraphQL), and have decided to maintain a directory of React components,
+Javascript utility functions, and GraphQL queries/mutations that can be re-used
+across all other properties.
+
+Importing files from Interface into other properties is achieved with symlinks
+and/or Babel aliases (in the case of the Mobile property). While the more
+correct implementation would be an npm dependency with a version number, we
+have decided to instead keep it simple and lean into the benefits of a monorepo.
+
+### Marketing architecture
+
+The Marketing site is architected as a statically generated web site powered by Next.js.
+
+### Mobile architecture
+
+The Mobile property is architected as a React Native application, fully Managed
+by the Expo framework. We opt for React Hooks as much as possible, and use
+Context for managing any kind of shared or global state. Data fetching is
+implemented within the screen, and is only lifted up and into Context if
+necessary. Screens are created and used liberally to separate concerns as high
+up as possible.
+
+### Authentication and authorization
+
+Declaration is a private social network as-a-service platform. As such, please
+keep in mind that almost all data is scoped to a Network. The main exception is
+User, which can belong to multiple Networks.
+
+Anyone can authenticate into Declaration, but will quickly reach a wall if
+they're not a member of a Network or a Super Admin User. To be gain access to a
+Network, we have three entry points:
+
+- Become a Super Admin. This can only be accomplished by having admin access to
+  the database, and after creating a User record. Insert a User UUID into the
+`super_admin` table to gain Super Admin access.
+
+- Get invited to a Network by a Network Admin or Super Admin. This is primarily
+  achieved through the Dashboard, after navigating to the Network's Members
+  page. A form exists on that page which inserts a row into the
+  `network_membership_invitation` table, which fires a webhook to
+  `/api/webhooks/network-membership-invitation`, which sends an email to the
+  invited user. If the user accepts the invitation, a User record is created
+  (if one didn't exist already), and are granted access to the Network via an
+  entry in the `network_user` table.
+
+- Request membership to a Network from a Network Admin or Super Admin. This is
+  primarily achieved from the mobile applications, after registration. A screen
+  exists that displays a list of Networks with forms to submit a Membership
+  Request. Upon submission of the form, a row is created in the
+  `network_membership_request` table, which fires a webhook to
+  `/api/webhooks/network-membership-request`. A Network Admin or Super Admin
+  can then accept the request on the Network's Members Dashboard page. After
+  acceptance, the User can refresh the mobile application to gain access to the
+  network.
+
+Additionally, the `metal-future-printed-judge@example.com` email can be used to
+bypass the entire authentication process. This was primarily created to allow
+for a smoother Apple App Store review process.
+
+### Content
+
+Content is architected to have set of base fields, and then allow for a single
+partial to extend Content to include functionality that differs significantly
+from each other. On the frontend/design side we call these extensions
+"Templates", on the backend side we call them "Partials" and are enabled via
+the various `content_partial_*` tables.
+
+As such, Content can have a heading, sub heading, body, media (via `media`
+table), meta (via `content_meta` table), and a single `content_partial`
+one-to-one relationship. Content Partial can then have a relationship to one of
+several Content Partial sub-tables like `content_partial_poll`.
+
+This structure allows us to define Content as our primitive, while still
+allowing for Templates in an extensible manner. Maintaining Content as our
+primitive is fundamental to Declaration's flexibility and value proposition.
+
 ## Setup
 
 ### Global prerequisites
