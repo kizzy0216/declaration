@@ -11,7 +11,7 @@ function LogInForm({
   const [email, setEmail] = useState('');
 
   function handleSubmit() {
-    if (email.length > 0) {
+    if (email && email.length > 0) {
       onSubmit({ email: email.toLowerCase().trim() });
     }
   }
