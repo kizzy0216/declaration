@@ -39,3 +39,6 @@ yarn-error.log*
 .env.production.local
 .private.env
 *.private.env
+
+# yarn.lock
+yarn.lock

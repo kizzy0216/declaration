@@ -451,5 +451,3 @@ to _always publish new builds_, but _sometimes upload new builds_ if native chan
 occurred. Check the Expo documentation for [more
 information](https://docs.expo.io/workflow/publishing/#some-native-configuration-cant-be-updated-by).
 
-
-#### Sayem joined here.
