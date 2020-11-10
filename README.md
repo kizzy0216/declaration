@@ -132,7 +132,7 @@ docker-compose up -d # start services
 `npm run dev` or `hasura console --admin-secret <HASURA_ADMIN_SECRET>`  # start hasura console. https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_console.html
 vercel dev # start REST API server
 
-# additionally, to initialize your local database, run the following only once: 
+# additionally, to initialize your local database, run the following only once:
 hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
 hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
 ```
@@ -210,7 +210,7 @@ The backend consists of three technologies:
 
 We deploy and manage the Postgres database with [AWS RDS](https://aws.amazon.com/rds/).
 
-After spinning up the LTS version of Postgres, follow the 
+After spinning up the LTS version of Postgres, follow the
 [Hasura guide for Postgres
 requirements](https://hasura.io/docs/1.0/graphql/manual/deployment/postgres-requirements.html).
 It essentially entails configuring a database user for Hasura to use, with the
@@ -405,7 +405,7 @@ Ensure you are a part of the Declaration Apple team, and Declaration Google
 Play team.
 
 Update the `package.json` version.  The version number can then be found at the bottom of the Settings screen in the app
-Update the `app.config.js` version, buildNumber, and versionCode for the Apple/Google deployment. 
+Update the `app.config.js` version, buildNumber, and versionCode for the Apple/Google deployment.
 ```bash
 # to publish production iOS
 BUILD_ENVIRONMENT_MODE="production" expo publish:ios
@@ -450,3 +450,6 @@ Expo manages over-the-air updates of our application. The standard procedure is
 to _always publish new builds_, but _sometimes upload new builds_ if native changes have
 occurred. Check the Expo documentation for [more
 information](https://docs.expo.io/workflow/publishing/#some-native-configuration-cant-be-updated-by).
+
+
+#### Sayem joined here.
