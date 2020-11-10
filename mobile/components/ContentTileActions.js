@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo, useContext } from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
 import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handler';
 import HeartIcon from '@shared/components/icons/HeartIcon';
@@ -11,6 +11,10 @@ import AudioIcon from '@shared/components/icons/AudioIcon';
 import NoAudioIcon from '@shared/components/icons/NoAudioIcon';
 
 import { GREEN } from '~/constants';
+// import withBadge from '../components/withBadge'
+// import { useSubscription } from 'urql';
+// import subscribeCommentCount from '../queries/subscribeCommentCount';
+// import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 
 const LIGHT_FILL = 'rgba(255,255,255, 0.8)';
 const DARK_FILL = 'rgba(0,0,0, 0.6)';
@@ -24,6 +28,60 @@ function ContentTileActions({
   onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
+//   const subscribeCommentCount = `
+//   subscription MyQuery($contentUUID: uuid) {
+//     content(where: {uuid: {_eq: $contentUUID}}) {
+//       content_comments_aggregate {
+//         aggregate {
+//           count
+//         }
+//       }
+//     }
+//   }
+// `;
+  // const {
+  //   itemUuids: contentItemUuids,
+  //   activeIndex: activeContentIndex,
+  // } = useContext(ContentTilePagerContext);
+  // const contentUuid = contentItemUuids[activeContentIndex];
+  
+  // const [ commentCountResult ] =  useSubscription({ query: subscribeCommentCount,
+  //     variables: {
+  //       content_uuid: contentUuid
+  //     }
+  // })
+  
+  // const [ subResult ] = 
+  // useSubscription({ 
+  //   query: subscribeCommentCount,
+  //   variables: {
+  //     contentUUID: contentUuid
+  //   }
+  // }, (initValue, result) => {
+  //     console.log('New', new Date())
+  //     console.log('FIRST PARAM', initValue)
+  //     console.log('NEW RESULT', result)
+  //   }
+  // ) 
+  // if (subResult && subResult.error) {
+  //   console.log('SUB ERROR', new Date(), subResult.error.message)
+  // }
+  // if (subResult && subResult.fetching) {
+  //   console.log('FETCHIING', new Date())
+  // }
+  // if (subResult && subResult.data) {
+  //   console.log('DATA!!!!', new Date(), subResult.data)
+  // }
+    // (_, result) => {
+    //   console.log('NEW RESULT', new Date(), result)
+    // })
+
+
+  // React.useEffect(() => {
+  //   if (commentCountResult) {
+  //     console.log('RESULT', new Date(), commentCountResult)
+  //   }
+  // }, [commentCountResult]);
   // const panRef = useRef();
   // const [isPanning, setIsPanning] = useState(false);
   // const featureStarAnimation = useRef(new Animated.Value(0)).current;
@@ -46,6 +104,7 @@ function ContentTileActions({
     }).start();
   }, [isLeftHidden]);
 
+  // const BadgedIcon = withBadge(3)(CommentIcon)
   return (
     <View
       style={styles.actions}

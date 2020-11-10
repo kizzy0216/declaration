@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  View,
-  Text,
-} from 'react-native';
+// import {
+//   View,
+//   Text,
+// } from 'react-native';
 import { TransitionPresets } from '@react-navigation/stack';
 
 import CreateNavigator from '~/navigation/CreateNavigator';
@@ -41,18 +41,18 @@ import UserOnboardingWorkPlaceScreen from '~/screens/UserOnboardingWorkPlaceScre
 import UserOnboardingWorkTitleScreen from '~/screens/UserOnboardingWorkTitleScreen';
 import UserOnboardingWorkBioScreen from '~/screens/UserOnboardingWorkBioScreen';
 import NetworkBlockedModal from '~/components/NetworkBlockedModal';
-import { UserContext } from '~/contexts/UserContext';
+// import { UserContext } from '~/contexts/UserContext';
 import { NetworkContextProvider } from '~/contexts/NetworkContext';
 import { ContentTilePagerContextProvider } from '~/contexts/ContentTilePagerContext';
 import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
-  const {
-    user,
-    hasProfile,
-    hasNetworks,
-  } = useContext(UserContext);
+  // const {
+  //   user,
+  //   hasProfile,
+  //   hasNetworks,
+  // } = useContext(UserContext);
 
   return (
   <NetworkContextProvider>

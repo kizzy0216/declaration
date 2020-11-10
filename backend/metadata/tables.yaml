@@ -580,12 +580,14 @@
       - comment_uuid
       - content_uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
       - content_uuid
       - comment_uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:

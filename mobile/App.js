@@ -1,7 +1,6 @@
 import '~/utils/whyDidYouRender';
 
 import React, {
-  useState,
   useEffect,
 } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';

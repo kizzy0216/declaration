@@ -1,6 +1,8 @@
 {
   "name": "declaration-backend",
   "version": "0.0.0",
+  "description": "Declaration REST API app",
+  "private": true,
   "scripts": {
     "dev": "hasura console --admin-secret secret"
   },

@@ -1,5 +1,6 @@
-import { createClient as createUrqlClient, defaultExchanges } from 'urql';
+import { createClient as createUrqlClient, defaultExchanges, subscriptionExchange } from 'urql';
 import { devtoolsExchange } from '@urql/devtools';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
@@ -18,12 +19,13 @@ export const hydrateJWT = async () => {
     console.error('Failed to get JWT from local storage');
   }
   inMemoryJWT = JSON.parse(jwt);
-
+  resetSubscriptionClient();
   return Promise.resolve();
 }
 
 export const saveJWT = (jwt) => {
   inMemoryJWT = jwt;
+  resetSubscriptionClient(!Boolean(jwt));
   return SecureStore.setItemAsync('jwt', JSON.stringify(jwt));
 };
 
@@ -46,28 +48,45 @@ export const loadUser = async () => {
   return Promise.resolve(JSON.parse(user));
 }
 
-const getExchanges = () => {
-  console.log('Process', process.env.NODE_ENV)
-  if (process.env.NODE_ENV === 'development') {
-    return [devtoolsExchange, ...defaultExchanges]
-  } else {
-    return [...defaultExchanges]
+const wsClient = new SubscriptionClient(
+  HASURA_BASE_URL.replace('https:', 'wss:').replace('http:', 'ws:'), 
+  {
+    reconnect: true,
+    connectionParams: () => ({
+      headers: {
+        'content-type': 'application/json',
+        Authorization: inMemoryJWT ? `Bearer ${inMemoryJWT}` : '',
+      }
+    })
   }
+)
+
+export const resetSubscriptionClient = (isLogout) => {
+  if (isLogout) {
+    console.log("KILL IT ENTIRELY", inMemoryJWT)
+    wsClient.close(true, true);
+  } else {
+    wsClient.close(true, false)
+  }
+}
+const getExchanges = () => {
+  // console.log('Process', process.env.NODE_ENV)
+  // if (process.env.NODE_ENV === 'development') {
+    return [devtoolsExchange, ...defaultExchanges, subscriptionExchange({
+      forwardSubscription: operation => wsClient.request(operation)
+    })]
+  // } else {
+  //   return [...defaultExchanges]
+  // }
 }
 export const urqlClient = createUrqlClient({
   url: HASURA_BASE_URL,
   exchanges: getExchanges(),
-  fetchOptions: () => {
-    if (inMemoryJWT) {
-      return {
-        headers: {
-          Authorization: `Bearer ${inMemoryJWT}`,
-        }
-      }
+  fetchOptions: () => ({
+    headers: {
+      Authorization: inMemoryJWT ? `Bearer ${inMemoryJWT}` : '',
     }
-
-    return {};
-  },
+  }),
 });
 
 export const fetchREST = (url, options) => {
