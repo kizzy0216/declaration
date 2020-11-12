@@ -20,9 +20,9 @@ import LoopItem from './LoopItem'
 import ConversationItem from './ConversationItem'
 
 import ScreenHeader from '~/components/ScreenHeader';
-import PlusIcon from '@shared/components/icons/PlusIcon' //'~/assets/images/plus.svg'
-import LoopBack from '@shared/components/icons/ArrowLeftIcon' //'~/assets/images/loop-back.svg'
-import Chat from '@shared/components/icons/ArrowLeftIcon' // '~/assets/images/chat.svg'
+import PlusIcon from '~/assets/images/plus.svg'
+import LoopBack from '~/assets/images/loop-back.svg'
+import Chat from '~/assets/images/chat.svg'
 
 
 import {

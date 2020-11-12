@@ -6,8 +6,8 @@ import {
     StyleSheet
 } from 'react-native'
 
-import CheckOff from '@shared/components/icons/ArrowLeftIcon' // '../../assets/images/check_off.svg'
-import CheckOn from '@shared/components/icons/ArrowLeftIcon' // '../../assets/images/check_on.svg'
+import CheckOff from '~/assets/images/check_off.svg'
+import CheckOn from '~/assets/images/check_on.svg'
 
 const ContactItem = ({
     contact,

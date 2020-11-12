@@ -6,7 +6,7 @@ import {
     View
 } from 'react-native';
 
-import NewMsgAlert from '@shared/components/icons/ArrowLeftIcon' //'~/assets/images/red-dot.svg'
+import NewMsgAlert from '~/assets/images/red-dot.svg'
 
 const LoopItem = ({loop}) => {
 

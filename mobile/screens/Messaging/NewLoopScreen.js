@@ -19,8 +19,8 @@ import {
 } from '@expo-google-fonts/roboto'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
-import ToggleSwitchOn from '@shared/components/icons/ArrowLeftIcon' //'../../assets/images/toggle-switch-on.svg'
-import ToggleSwitchOff from '@shared/components/icons/ArrowLeftIcon' //'../../assets/images/toggle-switch-off.svg'
+import ToggleSwitchOn from '~/assets/images/toggle-switch-on.svg'
+import ToggleSwitchOff from '~/assets/images/toggle-switch-off.svg'
 
 import ContactSelector from './ContactSelector'
 

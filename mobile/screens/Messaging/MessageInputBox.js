@@ -17,8 +17,8 @@ import {
 } from '@expo-google-fonts/roboto'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-import FileAttach from '@shared/components/icons/ArrowLeftIcon' //'~/assets/images/file-attach.svg'
-import Plus from '@shared/components/icons/ArrowLeftIcon' //'~/assets/images/sm-plus.svg'
+import FileAttach from '~/assets/images/file-attach.svg'
+import Plus from '~/assets/images/sm-plus.svg'
 
 const MessageInputBox = ({
     userData,
