@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
 
 import GetNetworkById from '~/queries/GetNetworkById';
+import FiltersContainer from '~/containers/FiltersContainer';
 import NetworkMembershipRequestTableContainer from '~/containers/NetworkMembershipRequestTableContainer';
 import NetworkMembershipInvitationTableContainer from '~/containers/NetworkMembershipInvitationTableContainer';
 import MemberTableContainer from '~/containers/MemberTableContainer';
@@ -26,35 +27,47 @@ function NetworkMembersPage() {
   return (
     <div className="network-members-page">
       <div className="row">
-        <NetworkMembershipRequestTableContainer
+        <FiltersContainer
           networkId={networkId}
           network={network}
         />
       </div>
 
-      <div className="row">
-        <NetworkMembershipInvitationTableContainer
-          networkId={networkId}
-          network={network}
-        />
-      </div>
+      <div className="tables-section">
+        <div className="row">
+          <NetworkMembershipRequestTableContainer
+            networkId={networkId}
+            network={network}
+          />
+        </div>
 
-      <div className="row">
-        <MemberTableContainer
-          networkId={networkId}
-        />
+        <div className="row">
+          <NetworkMembershipInvitationTableContainer
+            networkId={networkId}
+            network={network}
+          />
+        </div>
+
+        <div className="row">
+          <MemberTableContainer
+            networkId={networkId}
+          />
+        </div>
       </div>
 
       <style jsx>{`
         .network-members-page {
           padding-top: 20px;
-          padding-right: 20px;
           padding-bottom: 20px;
-          padding-left: 20px;
+        }
+
+        .tables-section {
+          padding-right: 25.5px;
+          padding-left: 25.5px;
         }
 
         .row {
-          margin-bottom: 40px;
+          margin-bottom: 50px;
         }
       `}</style>
     </div>

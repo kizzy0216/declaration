@@ -30,6 +30,8 @@ function Application({ Component, pageProps, jwt }) {
       <Head>
         <title>Declaration</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
       </Head>
 
       <div id="modal-portal-root" />
@@ -71,7 +73,7 @@ function Application({ Component, pageProps, jwt }) {
         }
 
         .container {
-          border-radius: var(--border-radius);
+          border-radius: 10px;
           margin-top: 20px;
           margin-right: 20px;
           margin-bottom: 20px;

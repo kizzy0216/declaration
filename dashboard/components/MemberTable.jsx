@@ -83,14 +83,14 @@ function MemberTable({
         />
       ),
       style: {
-        width: '25ch'
+        width: '176px'
       },
     },
     {
       Header: 'Email',
       accessor: 'user.email',
       style: {
-        width: '25ch'
+        width: '213px'
       },
     },
     {
@@ -98,14 +98,14 @@ function MemberTable({
       accessor: 'role',
       Cell: ({ value }) => verbalizeUserRole(value),
       style: {
-        width: '20ch'
+        width: '123.5px'
       },
     },
     {
       Header: 'Location',
       accessor: 'user.profile.location',
       style: {
-        width: '30ch'
+        width: '170px'
       },
     },
     {
@@ -115,7 +115,7 @@ function MemberTable({
         value ? 'True' : 'False'
       ),
       style: {
-        width: '10ch'
+        width: '77px'
       },
     },
     {

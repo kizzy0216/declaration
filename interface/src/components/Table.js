@@ -43,21 +43,9 @@ function Table({
 
   return (
     <div
-      className={[
-        'table',
-        isCollapsed && 'collapsed',
-      ].filter(x => x).join(' ')}
+      className="table"
     >
       <div className="table-header">
-        {isCollapsible && !isEmpty &&
-          <a
-            onClick={handleToggleCollapse}
-            href="#collapse"
-            className="collapse-toggle"
-          >
-            <ChevronRightIcon fill="inherit" />
-          </a>
-        }
 
         {heading &&
           <h2>{heading}</h2>
@@ -77,59 +65,35 @@ function Table({
       </div>
 
       <div className="container">
-        {!isFetching && isEmpty ?
-          <EmptyState />
-        : <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th
-                      // Return an array of prop objects and react-table will merge them appropriately
-                      {...column.getHeaderProps([
-                        {
-                          className: column.className,
-                          style: column.style,
-                        },
-                        getColumnProps(column),
-                        getHeaderProps(column),
-                      ])}
-                    >
-                      {column.render('Header')}
-                    </th>
-                  ))}
+        <table {...getTableProps()}>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row)
+              return (
+                // Merge user row props in
+                <tr {...row.getRowProps(getRowProps(row))}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td
+                        // Return an array of prop objects and react-table will merge them appropriately
+                        {...cell.getCellProps([
+                          {
+                            className: cell.column.className,
+                            style: cell.column.style,
+                          },
+                          getColumnProps(cell.column),
+                          getCellProps(cell),
+                        ])}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  })}
                 </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row, i) => {
-                prepareRow(row)
-                return (
-                  // Merge user row props in
-                  <tr {...row.getRowProps(getRowProps(row))}>
-                    {row.cells.map(cell => {
-                      return (
-                        <td
-                          // Return an array of prop objects and react-table will merge them appropriately
-                          {...cell.getCellProps([
-                            {
-                              className: cell.column.className,
-                              style: cell.column.style,
-                            },
-                            getColumnProps(cell.column),
-                            getCellProps(cell),
-                          ])}
-                        >
-                          {cell.render('Cell')}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        }
+              )
+            })}
+          </tbody>
+        </table>
       </div>
 
       <style jsx>{`
@@ -152,6 +116,14 @@ function Table({
           display: flex;
           flex-flow: row;
           justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+
+          & h2 {
+            font-size: 20px;
+            font-family: var(--font-family-sans-serif);
+            font-weight: 500;
+          }
         }
 
         .collapse-toggle {
@@ -208,21 +180,23 @@ function Table({
           border: solid 1px var(--light-gray);
           border-style: solid none;
           background-color: var(--light-gray);
-          padding-top: 10px;
-          padding-right: 10px;
-          padding-bottom: 10px;
-          padding-left: 10px;
+          font-size: 13px;
+          font-family: var(--font-family-sans-serif);
+          font-weight: 400;
+          height: 50px;
 
           &:first-child {
             border-left-style: solid;
-            border-top-left-radius: var(--border-radius);
-            border-bottom-left-radius: var(--border-radius);
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            padding-left: 10px;
           }
 
           &:last-child {
             border-right-style: solid;
-            border-bottom-right-radius: var(--border-radius);
-            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: 15px;
+            border-top-right-radius: 15px;
+            padding-right: 10px;
           }
         }
       `}</style>

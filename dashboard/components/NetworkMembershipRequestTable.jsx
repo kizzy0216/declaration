@@ -3,14 +3,15 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
-import { formatDateTime } from '~/shared/utils/formatDate';
+import { formatDate } from '~/shared/utils/formatDate';
 
 function NetworkMembershipRequestTable({
   items,
+  action,
   onAccept = () => {},
   onDecline = () => {},
 }) {
-  const heading = `${items.length} Access Requests`;
+  const heading = `${items.length} New Member Request`;
   const columns = useMemo(() => [
     {
       Header: 'Name',
@@ -19,20 +20,21 @@ function NetworkMembershipRequestTable({
         <UserCell value={value} />
       ),
       style: {
-        width: '25ch'
+        width: '176px'
       },
     },
     {
       Header: 'Email',
       accessor: 'user.email',
       style: {
-        width: '25ch'
+        width: '213px'
       },
     },
     {
       Header: 'Received at',
       accessor: 'createdAt',
-      Cell: ({ value }) => formatDateTime(value)
+      // Cell: ({ value }) => formatDateTime(value)
+      Cell: ({ value }) => {return `Sent ${formatDate(value)}`}
     },
     {
       Header: 'Body',
@@ -93,6 +95,7 @@ function NetworkMembershipRequestTable({
       heading={heading}
       columns={columns}
       data={items}
+      action={action}
       isCollapsible
     />
   );

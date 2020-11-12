@@ -10,6 +10,7 @@ function Input({
   placeholder,
   rows,
   maxLength,
+  className,
   isAutofocused = false,
   isRequired = false,
   isFetching = false,
@@ -61,6 +62,7 @@ function Input({
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
+          className={className && className}
         />
       }
 

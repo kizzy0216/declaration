@@ -50,7 +50,7 @@ function Button ({
         button {
           font-family: var(--font-family-sans-serif);
           font-weight: 500;
-          border-radius: var(--border-radius);
+          border-radius: 7px;
           cursor: pointer;
           width: 100%;
           display: flex;
@@ -84,6 +84,8 @@ function Button ({
           padding-right: 1.6em;
           padding-bottom: 0.4em;
           padding-left: 1.6em;
+          font-size: 14px;
+          height: 30px;
         }
 
         .large {
@@ -94,7 +96,7 @@ function Button ({
         }
 
         .primary {
-          background: var(--blue);
+          background: var(--light-blue);
           color: white;
           fill: white;
         }

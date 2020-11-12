@@ -8,6 +8,7 @@ import {
 import InsertNetworkMember from '~/mutations/InsertNetworkMember';
 import DeleteNetworkMembershipRequest from '~/mutations/DeleteNetworkMembershipRequest';
 import GetNetworkMembershipRequests from '~/queries/GetNetworkMembershipRequests';
+import Button from '~/shared/components/Button';
 const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
 import NetworkMembershipRequestTable from '~/components/NetworkMembershipRequestTable';
@@ -29,7 +30,7 @@ function NetworkMembershipRequestTableContainer({
     pause: !networkId,
   });
   const [
-    deleteRequestResult, 
+    deleteRequestResult,
     deleteRequest,
   ] = useMutation(DeleteNetworkMembershipRequest);
   const [
@@ -93,7 +94,7 @@ function NetworkMembershipRequestTableContainer({
           />
         </ModalPortal>
       }
-      
+
       {isDeleteModalActive &&
         <ModalPortal
           onClose={() => setIsDeleteModalActive(false)}
@@ -110,11 +111,19 @@ function NetworkMembershipRequestTableContainer({
         </ModalPortal>
       }
 
-      <NetworkMembershipRequestTable
-        items={items}
-        onAccept={handleAccept}
-        onDecline={handleDecline}
-      />
+      {items.length !== 0 &&
+        <NetworkMembershipRequestTable
+          items={items}
+          onAccept={handleAccept}
+          onDecline={handleDecline}
+          action={
+            <Button
+              label="Accept All & Send Invites"
+              onClick={() => {}}
+            />
+          }
+        />
+      }
     </>
   );
 }

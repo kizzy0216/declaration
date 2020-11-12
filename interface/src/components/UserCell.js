@@ -44,7 +44,7 @@ function UserCell({
         }
 
         .container {
-          margin-left: 10px;
+          margin-left: 8.5px;
         }
       `}</style>
     </div>

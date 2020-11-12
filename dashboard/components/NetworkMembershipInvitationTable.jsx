@@ -3,12 +3,12 @@ import React, { useMemo } from 'react';
 import UserCell from '~/shared/components/UserCell';
 import ActionMenu from '~/shared/components/ActionMenu';
 import Table from '~/shared/components/Table';
-import { formatDateTime } from '~/shared/utils/formatDate';
+import { formatDate } from '~/shared/utils/formatDate';
 
 function NetworkMembershipInvitationTable({
   items,
   action,
-  onRevoke = () => {},
+  onDecline = () => {},
 }) {
   const heading = `${items.length} Pending Invites`;
   const columns = useMemo(() => [
@@ -22,20 +22,21 @@ function NetworkMembershipInvitationTable({
         />
       ),
       style: {
-        width: '25ch'
+        width: '176px'
       },
     },
     {
       Header: 'Email',
       accessor: 'user.email',
       style: {
-        width: '25ch'
+        width: '213px'
       },
     },
     {
       Header: 'Sent at',
       accessor: 'createdAt',
-      Cell: ({ value }) => formatDateTime(value)
+      // Cell: ({ value }) => formatDateTime(value)
+      Cell: ({ value }) => {return `Sent ${formatDate(value)}`}
     },
     {
       id: 'actions',
@@ -45,9 +46,9 @@ function NetworkMembershipInvitationTable({
           <ActionMenu
             items={[
               {
-                href: '#revoke',
-                onClick: () => onRevoke({ item: value }),
-                label: 'Revoke',
+                href: '#Decline',
+                onClick: () => onDecline({ item: value }),
+                label: 'Decline',
                 theme: 'tertiary',
               },
             ]}

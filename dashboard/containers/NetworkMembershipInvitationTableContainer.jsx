@@ -102,16 +102,18 @@ function NetworkMembershipInvitationTableContainer({
         </ModalPortal>
       }
 
-      <NetworkMembershipInvitationTable
-        items={items}
-        action={
-          <Button
-            label="Invite new Member"
-            onClick={() => setIsInviteMemberModalActive(true)}
-          />
-        }
-        onRevoke={handleRevoke}
-      />
+      {items.length !== 0 &&
+        <NetworkMembershipInvitationTable
+          items={items}
+          // action={
+          //   <Button
+          //     label="Invite new Member"
+          //     onClick={() => setIsInviteMemberModalActive(true)}
+          //   />
+          // }
+          onRevoke={handleRevoke}
+        />
+      }
     </>
   );
 }
