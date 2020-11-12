@@ -16,6 +16,7 @@ import RootNavigator from '~/navigation/RootNavigator';
 import AuthenticationNavigator from '~/navigation/AuthenticationNavigator';
 import LinkingConfiguration from '~/navigation/LinkingConfiguration';
 import { UserContextProvider } from '~/contexts/UserContext';
+import { MessageContextProvider } from '~/contexts/MessageContext';
 import { InterfaceContextProvider } from '~/contexts/InterfaceContext';
 import { urqlClient } from '~/utils/api';
 import ErrorBoundary from '~/components/ErrorBoundary';
@@ -51,36 +52,38 @@ function App(props) {
       <ErrorBoundary>
         <UrqlProvider value={urqlClient}>
           <UserContextProvider>
-            <SafeAreaProvider>
-              <InterfaceContextProvider>
-                <View style={styles.container}>
-                  <NavigationContainer
-                    linking={LinkingConfiguration}
-                    theme={{
-                      ...DefaultTheme,
-                      colors: {
-                        ...DefaultTheme.colors,
-                        background: 'white',
-                      },
-                    }}
-                  >
-                    <Stack.Navigator headerMode="none">
-                      <Stack.Screen
-                        name="Authentication"
-                        component={AuthenticationNavigator}
-                      />
-                      <Stack.Screen
-                        name="Root"
-                        component={RootNavigator}
-                        options={{
-                          animationEnabled: false,
-                        }}
-                      />
-                    </Stack.Navigator>
-                  </NavigationContainer>
-                </View>
-              </InterfaceContextProvider>
-            </SafeAreaProvider>
+            <MessageContextProvider>
+              <SafeAreaProvider>
+                <InterfaceContextProvider>
+                  <View style={styles.container}>
+                    <NavigationContainer
+                      linking={LinkingConfiguration}
+                      theme={{
+                        ...DefaultTheme,
+                        colors: {
+                          ...DefaultTheme.colors,
+                          background: 'white',
+                        },
+                      }}
+                    >
+                      <Stack.Navigator headerMode="none">
+                        <Stack.Screen
+                          name="Authentication"
+                          component={AuthenticationNavigator}
+                        />
+                        <Stack.Screen
+                          name="Root"
+                          component={RootNavigator}
+                          options={{
+                            animationEnabled: false,
+                          }}
+                        />
+                      </Stack.Navigator>
+                    </NavigationContainer>
+                  </View>
+                </InterfaceContextProvider>
+              </SafeAreaProvider>
+            </MessageContextProvider>
           </UserContextProvider>
         </UrqlProvider>
       </ErrorBoundary>

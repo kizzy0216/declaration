@@ -22,7 +22,10 @@ import NetworkMembershipRequestScreen from '~/screens/NetworkMembershipRequestSc
 import NetworkMembershipRequestFeedbackScreen from '~/screens/NetworkMembershipRequestFeedbackScreen';
 import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvitationScreen';
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
-import MessagingScreen from '~/screens/MessagingScreen';
+import MessagingHomeScreen from '~/screens/Messaging/MessagingHomeScreen';
+import NewConversationScreen from '~/screens/Messaging/NewConversationScreen';
+import NewLoopScreen from '~/screens/Messaging/NewLoopScreen';
+import ChatScreen from '~/screens/Messaging/ChatScreen';
 import MembersScreen from '~/screens/MembersScreen';
 import MemberScreen from '~/screens/MemberScreen';
 import EventsScreen from '~/screens/EventsScreen';
@@ -164,7 +167,19 @@ function RootNavigator({ navigation }) {
           />
           <Stack.Screen
             name="Messaging"
-            component={MessagingScreen}
+            component={MessagingHomeScreen}
+          />
+          <Stack.Screen
+            name="NewConversation"
+            component={NewConversationScreen}
+          />
+          <Stack.Screen
+            name="NewLoop"
+            component={NewLoopScreen}
+          />
+          <Stack.Screen
+            name="ChatScreen"
+            component={ChatScreen}
           />
           <Stack.Screen
             name="ContentViewer"

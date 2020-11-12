@@ -30,7 +30,7 @@ other metadata (like relationships, permissions, event configuration).
 
 ### Dashboard architecture
 
-The Dashboard is architected as an isomorphic web application powered by Next.js.
+The Dashboard is architected as an isomorphic web application powered by Next.js.  The dashboard is for Super Admins and Network Admins only.  Network members cannot access the dashboard.
 
 ### Interface architecture
 
@@ -46,7 +46,7 @@ have decided to instead keep it simple and lean into the benefits of a monorepo.
 
 ### Marketing architecture
 
-The Marketing site is architected as a statically generated web site powered by Next.js.
+The Marketing site is architected as a statically generated web site powered by Next.js.  The Marketing site must be running (including locally) in order to log out of the dashboard.
 
 ### Mobile architecture
 
@@ -124,18 +124,24 @@ npm install expo-cli --global
 Ensure you have iOS and Android simulators installed, or iOS and Android
 devices on hand.
 
+*Users must be added to Github and Vercel accounts*
+
 ### Run Backend locally
 
 ```bash
-cd backend
-docker-compose up -d # start services
+`cd backend`
+`docker-compose up -d` # start services
 `npm run dev` or `hasura console --admin-secret <HASURA_ADMIN_SECRET>`  # start hasura console. https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_console.html
-vercel dev # start REST API server
+`vercel dev` # start REST API server
 
-# additionally, to initialize your local database, run the following only once: 
-hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>
-hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>
-```
+
+For initial onboarding, prior to running `vercel dev`, create vercel account and run `vercel` to go thru vercel onboarding.
+  - Project is declaration-backend
+
+
+To initialize your local database, run the following only once: 
+`hasura migrate apply --admin-secret <HASURA_ADMIN_SECRET>`
+`hasura metadata apply --admin-secret <HASURA_ADMIN_SECRET>`
 
 Create a .env file with expected environment variables:
 
@@ -153,6 +159,7 @@ DECLARATION_AWS_BUCKET_NAME=
 Note: Some environment variables are prefixed with `DECLARATION_` due to
 [Vercel Platform Limitations](https://vercel.com/docs/v2/platform/limits).
 
+
 ### Run Dashboard locally
 
 ```bash
@@ -161,7 +168,16 @@ npm install
 npm run dev
 ```
 
+For initial onboarding:
+- run the dashboard and enter your email.  Dashboard will say no permissions.
+- close the dashboard
+- In Hasura, insert the user uuid from user table into the super admin table.
+- start dashboard again and login.  New  link will be sent to email or available in verification_code table.
+- Verify super admin is working by creating a new Network.
+
 ### Run Marketing locally
+
+- Marketing site is required to be running to log out of the Dashboard.
 
 ```bash
 cd marketing
