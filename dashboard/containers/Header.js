@@ -3,16 +3,16 @@ import React from 'react'
 import Input from '~/shared/components/Input'
 import Button from '~/shared/components/Button';
 
-function FiltersContainer() {
+function Header() {
   return (
     <>
-      <div className="filters-container">
-        <div className="filters-action-box">
+      <div className="container">
+        <div className="action-box">
           <Input
             placeholder="Search"
             inputFieldClassName="search-box"
           />
-          <FiltersButtonsBox
+          <ButtonsBox
             buttons={[
               {
                 onClick: () => {},
@@ -28,12 +28,45 @@ function FiltersContainer() {
           />
         </div>
 
-        <FiltersBox
+        <TableHeaders
+          fields={[
+            {
+              name: 'Name',
+              sortAction: () => {},
+              style: {
+                width: 175
+              }
+            },
+            {
+              name: 'Email',
+              style: {
+                width: 212
+              }
+            },
+            {
+              name: 'Status',
+              sortAction: () => {},
+              style: {
+                width: 120
+              }
+            },
+            {
+              name: 'City, State',
+              sortAction: () => {},
+              style: {
+                width: 170
+              }
+            },
+            {
+              name: 'Level',
+              sortAction: () => {},
+            },
+          ]}
         />
       </div>
 
       <style jsx>{`
-        .filters-container {
+        .container {
           height: 70px;
           border-bottom: 2px solid var(--light-gray);
           padding-right: 25.5px;
@@ -43,7 +76,7 @@ function FiltersContainer() {
           justify-content: space-between;
         }
 
-        .filters-action-box {
+        .action-box {
           display: flex;
           flex-direction: row;
           align-items: flex-start;
@@ -54,7 +87,7 @@ function FiltersContainer() {
   )
 }
 
-function FiltersButtonsBox({
+function ButtonsBox({
   buttons
 }) {
   const renderButtons = buttons.map((button, index) => <Button
@@ -66,11 +99,11 @@ function FiltersButtonsBox({
 
   return (
     <>
-      <div className="filters-btn-box">
+      <div className="btn-box">
         {renderButtons}
       </div>
       <style jsx>{`
-        .filters-btn-box {
+        .btn-box {
           margin-top: 10px;
           display: flex;
           justify-content: flex-end;
@@ -80,30 +113,32 @@ function FiltersButtonsBox({
   )
 }
 
-function FiltersBox({
-  options
+function TableHeaders({
+  fields
 }) {
+  const renderFields = fields.map((field, index) => <div
+    key={index}
+    className="field"
+    style={field.style && field.style}
+  >
+    {field.name}
+    <style jsx>{`
+      .field {
+        font-family: var(--font-family-sans-serif);
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--dark);
+      }
+    `}</style>
+  </div>)
+
   return (
     <>
-      <div className="filters-box">
-        <div style={{width: 175, fontFamily: '"Roboto", sans-serif', fontWeight: 400, fontSize: 12}}>
-          Name
-        </div>
-        <div style={{width: 212, fontFamily: '"Roboto", sans-serif', fontWeight: 400, fontSize: 12}}>
-          Email
-        </div>
-        <div style={{width: 120, fontFamily: '"Roboto", sans-serif', fontWeight: 400, fontSize: 12}}>
-          Status
-        </div>
-        <div style={{width: 170, fontFamily: '"Roboto", sans-serif', fontWeight: 400, fontSize: 12}}>
-          City, State
-        </div>
-        <div style={{fontFamily: '"Roboto", sans-serif', fontWeight: 400, fontSize: 12}}>
-          Level
-        </div>
+      <div className="fields-container">
+        {renderFields}
       </div>
       <style jsx>{`
-        .filters-box {
+        .fields-container {
           display: flex;
         }
       `}</style>
@@ -111,4 +146,4 @@ function FiltersBox({
   )
 }
 
-export default FiltersContainer;
+export default Header;
