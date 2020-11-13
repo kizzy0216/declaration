@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
 
 import GetNetworkById from '~/queries/GetNetworkById';
-import FiltersContainer from '~/containers/FiltersContainer';
+import Header from '~/containers/Header';
 import NetworkMembershipRequestTableContainer from '~/containers/NetworkMembershipRequestTableContainer';
 import NetworkMembershipInvitationTableContainer from '~/containers/NetworkMembershipInvitationTableContainer';
 import MemberTableContainer from '~/containers/MemberTableContainer';
@@ -27,7 +27,7 @@ function NetworkMembersPage() {
   return (
     <div className="network-members-page">
       <div className="row">
-        <FiltersContainer
+        <Header
           networkId={networkId}
           network={network}
         />
