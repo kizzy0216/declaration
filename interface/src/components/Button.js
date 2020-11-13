@@ -62,7 +62,7 @@ function Button ({
             opacity: 0.7;
           }
 
-          &:not(.transparent):hover {
+          &:not(.transparent, .quaternary):hover {
             box-shadow: var(--box-shadow);
           }
 
@@ -116,6 +116,14 @@ function Button ({
         .transparent {
           color: black;
           fill: black;
+        }
+
+        .quaternary {
+          color: var(--dark);
+          fill: transparent;
+          padding: 0;
+          white-space: nowrap;
+          margin-left: 30px;
         }
 
         .label {

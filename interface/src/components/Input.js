@@ -10,7 +10,7 @@ function Input({
   placeholder,
   rows,
   maxLength,
-  className,
+  inputFieldClassName,
   isAutofocused = false,
   isRequired = false,
   isFetching = false,
@@ -62,7 +62,7 @@ function Input({
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
-          className={className && className}
+          className={inputFieldClassName && inputFieldClassName}
         />
       }
 
@@ -109,6 +109,15 @@ function Input({
           position: absolute;
           top: 0;
           right: 0;
+        }
+
+        .search-box {
+          width: 150px;
+          height: 30px;
+          font-family:  var(--font-family-sans-serif);
+          font-size: 14px;
+          color: #999;
+          font-weight: 400;
         }
       `}</style>
     </div>
