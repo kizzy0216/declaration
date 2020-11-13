@@ -16,7 +16,6 @@ import RootNavigator from '~/navigation/RootNavigator';
 import AuthenticationNavigator from '~/navigation/AuthenticationNavigator';
 import LinkingConfiguration from '~/navigation/LinkingConfiguration';
 import { UserContextProvider } from '~/contexts/UserContext';
-import { MessageContextProvider } from '~/contexts/MessageContext';
 import { InterfaceContextProvider } from '~/contexts/InterfaceContext';
 import { urqlClient } from '~/utils/api';
 import ErrorBoundary from '~/components/ErrorBoundary';
@@ -52,7 +51,6 @@ function App(props) {
       <ErrorBoundary>
         <UrqlProvider value={urqlClient}>
           <UserContextProvider>
-            <MessageContextProvider>
               <SafeAreaProvider>
                 <InterfaceContextProvider>
                   <View style={styles.container}>
@@ -83,7 +81,6 @@ function App(props) {
                   </View>
                 </InterfaceContextProvider>
               </SafeAreaProvider>
-            </MessageContextProvider>
           </UserContextProvider>
         </UrqlProvider>
       </ErrorBoundary>

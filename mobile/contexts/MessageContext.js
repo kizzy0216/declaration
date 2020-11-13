@@ -11,6 +11,7 @@ import { resetSubscriptionClient } from '../utils/api';
 import GetMessagesQuery from '~/queries/GetMessagesQuery'
 import GetMessageChannelsQuery from '../queries/GetMessageChannelsQuery';
 import { UserContext } from './UserContext';
+import { NetworkContext } from './NetworkContext';
 // import mapUser from '@shared/mappings/mapUser';
 // import mapNetwork from '@shared/mappings/mapNetwork';
 // import {
@@ -23,42 +24,39 @@ import { UserContext } from './UserContext';
 export const MessageContext = createContext({
   loops: [],
   conversations: [],
-  refreshChannels: () => {},
+  refresh: () => {},
 });
 
 export const MessageContextProvider = ({ children }) => {
   const [loops, setLoops] = useState([]);
   const [conversations, setConversations] = useState([]);
   const { user, hasSettled } = useContext(UserContext);
+  const { activeNetwork } = useContext(NetworkContext);
 
-  const [getChannelsResult, getChannels] = useQuery({
+  const [getChannelsResult, refreshChannelResult] = useQuery({
     query: GetMessageChannelsQuery,
     variables: {
       user_uuid: user.uuid,
-    }
+      network_uuid: activeNetwork.uuid
+    },
+    pause: !activeNetwork || !activeNetwork.uuid || !user || !user.uuid
   });
 
-  React.useEffect(() => {
-    if (hasSettled) {
-      console.log('GET CONVERSATIONS')
-      console.log('GET LOOPS')
-    }
-    console.log('RESET SUBSCRIPTION')
-    // resetSubscriptionClient(!hasSettled)
+  useEffect(() => {
+    console.log('SETTLED', hasSettled)
+    resetSubscriptionClient(!hasSettled)
   }, [hasSettled]);
 
-
-  // when a fetched user is returned, save it in local state, and persist it in
-  // global state
   useEffect(() => {
     console.log('CHANNEL RESULTT', getChannelsResult)
     if (getChannelsResult.data) {
       console.log('CHANNEL DATA', getChannelsResult.data)
     }
-  }, [getChannelsResult.data]);
+  }, [getChannelsResult.data, getChannelsResult.error]);
 
   function refreshChannels() {
-    // getUser({ requestPolicy: 'network-only' });
+    console.log('REFRESH DATA', new Date(), getChannelsResult)
+    refreshChannelResult({ requestPolicy: 'network-only' })
   }
 
   return (
@@ -66,7 +64,8 @@ export const MessageContextProvider = ({ children }) => {
       value={{
         loops,
         conversations,
-        refreshChannels,
+        isFetchingItems: getChannelsResult.fetching,
+        refresh: refreshChannels,
       }}
     >
       {children}

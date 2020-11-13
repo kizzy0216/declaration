@@ -1,15 +1,35 @@
 const GetMessageChannelsQuery = `
-  query GetMessageChannelsQuery($user_uuid: uuid) {
+  query GetMessageChannelsQuery($network_uuid: uuid, $user_uuid: uuid) {
     loop(
       where: {
-        loop_user: {
-          user_uuid: {_eq: $user_uuid}
-        }
+        network_uuid: {_eq: $network_uuid}, 
+        loop_users: {user_uuid: {_eq: $user_uuid}},
+        is_archived: {_eq: false}
       }
     ) {
-      __typename
-      uuid
-    }
+        uuid
+        name
+        description
+        is_private
+        created_at
+        owner_uuid
+      }
+    conversation(
+      where: {
+        network_uuid: {_eq: $network_uuid}
+      }
+    ) {
+        uuid
+        conversation_users(
+          where: {
+            user_uuid: {
+              _neq: $user_uuid
+            }
+          }
+        ) {
+          user_uuid
+        }
+      }
   }
 `;
 

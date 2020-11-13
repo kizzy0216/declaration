@@ -1,6 +1,7 @@
 import React, {
   useState,
   useEffect,
+  useContext,
 } from 'react'
 import {
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native'
 
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -31,28 +33,30 @@ import {
   Roboto_400Regular
 } from '@expo-google-fonts/roboto'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { MessageContext } from '../../contexts/MessageContext';
 
-const testingDataLoops = [
-  {id: '1', title: 'sds_announcements', hasNewMsg: false},
-  {id: '2', title: 'sds_events', hasNewMsg: true},
-  {id: '3', title: 'sds_thepowerofwe', hasNewMsg: false},
-  {id: '4', title: 'sds_thepowerofwe2', hasNewMsg: false},
-]
-const testingDataDM = [
-  {id: '1', firstName: 'Susan', lastName: 'Mitchell', lastMsg: 'Yes, I think so.', msgTime: 'Fri', onLine: false, readMsg: true, photoUrl: require('~/assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg')},
-  {id: '2', firstName: 'Amber', lastName: 'Alexander', lastMsg: 'This is great. I would love to do that.', msgTime: '11:19', onLine: false, readMsg: false, photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg')},
-  {id: '3', firstName: 'Hope', lastName: 'Morison', lastMsg: 'How is it going?', msgTime: 'Wed', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg')},
-  {id: '4', firstName: 'Susan', lastName: 'Mitchell', lastMsg: `What's up?`, msgTime: '11:19', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg')},
-]
+// const testingDataLoops = [
+//   {id: '1', title: 'sds_announcements', hasNewMsg: false},
+//   {id: '2', title: 'sds_events', hasNewMsg: true},
+//   {id: '3', title: 'sds_thepowerofwe', hasNewMsg: false},
+//   {id: '4', title: 'sds_thepowerofwe2', hasNewMsg: false},
+// ]
+// const testingDataDM = [
+//   {id: '1', firstName: 'Susan', lastName: 'Mitchell', lastMsg: 'Yes, I think so.', msgTime: 'Fri', onLine: false, readMsg: true, photoUrl: require('~/assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg')},
+//   {id: '2', firstName: 'Amber', lastName: 'Alexander', lastMsg: 'This is great. I would love to do that.', msgTime: '11:19', onLine: false, readMsg: false, photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg')},
+//   {id: '3', firstName: 'Hope', lastName: 'Morison', lastMsg: 'How is it going?', msgTime: 'Wed', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg')},
+//   {id: '4', firstName: 'Susan', lastName: 'Mitchell', lastMsg: `What's up?`, msgTime: '11:19', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg')},
+// ]
 
 function MessagingHomeScreen({ navigation }) {
-  const [loops, setLoops] = useState([])
-  const [conversations, setConversations] = useState([])
-
-  let [fontsLoaded] = useFonts({
-    Roboto_500Medium,
-    Roboto_400Regular
-})
+    const [loops, setLoops] = useState([])
+    const [conversations, setConversations] = useState([])
+    const { isFetchingItems, loops: loopData, conversations: conversationData, refresh } = useContext(MessageContext);
+    
+    let [fontsLoaded] = useFonts({
+        Roboto_500Medium,
+        Roboto_400Regular
+    })
 
   const removeConversation = id => {
       setConversations(conversations.filter(item => item.id !== id))
@@ -61,8 +65,8 @@ function MessagingHomeScreen({ navigation }) {
   }
 
   useEffect(() => {
-      setLoops(testingDataLoops),
-      setConversations(testingDataDM)
+      setLoops(loopData),
+      setConversations(conversationData)
   }, [])
 
   if (!fontsLoaded) {
@@ -85,7 +89,15 @@ function MessagingHomeScreen({ navigation }) {
                 }
                 rightElement={<></>}
             />
-            <ScrollView style={styles.root}>
+            <ScrollView 
+                style={styles.root}
+                refreshControl={
+                    <RefreshControl
+                      refreshing={isFetchingItems}
+                      onRefresh={refresh}
+                    />
+                }
+            >
                 {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
                 <View style={headerStyles.container}>
                     <View style={headerStyles.searchBoxContainer}>
@@ -117,9 +129,9 @@ function MessagingHomeScreen({ navigation }) {
                             {(loops && loops.length !== 0) ? 
                                 (
                                     <View style={styles.fullWidthContainer}>
-                                        {loops.map(loop => (
+                                        {loops.map((loop, idx) => (
                                             <LoopItem
-                                                key={loop.id}
+                                                key={idx}
                                                 loop={loop}
                                             />
                                         ))}

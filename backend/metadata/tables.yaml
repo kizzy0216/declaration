@@ -1402,6 +1402,120 @@
     webhook_from_env: CONTENT_STAR_WEBHOOK_URL
 - table:
     schema: public
+    name: conversation
+  object_relationships:
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  array_relationships:
+  - name: conversation_users
+    using:
+      foreign_key_constraint_on:
+        column: conversation_uuid
+        table:
+          schema: public
+          name: conversation_user
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - network_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - network_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - network_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - network_uuid
+      - uuid
+      filter: {}
+- table:
+    schema: public
+    name: conversation_user
+  object_relationships:
+  - name: conversation
+    using:
+      foreign_key_constraint_on: conversation_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - conversation_uuid
+      - is_hidden
+      - last_read_at
+      - last_typed_at
+      - user_uuid
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        user_uuid: x-hasura-User-Id
+      columns:
+      - conversation_uuid
+      - is_hidden
+      - last_read_at
+      - last_typed_at
+      - user_uuid
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_hidden
+      - created_at
+      - last_read_at
+      - last_typed_at
+      - conversation_uuid
+      - user_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - is_hidden
+      - created_at
+      - last_read_at
+      - last_typed_at
+      - conversation_uuid
+      - user_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_hidden
+      - last_read_at
+      - last_typed_at
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - is_hidden
+      - last_read_at
+      - last_typed_at
+      filter: {}
+      check: {}
+- table:
+    schema: public
     name: hashtag
   array_relationships:
   - name: content_meta_hashtags
@@ -1454,6 +1568,191 @@
       check: null
   delete_permissions:
   - role: super_admin
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: loop
+  object_relationships:
+  - name: network
+    using:
+      foreign_key_constraint_on: network_uuid
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_uuid
+  array_relationships:
+  - name: loop_users
+    using:
+      foreign_key_constraint_on:
+        column: loop_uuid
+        table:
+          schema: public
+          name: loop_user
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - description
+      - is_archived
+      - is_private
+      - name
+      - network_uuid
+      - owner_uuid
+      - slug
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        owner_uuid: x-hasura-User-Id
+      columns:
+      - description
+      - is_archived
+      - is_private
+      - name
+      - network_uuid
+      - owner_uuid
+      - slug
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_archived
+      - is_private
+      - description
+      - name
+      - slug
+      - created_at
+      - network_uuid
+      - owner_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - description
+      - is_archived
+      - is_private
+      - name
+      - network_uuid
+      - owner_uuid
+      - slug
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - description
+      - is_archived
+      - is_private
+      - name
+      - network_uuid
+      - owner_uuid
+      - slug
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - description
+      - is_archived
+      - is_private
+      - name
+      - network_uuid
+      - owner_uuid
+      - slug
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: loop_user
+  object_relationships:
+  - name: loop
+    using:
+      foreign_key_constraint_on: loop_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      columns:
+      - loop_uuid
+      - user_uuid
+      - last_typed_at
+      - last_read_at
+      - joined_at
+      - is_blocked
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        user_uuid: x-hasura-User-Id
+      columns:
+      - is_blocked
+      - last_read_at
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_blocked
+      - joined_at
+      - last_read_at
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - is_blocked
+      - joined_at
+      - last_read_at
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_blocked
+      - joined_at
+      - last_read_at
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns:
+      - is_blocked
+      - last_read_at
+      - last_typed_at
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
     permission:
       filter: {}
 - table:
@@ -1594,6 +1893,20 @@
         table:
           schema: public
           name: content
+  - name: conversations
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: conversation
+  - name: loops
+    using:
+      foreign_key_constraint_on:
+        column: network_uuid
+        table:
+          schema: public
+          name: loop
   - name: network_membership_invitations
     using:
       foreign_key_constraint_on:
@@ -2342,6 +2655,9 @@
           name: network_user_relationship
 - table:
     schema: public
+    name: online_users_view
+- table:
+    schema: public
     name: opportunity_listing_criteria
   array_relationships:
   - name: content_partial_opportunity_listing_criteria
@@ -2552,6 +2868,13 @@
         table:
           schema: public
           name: content_star
+  - name: conversation_users
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          schema: public
+          name: conversation_user
   - name: from_network_user_relationships
     using:
       foreign_key_constraint_on:
@@ -2559,6 +2882,20 @@
         table:
           schema: public
           name: network_user_relationship
+  - name: loops
+    using:
+      foreign_key_constraint_on:
+        column: owner_uuid
+        table:
+          schema: public
+          name: loop
+  - name: loop_users
+    using:
+      foreign_key_constraint_on:
+        column: user_uuid
+        table:
+          schema: public
+          name: loop_user
   - name: media
     using:
       foreign_key_constraint_on:

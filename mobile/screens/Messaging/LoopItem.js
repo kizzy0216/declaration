@@ -12,7 +12,7 @@ const LoopItem = ({loop}) => {
 
     return (
         <View style={styles.item}>
-            <Text style={styles.title}># {loop.title}</Text>
+            <Text style={styles.title}># {loop.name}</Text>
             {loop.hasNewMsg ? <NewMsgAlert /> : null}
         </View>
     )

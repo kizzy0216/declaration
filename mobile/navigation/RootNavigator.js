@@ -48,6 +48,7 @@ import NetworkBlockedModal from '~/components/NetworkBlockedModal';
 import { NetworkContextProvider } from '~/contexts/NetworkContext';
 import { ContentTilePagerContextProvider } from '~/contexts/ContentTilePagerContext';
 import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
+import { MessageContextProvider } from '~/contexts/MessageContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
@@ -59,6 +60,7 @@ function RootNavigator({ navigation }) {
 
   return (
   <NetworkContextProvider>
+    <MessageContextProvider>
     <CreateContentContextProvider>
       <ContentTilePagerContextProvider>
         <NetworkBlockedModal />
@@ -224,6 +226,7 @@ function RootNavigator({ navigation }) {
         </Stack.Navigator>
       </ContentTilePagerContextProvider>
     </CreateContentContextProvider>
+    </MessageContextProvider>
   </NetworkContextProvider>
   );
 }
