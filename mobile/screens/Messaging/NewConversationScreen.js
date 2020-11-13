@@ -66,10 +66,6 @@ const NewConversationScreen = ({
 
     const goToDMChat = () => navigation.navigate('ChatScreen')
 
-    useEffect(() => {
-        setContactList(testingData)
-    }, [])
-
     if (!fontsLoaded) {
         return <View />
         // return <AppLoading />
@@ -94,7 +90,6 @@ const NewConversationScreen = ({
                     </Text>
                     <View style={contactListStyles.listContainer}>
                         <ContactSelector
-                            contacts={contactList}
                             selectContact={selectContact}
                             selectedIds={selectedIds}
                         />

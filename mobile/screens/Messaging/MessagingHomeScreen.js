@@ -34,6 +34,7 @@ import {
 } from '@expo-google-fonts/roboto'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MessageContext } from '../../contexts/MessageContext';
+import ConversationsContainer from './Conversations';
 
 // const testingDataLoops = [
 //   {id: '1', title: 'sds_announcements', hasNewMsg: false},
@@ -167,17 +168,11 @@ function MessagingHomeScreen({ navigation }) {
                     <View style={conversationStyles.content}>
                         {(conversations && conversations.length !== 0) ? 
                             (
-                                <View style={styles.container}>
-                                    {conversations.map(conversation => (
-                                        <ConversationItem
-                                            key={conversation.id}
-                                            conversation={conversation}
-                                            deleteItem={removeConversation}
-                                        />
-                                    ))}
-                                </View>
+                                <ConversationsContainer
+                                    conversations={conversations}
+                                />
                             ) : (
-                                <>
+                            <>
                                 <Chat style={conversationStyles.chatSvg} />
                                 <Text style={conversationStyles.intro}>
                                     Connect and engage directly with members anywhere in the world about the things you care about the most.

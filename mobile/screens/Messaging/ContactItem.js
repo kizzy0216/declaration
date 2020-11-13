@@ -6,6 +6,8 @@ import {
     StyleSheet
 } from 'react-native'
 
+import Avatar from '~/components/Avatar';
+
 import CheckOff from '~/assets/images/check_off.svg'
 import CheckOn from '~/assets/images/check_on.svg'
 
@@ -14,21 +16,25 @@ const ContactItem = ({
     selectItem,
     selected
 }) => {
+    // console.log('CONTACT', contact)
     return (
         <View style={styles.contactItem}>
             <View style={styles.photoNameContainer}>
-                <Image
-                    source={contact.photoUrl}
+                {/* <Image
+                    source={{uri: }}
                     style={contact.onLine ? styles.avatarOnline : styles.avatar}
+                /> */}
+                <Avatar
+                    imageSrc={contact.profile.photo}
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.name}>{contact.firstName} {contact.lastName}</Text>
-                    <Text style={styles.position}>{contact.position}</Text>
+                    <Text style={styles.name}>{contact.name}</Text>
+                    <Text style={styles.position}>{contact.profile.workTitle}</Text>
                 </View>
             </View>
 
             <View style={styles.checkBoxContainer}>
-                {selected ? <CheckOn onPress={() => selectItem(contact.id)} /> : <CheckOff onPress={() => selectItem(contact.id)} />}
+                {selected ? <CheckOn onPress={() => selectItem(contact.uuid)} /> : <CheckOff onPress={() => selectItem(contact.uuid)} />}
             </View>
         </View>
     )

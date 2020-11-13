@@ -1,7 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-} from 'react'
+import React, { useState } from 'react'
 import {
     View,
     StyleSheet,
@@ -17,32 +14,28 @@ import {
     Roboto_500Medium,
     Roboto_400Regular
 } from '@expo-google-fonts/roboto'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import ToggleSwitchOn from '~/assets/images/toggle-switch-on.svg'
 import ToggleSwitchOff from '~/assets/images/toggle-switch-off.svg'
 
 import ContactSelector from './ContactSelector'
 
-const testingData = [
-    {id: '1', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: true},
-    {id: '2', firstName: 'Ryan', lastName: 'Edmonson', position: 'Interaction Designer', photoUrl: require('../../assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), onLine: false},
-    {id: '3', firstName: 'Amber', lastName: 'Alexander', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: false},
-    {id: '4', firstName: 'Daniel', lastName: 'Raddson', position: 'Brand Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
-    {id: '5', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg'), onLine: false},
-    {id: '6', firstName: 'Susan', lastName: 'Mitchell', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
-    {id: '7', firstName: 'Susan', lastName: 'Mitchell', position: 'Marketing Director', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: true},
-]
+// const testingData = []
+//     {id: '1', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: true},
+//     {id: '2', firstName: 'Ryan', lastName: 'Edmonson', position: 'Interaction Designer', photoUrl: require('../../assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), onLine: false},
+//     {id: '3', firstName: 'Amber', lastName: 'Alexander', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: false},
+//     {id: '4', firstName: 'Daniel', lastName: 'Raddson', position: 'Brand Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
+//     {id: '5', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg'), onLine: false},
+//     {id: '6', firstName: 'Susan', lastName: 'Mitchell', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
+//     {id: '7', firstName: 'Susan', lastName: 'Mitchell', position: 'Marketing Director', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: true},
+// ]
 
-const NewLoopScreen = ({
-    navigation
-}) => {
+const NewLoopScreen = ({navigation}) => {
     let [fontsLoaded] = useFonts({
         Roboto_500Medium,
         Roboto_400Regular
     })
 
-    const [contactList, setContactList] = useState([])
     const [selectedIds, setSelectedIds] = useState([])
     const [name, setName] = useState('')
     const [loopPublic, setLoopPublic] = useState(true)
@@ -54,22 +47,6 @@ const NewLoopScreen = ({
             setSelectedIds(selectedIds.filter(item => item !== id))
         }
     }
-
-    const filterContacts = value => {
-        try {
-            if (value !== '') {
-                setContactList(testingData.filter(item => (item.firstName + item.lastName).search(value) !== -1))
-            } else {
-                setContactList(testingData)
-            }
-        } catch {
-            setContactList([])
-        }
-    }
-
-    useEffect(() => {
-        setContactList(testingData)
-    }, [])
 
     if (!fontsLoaded) {
         return <View />
@@ -109,22 +86,11 @@ const NewLoopScreen = ({
                             onChangeText={text => setName(text.toLowerCase())}
                         />
                     </View>
-                    <View style={headerStyles.searchBoxContainer}>
-                        <Text style={headerStyles.searchHeading}>Send to members</Text>
-                        <TextInput
-                            placeholder="Search by name"
-                            placeholderTextColor="#979797"
-                            style={headerStyles.searchBox}
-                            onChangeText={filterContacts}
-                        />
-                    </View>
                 </View>
-
-                <View style={contactListStyles.container}>
-                    <View style={contactListStyles.listContainer}>
-                        <ContactSelector contacts={contactList} selectContact={selectContact} selectedIds={selectedIds} />
-                    </View>
-                </View>
+                <ContactSelector 
+                    selectContact={selectContact} 
+                    selectedIds={selectedIds} 
+                />
             </KeyboardAvoidingView>
         )
     }
@@ -186,6 +152,11 @@ const headerStyles = StyleSheet.create({
         fontSize: 16,
         color: '#222',
     },
+    publicBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
     searchBoxContainer: {
         marginBottom: 20,
     },
@@ -193,11 +164,6 @@ const headerStyles = StyleSheet.create({
         fontFamily: 'Roboto_500Medium',
         fontSize: 14,
         color: '#222',
-    },
-    publicBox: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
     },
     searchBox: {
         marginVertical: 10,
@@ -208,24 +174,6 @@ const headerStyles = StyleSheet.create({
         paddingHorizontal: 25,
         alignItems: 'center',
         borderRadius: 15
-    }
-})
-
-const contactListStyles = StyleSheet.create({
-    container: {
-        width: wp('100%'),
-        flex: 1,
-        paddingBottom: 20
-    },
-    heading: {
-        marginVertical: 20,
-        paddingHorizontal: 30,
-        fontFamily: 'Roboto_500Medium',
-        fontSize: 14,
-        color: '#222'
-    },
-    listContainer: {
-        flex: 1,
     },
 })
 
