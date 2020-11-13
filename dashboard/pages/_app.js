@@ -6,6 +6,7 @@ import fetch from 'isomorphic-unfetch';
 import jsonwebtoken from 'jsonwebtoken';
 import { withUrqlClient } from 'next-urql';
 
+import '~/shared/styles/typography.css';
 import '~/shared/styles/variables.css';
 import '~/shared/styles/base.css';
 

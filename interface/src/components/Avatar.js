@@ -66,8 +66,8 @@ function Avatar({
           }
 
           &.medium {
-            width: 32px;
-            height: 32px;
+            width: 35px;
+            height: 35px;
           }
 
           &.large {

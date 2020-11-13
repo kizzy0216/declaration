@@ -79,6 +79,14 @@ function ViewSwitcherHeader({
           flex-flow: row;
           justify-content: flex-start;
           align-items: center;
+
+          & h1 {
+            margin-left: 10px;
+            font-family: var(--font-family-sans-serif);
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 500;
+          }
         }
 
         .icon-wrapper {
@@ -86,7 +94,7 @@ function ViewSwitcherHeader({
         }
 
         .icon-wrapper.logo {
-          font-size: 32px;
+          font-size: 35px;
         }
       `}</style>
     </div>

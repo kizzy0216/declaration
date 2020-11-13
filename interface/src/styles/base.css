@@ -160,7 +160,7 @@ hr {
 .underline {
   background-repeat: repeat-x;
   background-image: linear-gradient(to right, currentColor 100%, currentColor 0);
-  background-size: 1px 1px;
+  background-size: 2px 2px;
   background-position: 0 100%;
   white-space: initial;
 }

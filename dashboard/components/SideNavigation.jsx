@@ -22,7 +22,7 @@ function SideNavigation({
         </ul>
       </div>
 
-      {hasFetchedUser &&
+      {/* {hasFetchedUser &&
         <div className="footer">
           <UserCell
             value={user}
@@ -37,17 +37,18 @@ function SideNavigation({
             }
           />
         </div>
-      }
+      } */}
 
       <style jsx>{`
         .side-navigation {
           background: var(--light-gray);
-          width: 250px;
+          width: 196px;
           height: 100%;
           padding-left: 30px;
           display: flex;
           flex-flow: column;
           justify-content: space-between;
+          margin-right: 20px;
         }
 
         .links {
