@@ -93,62 +93,51 @@ function NetworkSettingsPage() {
 
       {network &&
         <div className="container">
-          <div className="row">
-            <Card
-              heading="Network name"
-              note="30 characters max"
-              isFetching={updateNameResult.fetching}
-            >
-              <p>
-                This is the network's public name.
-              </p>
-              <p>
-                For example, the name of your community or organization.
-              </p>
+          <div style={{width: '100%'}}>
+            <div className="row">
+              <Section
+                title="Network name"
+                description={`Enter the name of your community or organization.\n
+                  This is the name which will appear on the app.
+                `}
+                style={{ maxWidth: 330, paddingBottom: 34 }}
+              >
+                <Input
+                  value={`UNC Charlotte`}
+                />
+              </Section>
+            </div>
 
-              <NetworkNameForm
-                initialValues={{
-                  name: network.name,
-                }}
-                onNameChange={handleNameChange}
+            <div className="row">
+              <Section
+                title="Network logo"
+                description="Your logo will appear on every emails sent to your network."
+                style={{ paddingBottom: 40 }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 24 }}>
+                  <div style={{ width: 60, height: 60, borderRadius: '50%', border: '1px solid #222'}}></div>
+                  <div style={{ marginLeft: 20, fontFamily: '"Roboto", sans-serif', fontWeight: 500, fontSize: 14}}>Upload Image (256x256)</div>
+                </div>
+              </Section>
+            </div>
+
+            {/* <div className="row">
+              <Section
+                title="Network category"
+                description="Select network type."
               />
-            </Card>
+            </div> */}
           </div>
 
-          <div className="row">
-            <Card
-              heading="Network avatar"
-              note="Square, 256x256, negative space to account for rounded treatment"
-              isFetching={isFetchingAvatar || updateAvatarResult.fetching}
-            >
-              <div className="network-avatar-container">
-                <div>
-                  <p>
-                    This is the network's public avatar.
-                  </p>
-                  <p>
-                    Click on the avatar and upload any image you like.
-                  </p>
-                </div>
-
-                <NetworkAvatarForm
-                  initialValues={{
-                    avatar: network.avatar,
-                  }}
-                  onFileChange={handleAvatarFileChange}
-                />
-              </div>
-            </Card>
+          <div style={{marginLeft: 40}}>
+            <button>Save</button>
           </div>
         </div>
       }
 
       <style jsx>{`
         .network-settings-page {
-          padding-top: 20px;
-          padding-right: 20px;
-          padding-bottom: 20px;
-          padding-left: 20px;
+          padding: 40px;
           width: 100%;
           height: 100%;
         }
@@ -161,11 +150,27 @@ function NetworkSettingsPage() {
         }
 
         .container {
-          max-width: 600px;
+          display: flex;
         }
 
         h2 {
           margin-bottom: 20px;
+        }
+
+        button {
+          border-radius: 10px;
+          background-color: #6ac2bd;
+          font-family: var(--font-family-sans-serif);
+          font-size: 14px;
+          font-weight: 500;
+          color: #fff;
+          line-height: 20px;
+          padding: 8.5px 12px;
+          box-shadow: var(--box-shadow);
+
+          &:hover {
+            opacity: 0.7;
+          }
         }
 
         p {
@@ -178,6 +183,7 @@ function NetworkSettingsPage() {
 
         .row {
           margin-bottom: 40px;
+          border-bottom: 2px solid var(--light-gray);
         }
 
         .network-avatar-container {
@@ -189,6 +195,87 @@ function NetworkSettingsPage() {
       `}</style>
     </div>
   );
+}
+
+function Section({
+  title,
+  description,
+  style,
+  children
+}) {
+  return (
+    <div style={style && style}>
+      <h2 className="settings-title">
+        {title}
+      </h2>
+      <p className="settings-description">
+        {description}
+      </p>
+
+      {children}
+
+      <style jsx>{`
+        .settings-title {
+          font-family: var(--font-family-serif);
+          font-size: 36px;
+          color: var(--dark);
+          font-weight: 400;
+          margin-bottom: 5px;
+        }
+
+        .settings-description {
+          font-family: var(--font-family-sans-serif);
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--dark);
+          line-height: 20px;
+          margin-bottom: 15px;
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function Input({
+  value
+}) {
+  return (
+    <div className="input-container">
+      <input
+        type="text"
+        value={value}
+      />
+      <small className="helper">30 characters max</small>
+
+      <style jsx>{`
+        .input-container {
+          display: flex;
+          flex-direction: column;
+        }
+
+        input {
+          width: 177px;
+          font-family: var(--font-family-sans-serif);
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 20px;
+          color: var(--dark);
+
+          padding: 7px 0;
+          border-bottom: 1px solid var(--dark);
+        }
+
+        .helper {
+          margin-top: 4px;
+          font-family: var(--font-family-sans-serif);
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          color: var(--gray);
+        }
+      `}</style>
+    </div>
+  )
 }
 
 export default NetworkSettingsPage;

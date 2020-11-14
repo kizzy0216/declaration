@@ -2,6 +2,7 @@ import React from 'react'
 
 import Input from '~/shared/components/Input'
 import Button from '~/shared/components/Button';
+import TriangleDownIcon from '~/shared/components/icons/TriangleDownIcon';
 
 function Header() {
   return (
@@ -19,11 +20,11 @@ function Header() {
                 label: 'Add Individuals',
                 theme: 'quaternary',
               },
-              {
-                onClick: () => {},
-                label: 'Upload CSV',
-                theme: 'quaternary',
-              },
+              // {
+              //   onClick: () => {},
+              //   label: 'Upload CSV',
+              //   theme: 'quaternary',
+              // },
             ]}
           />
         </div>
@@ -122,12 +123,21 @@ function TableHeaders({
     style={field.style && field.style}
   >
     {field.name}
+    {field.sortAction && <div className="icon-wrapper">
+      <TriangleDownIcon onClick={field.sortAction} />
+    </div>}
     <style jsx>{`
       .field {
         font-family: var(--font-family-sans-serif);
         font-size: 12px;
         font-weight: 400;
         color: var(--dark);
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .icon-wrapper {
+        margin-left: 8.5px;
       }
     `}</style>
   </div>)
@@ -140,6 +150,7 @@ function TableHeaders({
       <style jsx>{`
         .fields-container {
           display: flex;
+          margin-bottom: 5px;
         }
       `}</style>
     </>
