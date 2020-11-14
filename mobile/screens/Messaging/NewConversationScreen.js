@@ -1,23 +1,18 @@
-import React, {
-    useState,
-    useEffect,
-} from 'react'
+import React, { useContext, useState } from 'react'
 import {
     View,
     StyleSheet,
-    StatusBar,
     TouchableOpacity,
     Text,
     TextInput,
     KeyboardAvoidingView
 } from 'react-native'
 
-import {
-    useFonts,
-    Roboto_500Medium,
-    Roboto_400Regular
-} from '@expo-google-fonts/roboto'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { useMutation } from 'urql'
+import { NetworkContext } from '../../contexts/NetworkContext'
+import { UserContext } from '../../contexts/UserContext'
+import InsertConversation from '../../mutations/InsertConversation'
 
 import ContactSelector from './ContactSelector'
 
@@ -31,16 +26,15 @@ const testingData = [
     {id: '7', firstName: 'Susan', lastName: 'Mitchell', position: 'Marketing Director', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: true},
 ]
 
-const NewConversationScreen = ({
-    navigation
-}) => {
-    let [fontsLoaded] = useFonts({
-        Roboto_500Medium,
-        Roboto_400Regular
-    })
+const NewConversationScreen = ({navigation}) => {
 
-    const [contactList, setContactList] = useState([])
     const [selectedIds, setSelectedIds] = useState([])
+
+    const { user } = useContext(UserContext);
+    const { activeNetwork } = useContext(NetworkContext);
+
+    const [_, insertConversation] = useMutation(InsertConversation);
+
 
     const selectContact = id => {
         if (!selectedIds.includes(id)) {
@@ -50,82 +44,42 @@ const NewConversationScreen = ({
         }
     }
 
-    const filterContacts = value => {
-        try {
-            if (value !== '') {
-                setContactList(testingData.filter(item => (item.firstName + item.lastName).search(value) !== -1))
-            } else {
-                setContactList(testingData)
-            }
-        } catch {
-            setContactList([])
+    const handleSubmit = () => {
+        const variables = { 
+            network_uuid: activeNetwork.uuid,  
+            user_data: [...selectedIds.map(x => ({ user_uuid: x})), {user_uuid: user.uuid}],
         }
+        insertConversation(variables).then(result => {
+            if (result.error) { 
+                console.error('CONVO INSERT ISSUE', result.error) 
+            } else {
+                setSelectedIds([])
+                navigation.navigate('ChatScreen')
+            }
+        })
     }
 
-    const goToHome = () => navigation.goBack()
-
-    const goToDMChat = () => navigation.navigate('ChatScreen')
-
-    if (!fontsLoaded) {
-        return <View />
-        // return <AppLoading />
-    } else {
-        return (
-            <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-                style={styles.root}
-            >
-                {/* <StatusBar
-                    barStyle="dark-content"
-                    backgroundColor="#fff"
-                /> */}
-                <Header
-                    filterContacts={filterContacts}
-                    leftBtnAction={goToHome}
-                    rightBtnAction={goToDMChat}
-                />
-                <View style={contactListStyles.container}>
-                    <Text style={contactListStyles.heading}>
-                        Recent conversations
-                    </Text>
-                    <View style={contactListStyles.listContainer}>
-                        <ContactSelector
-                            selectContact={selectContact}
-                            selectedIds={selectedIds}
-                        />
-                    </View>
-                </View>
-            </KeyboardAvoidingView>
-        )
-    }
-}
-
-const Header = ({
-    leftBtnAction,
-    rightBtnAction,
-    filterContacts
-}) => {
     return (
-        <View style={headerStyles.container}>
-            <View style={headerStyles.header}>
-                <TouchableOpacity style={headerStyles.leftButton} onPress={leftBtnAction}>
-                    <Text style={headerStyles.letfButtonText}>Cancel</Text>
-                </TouchableOpacity>
-                <Text style={headerStyles.heading}>New messages</Text>
-                <TouchableOpacity style={headerStyles.rightButton} onPress={rightBtnAction}>
-                    <Text style={headerStyles.rightButtonText}>Send</Text>
-                </TouchableOpacity>
+        <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={styles.root}
+        >
+            <View style={headerStyles.container}>
+                <View style={headerStyles.header}>
+                    <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.goBack()}>
+                        <Text style={headerStyles.letfButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                    <Text style={headerStyles.heading}>New messages</Text>
+                    <TouchableOpacity style={headerStyles.rightButton} onPress={handleSubmit}>
+                        <Text style={headerStyles.rightButtonText}>Send</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={headerStyles.searchBoxContainer}>
-                <Text style={headerStyles.searchHeading}>Send to members</Text>
-                <TextInput
-                    placeholder="Search by name"
-                    placeholderTextColor="#979797"
-                    style={headerStyles.searchBox}
-                    onChangeText={filterContacts}
-                />
-            </View>
-        </View>
+            <ContactSelector
+                selectContact={selectContact}
+                selectedIds={selectedIds}
+            />
+        </KeyboardAvoidingView>
     )
 }
 
@@ -139,6 +93,7 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
     container: {
         paddingTop: 40,
+        paddingBottom: 30,
         paddingHorizontal: 30,
         backgroundColor: '#fff',
     },

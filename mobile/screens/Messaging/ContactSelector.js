@@ -18,6 +18,10 @@ import mapUser from '@shared/mappings/mapUser';
 import ContactItem from './ContactItem'
 
 const ContactSelector = ({selectContact, selectedIds}) => {
+
+
+    // TODO - MOVE ALL THIS TO NETWORK CONTEXT
+    const [ dataList, setDataList ] = useState([])
     const [ userList, setUserList ] = useState([])
     const { user } = useContext(UserContext);
     const { activeNetwork } = useContext(NetworkContext);
@@ -42,7 +46,9 @@ const ContactSelector = ({selectContact, selectedIds}) => {
         }
         if (getUsersResult.fetching) { return }
         if (getUsersResult.data && getUsersResult.data.network_user) {
-            setUserList(getUsersResult.data.network_user.map(({ user }) => mapUser(user)))
+            const data = getUsersResult.data.network_user.map(({ user }) => mapUser(user))
+            setDataList(data)
+            setUserList(data)
         } else {
             setUserList([])
         }
@@ -51,13 +57,14 @@ const ContactSelector = ({selectContact, selectedIds}) => {
     const filterUsers = value => {
         try {
             if (value !== '') {
-                // TODO
-
-                // CASE SENSITIVE??!?!?
-                const newList = userList.filter(item => (item.name).search(value) !== -1)
+                const lowerValue = value.toLowerCase()
+                const newList = dataList.filter(item => 
+                    item.name.toLowerCase().includes(lowerValue) ||
+                    (item.profile.workTitle && item.profile.workTitle.toLowerCase().includes(lowerValue))
+                )
                 setUserList(newList)
             } else {
-                setUserList(getUsersResult.data.network_user.map(({ user }) => mapUser(user)))
+                setUserList(dataList)
             }
         } catch {
             setUserList([])
@@ -83,10 +90,10 @@ const ContactSelector = ({selectContact, selectedIds}) => {
                     ) : <ScrollView showsVerticalScrollIndicator={false} style={contactListStyles.list}>
                         {userList.map((contact, idx) => (
                             <ContactItem
-                            key={idx}
-                            contact={contact}
-                            selectItem={selectContact}
-                            selected={selectedIds.includes(contact.uuid)}
+                                key={idx}
+                                contact={contact}
+                                selectItem={selectContact}
+                                selected={selectedIds.includes(contact.uuid)}
                             />
                             ))}
                     </ScrollView>
@@ -127,9 +134,10 @@ const styles = StyleSheet.create({
 
 const contactListStyles = StyleSheet.create({
     container: {
-        marginBottom: 140
+        flex: 1,
     },
     listContainer: {
+        marginBottom: 100
         // marginBottom: 80
     },
     list: {

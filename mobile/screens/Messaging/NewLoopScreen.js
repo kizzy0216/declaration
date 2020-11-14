@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     View,
     StyleSheet,
@@ -9,16 +9,21 @@ import {
     KeyboardAvoidingView
 } from 'react-native'
 
-import {
-    useFonts,
-    Roboto_500Medium,
-    Roboto_400Regular
-} from '@expo-google-fonts/roboto'
+// import {
+//     useFonts,
+//     Roboto_500Medium,
+//     Roboto_400Regular
+// } from '@expo-google-fonts/roboto'
 
 import ToggleSwitchOn from '~/assets/images/toggle-switch-on.svg'
 import ToggleSwitchOff from '~/assets/images/toggle-switch-off.svg'
 
 import ContactSelector from './ContactSelector'
+import { useMutation } from 'urql'
+import InsertLoop from '../../mutations/InsertLoop'
+import { UserContext } from '../../contexts/UserContext'
+import { NetworkContext } from '../../contexts/NetworkContext'
+import isValidLoopName from '@shared/utils/isValidLoopName';
 
 // const testingData = []
 //     {id: '1', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: true},
@@ -31,10 +36,10 @@ import ContactSelector from './ContactSelector'
 // ]
 
 const NewLoopScreen = ({navigation}) => {
-    let [fontsLoaded] = useFonts({
-        Roboto_500Medium,
-        Roboto_400Regular
-    })
+    const { user } = useContext(UserContext);
+    const { activeNetwork } = useContext(NetworkContext);
+
+    const [_, insertLoop] = useMutation(InsertLoop);
 
     const [selectedIds, setSelectedIds] = useState([])
     const [name, setName] = useState('')
@@ -47,53 +52,70 @@ const NewLoopScreen = ({navigation}) => {
             setSelectedIds(selectedIds.filter(item => item !== id))
         }
     }
-
-    if (!fontsLoaded) {
-        return <View />
-        // return <AppLoading />
-    } else {
-        return (
-            <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
+    const handleSubmit = () => {
+        const validation = isValidLoopName(name)
+        if (!validation.isValid) { 
+            alert(validation.error)
+            return 
+        }
+        const variables = { 
+            name, 
+            network_uuid: activeNetwork.uuid,  
+            user_data: [...selectedIds.map(x => ({ user_uuid: x})), {user_uuid: user.uuid}],
+            is_private: !loopPublic
+        }
+        insertLoop(variables).then(result => {
+            if (result.error) { 
+                console.error('LOOP INSERT ISSUE', result.error) 
+            } else {
+                setSelectedIds([])
+                setName('')
+                setLoopPublic(true)
+                navigation.navigate('ChatScreen')
+            }
+        })
+    }
+    return (
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
                 {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
 
-                <View style={headerStyles.container}>
-                    <View style={headerStyles.header}>
-                        <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.goBack()}>
-                            <Text style={headerStyles.letfButtonText}>Cancel</Text>
-                        </TouchableOpacity>
-                        <Text style={headerStyles.heading}>New loop</Text>
-                        <TouchableOpacity style={headerStyles.rightButton}onPress={() => navigation.navigate('ChatScreen')}>
-                            <Text style={headerStyles.rightButtonText}>Share</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={headerStyles.searchBoxContainer}>
-                        <Text style={headerStyles.searchHeading}>Make Public</Text>
-                        <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
-                            <Text>Anyone can join this loop</Text>
-                            <View>
-                                {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
-                            </View>
+            <View style={headerStyles.container}>
+                <View style={headerStyles.header}>
+                    <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.goBack()}>
+                        <Text style={headerStyles.letfButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                    <Text style={headerStyles.heading}>New Loop</Text>
+                    <TouchableOpacity style={headerStyles.rightButton} onPress={() => handleSubmit()}>
+                        <Text style={headerStyles.rightButtonText}>Share</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={headerStyles.searchBoxContainer}>
+                    <Text style={headerStyles.searchHeading}>Make Public</Text>
+                    <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
+                        <Text>Anyone can join this loop</Text>
+                        <View>
+                            {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
                         </View>
                     </View>
-                    <View style={headerStyles.searchBoxContainer}>
-                        <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
-                        <TextInput
-                            placeholder="Name this loop"
-                            placeholderTextColor="#979797"
-                            style={headerStyles.searchBox}
-                            autoCapitalize="none"
-                            value={name}
-                            onChangeText={text => setName(text.toLowerCase())}
-                        />
-                    </View>
                 </View>
-                <ContactSelector 
-                    selectContact={selectContact} 
-                    selectedIds={selectedIds} 
-                />
-            </KeyboardAvoidingView>
-        )
-    }
+                <View style={headerStyles.searchBoxContainer}>
+                    <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
+                    <TextInput
+                        placeholder="Name this loop"
+                        placeholderTextColor="#979797"
+                        style={headerStyles.searchBox}
+                        autoCapitalize="none"
+                        value={name}
+                        onChangeText={text => setName(text.toLowerCase().replace(' ', '_').replace('.', '-'))}
+                    />
+                </View>
+            </View>
+            <ContactSelector 
+                selectContact={selectContact} 
+                selectedIds={selectedIds} 
+            />
+        </KeyboardAvoidingView>
+    )
 }
 
 const styles = StyleSheet.create({

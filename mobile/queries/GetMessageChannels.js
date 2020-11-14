@@ -1,5 +1,5 @@
-const GetMessageChannelsQuery = `
-  query GetMessageChannelsQuery($network_uuid: uuid, $user_uuid: uuid) {
+const GetMessageChannels = `
+  query GetMessageChannels($network_uuid: uuid, $user_uuid: uuid) {
     loop(
       where: {
         network_uuid: {_eq: $network_uuid}, 
@@ -16,7 +16,8 @@ const GetMessageChannelsQuery = `
       }
     conversation(
       where: {
-        network_uuid: {_eq: $network_uuid}
+        network_uuid: {_eq: $network_uuid},
+        conversation_users: {user_uuid: {_eq: $user_uuid}},
       }
     ) {
         uuid
@@ -28,9 +29,15 @@ const GetMessageChannelsQuery = `
           }
         ) {
           user_uuid
+          user {
+            name
+            user_profile {
+              photo
+            }
+          }
         }
       }
   }
 `;
 
-export default GetMessageChannelsQuery;
+export default GetMessageChannels;

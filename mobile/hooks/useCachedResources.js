@@ -1,11 +1,17 @@
 import * as Font from 'expo-font';
+import {
+  useFonts,
+  Roboto_500Medium,
+  Roboto_400Regular
+} from '@expo-google-fonts/roboto'
 import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
 import React, { useState, useEffect } from 'react';
 
 function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
+  
+  useFonts({ Roboto_500Medium, Roboto_400Regular })
   // Load any resources or data that we need prior to rendering the app
   useEffect(() => {
     async function loadResourcesAndDataAsync() {

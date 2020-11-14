@@ -1,10 +1,10 @@
 const loopnameRegex = /^[a-z0-9_-]{3,16}$/igm;
 
 const isValidLoopName = (loopname) => {
-  if (loopname.length === 0) {
+  if (!loopname || loopname.length === 0) {
     return {
       isValid: false,
-      error: '',
+      error: 'Name is required.',
     };
   }
 

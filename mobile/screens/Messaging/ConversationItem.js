@@ -64,7 +64,7 @@ const ConversationItem = ({
     return (
         <Animated.View>
             <View style={styles.background}>
-                <TouchableWithoutFeedback onPress={() => deleteItem(conversation.id)}>
+                <TouchableWithoutFeedback onPress={() => deleteItem(conversation.uuid)}>
                     <Action x={abs(translateX)} height={95} {...{ deleteOpacity }} />
                 </TouchableWithoutFeedback>
             </View>

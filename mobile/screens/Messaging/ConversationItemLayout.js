@@ -6,25 +6,35 @@ import {
     Image
 } from 'react-native';
 
+import Avatar from '~/components/Avatar';
+
 import NewMsgAlert from '~/assets/images/red-dot.svg'
 
 const ConversationItemLayout = ({ conversation }) => {
+    const firstUser = conversation.conversation_users && conversation.conversation_users.length > 0 ?
+                conversation.conversation_users[0] : {}
+    const lastMsg = 'Howdy Ho Neighborino!'
     return (
         <View style={styles.item}>
             <View style={styles.photoNameContainer}>
-                <Image
-                    source={conversation.photoUrl}
-                    style={conversation.onLine ? styles.avatarOnline : styles.avatar}
+                {/* <Image
+                    source={{uri: }}
+                    style={contact.onLine ? styles.avatarOnline : styles.avatar}
+                /> */}
+                <Avatar
+                    imageSrc={firstUser.user.user_profile.photo}
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.name}>{conversation.firstName} {conversation.lastName}</Text>
-                    <Text style={styles.lastMsg}>{(conversation.lastMsg.length < 28) ? conversation.lastMsg : conversation.lastMsg.substring(0, 27) + '...'}</Text>
+                    <Text style={styles.name}>{firstUser.user.name}</Text>
+                    <Text style={styles.lastMsg}>
+                        {(lastMsg.length < 28) ? lastMsg : lastMsg.substring(0, 27) + '...'}
+                    </Text>
                 </View>
             </View>
 
             <View style={styles.timeAlertContainer}>
                 {conversation.readMsg ? null : <NewMsgAlert />}
-                <Text style={styles.lastMsg}>{conversation.msgTime}</Text>
+                <Text style={styles.lastMsg}>{conversation.msgTime || ''}</Text>
             </View>
         </View>
     );

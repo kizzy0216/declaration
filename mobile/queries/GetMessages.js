@@ -1,4 +1,4 @@
-const GetMessagesQuery = `
+const GetMessages = `
   query GetMessagesQuery($user_uuid: uuid) {
     message(
       where: {
@@ -13,4 +13,4 @@ const GetMessagesQuery = `
   }
 `;
 
-export default GetMessagesQuery;
+export default GetMessages;

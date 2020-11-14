@@ -2,6 +2,7 @@ import React, {
   useState,
   useEffect,
   useContext,
+  useCallback,
 } from 'react'
 import {
   StyleSheet,
@@ -27,14 +28,15 @@ import LoopBack from '~/assets/images/loop-back.svg'
 import Chat from '~/assets/images/chat.svg'
 
 
-import {
-  useFonts,
-  Roboto_500Medium,
-  Roboto_400Regular
-} from '@expo-google-fonts/roboto'
+// import {
+//   useFonts,
+//   Roboto_500Medium,
+//   Roboto_400Regular
+// } from '@expo-google-fonts/roboto'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MessageContext } from '../../contexts/MessageContext';
-import ConversationsContainer from './Conversations';
+import ConversationsContainer from './ConversationsContainer';
+import { useFocusEffect } from '@react-navigation/native';
 
 // const testingDataLoops = [
 //   {id: '1', title: 'sds_announcements', hasNewMsg: false},
@@ -52,30 +54,52 @@ import ConversationsContainer from './Conversations';
 function MessagingHomeScreen({ navigation }) {
     const [loops, setLoops] = useState([])
     const [conversations, setConversations] = useState([])
+    const [filterValue, setFilterValue] = useState('')
     const { isFetchingItems, loops: loopData, conversations: conversationData, refresh } = useContext(MessageContext);
-    
-    let [fontsLoaded] = useFonts({
-        Roboto_500Medium,
-        Roboto_400Regular
-    })
 
-  const removeConversation = id => {
-      setConversations(conversations.filter(item => item.id !== id))
-        // mutation for DB
-        // refresh real data on success
-  }
+    useEffect(() => {
+        setFilterValue('')
+        refresh()
+    }, [navigation]);
 
-  useEffect(() => {
-      setLoops(loopData),
-      setConversations(conversationData)
-  }, [])
+    useEffect(() => {
+        setLoops(loopData),
+        setConversations(conversationData)
+    }, [loopData, conversationData])
 
-  if (!fontsLoaded) {
-    return <View />
-    // return <AppLoading />
-  } else {
+    useEffect(() => {
+        filterChannels(filterValue)
+    }, [filterValue]);
+
+    const removeConversation = id => {
+        setConversations(conversations.filter(item => item.uuid !== id))
+            // mutation for DB
+            // refresh real data on success
+    }
+
+    const filterChannels = value => {
+        try {
+            if (value !== '') {
+                const lowerValue = value.toLowerCase()
+                const filteredLoops = loopData.filter(item => item.name.toLowerCase().includes(lowerValue))
+                setLoops(filteredLoops)
+                const filteredConversations = conversationData.filter(item => {
+                    return item.conversation_users.some(x => 
+                        x.user && x.user.name && x.user.name.toLowerCase().includes(lowerValue))
+                })
+                setConversations(filteredConversations)
+            } else {
+                setLoops(loopData || [])
+                setConversations(conversationData || [])
+            }
+        } catch {
+            setLoops(loopData || [])
+            setConversations(conversationData || [])
+        }
+    }
+
     return (
-    <SafeAreaView>
+        <SafeAreaView>
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
             <ScreenHeader
                 heading="Messages"
@@ -106,6 +130,8 @@ function MessagingHomeScreen({ navigation }) {
                             placeholder="Search"
                             placeholderTextColor="#979797"
                             style={headerStyles.searchBox}
+                            value={filterValue}
+                            onChangeText={setFilterValue}
                             />
                     </View>
                 </View>
@@ -170,6 +196,7 @@ function MessagingHomeScreen({ navigation }) {
                             (
                                 <ConversationsContainer
                                     conversations={conversations}
+                                    removeConversation={removeConversation}
                                 />
                             ) : (
                             <>
@@ -184,7 +211,7 @@ function MessagingHomeScreen({ navigation }) {
             </ScrollView>
         </KeyboardAvoidingView>
     </SafeAreaView>
-  )};
+    )
 }
 
 const styles = StyleSheet.create({

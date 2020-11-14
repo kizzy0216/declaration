@@ -1,8 +1,8 @@
-const InsertLoopMutation = `
-  mutation InsertLoopMutation(
+const InsertLoop = `
+  mutation InsertLoop(
       $name: String, 
       $network_uuid: uuid, 
-      $user_uuids: [loop_user_insert_input!]!,
+      $user_data: [loop_user_insert_input!]!,
       $is_private: Boolean = false,
     ) {
     insert_loop_one(
@@ -12,7 +12,7 @@ const InsertLoopMutation = `
         slug: $name, 
         network_uuid: $network_uuid, 
         loop_users: {
-          data: $user_uuids
+          data: $user_data
         }
       }
     ) {
@@ -21,4 +21,4 @@ const InsertLoopMutation = `
   }
 `;
 
-export default InsertLoopMutation;
+export default InsertLoop;

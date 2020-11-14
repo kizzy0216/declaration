@@ -8,8 +8,8 @@ import { useQuery, useSubscription } from 'urql';
 import { resetSubscriptionClient } from '../utils/api';
 
 // import GetUser from '~/queries/GetUser';
-import GetMessagesQuery from '~/queries/GetMessagesQuery'
-import GetMessageChannelsQuery from '../queries/GetMessageChannelsQuery';
+import GetMessages from '~/queries/GetMessages'
+import GetMessageChannels from '../queries/GetMessageChannels';
 import { UserContext } from './UserContext';
 import { NetworkContext } from './NetworkContext';
 // import mapUser from '@shared/mappings/mapUser';
@@ -34,7 +34,7 @@ export const MessageContextProvider = ({ children }) => {
   const { activeNetwork } = useContext(NetworkContext);
 
   const [getChannelsResult, refreshChannelResult] = useQuery({
-    query: GetMessageChannelsQuery,
+    query: GetMessageChannels,
     variables: {
       user_uuid: user.uuid,
       network_uuid: activeNetwork.uuid
@@ -48,9 +48,13 @@ export const MessageContextProvider = ({ children }) => {
   }, [hasSettled]);
 
   useEffect(() => {
-    console.log('CHANNEL RESULTT', getChannelsResult)
+    if (getChannelsResult.error) {
+      console.error('CHANNEL RESULTS ERROR', getChannelsResult.error)
+    }
     if (getChannelsResult.data) {
       console.log('CHANNEL DATA', getChannelsResult.data)
+      setLoops(getChannelsResult.data.loop)
+      setConversations(getChannelsResult.data.conversation)
     }
   }, [getChannelsResult.data, getChannelsResult.error]);
 

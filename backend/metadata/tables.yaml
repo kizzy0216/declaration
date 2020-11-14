@@ -1420,13 +1420,17 @@
     permission:
       check: {}
       columns:
+      - uuid
       - network_uuid
+      - created_at
       backend_only: false
   - role: user
     permission:
       check: {}
       columns:
+      - created_at
       - network_uuid
+      - uuid
       backend_only: false
   select_permissions:
   - role: super_admin
@@ -1442,6 +1446,30 @@
       - created_at
       - network_uuid
       - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - created_at
+      - network_uuid
+      - uuid
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - network_uuid
+      - uuid
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
       filter: {}
 - table:
     schema: public
@@ -1459,6 +1487,7 @@
       check: {}
       columns:
       - conversation_uuid
+      - created_at
       - is_hidden
       - last_read_at
       - last_typed_at
@@ -1467,10 +1496,9 @@
   - role: user
     permission:
       check: {}
-      set:
-        user_uuid: x-hasura-User-Id
       columns:
       - conversation_uuid
+      - created_at
       - is_hidden
       - last_read_at
       - last_typed_at
@@ -1501,17 +1529,23 @@
   - role: super_admin
     permission:
       columns:
+      - conversation_uuid
+      - created_at
       - is_hidden
       - last_read_at
       - last_typed_at
+      - user_uuid
       filter: {}
       check: {}
   - role: user
     permission:
       columns:
+      - conversation_uuid
+      - created_at
       - is_hidden
       - last_read_at
       - last_typed_at
+      - user_uuid
       filter: {}
       check: {}
 - table:
@@ -1592,7 +1626,10 @@
   - role: super_admin
     permission:
       check: {}
+      set:
+        owner_uuid: x-hasura-User-Id
       columns:
+      - created_at
       - description
       - is_archived
       - is_private
@@ -1600,6 +1637,7 @@
       - network_uuid
       - owner_uuid
       - slug
+      - uuid
       backend_only: false
   - role: user
     permission:
@@ -1607,13 +1645,15 @@
       set:
         owner_uuid: x-hasura-User-Id
       columns:
-      - description
       - is_archived
       - is_private
+      - description
       - name
+      - slug
+      - created_at
       - network_uuid
       - owner_uuid
-      - slug
+      - uuid
       backend_only: false
   select_permissions:
   - role: super_admin
@@ -1646,25 +1686,29 @@
   - role: super_admin
     permission:
       columns:
-      - description
       - is_archived
       - is_private
+      - description
       - name
+      - slug
+      - created_at
       - network_uuid
       - owner_uuid
-      - slug
+      - uuid
       filter: {}
       check: {}
   - role: user
     permission:
       columns:
-      - description
       - is_archived
       - is_private
+      - description
       - name
+      - slug
+      - created_at
       - network_uuid
       - owner_uuid
-      - slug
+      - uuid
       filter: {}
       check: {}
   delete_permissions:
@@ -1689,20 +1733,19 @@
     permission:
       check: {}
       columns:
+      - is_blocked
+      - joined_at
+      - last_read_at
+      - last_typed_at
       - loop_uuid
       - user_uuid
-      - last_typed_at
-      - last_read_at
-      - joined_at
-      - is_blocked
       backend_only: false
   - role: user
     permission:
       check: {}
-      set:
-        user_uuid: x-hasura-User-Id
       columns:
       - is_blocked
+      - joined_at
       - last_read_at
       - last_typed_at
       - loop_uuid
@@ -1744,8 +1787,11 @@
     permission:
       columns:
       - is_blocked
+      - joined_at
       - last_read_at
       - last_typed_at
+      - loop_uuid
+      - user_uuid
       filter: {}
       check: null
   delete_permissions:

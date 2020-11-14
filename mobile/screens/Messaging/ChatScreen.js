@@ -8,12 +8,6 @@ import {
     StyleSheet
 } from 'react-native'
 
-import {
-    useFonts,
-    Roboto_500Medium,
-    Roboto_400Regular
-} from '@expo-google-fonts/roboto'
-
 import { BorderlessButton } from 'react-native-gesture-handler';
 import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 
@@ -43,17 +37,17 @@ const testingMessages = [
     {content: `Ok!, I'll send it soon.`, time: 'Today 10:56', from: '2'},
 ]
 
-const ChatScreen = ({ navigation }) => {
-    let [fontsLoaded] = useFonts({
-        Roboto_500Medium,
-        Roboto_400Regular
-    })
+const ChatScreen = ({ navigation, route }) => {
+
+    const { loop_uuid, conversation_uuid } = route.params;
+
 
     const [messages, setMessages] = useState([])
 
     const goToNewMessage = () => navigation.navigate('NewMessage')
 
     const addNewMessage = message => {
+        if (!message || message.trim().length === 0) { return }
         setMessages([...messages, {
             content: message,
             time: 'Today 10:56',
@@ -65,45 +59,41 @@ const ChatScreen = ({ navigation }) => {
         setMessages(testingMessages)
     }, [])
 
-    if (!fontsLoaded) {
-        return <View />
-        // return <AppLoading />
-    } else {
-        return (
-            <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
-                <ScreenHeader
-                    heading="Chat"
-                    leftElement={
-                        <BorderlessButton onPress={() => navigation.goBack()}>
-                            <ArrowLeftIcon
-                                width={22}
-                                height={22}
-                                fill={'#000000'}
-                            />
-                        </BorderlessButton>
-                    }
-                    rightElement={<></>}
-                />
+    return (
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+            <ScreenHeader
+                heading="Chat"
+                leftElement={
+                    <BorderlessButton onPress={() => navigation.navigate('Messaging')}>
+                        <ArrowLeftIcon
+                            width={22}
+                            height={22}
+                            fill={'#000000'}
+                        />
+                    </BorderlessButton>
+                }
+                rightElement={<></>}
+            />
 
-                <MessageList
-                    messagesHistory={messages}
-                />
+            <MessageList
+                messagesHistory={messages}
+            />
 
-                <View style={styles.bottom}>
-                    <MessageInputBox
-                        userData={testingData}
-                        btnAction={goToNewMessage}
-                        addNewMessage={addNewMessage}
-                    />
-                </View>
-            </KeyboardAvoidingView>
-        )
-    }
+            <View style={styles.bottom}>
+                <MessageInputBox
+                    userData={testingData}
+                    btnAction={goToNewMessage}
+                    addNewMessage={addNewMessage}
+                />
+            </View>
+        </KeyboardAvoidingView>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 24,
         backgroundColor: '#fff',
         justifyContent: 'space-between'
     },
