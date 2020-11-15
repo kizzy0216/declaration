@@ -28,13 +28,13 @@ function Actions({
             href: '#promote',
             onClick: () => onPromote({ item }),
             label: 'Make Admin',
-            icon: <StarIcon />,
+            icon: <StarIcon fill="#222" />,
           }),
           item.role === NETWORK_ADMIN_ROLE && ({
             href: '#demote',
             onClick: () => onDemote({ item }),
             label: 'Make Member',
-            icon: <UnStarIcon />,
+            icon: <UnStarIcon fill="#222" />,
           }),
           !item.isBlocked && ({
             href: '#block',
