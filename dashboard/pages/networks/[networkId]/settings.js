@@ -103,7 +103,10 @@ function NetworkSettingsPage() {
                 style={{ maxWidth: 330, paddingBottom: 34 }}
               >
                 <Input
-                  value={`UNC Charlotte`}
+                  initialValues={{
+                    name: network.name,
+                  }}
+                  onNameChange={handleNameChange}
                 />
               </Section>
             </div>
@@ -115,8 +118,8 @@ function NetworkSettingsPage() {
                 style={{ paddingBottom: 40 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: 24 }}>
-                  <div style={{ width: 60, height: 60, borderRadius: '50%', border: '1px solid #222'}}></div>
-                  <div style={{ marginLeft: 20, fontFamily: '"Roboto", sans-serif', fontWeight: 500, fontSize: 14}}>Upload Image (256x256)</div>
+                  <div style={{ width: 60, height: 60, borderRadius: '50%', border: '1px solid #222' }}></div>
+                  <div style={{ marginLeft: 20, fontFamily: '"Roboto", sans-serif', fontWeight: 500, fontSize: 14 }}>Upload Image (256x256)</div>
                 </div>
               </Section>
             </div>
@@ -237,13 +240,25 @@ function Section({
 }
 
 function Input({
-  value
+  initialValues = {},
+  onNameChange = () => {},
 }) {
+  const [name, setName] = useState(initialValues.name || '');
+
+  const handleNameChange = event => {
+    const updatedName = event.target.value;
+
+    setName(updatedName);
+    onNameChange({ name: updatedName });
+  }
+
   return (
     <div className="input-container">
       <input
         type="text"
-        value={value}
+        value={name}
+        placeholder="Your network name"
+        maxLength={30}
       />
       <small className="helper">30 characters max</small>
 
