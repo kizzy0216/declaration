@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, useMutation } from 'urql';
 
 import GetNetworkById from '~/queries/GetNetworkById';
-import UpdateNetworkName from '~/mutations/UpdateNetworkName';
-import UpdateNetworkAvatar from '~/mutations/UpdateNetworkAvatar';
+import UpdateNetwork from '~/mutations/UpdateNetwork';
 import mapNetwork from '~/shared/mappings/mapNetwork';
 import debounce from '~/shared/utils/debounce';
 import { fetchREST } from '~/utils/api';
@@ -13,6 +12,7 @@ import SpinnerIcon from '~/shared/components/icons/SpinnerIcon';
 
 function NetworkSettingsPage() {
   const [isFetchingAvatar, setIsFetchingAvatar] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const router = useRouter();
   const { networkId } = router.query;
   const [result] = useQuery({
@@ -21,30 +21,29 @@ function NetworkSettingsPage() {
       id: networkId,
     },
   });
+  const [name, setName] = useState(null)
+  const [avatarUrl, setAvatarUrl] = useState(null)
   const [
-    updateNameResult,
-    updateName,
-  ] = useMutation(UpdateNetworkName);
-  const [
-    updateAvatarResult,
-    updateAvatar,
-  ] = useMutation(UpdateNetworkAvatar);
+    updateNetworkResult,
+    updateNetwork,
+  ] = useMutation(UpdateNetwork);
 
   let network;
   if (result.data && result.data.network.length > 0) {
     network = mapNetwork(result.data.network[0]);
   }
 
-  const handleNameChange = debounce(({ name }) => {
-    if (name.length === 0) {
-      return;
-    }
-
-    updateName({
+  const handleUpdate = debounce(() => {
+    updateNetwork({
       uuid: network.uuid,
       name,
+      avatar: avatarUrl
     });
   }, 300);
+
+  const handleNameChange = ({ name }) => {
+    setName(name)
+  };
 
   async function handleAvatarFileChange({ file }) {
     setIsFetchingAvatar(true);
@@ -69,18 +68,25 @@ function NetworkSettingsPage() {
     });
 
     const uploadedAvatarUrl = `${policy.url}/${policy.fields.key}`;
-
-    updateAvatar({
-      uuid: network.uuid,
-      avatar: uploadedAvatarUrl,
-    });
+    setAvatarUrl(uploadedAvatarUrl)
 
     setIsFetchingAvatar(false);
   }
 
+  useEffect(() => {
+    if (result.data && result.data.network.length > 0) {
+      setName(mapNetwork(result.data.network[0]).name);
+      setAvatarUrl(mapNetwork(result.data.network[0]).avatar);
+    }
+  }, [result])
+
+  useEffect(() => {
+    setIsFetching(updateNetworkResult.fetching)
+  })
+
   return (
     <div className="network-settings-page">
-      {!network &&
+      {(!network || isFetching) &&
         <div className="spinner-wrapper">
           <SpinnerIcon
             width="24"
@@ -89,7 +95,7 @@ function NetworkSettingsPage() {
         </div>
       }
 
-      {network &&
+      {(network || !isFetching) &&
         <div className="container">
           <div style={{width: '100%'}}>
             <div className="row">
@@ -102,7 +108,7 @@ function NetworkSettingsPage() {
               >
                 <NetworkNameForm
                   initialValues={{
-                    name: network.name,
+                    name: name,
                   }}
                   onNameChange={handleNameChange}
                 />
@@ -117,8 +123,9 @@ function NetworkSettingsPage() {
               >
                 <NetworkAvatarForm
                   initialValues={{
-                    avatar: network.avatar,
+                    avatar: avatarUrl,
                   }}
+                  isFetching={isFetchingAvatar}
                   onFileChange={handleAvatarFileChange}
                 />
               </Section>
@@ -126,7 +133,7 @@ function NetworkSettingsPage() {
           </div>
 
           <div className="save-btn-container">
-            <button>Save</button>
+            <button onClick={handleUpdate}>Save</button>
           </div>
         </div>
       }
@@ -240,12 +247,10 @@ function NetworkNameForm({
   initialValues = {},
   onNameChange = () => {},
 }) {
-  const [name, setName] = useState(initialValues.name || '');
 
   const handleNameChange = event => {
     const updatedName = event.target.value;
 
-    setName(updatedName);
     onNameChange({ name: updatedName });
   }
 
@@ -253,7 +258,7 @@ function NetworkNameForm({
     <div className="network-name-form">
       <input
         type="text"
-        value={name}
+        value={initialValues.name || ''}
         placeholder="Your network name"
         maxLength={30}
         onChange={handleNameChange}
@@ -292,6 +297,7 @@ function NetworkNameForm({
 
 function NetworkAvatarForm({
   initialValues = {},
+  isFetching,
   onFileChange = () => {},
 }) {
   const handleFileChange = event => {
@@ -300,18 +306,24 @@ function NetworkAvatarForm({
   }
 
   return (
-    <div className="network-avatar-form" htmlFor="avatar-file-input">
-      <Avatar
-        imageSrc={initialValues.avatar}
-        size="large"
-      />
-      <input
-        id="avatar-file-input"
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-      />
+    <div className="network-avatar-form">
+      <label htmlFor="avatar-file-input">
+        <Avatar
+          imageSrc={initialValues.avatar}
+          size="large"
+        />
+        <input
+          id="avatar-file-input"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </label>
       <div className="helper">Upload image (256x256)</div>
+
+      {isFetching &&
+        <SpinnerIcon />
+      }
 
       <style jsx>{`
         .network-avatar-form {
@@ -319,12 +331,17 @@ function NetworkAvatarForm({
           align-items: center;
           margin-top: 24px;
 
+          & label {
+            cursor: pointer;
+          }
+
           & input {
             display: none;
           }
 
           & .helper {
             margin-left: 20px;
+            margin-right: 20px;
             font-family: var(--font-family-sans-serif);
             font-weight: 500;
             font-size: 14px;
