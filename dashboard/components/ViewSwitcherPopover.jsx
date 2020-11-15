@@ -90,7 +90,7 @@ function ViewSwitcherPopover({
 
       <div className="heading">
         <span className="left">
-          <h1>{active.name}</h1>
+          <h1>{active.name && (active.name.length > 18 ? active.name.substring(0, 18) + '...' : active.name)}</h1>
         </span>
 
         <span className="icon-wrapper">
@@ -108,7 +108,7 @@ function ViewSwitcherPopover({
           >
             <a onClick={handleClick} className="heading">
               <h1 className="left">
-                {item.name}
+                {item.name && (item.name.length > 18 ? item.name.substring(0, 18) + '...' : item.name)}
               </h1>
               <span className="icon-wrapper">
                 <div className="unchecked"></div>
@@ -176,6 +176,7 @@ function ViewSwitcherPopover({
           font-weight: 400;
           user-select: none;
           margin-left: 5px;
+          white-space: nowrap;
         }
 
         a {
