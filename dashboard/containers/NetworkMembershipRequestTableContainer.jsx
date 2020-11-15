@@ -22,6 +22,8 @@ function NetworkMembershipRequestTableContainer({
   const [selectedItem, setSelectedItem] = useState({});
   const [isInsertModalActive, setIsInsertModalActive] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [isInsertAllModalActive, setIsInsertAllModalActive] = useState(false)
+  const [isFetchingInsertAll, setIsFetchingInsertAll] = useState(false)
   const [getRequests] = useQuery({
     query: GetNetworkMembershipRequests,
     variables: {
@@ -67,6 +69,22 @@ function NetworkMembershipRequestTableContainer({
     setIsDeleteModalActive(false);
   }
 
+  async function handleInsertAll() {
+    await setIsFetchingInsertAll(true)
+    await items.map(item => {
+      insertMember({
+        network_uuid: network.uuid,
+        user_uuid: item.user.uuid,
+      }).then(() => {
+        deleteRequest({
+          uuid: item.uuid,
+        });
+      })
+    })
+    await setIsInsertAllModalActive(false)
+    await setIsFetchingInsertAll(false)
+  }
+
   function handleAccept({ item }) {
     setSelectedItem(item);
     setIsInsertModalActive(true);
@@ -75,6 +93,10 @@ function NetworkMembershipRequestTableContainer({
   function handleDecline ({ item }) {
     setSelectedItem(item);
     setIsDeleteModalActive(true);
+  }
+
+  function handleAcceptAll() {
+    setIsInsertAllModalActive(true)
   }
 
   return (
@@ -111,6 +133,22 @@ function NetworkMembershipRequestTableContainer({
         </ModalPortal>
       }
 
+      {isInsertAllModalActive &&
+        <ModalPortal
+          onClose={() => setIsInsertAllModalActive(false)}
+        >
+        <DoubleConfirmModal
+          heading={
+            `Are you sure you want to accept all membership requests?`
+          }
+          submitLabel="Yes, accept all"
+          isFetching={isFetchingInsertAll}
+          onSubmit={() => handleInsertAll()}
+          onCancel={() => setIsInsertAllModalActive(false)}
+        />
+      </ModalPortal>
+    }
+
       {items.length !== 0 &&
         <NetworkMembershipRequestTable
           items={items}
@@ -118,8 +156,8 @@ function NetworkMembershipRequestTableContainer({
           onDecline={handleDecline}
           action={
             <Button
-              label="Aadd all & send invites"
-              onClick={() => {}}
+              label="Add all & send invites"
+              onClick={handleAcceptAll}
             />
           }
         />

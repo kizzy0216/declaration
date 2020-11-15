@@ -81,9 +81,9 @@ function Button ({
 
         .medium {
           padding-top: 0.4em;
-          padding-right: 1.6em;
+          padding-right: 0.8em;
           padding-bottom: 0.4em;
-          padding-left: 1.6em;
+          padding-left: 0.8em;
           font-size: 14px;
           height: 30px;
         }
