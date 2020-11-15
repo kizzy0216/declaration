@@ -8,7 +8,6 @@ const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { s
 import NetworkMembershipInvitationTable from '~/components/NetworkMembershipInvitationTable';
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
 import InviteMemberModal from '~/components/InviteMemberModal';
-import Button from '~/shared/components/Button';
 import GetNetworkMembershipInvitations from '~/queries/GetNetworkMembershipInvitations';
 import InsertNetworkMembershipInvitation from '~/mutations/InsertNetworkMembershipInvitation';
 import DeleteNetworkMembershipInvitation from '~/mutations/DeleteNetworkMembershipInvitation';
@@ -111,7 +110,7 @@ function NetworkMembershipInvitationTableContainer({
           //     onClick={() => setIsInviteMemberModalActive(true)}
           //   />
           // }
-          onRevoke={handleRevoke}
+          onDecline={handleRevoke}
         />
       }
     </>

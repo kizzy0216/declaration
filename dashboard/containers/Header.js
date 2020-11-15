@@ -1,12 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useMutation } from 'urql';
+import dynamic from 'next/dynamic';
 
+const MOBILE_BASE_URL = process.env.MOBILE_BASE_URL;
+
+const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import Input from '~/shared/components/Input'
 import Button from '~/shared/components/Button';
 import TriangleDownIcon from '~/shared/components/icons/TriangleDownIcon';
+import InsertNetworkMembershipInvitation from '~/mutations/InsertNetworkMembershipInvitation';
+import InviteMemberModal from '~/components/InviteMemberModal';
 
-function Header() {
+function Header({
+  network
+}) {
+  const [isInviteMemberModalActive, setIsInviteMemberModalActive] = useState(false);
+  const [
+    insertInvitationResult,
+    insertInvitation,
+  ] = useMutation(InsertNetworkMembershipInvitation);
+
+  function handleInsert({
+    name,
+    email,
+  }) {
+    insertInvitation({
+      network_uuid: network.uuid,
+      user_name: name,
+      user_email: email,
+      redirect: `${MOBILE_BASE_URL}/accept-invitation`,
+    }).then(() => setIsInviteMemberModalActive(false));
+  }
+
   return (
     <>
+      {isInviteMemberModalActive &&
+        <ModalPortal
+          onClose={() => setIsInviteMemberModalActive(false)}
+        >
+          <InviteMemberModal
+            isFetching={insertInvitationResult.fetching}
+            onSubmit={handleInsert}
+            onCancel={() => setIsInviteMemberModalActive(false)}
+          />
+        </ModalPortal>
+      }
+
       <div className="container">
         <div className="action-box">
           <Input
@@ -16,7 +55,7 @@ function Header() {
           <ButtonsBox
             buttons={[
               {
-                onClick: () => {},
+                onClick: () => setIsInviteMemberModalActive(true),
                 label: 'Add individuals',
                 theme: 'quaternary',
               },
