@@ -11,7 +11,7 @@ function NetworkMembershipRequestTable({
   onAccept = () => {},
   onDecline = () => {},
 }) {
-  const heading = `${items.length} New Member Request`;
+  const heading = `${items.length} New member requests`;
   const columns = useMemo(() => [
     {
       Header: 'Name',

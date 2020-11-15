@@ -10,7 +10,7 @@ function NetworkMembershipInvitationTable({
   action,
   onDecline = () => {},
 }) {
-  const heading = `${items.length} Pending Invites`;
+  const heading = `${items.length} Pending invites`;
   const columns = useMemo(() => [
     {
       Header: 'Name',

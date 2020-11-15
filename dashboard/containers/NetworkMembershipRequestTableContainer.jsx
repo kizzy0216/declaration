@@ -118,7 +118,7 @@ function NetworkMembershipRequestTableContainer({
           onDecline={handleDecline}
           action={
             <Button
-              label="Accept All & Send Invites"
+              label="Aadd all & send invites"
               onClick={() => {}}
             />
           }

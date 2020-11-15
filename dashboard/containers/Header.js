@@ -17,7 +17,7 @@ function Header() {
             buttons={[
               {
                 onClick: () => {},
-                label: 'Add Individuals',
+                label: 'Add individuals',
                 theme: 'quaternary',
               },
               // {
