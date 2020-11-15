@@ -139,6 +139,124 @@
       filter: {}
 - table:
     schema: public
+    name: chat_message
+  object_relationships:
+  - name: conversation
+    using:
+      foreign_key_constraint_on: conversation_uuid
+  - name: loop
+    using:
+      foreign_key_constraint_on: loop_uuid
+  - name: media
+    using:
+      foreign_key_constraint_on: media_uuid
+  - name: sender
+    using:
+      foreign_key_constraint_on: sender_uuid
+  insert_permissions:
+  - role: super_admin
+    permission:
+      check: {}
+      set:
+        sender_uuid: x-hasura-User-Id
+      columns:
+      - uuid
+      - sender_uuid
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - text
+      - reaction
+      - is_archived
+      - updated_at
+      - created_at
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        sender_uuid: x-hasura-User-Id
+      columns:
+      - uuid
+      - sender_uuid
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - text
+      - reaction
+      - is_archived
+      - updated_at
+      - created_at
+      backend_only: false
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_archived
+      - reaction
+      - text
+      - created_at
+      - updated_at
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - sender_uuid
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - is_archived
+      - reaction
+      - text
+      - created_at
+      - updated_at
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - sender_uuid
+      - uuid
+      filter: {}
+  update_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - is_archived
+      - reaction
+      - text
+      - created_at
+      - updated_at
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - sender_uuid
+      - uuid
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+      - is_archived
+      - reaction
+      - text
+      - created_at
+      - updated_at
+      - conversation_uuid
+      - loop_uuid
+      - media_uuid
+      - sender_uuid
+      - uuid
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: super_admin
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: comment
   object_relationships:
   - name: content_comment
@@ -1408,6 +1526,13 @@
     using:
       foreign_key_constraint_on: network_uuid
   array_relationships:
+  - name: chat_messages
+    using:
+      foreign_key_constraint_on:
+        column: conversation_uuid
+        table:
+          schema: public
+          name: chat_message
   - name: conversation_users
     using:
       foreign_key_constraint_on:
@@ -1615,6 +1740,13 @@
     using:
       foreign_key_constraint_on: owner_uuid
   array_relationships:
+  - name: chat_messages
+    using:
+      foreign_key_constraint_on:
+        column: loop_uuid
+        table:
+          schema: public
+          name: chat_message
   - name: loop_users
     using:
       foreign_key_constraint_on:
@@ -1816,6 +1948,14 @@
   - name: uploader
     using:
       foreign_key_constraint_on: uploader_uuid
+  array_relationships:
+  - name: chat_messages
+    using:
+      foreign_key_constraint_on:
+        column: media_uuid
+        table:
+          schema: public
+          name: chat_message
   insert_permissions:
   - role: super_admin
     permission:
@@ -2879,6 +3019,13 @@
         column_mapping:
           uuid: user_uuid
   array_relationships:
+  - name: chat_messages
+    using:
+      foreign_key_constraint_on:
+        column: sender_uuid
+        table:
+          schema: public
+          name: chat_message
   - name: comments
     using:
       foreign_key_constraint_on:

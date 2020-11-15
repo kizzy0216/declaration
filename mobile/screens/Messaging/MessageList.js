@@ -1,6 +1,7 @@
 import React, {
     useRef,
-    useEffect
+    useEffect,
+    useContext
 } from 'react'
 import {
     ScrollView,
@@ -8,19 +9,19 @@ import {
     StyleSheet,
     Text,
     Keyboard,
-    Image
+    Image,
+    RefreshControl
 } from 'react-native'
+import { UserContext } from '../../contexts/UserContext';
+import { formatDateTimeAgo } from '@shared/utils/formatDate';
 import {
-    useFonts,
-    Roboto_400Regular
-} from '@expo-google-fonts/roboto'
+    formatDate,
+    formatTime,
+  } from '@shared/utils/formatDate';
 
-const MessageList = ({
-    messagesHistory
-}) => {
-    let [fontsLoaded] = useFonts({
-        Roboto_400Regular,
-    })
+const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
+
+    const { user } = useContext(UserContext);
 
     const scrollViewRef = useRef()
 
@@ -35,37 +36,42 @@ const MessageList = ({
         }
     }, [])
 
-    if (!fontsLoaded) {
-        return <View />
-        // return <AppLoading />
-    } else {
-        return (
-            <ScrollView
-                ref={scrollViewRef}
-                style={{flex: 1, paddingHorizontal: 30}}
-                contentContainerStyle={{paddingBottom: 30}}
-                onContentSizeChange={goToBottomList}
-            >
-                {messagesHistory && messagesHistory.map((message, index) => <Message key={index} {...{ message }} />)}
-            </ScrollView>
-        )
-    }
-}
-
-const Message = ({ message }) => {
     return (
-        <View style={[styles.messageContainer, message.from === '2' ? {alignSelf: 'flex-end'} : {alignSelf: 'flex-start'}]}>
-            {message.from !== '2' ? (
-                <Image
-                    source={message.photoUrl}
-                    style={[styles.avatar, message.online ? styles.online : null]}
+        <ScrollView
+            ref={scrollViewRef}
+            style={{flex: 1, paddingHorizontal: 30}}
+            contentContainerStyle={{paddingBottom: 30}}
+            // onContentSizeChange={goToBottomList}
+            refreshControl={
+                <RefreshControl
+                  refreshing={isFetching}
+                  onRefresh={handleRefresh}
                 />
-            ) : null}
-            <View style={[styles.messageBox, message.from === '2' ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
-                <Text style={message.from === '2' ? styles.myMessageText : styles.messageText}>{message.content}</Text>
-            </View>
-        </View>
+            }
+        >
+            {chatMessages && chatMessages.map((message, idx) => (
+                <View key={idx} style={{paddingVertical: 5}}>
+                    <Text style={{textAlign: 'center', fontSize: 10, color: '#ccc'}}>{`${formatDate(message.created_at)} ${formatTime(message.created_at)}`}</Text>
+                    <View style={[styles.messageContainer, message.sender_uuid === user.uuid ? {alignSelf: 'flex-end'} : {alignSelf: 'flex-start'}]}>
+                        {message.sender_uuid !== user.uuid ? (
+                            <Avatar
+                                imageSrc={message.sender.user_profile.photo}
+                                name={message.sender.name}
+                            />
+                            // <Image
+                            //     source={message.photoUrl}
+                            //     style={[styles.avatar, message.online ? styles.online : null]}
+                            // />
+                        ) : null}
+                        <View style={[styles.messageBox, message.sender_uuid === user.uuid ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
+                            <Text style={message.sender_uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
+                        </View>
+                    </View>
+                </View>
+            ))}
+        </ScrollView>
     )
+    
 }
 
 const styles = StyleSheet.create({

@@ -13,7 +13,7 @@ import NewMsgAlert from '~/assets/images/red-dot.svg'
 const ConversationItemLayout = ({ conversation }) => {
     const firstUser = conversation.conversation_users && conversation.conversation_users.length > 0 ?
                 conversation.conversation_users[0] : {}
-    const lastMsg = 'Howdy Ho Neighborino!'
+    const lastMsg = 'Hey-diddily-ho, Neighboreenos!'
     return (
         <View style={styles.item}>
             <View style={styles.photoNameContainer}>
@@ -23,11 +23,12 @@ const ConversationItemLayout = ({ conversation }) => {
                 /> */}
                 <Avatar
                     imageSrc={firstUser.user.user_profile.photo}
+                    name={firstUser.user.name}
                 />
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{firstUser.user.name}</Text>
                     <Text style={styles.lastMsg}>
-                        {(lastMsg.length < 28) ? lastMsg : lastMsg.substring(0, 27) + '...'}
+                        {(lastMsg.length < 34) ? lastMsg : lastMsg.substring(0, 33) + '...'}
                     </Text>
                 </View>
             </View>

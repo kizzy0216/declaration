@@ -10,6 +10,7 @@ import Avatar from '~/components/Avatar';
 
 import CheckOff from '~/assets/images/check_off.svg'
 import CheckOn from '~/assets/images/check_on.svg'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const ContactItem = ({
     contact,
@@ -18,6 +19,7 @@ const ContactItem = ({
 }) => {
     // console.log('CONTACT', contact)
     return (
+        <TouchableWithoutFeedback onPress={() =>  selectItem(contact.uuid)}>
         <View style={styles.contactItem}>
             <View style={styles.photoNameContainer}>
                 {/* <Image
@@ -26,6 +28,7 @@ const ContactItem = ({
                 /> */}
                 <Avatar
                     imageSrc={contact.profile.photo}
+                    name={contact.name}
                 />
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{contact.name}</Text>
@@ -34,9 +37,10 @@ const ContactItem = ({
             </View>
 
             <View style={styles.checkBoxContainer}>
-                {selected ? <CheckOn onPress={() => selectItem(contact.uuid)} /> : <CheckOff onPress={() => selectItem(contact.uuid)} />}
+                {selected ? <CheckOn /> : <CheckOff />}
             </View>
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 

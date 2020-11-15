@@ -8,7 +8,6 @@ import { useQuery, useSubscription } from 'urql';
 import { resetSubscriptionClient } from '../utils/api';
 
 // import GetUser from '~/queries/GetUser';
-import GetMessages from '~/queries/GetMessages'
 import GetMessageChannels from '../queries/GetMessageChannels';
 import { UserContext } from './UserContext';
 import { NetworkContext } from './NetworkContext';
