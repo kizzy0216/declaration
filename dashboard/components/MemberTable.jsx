@@ -46,7 +46,7 @@ function Actions({
             href: '#unblock',
             onClick: () => onUnblock({ item }),
             label: 'Unblock',
-            icon: <UnFlagIcon />,
+            icon: <UnFlagIcon fill="#222" />,
           }),
         ].filter(x => x)}
         isPopoverOnly={true}
@@ -71,7 +71,12 @@ function MemberTable({
   onPromote = () => {},
   onDemote = () => {},
 }) {
+  console.log(items)
   const heading = `${items.length.toLocaleString()} Members`;
+  const subHeadings = [
+    `${items.filter(item => item.role === 'NETWORK_ADMIN').length} Admin`,
+    `${items.filter(item => item.isBlocked).length} Blocked`
+  ];
   const columns = useMemo(() => [
     {
       Header: 'Name',
@@ -136,6 +141,7 @@ function MemberTable({
   return (
     <Table
       heading={heading}
+      subHeadings={subHeadings}
       columns={columns}
       data={items}
       isCollapsible

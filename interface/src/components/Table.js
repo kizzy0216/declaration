@@ -149,6 +149,8 @@ function Table({
             margin-left: 20px;
             margin-right: 20px;
             font-size: 12px;
+            font-family: var(--font-family-sans-serif);
+            font-weight: 500;
           }
         }
 
