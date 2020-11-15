@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, useMutation } from 'urql';
 
-import Card from '~/shared/components/Card';
 import GetNetworkById from '~/queries/GetNetworkById';
 import UpdateNetworkName from '~/mutations/UpdateNetworkName';
 import UpdateNetworkAvatar from '~/mutations/UpdateNetworkAvatar';
 import mapNetwork from '~/shared/mappings/mapNetwork';
-import NetworkNameForm from '~/components/NetworkNameForm';
-import NetworkAvatarForm from '~/components/NetworkAvatarForm';
 import debounce from '~/shared/utils/debounce';
 import { fetchREST } from '~/utils/api';
+import Avatar from '~/shared/components/Avatar';
 import SpinnerIcon from '~/shared/components/icons/SpinnerIcon';
 
 function NetworkSettingsPage() {
@@ -102,7 +100,7 @@ function NetworkSettingsPage() {
                 `}
                 style={{ maxWidth: 330, paddingBottom: 34 }}
               >
-                <Input
+                <NetworkNameForm
                   initialValues={{
                     name: network.name,
                   }}
@@ -117,22 +115,17 @@ function NetworkSettingsPage() {
                 description="Your logo will appear on every emails sent to your network."
                 style={{ paddingBottom: 40 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: 24 }}>
-                  <div style={{ width: 60, height: 60, borderRadius: '50%', border: '1px solid #222' }}></div>
-                  <div style={{ marginLeft: 20, fontFamily: '"Roboto", sans-serif', fontWeight: 500, fontSize: 14 }}>Upload Image (256x256)</div>
-                </div>
+                <NetworkAvatarForm
+                  initialValues={{
+                    avatar: network.avatar,
+                  }}
+                  onFileChange={handleAvatarFileChange}
+                />
               </Section>
             </div>
-
-            {/* <div className="row">
-              <Section
-                title="Network category"
-                description="Select network type."
-              />
-            </div> */}
           </div>
 
-          <div style={{marginLeft: 40}}>
+          <div className="save-btn-container">
             <button>Save</button>
           </div>
         </div>
@@ -195,6 +188,10 @@ function NetworkSettingsPage() {
           justify-content: space-between;
           align-items: center;
         }
+
+        .save-btn-container {
+          margin-left: 40px;
+        }
       `}</style>
     </div>
   );
@@ -239,7 +236,7 @@ function Section({
   )
 }
 
-function Input({
+function NetworkNameForm({
   initialValues = {},
   onNameChange = () => {},
 }) {
@@ -253,41 +250,88 @@ function Input({
   }
 
   return (
-    <div className="input-container">
+    <div className="network-name-form">
       <input
         type="text"
         value={name}
         placeholder="Your network name"
         maxLength={30}
+        onChange={handleNameChange}
       />
       <small className="helper">30 characters max</small>
 
       <style jsx>{`
-        .input-container {
+        .network-name-form {
           display: flex;
           flex-direction: column;
+          & input {
+            width: 177px;
+            font-family: var(--font-family-sans-serif);
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            color: var(--dark);
+
+            padding: 7px 0;
+            border-bottom: 1px solid var(--dark);
+          }
+
+          & .helper {
+            margin-top: 4px;
+            font-family: var(--font-family-sans-serif);
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            color: var(--gray);
+          }
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function NetworkAvatarForm({
+  initialValues = {},
+  onFileChange = () => {},
+}) {
+  const handleFileChange = event => {
+    const file = event.target.files[0];
+    onFileChange({ file });
+  }
+
+  return (
+    <div className="network-avatar-form" htmlFor="avatar-file-input">
+      <Avatar
+        imageSrc={initialValues.avatar}
+        size="large"
+      />
+      <input
+        id="avatar-file-input"
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+      <div className="helper">Upload image (256x256)</div>
+
+      <style jsx>{`
+        .network-avatar-form {
+          display: flex;
+          align-items: center;
+          margin-top: 24px;
+
+          & input {
+            display: none;
+          }
+
+          & .helper {
+            margin-left: 20px;
+            font-family: var(--font-family-sans-serif);
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--dark);
+          }
         }
 
-        input {
-          width: 177px;
-          font-family: var(--font-family-sans-serif);
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 20px;
-          color: var(--dark);
-
-          padding: 7px 0;
-          border-bottom: 1px solid var(--dark);
-        }
-
-        .helper {
-          margin-top: 4px;
-          font-family: var(--font-family-sans-serif);
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: var(--gray);
-        }
       `}</style>
     </div>
   )
