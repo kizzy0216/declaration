@@ -292,10 +292,10 @@ was just provisioned.
 The Hasura server should now be working on HTTP and HTTPS, both on the Elastic
 Beanstalk provisioned URL, as well as the declaration.net subdomain.
 
-For incremental deployments:
+For incremental deployments, use the hasura.txt file in the credentials folder to find the migrate and metadata commands:
 
-`hasura migrate apply`
-`hasura metadata apply`
+`hasura migrate apply ...`
+`hasura metadata apply ...`
 
 ### Deploying REST API functions
 
@@ -422,22 +422,20 @@ Play team.
 Update the `package.json` version.  The version number can then be found at the bottom of the Settings screen in the app
 Update the `app.config.js` version, buildNumber, and versionCode for the Apple/Google deployment.
 ```bash
-# to publish production iOS
-BUILD_ENVIRONMENT_MODE="production" expo publish:ios
+# to publish production iOS and Android
+BUILD_ENVIRONMENT_MODE="production" expo publish
 # to build production iOS
 BUILD_ENVIRONMENT_MODE="production" expo build:ios -t archive
 # to upload production iOS
 BUILD_ENVIRONMENT_MODE="production" expo upload:ios
 
-# to publish production Android
-BUILD_ENVIRONMENT_MODE="production" expo publish:android
 # to build production Android
 BUILD_ENVIRONMENT_MODE="production" expo build:android -t app-bundle
 # to upload production Android
 BUILD_ENVIRONMENT_MODE="production" expo upload:android
 
-# to publish stage iOS
-BUILD_ENVIRONMENT_MODE="stage" expo publish:ios
+# to publish stage iOS and Android
+BUILD_ENVIRONMENT_MODE="stage" expo publish
 # to build stage iOS
 BUILD_ENVIRONMENT_MODE="stage" expo build:ios -t archive
 # to upload stage iOS

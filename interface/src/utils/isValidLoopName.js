@@ -1,4 +1,4 @@
-const loopnameRegex = /^[a-z0-9_-]{3,16}$/igm;
+const loopnameRegex = /^[a-z0-9_-]{3,100}$/igm;
 
 const isValidLoopName = (loopname) => {
   if (!loopname || loopname.length === 0) {

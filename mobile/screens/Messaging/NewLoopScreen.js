@@ -53,13 +53,14 @@ const NewLoopScreen = ({navigation}) => {
         }
     }
     const handleSubmit = () => {
-        const validation = isValidLoopName(name)
+        const loopName = name.trim().replace(' ', '_').replace('.', '-')
+        const validation = isValidLoopName(loopName)
         if (!validation.isValid) { 
             alert(validation.error)
             return 
         }
         const variables = { 
-            name, 
+            name: loopName, 
             network_uuid: activeNetwork.uuid,  
             user_data: [...selectedIds.map(x => ({ user_uuid: x})), {user_uuid: user.uuid}],
             is_private: !loopPublic
@@ -71,7 +72,7 @@ const NewLoopScreen = ({navigation}) => {
                 setSelectedIds([])
                 setName('')
                 setLoopPublic(true)
-                navigation.navigate('ChatScreen')
+                navigation.navigate('ChatScreen', { loop_uuid: result.data.insert_loop_one.uuid })
             }
         })
     }

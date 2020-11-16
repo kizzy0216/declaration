@@ -54,7 +54,7 @@ const NewConversationScreen = ({navigation}) => {
                 console.error('CONVO INSERT ISSUE', result.error) 
             } else {
                 setSelectedIds([])
-                navigation.navigate('ChatScreen')
+                navigation.navigate('ChatScreen', { conversation_uuid: result.data.insert_conversation_one.uuid })
             }
         })
     }
