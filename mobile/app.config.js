@@ -37,6 +37,22 @@ export default {
   assetBundlePatterns: [
     '**/*'
   ],
+  packagerOpts: {
+    config: "metro.config.js",
+    sourceExts: [
+      "expo.ts",
+      "expo.tsx",
+      "expo.js",
+      "expo.jsx",
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "wasm",
+      "svg"
+    ]
+  },
   hooks: {
     postPublish: [
       {

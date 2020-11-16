@@ -17,6 +17,7 @@ function Avatar({
   imageSrc,
   theme = 'primary', // primary, secondary
   size = 'medium', // small, medium, large
+  avatarStyle,
   isTouchable = false,
   onPress = () => {},
 }) {
@@ -45,6 +46,7 @@ function Avatar({
         styles[theme],
         styles[size],
         hasLoaded && styles.imageLoaded,
+        avatarStyle || {}
       ]}
     >
       <View style={hasLoaded && styles.initialsImageLoaded}>
@@ -56,7 +58,7 @@ function Avatar({
           style={[
             styles.image,
             styles[`${size}Image`],
-            hasLoaded && styles.imageImageLoaded,
+            hasLoaded && styles.imageImageLoaded
           ]}
           source={{
             uri: imageSrc,
@@ -98,9 +100,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   small: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
   },
   medium: {
     width: 48,
@@ -113,7 +115,6 @@ const styles = StyleSheet.create({
     borderRadius: 72,
   },
   initials: {
-    lineHeight: 1,
     fontSize: 14,
     fontWeight: 'bold',
     opacity: 1,
@@ -129,9 +130,9 @@ const styles = StyleSheet.create({
     left: 0,
   },
   smallImage: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
   },
   mediumImage: {
     width: 48,

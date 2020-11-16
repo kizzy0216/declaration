@@ -22,7 +22,10 @@ import NetworkMembershipRequestScreen from '~/screens/NetworkMembershipRequestSc
 import NetworkMembershipRequestFeedbackScreen from '~/screens/NetworkMembershipRequestFeedbackScreen';
 import NetworkMembershipInvitationScreen from '~/screens/NetworkMembershipInvitationScreen';
 import NetworkMembershipInvitationAcceptScreen from '~/screens/NetworkMembershipInvitationAcceptScreen';
-import MessagingScreen from '~/screens/MessagingScreen';
+import MessagingHomeScreen from '~/screens/Messaging/MessagingHomeScreen';
+import NewConversationScreen from '~/screens/Messaging/NewConversationScreen';
+import NewLoopScreen from '~/screens/Messaging/NewLoopScreen';
+import ChatScreen from '~/screens/Messaging/ChatScreen';
 import MembersScreen from '~/screens/MembersScreen';
 import MemberScreen from '~/screens/MemberScreen';
 import EventsScreen from '~/screens/EventsScreen';
@@ -45,6 +48,7 @@ import NetworkBlockedModal from '~/components/NetworkBlockedModal';
 import { NetworkContextProvider } from '~/contexts/NetworkContext';
 import { ContentTilePagerContextProvider } from '~/contexts/ContentTilePagerContext';
 import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
+import { MessageContextProvider } from '~/contexts/MessageContext';
 const Stack = createStackNavigator();
 
 function RootNavigator({ navigation }) {
@@ -56,6 +60,7 @@ function RootNavigator({ navigation }) {
 
   return (
   <NetworkContextProvider>
+    <MessageContextProvider>
     <CreateContentContextProvider>
       <ContentTilePagerContextProvider>
         <NetworkBlockedModal />
@@ -164,7 +169,19 @@ function RootNavigator({ navigation }) {
           />
           <Stack.Screen
             name="Messaging"
-            component={MessagingScreen}
+            component={MessagingHomeScreen}
+          />
+          <Stack.Screen
+            name="NewConversation"
+            component={NewConversationScreen}
+          />
+          <Stack.Screen
+            name="NewLoop"
+            component={NewLoopScreen}
+          />
+          <Stack.Screen
+            name="ChatScreen"
+            component={ChatScreen}
           />
           <Stack.Screen
             name="ContentViewer"
@@ -209,6 +226,7 @@ function RootNavigator({ navigation }) {
         </Stack.Navigator>
       </ContentTilePagerContextProvider>
     </CreateContentContextProvider>
+    </MessageContextProvider>
   </NetworkContextProvider>
   );
 }

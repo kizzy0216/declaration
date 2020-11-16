@@ -143,7 +143,7 @@ export const CreateContentContextProvider = ({ children }) => {
       opportunityListing.company.photo = uploadedPhotoAsset.url;
     }
 
-    console.log('TYPE', type, params)
+    // console.log('TYPE', type, params)
     if (type === BASE_CONTENT_TEMPLATE_TYPE) {
       return insertContent({
         ...params,

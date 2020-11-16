@@ -6,6 +6,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import CloseIcon from '@shared/components/icons/CloseIcon';
 
 function ScreenHeader({
+  containerStyle,
   heading,
   headingElement,
   headingStyle,
@@ -16,7 +17,7 @@ function ScreenHeader({
   onClose = () => {},
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.left}>
         {leftElement && leftElement}
       </View>
