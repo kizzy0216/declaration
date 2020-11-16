@@ -107,13 +107,15 @@ function Header({
 
       <style jsx>{`
         .container {
-          height: 70px;
+          height: 90px;
           border-bottom: 2px solid var(--light-gray);
+          padding-top: 20px;
           padding-right: 25.5px;
           padding-left: 25.5px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          background: #fff;
         }
 
         .action-box {

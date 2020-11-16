@@ -26,7 +26,7 @@ function NetworkMembersPage() {
 
   return (
     <div className="network-members-page">
-      <div className="row">
+      <div className="row header">
         <Header
           networkId={networkId}
           network={network}
@@ -57,8 +57,8 @@ function NetworkMembersPage() {
 
       <style jsx>{`
         .network-members-page {
-          padding-top: 20px;
           padding-bottom: 20px;
+          position: relative;
         }
 
         .tables-section {
@@ -68,6 +68,12 @@ function NetworkMembersPage() {
 
         .row {
           margin-bottom: 50px;
+        }
+
+        .header {
+          position: sticky;
+          top: 0;
+          z-index: 10;
         }
       `}</style>
     </div>
