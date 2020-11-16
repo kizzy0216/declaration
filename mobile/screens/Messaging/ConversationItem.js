@@ -14,6 +14,7 @@ import Animated, {
 import {
     PanGestureHandler,
     State,
+    TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native-gesture-handler'
 import {

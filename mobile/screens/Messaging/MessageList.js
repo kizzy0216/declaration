@@ -18,6 +18,7 @@ import {
     formatDate,
     formatTime,
   } from '@shared/utils/formatDate';
+import Avatar from '../../components/Avatar';
 
 const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
 
@@ -41,34 +42,38 @@ const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
             ref={scrollViewRef}
             style={{flex: 1, paddingHorizontal: 30}}
             contentContainerStyle={{paddingBottom: 30}}
-            // onContentSizeChange={goToBottomList}
-            refreshControl={
-                <RefreshControl
-                  refreshing={isFetching}
-                  onRefresh={handleRefresh}
-                />
-            }
+            onContentSizeChange={goToBottomList}
+            // refreshControl={
+            //     <RefreshControl
+            //       refreshing={isFetching}
+            //       onRefresh={handleRefresh}
+            //     />
+            // }
         >
-            {chatMessages && chatMessages.map((message, idx) => (
+            {chatMessages && chatMessages.map((message, idx) => {
+                return (
                 <View key={idx} style={{paddingVertical: 5}}>
                     <Text style={{textAlign: 'center', fontSize: 10, color: '#ccc'}}>{`${formatDate(message.created_at)} ${formatTime(message.created_at)}`}</Text>
-                    <View style={[styles.messageContainer, message.sender_uuid === user.uuid ? {alignSelf: 'flex-end'} : {alignSelf: 'flex-start'}]}>
-                        {message.sender_uuid !== user.uuid ? (
+                    <View style={[styles.messageContainer, message.sender.uuid === user.uuid ? {alignSelf: 'flex-end'} : {alignSelf: 'flex-start'}]}>
+                        {message.sender.uuid !== user.uuid ? (
                             <Avatar
                                 imageSrc={message.sender.user_profile.photo}
+                                size="small"
                                 name={message.sender.name}
+                                avatarStyle={{marginRight: 20}}
                             />
                             // <Image
                             //     source={message.photoUrl}
                             //     style={[styles.avatar, message.online ? styles.online : null]}
                             // />
                         ) : null}
-                        <View style={[styles.messageBox, message.sender_uuid === user.uuid ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
-                            <Text style={message.sender_uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
+                        <View style={[styles.messageBox, message.sender.uuid === user.uuid ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
+                            <Text style={message.sender.uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
                         </View>
                     </View>
                 </View>
-            ))}
+                )
+            })}
         </ScrollView>
     )
     

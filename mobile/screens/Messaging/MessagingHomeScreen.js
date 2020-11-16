@@ -116,6 +116,7 @@ function MessagingHomeScreen({ navigation }) {
             />
             <ScrollView 
                 style={styles.root}
+                contentContainerStyle={{paddingBottom: 30}}
                 refreshControl={
                     <RefreshControl
                       refreshing={isFetchingItems}

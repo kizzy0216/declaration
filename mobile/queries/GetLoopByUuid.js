@@ -14,26 +14,6 @@ const GetLoopByUuid = `
           }
         }
       }
-      chat_messages(
-        limit: $limit, 
-        where: {is_archived: {_eq: false}},
-        order_by: {created_at: asc},
-      ) {
-        text
-        reaction
-        created_at
-        sender_uuid
-        sender {
-          name
-          user_profile {
-            photo
-          }
-        }
-        media {
-          uuid
-          original_url
-        }
-      }
     }
   }
 `;

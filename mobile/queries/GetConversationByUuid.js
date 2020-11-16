@@ -1,9 +1,9 @@
 const GetConversationByUuid = `
-  query GetConversationByUuid($uuid: uuid!) {
+  query GetConversationByUuid($uuid: uuid!, $user_uuid: uuid!) {
     conversation_by_pk(uuid: $uuid) {
       __typename
       uuid
-      conversation_users {
+      conversation_users(where: {user_uuid: {_neq: $user_uuid}}) {
         last_read_at
         last_typed_at
         is_hidden

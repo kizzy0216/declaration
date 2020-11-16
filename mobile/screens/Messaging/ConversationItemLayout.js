@@ -9,12 +9,16 @@ import {
 import Avatar from '~/components/Avatar';
 
 import NewMsgAlert from '~/assets/images/red-dot.svg'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const ConversationItemLayout = ({ conversation }) => {
+    const navigation = useNavigation()
     const firstUser = conversation.conversation_users && conversation.conversation_users.length > 0 ?
                 conversation.conversation_users[0] : {}
     const lastMsg = 'Hey-diddily-ho, Neighboreenos!'
     return (
+        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { conversation_uuid: conversation.uuid })}>
         <View style={styles.item}>
             <View style={styles.photoNameContainer}>
                 {/* <Image
@@ -38,6 +42,7 @@ const ConversationItemLayout = ({ conversation }) => {
                 <Text style={styles.lastMsg}>{conversation.msgTime || ''}</Text>
             </View>
         </View>
+        </TouchableOpacity>
     );
 };
 

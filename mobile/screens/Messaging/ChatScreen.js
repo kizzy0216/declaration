@@ -6,10 +6,11 @@ import React, {
 import {
     KeyboardAvoidingView,
     View,
-    StyleSheet
+    StyleSheet,
+    Text
 } from 'react-native'
 
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton, TouchableOpacity } from 'react-native-gesture-handler';
 import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 import Button from '~/components/Button';
 import CloseIcon from '@shared/components/icons/CloseIcon';
@@ -17,11 +18,14 @@ import DoubleConfirmModal from '~/components/DoubleConfirmModal';
 import ScreenHeader from '~/components/ScreenHeader';
 import MessageList from './MessageList'
 import MessageInputBox from './MessageInputBox'
-import { useMutation, useQuery } from 'urql';
+import { useMutation, useQuery, useSubscription } from 'urql';
 import GetLoopByUuid from '../../queries/GetLoopByUuid';
 import GetConversationByUuid from '../../queries/GetConversationByUuid';
 import { UserContext } from '../../contexts/UserContext';
 import InsertChatMessage from '../../mutations/InsertChatMessage';
+import SubscribeChatMessages from '../../subscriptions/SubscribeChatMessages';
+import Avatar from '../../components/Avatar';
+import Plus from '~/assets/images/sm-plus.svg'
 
 const testingData = [
     // {photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), online: true},
@@ -50,6 +54,7 @@ const ChatScreen = ({ navigation, route }) => {
     const { loop_uuid, conversation_uuid } = route.params;
     const [channel, setChannel] = useState({})
     const [limit, setLimit] = useState(10)
+    const [chatMessages, setChatMessages] = useState([])
     const [isDoubleConfirmConnectionModalActive, setIsDoubleConfirmConnectionModalActive] = useState(false)
     const { user } = useContext(UserContext);
 
@@ -58,20 +63,30 @@ const ChatScreen = ({ navigation, route }) => {
         variables: {
           uuid: loop_uuid,
           user_uuid: user.uuid,
-          limit
         },
-        pause: !loop_uuid
+        pause: !loop_uuid || !user.uuid
     });
 
     const [getConversationResult, refreshConversationResult] = useQuery({
         query: GetConversationByUuid,
         variables: {
           uuid: conversation_uuid,
-          limit
+          user_uuid: user.uuid,
         },
-        pause: !conversation_uuid
+        pause: !conversation_uuid || !user.uuid
     });
 
+    useSubscription({
+        query: SubscribeChatMessages,
+        variables: {
+            conversation_uuid,
+            loop_uuid
+        },
+        pause: !conversation_uuid && !loop_uuid
+    }, (_, result) => {
+        // console.log('Subscription result for', user.name, new Date())
+        setChatMessages(result.chat_message)
+    })
     const [_, insertMessage] = useMutation(InsertChatMessage);
 
     // const goToNewMessage = () => navigation.navigate('NewConversation')
@@ -88,9 +103,10 @@ const ChatScreen = ({ navigation, route }) => {
         insertMessage(variables).then(result => {
             if (result.error) { 
                 console.error('MESSAGE INSERT ISSUE', result.error) 
-            } else {
-                console.log('SUCCESS', result.data)
             }
+            //  else {
+            //     console.log('SUCCESS', result.data)
+            // }
         })
     }
 
@@ -101,7 +117,8 @@ const ChatScreen = ({ navigation, route }) => {
         if (getConversationResult.fetching || getLoopResult.fetching) { return }
         console.log("CHANNEL UPUDATED")
         if (getConversationResult.data) {
-            // console.log('CONVO DATA', getConversationResult.data)
+            console.log('CONVO DATA', getConversationResult.data.conversation_by_pk)
+            setChannel(getConversationResult.data.conversation_by_pk)
         }
         if (getLoopResult.data) {
             console.log('LOOP DATA', getLoopResult.data.loop_by_pk)
@@ -109,18 +126,61 @@ const ChatScreen = ({ navigation, route }) => {
         }
     }, [getConversationResult.data, getConversationResult.error,getLoopResult.data, getLoopResult.error]);
 
-    const handleRefresh = () => {
-        const old = limit
-        setLimit(Number(old + 10))
-    }
+    // const handleRefresh = () => {
+    //     const old = limit
+    //     setLimit(Number(old + 10))
+    // }
       
     const handleDeleteLoop = () => {
         alert('DELETE!!!!!')
     }
-    // useEffect(() => {
-    //     setMessages(testingMessages)
-    // }, [])
-
+    const getHeading = () => {
+        if (channel && channel.__typename === 'loop') {
+            return <Text>{`#${channel.name}`}</Text>
+        }
+        if (channel && channel.__typename === 'conversation') {
+            const peeps = channel.conversation_users || []
+            return <View style={{flexGrow: 1, justifyContent: 'center', flexDirection: 'row'}}>
+                {peeps && (peeps.length <= 2 && peeps.map((item, idx) => (
+                    <Avatar
+                        key={idx}
+                        name={item.user.name}
+                        avatarStyle={styles.avatar}
+                        size="medium"
+                        imageSrc={item.user.user_profile.photo}
+                    />
+                    // <Image
+                    //     key={index}
+                    //     source={item.photoUrl}
+                    //     style={[styles.avatar, item.online ? styles.online : null, {zIndex: -index}]}
+                    // />
+                )) ||  (
+                    <>
+                        <Avatar
+                            avatarStyle={[styles.avatar, {marginLeft: 0}]}
+                            key={0}
+                            size="medium"
+                            name={peeps[0].user.name}
+                            imageSrc={peeps[0].user.user_profile.photo}
+                        />
+                        <Avatar
+                            avatarStyle={[styles.avatar]}
+                            key={0}
+                            size="medium"
+                            name={peeps[0].user.name}
+                            imageSrc={peeps[0].user.user_profile.photo}
+                        />
+                        <View style={[styles.avatar, styles.extraUsersNum, {zIndex: -1}]}>
+                            <Text style={styles.extraUsersNumText}>
+                                {userData.length - 1}
+                            </Text>
+                        </View>
+                    </>
+                ))}
+            </View>
+            }
+        return (<Text>Chat</Text>)
+    }
     return (
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
             <DoubleConfirmModal
@@ -132,39 +192,31 @@ const ChatScreen = ({ navigation, route }) => {
                 onSubmit={handleDeleteLoop}
                 onCancel={() => setIsDoubleConfirmConnectionModalActive(false)}
             />
-            <ScreenHeader
-                containerStyle={{marginTop: 20}}
-                heading={'#' + (channel && channel.name ? channel.name : 'Chat')}
-                leftElement={
-                    <BorderlessButton onPress={() => navigation.navigate('Messaging')}>
+            <View style={headerStyles.container}>
+                <View style={headerStyles.header}>
+                    <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.navigate('Messaging')}>
                         <ArrowLeftIcon
                             width={22}
                             height={22}
                             fill={'#000000'}
                         />
-                    </BorderlessButton>
-                }
-                rightElement={channel && channel.owner_uuid && user && channel.owner_uuid === user.uuid ?
-                    <BorderlessButton onPress={() => setIsDoubleConfirmConnectionModalActive(true)}>
+                    </TouchableOpacity>
+                    {getHeading()}
+                    {channel && channel.owner_uuid && user && channel.owner_uuid === user.uuid ?
+                    <TouchableOpacity style={headerStyles.rightButton} onPress={() => setIsDoubleConfirmConnectionModalActive(true)}>
                         <CloseIcon
                             width={22}
                             height={22}
                             fill="black"
                         />
-                    </BorderlessButton>
-                    // <Button
-                    //     label={'Delete'}
-                    //     theme="danger"
-                    //     size="small"
-                    //     onPress={() => }
-                    // />
-                : <></>}
-            />
-
+                    </TouchableOpacity> 
+                    : <View style={{width: 22}}></View>}                    
+                </View>
+            </View>
             <MessageList
-                chatMessages={channel.chat_messages || []}
-                isFetching={getConversationResult.fetching || getLoopResult.fetching}
-                handleRefresh={handleRefresh}
+                chatMessages={chatMessages || []}
+                // isFetching={getConversationResult.fetching || getLoopResult.fetching}
+                // handleRefresh={() => handleRefresh()}
             />
 
             <View style={styles.bottom}>
@@ -186,7 +238,47 @@ const styles = StyleSheet.create({
     },
     bottom: {
         justifyContent: 'flex-end'
-    }
+    },
+    avatar: {
+        // width: 30,
+        // height: 30,
+        // borderRadius: 30,
+        marginLeft: -8
+    },
+    extraUsersNum: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#222',
+    },
+    extraUsersNumText: {
+        fontFamily: 'Roboto_500Medium',
+        color: '#fff',
+        fontSize: 14
+    },
 })
 
+const headerStyles = StyleSheet.create({
+    container: {
+        paddingTop: 20,
+        paddingBottom: 30,
+        paddingHorizontal: 30,
+        backgroundColor: '#fff',
+    },
+    header: {
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    heading: {
+        flex: 4,
+        fontFamily: 'Roboto_500Medium',
+        fontSize: 16,
+        color: '#222',
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+ 
+
+})
 export default ChatScreen
