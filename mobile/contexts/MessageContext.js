@@ -42,23 +42,23 @@ export const MessageContextProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    console.log('SETTLED', hasSettled)
+    // console.log('SETTLED', hasSettled)
     resetSubscriptionClient(!hasSettled)
   }, [hasSettled]);
 
   useEffect(() => {
     if (getChannelsResult.error) {
-      console.error('CHANNEL RESULTS ERROR', getChannelsResult.error)
+      // console.error('CHANNEL RESULTS ERROR', getChannelsResult.error)
     }
     if (getChannelsResult.data) {
-      console.log('CHANNEL DATA', getChannelsResult.data)
+      // console.log('CHANNEL DATA', getChannelsResult.data)
       setLoops(getChannelsResult.data.loop)
       setConversations(getChannelsResult.data.conversation)
     }
   }, [getChannelsResult.data, getChannelsResult.error]);
 
   function refreshChannels() {
-    console.log('REFRESH DATA', new Date(), getChannelsResult)
+    // console.log('REFRESH DATA', new Date(), getChannelsResult)
     refreshChannelResult({ requestPolicy: 'network-only' })
   }
 

@@ -117,11 +117,11 @@ const ChatScreen = ({ navigation, route }) => {
         if (getConversationResult.fetching || getLoopResult.fetching) { return }
         console.log("CHANNEL UPUDATED")
         if (getConversationResult.data) {
-            console.log('CONVO DATA', getConversationResult.data.conversation_by_pk)
+            // console.log('CONVO DATA', getConversationResult.data.conversation_by_pk)
             setChannel(getConversationResult.data.conversation_by_pk)
         }
         if (getLoopResult.data) {
-            console.log('LOOP DATA', getLoopResult.data.loop_by_pk)
+            // console.log('LOOP DATA', getLoopResult.data.loop_by_pk)
             setChannel(getLoopResult.data.loop_by_pk)
         }
     }, [getConversationResult.data, getConversationResult.error,getLoopResult.data, getLoopResult.error]);

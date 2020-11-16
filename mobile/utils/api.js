@@ -62,9 +62,9 @@ const wsClient = new SubscriptionClient(
 )
 
 export const resetSubscriptionClient = (isLogout) => {
-  console.log('RESET SUB')
+  // console.log('RESET SUB')
   if (isLogout) {
-    console.log("KILL IT ENTIRELY", inMemoryJWT)
+    // console.log("KILL IT ENTIRELY", inMemoryJWT)
     wsClient.close(true, true);
   } else {
     wsClient.close(true, false)
