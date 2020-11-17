@@ -32,13 +32,13 @@ function Actions({
             icon: <StarIcon />,
             size: 'small'
           }),
-          item.role === NETWORK_ADMIN_ROLE && ({
-            href: '#demote',
-            onClick: () => onDemote({ item }),
-            label: 'Make member',
-            icon: <BroadcastIcon  />,
-            size: 'small'
-          }),
+          // item.role === NETWORK_ADMIN_ROLE && ({
+          //   href: '#demote',
+          //   onClick: () => onDemote({ item }),
+          //   label: 'Make member',
+          //   icon: <BroadcastIcon  />,
+          //   size: 'small'
+          // }),
           !item.isBlocked && ({
             href: '#block',
             onClick: () => onBlock({ item }),
