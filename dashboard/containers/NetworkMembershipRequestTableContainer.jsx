@@ -11,7 +11,6 @@ import GetNetworkMembershipRequests from '~/queries/GetNetworkMembershipRequests
 import Button from '~/shared/components/Button';
 const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
-import DeclineConfirmModal from '~/shared/components/DeclineConfirmModal';
 import NetworkMembershipRequestTable from '~/components/NetworkMembershipRequestTable';
 import mapNetworkMembershipRequest from '~/shared/mappings/mapNetworkMembershipRequest';
 import mapUser from '~/shared/mappings/mapUser';
@@ -107,8 +106,9 @@ function NetworkMembershipRequestTableContainer({
           onClose={() => setIsInsertModalActive(false)}
         >
           <DoubleConfirmModal
-            heading={
-              `Are you sure you want to accept this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
+            heading="Accept member request"
+            description={
+              `Are you sure you want to accept this membership request from\n ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, accept"
             isFetching={insertMemberResult.fetching}
@@ -122,10 +122,10 @@ function NetworkMembershipRequestTableContainer({
         <ModalPortal
           onClose={() => setIsDeleteModalActive(false)}
         >
-          <DeclineConfirmModal
+          <DoubleConfirmModal
             heading="Decline member request"
             description={
-              `Are you sure you want to decline the request from ${selectedItem.user.name || selectedItem.user.email} to join your private network?`
+              `Are you sure you want to decline the request from\n ${selectedItem.user.name || selectedItem.user.email} to join your private network?`
             }
             submitLabel="Yes, decline"
             isFetching={deleteRequestResult.fetching}
@@ -140,7 +140,8 @@ function NetworkMembershipRequestTableContainer({
           onClose={() => setIsInsertAllModalActive(false)}
         >
         <DoubleConfirmModal
-          heading={
+          heading="Accept all member requests"
+          description={
             `Are you sure you want to accept all membership requests?`
           }
           submitLabel="Yes, accept all"

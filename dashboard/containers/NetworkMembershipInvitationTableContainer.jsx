@@ -91,9 +91,9 @@ function NetworkMembershipInvitationTableContainer({
           onClose={() => setIsRevokeModalActive(false)}
         >
           <DoubleConfirmModal
-            heading={`Are you sure you want to revoke this membership invitation for ${selectedItem.user.name || selectedItem.user.email}?`}
-            submitLabel="Yes, revoke"
-            cancelLabel="No, cancel"
+            heading="Decline member invitation"
+            description={`Are you sure you want to decline this membership invitation for\n ${selectedItem.user.name || selectedItem.user.email}?`}
+            submitLabel="Yes, decline"
             isFetching={deleteInvitationResult.fetching}
             onSubmit={() => handleDelete({ item: selectedItem })}
             onCancel={() => setIsRevokeModalActive(false)}

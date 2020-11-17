@@ -102,8 +102,9 @@ function MemberTableContainer({
       {isBlockModalActive &&
         <ModalPortal onClose={() => setIsBlockModalActive(false)}>
           <DoubleConfirmModal
-            heading={
-              `Are you sure you want to block ${selectedItem.user.name || selectedItem.user.email}?`
+            heading="Block member"
+            description={
+              `Are you sure you want to block\n ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, block"
             isFetching={updateIsBlockedResult.fetching}
@@ -115,8 +116,9 @@ function MemberTableContainer({
       {isUnblockModalActive &&
         <ModalPortal onClose={() => setIsUnblockModalActive(false)}>
           <DoubleConfirmModal
-            heading={
-              `Are you sure you want to unblock ${selectedItem.user.name || selectedItem.user.email}?`
+            heading="Unblock member"
+            description={
+              `Are you sure you want to unblock\n ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, unblock"
             isFetching={updateIsBlockedResult.fetching}
@@ -128,7 +130,8 @@ function MemberTableContainer({
       {isPromoteModalActive &&
         <ModalPortal onClose={() => setIsPromoteModalActive(false)}>
           <DoubleConfirmModal
-            heading={
+            heading="Make admin"
+            description={
               `Are you sure you want to promote ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, promote"

@@ -72,7 +72,6 @@ function Header({
           fields={[
             {
               name: 'Name',
-              sortAction: () => {},
               style: {
                 width: 175
               }
@@ -85,21 +84,18 @@ function Header({
             },
             {
               name: 'Status',
-              sortAction: () => {},
               style: {
                 width: 120
               }
             },
             {
               name: 'City, State',
-              sortAction: () => {},
               style: {
                 width: 170
               }
             },
             {
               name: 'Level',
-              sortAction: () => {},
             },
           ]}
         />

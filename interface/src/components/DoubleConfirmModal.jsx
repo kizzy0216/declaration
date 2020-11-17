@@ -2,11 +2,13 @@ import React from 'react';
 
 import Input from './Input';
 import Button from './Button';
+import CloseIcon from './icons/CloseIcon';
 
 function DoubleConfirmModal({
   heading = 'Are you sure?',
-  submitLabel = 'Yes, do it',
-  cancelLabel = 'No, cancel',
+  description,
+  submitLabel,
+  cancelLabel,
   isFetching = false,
   onSubmit = () => {},
   onCancel = () => {},
@@ -18,44 +20,76 @@ function DoubleConfirmModal({
 
   return (
     <div className="double-confirm-modal">
+      <div className="close-button" onClick={onCancel}>
+        <CloseIcon />
+      </div>
       <form onSubmit={handleSubmit}>
         <p className="heading">
           {heading}
         </p>
+        {description &&
+          <p className="description">
+            {description.split('\n').map(i =>
+              <p>{i}</p>
+            )}
+          </p>
+        }
 
-        <div className="row">
-          <Input
-            type="submit"
-            label={submitLabel}
-            isFetching={isFetching}
-          />
-        </div>
+        {submitLabel &&
+          <div className="row">
+            <Input
+                type="submit"
+                label={submitLabel}
+                isFetching={isFetching}
+            />
+          </div>
+        }
 
-        <div className="row">
-          <Button
-            label={cancelLabel}
-            size="large"
-            theme="secondary"
-            onClick={onCancel}
-          />
-        </div>
+        {cancelLabel &&
+          <div className="row">
+            <Button
+                label={cancelLabel}
+                size="large"
+                theme="secondary"
+                onClick={onCancel}
+            />
+          </div>
+        }
       </form>
       <style jsx>{`
         .double-confirm-modal {
+          font-family: var(--font-family-sans-serif);
           background: white;
-          padding-top: 40px;
-          padding-right: 40px;
-          padding-bottom: 40px;
-          padding-left: 40px;
+          padding-top: 20px;
+          padding-right: 30px;
+          padding-bottom: 10px;
+          padding-left: 30px;
           border-radius: var(--border-radius);
           width: 100%;
-          max-width: 400px;
+          max-width: 320px;
+          position: relative;
+
+          & .close-button {
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            cursor: pointer;
+          }
         }
 
         .heading {
-          margin-bottom: 30px;
+          font-weight: 500;
+          font-size: 14px;
           text-align: center;
-          font-weight: bold;
+          margin-top: 20px;
+        }
+
+        .description {
+          margin-bottom: 30px;
+          margin-top: 20px;
+          text-align: center;
+          font-weight: 400;
+          font-size: 14px;
           max-width: 30ch;
           margin-left: auto;
           margin-right: auto;

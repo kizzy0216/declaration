@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '~/shared/components/Button';
 import Input from '~/shared/components/Input';
+import CloseIcon from '~/shared/components/icons/CloseIcon';
 
 function CreateNetworkModal({
   initialValues = {},
@@ -25,7 +26,13 @@ function CreateNetworkModal({
 
   return (
     <div className="create-network-modal">
+      <div className="close-button" onClick={onCancel}>
+        <CloseIcon />
+      </div>
       <form onSubmit={handleSubmit}>
+        <p className="heading">
+          Create new network
+        </p>
         <div className="input-row">
           <Input
             type="text"
@@ -52,23 +59,40 @@ function CreateNetworkModal({
           />
         </div>
 
-        <Button
+        {/* <Button
           label="Cancel"
           onClick={onCancel}
           size="large"
           theme="secondary"
-        />
+        /> */}
       </form>
       <style jsx>{`
         .create-network-modal {
+          font-family: var(--font-family-sans-serif);
           background: white;
-          padding-top: 40px;
-          padding-right: 40px;
-          padding-bottom: 40px;
-          padding-left: 40px;
+          padding-top: 20px;
+          padding-right: 30px;
+          padding-bottom: 20px;
+          padding-left: 30px;
           border-radius: var(--border-radius);
           width: 100%;
-          max-width: 400px;
+          max-width: 320px;
+          position: relative;
+
+          & .close-button {
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            cursor: pointer;
+          }
+        }
+
+        .heading {
+          font-weight: 500;
+          font-size: 14px;
+          text-align: center;
+          margin-top: 20px;
+          margin-bottom: 30px;
         }
 
         .input-row {

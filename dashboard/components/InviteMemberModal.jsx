@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '~/shared/components/Button';
 import Input from '~/shared/components/Input';
+import CloseIcon from '~/shared/components/icons/CloseIcon';
 
 function InviteMemberModal({
   initialValues = {},
@@ -23,13 +24,20 @@ function InviteMemberModal({
 
   return (
     <div className="invite-member-modal">
+      <div className="close-button" onClick={onCancel}>
+        <CloseIcon />
+      </div>
       <form onSubmit={handleSubmit}>
+        <p className="heading">
+          Add new member
+        </p>
         <div className="input-row">
           <Input
             type="text"
             value={name}
             label="Member name"
             onChange={event => setName(event.target.value)}
+            placeholder="Add member name"
           />
         </div>
         <div className="input-row">
@@ -39,6 +47,7 @@ function InviteMemberModal({
             label="Member email"
             isRequired
             onChange={event => setEmail(event.target.value)}
+            placeholder="Add email address"
           />
         </div>
 
@@ -50,23 +59,39 @@ function InviteMemberModal({
           />
         </div>
 
-        <Button
+        {/* <Button
           label="Cancel"
           onClick={onCancel}
           size="large"
           theme="secondary"
-        />
+        /> */}
       </form>
       <style jsx>{`
         .invite-member-modal {
           background: white;
-          padding-top: 40px;
-          padding-right: 40px;
-          padding-bottom: 40px;
-          padding-left: 40px;
+          padding-top: 20px;
+          padding-right: 30px;
+          padding-bottom: 20px;
+          padding-left: 30px;
           border-radius: var(--border-radius);
           width: 100%;
-          max-width: 400px;
+          max-width: 320px;
+          position: relative;
+
+          & .close-button {
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            cursor: pointer;
+          }
+        }
+
+        .heading {
+          font-weight: 500;
+          font-size: 14px;
+          text-align: center;
+          margin-top: 20px;
+          margin-bottom: 30px;
         }
 
         .input-row {
