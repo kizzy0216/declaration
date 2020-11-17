@@ -148,6 +148,7 @@ function ViewSwitcherPopover({
           top: 0;
           left: -15px;
           width: calc(100% + 30px);
+          z-index: 4;
         }
 
         .heading {
