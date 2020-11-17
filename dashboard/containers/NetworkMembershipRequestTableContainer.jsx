@@ -11,6 +11,7 @@ import GetNetworkMembershipRequests from '~/queries/GetNetworkMembershipRequests
 import Button from '~/shared/components/Button';
 const ModalPortal = dynamic(() => import('~/shared/components/ModalPortal'), { ssr: false });
 import DoubleConfirmModal from '~/shared/components/DoubleConfirmModal';
+import DeclineConfirmModal from '~/shared/components/DeclineConfirmModal';
 import NetworkMembershipRequestTable from '~/components/NetworkMembershipRequestTable';
 import mapNetworkMembershipRequest from '~/shared/mappings/mapNetworkMembershipRequest';
 import mapUser from '~/shared/mappings/mapUser';
@@ -121,9 +122,10 @@ function NetworkMembershipRequestTableContainer({
         <ModalPortal
           onClose={() => setIsDeleteModalActive(false)}
         >
-          <DoubleConfirmModal
-            heading={
-              `Are you sure you want to decline this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
+          <DeclineConfirmModal
+            heading="Decline member request"
+            description={
+              `Are you sure you want to decline the request from ${selectedItem.user.name || selectedItem.user.email} to join your private network?`
             }
             submitLabel="Yes, decline"
             isFetching={deleteRequestResult.fetching}
