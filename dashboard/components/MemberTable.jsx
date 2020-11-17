@@ -6,7 +6,8 @@ import Table from '~/shared/components/Table';
 import StarIcon from '~/shared/components/icons/StarIcon';
 import UnStarIcon from '~/shared/components/icons/UnStarIcon';
 import FlagIcon from '~/shared/components/icons/FlagIcon';
-import UnFlagIcon from '~/shared/components/icons/UnFlagIcon';
+import UnlockIcon from '~/shared/components/icons/UnlockIcon';
+import BroadcastIcon from '~/shared/components/icons/BroadcastIcon';
 import {
   NETWORK_ADMIN_ROLE,
   MEMBER_ROLE,
@@ -27,26 +28,30 @@ function Actions({
           item.role !== NETWORK_ADMIN_ROLE && ({
             href: '#promote',
             onClick: () => onPromote({ item }),
-            label: 'Make Admin',
-            icon: <StarIcon fill="#222" />,
+            label: 'Make admin',
+            icon: <StarIcon />,
+            size: 'small'
           }),
           item.role === NETWORK_ADMIN_ROLE && ({
             href: '#demote',
             onClick: () => onDemote({ item }),
-            label: 'Make Member',
-            icon: <UnStarIcon fill="#222" />,
+            label: 'Make member',
+            icon: <BroadcastIcon  />,
+            size: 'small'
           }),
           !item.isBlocked && ({
             href: '#block',
             onClick: () => onBlock({ item }),
-            label: 'Block',
+            label: 'Block user',
             icon: <FlagIcon />,
+            size: 'small'
           }),
           item.isBlocked && ({
             href: '#unblock',
             onClick: () => onUnblock({ item }),
-            label: 'Unblock',
-            icon: <UnFlagIcon fill="#222" />,
+            label: 'Unblock user',
+            icon: <UnlockIcon />,
+            size: 'small'
           }),
         ].filter(x => x)}
         isPopoverOnly={true}
@@ -71,7 +76,6 @@ function MemberTable({
   onPromote = () => {},
   onDemote = () => {},
 }) {
-  console.log(items)
   const heading = `${items.length.toLocaleString()} Members`;
   const subHeadings = [
     `${items.filter(item => item.role === 'NETWORK_ADMIN').length} Admin`,

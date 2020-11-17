@@ -95,6 +95,15 @@ function Button ({
           padding-left: 1.3em;
         }
 
+        .small {
+          padding-top: 0.4em;
+          padding-right: 25px;
+          padding-bottom: 0.4em;
+          padding-left: 25px;
+          font-size: 12px;
+          line-height: 14px;
+        }
+
         .primary {
           background: var(--light-blue);
           color: white;
@@ -127,10 +136,11 @@ function Button ({
         }
 
         .label {
-          flex: 1;
+          flex: 5;
         }
 
         .icon-wrapper {
+          flex: 1;
           line-height: 0;
         }
       `}</style>

@@ -48,7 +48,7 @@ function ActionMenu({
             ))}
           </ul>
         }
-        
+
         {isPopover &&
           <a
             className="toggle"
@@ -82,6 +82,7 @@ function ActionMenu({
                       label={item.label}
                       theme="transparent"
                       leftIcon={item.icon}
+                      size={item.size}
                     />
                   </ActionLink>
                 </li>
@@ -122,7 +123,7 @@ function ActionMenu({
         .popover {
           display: none;
           width: max-content;
-          min-width: 175px;
+          min-width: 170px;
 
           & li:not(:last-of-type) {
             margin-bottom: 20px;
