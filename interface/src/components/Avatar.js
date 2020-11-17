@@ -45,6 +45,7 @@ function Avatar({
         .avatar {
           display: inline-block;
           border-radius: 50%;
+          border: 1px solid #ccc;
           display: flex;
           flex-flow: column;
           justify-content: center;
