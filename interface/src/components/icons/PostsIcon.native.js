@@ -6,7 +6,7 @@ function PostsIcon(props) {
     <Svg viewBox="0 0 24 24" width={24} height={24} {...props}>
       <G
         stroke={props.fill}
-        strokeWidth={1.5}
+        strokeWidth={1.3}
         fill="none"
         fillRule="evenodd"
       >

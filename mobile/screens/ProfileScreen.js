@@ -41,7 +41,7 @@ function ProfileScreen({ navigation }) {
   const profileTabItems = React.useMemo(() => [
       { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK} style={{marginTop: 2}} /> },
       { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK} style={{marginTop: 4}} /> },
-      { id: 'Likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK} style={{marginTop: 4.6}} /> },
+      { id: 'Likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK} style={{marginTop: 4.6, marginLeft: -2}} /> },
   ], []);
   const {
     user: authenticatedUser,
