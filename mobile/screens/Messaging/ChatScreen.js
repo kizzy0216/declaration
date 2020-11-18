@@ -10,12 +10,12 @@ import {
     Text
 } from 'react-native'
 
-import { BorderlessButton, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
-import Button from '~/components/Button';
-import CloseIcon from '@shared/components/icons/CloseIcon';
-import DoubleConfirmModal from '~/components/DoubleConfirmModal';
-import ScreenHeader from '~/components/ScreenHeader';
+// import Button from '~/components/Button';
+// import CloseIcon from '@shared/components/icons/CloseIcon';
+// import DoubleConfirmModal from '~/components/DoubleConfirmModal';
+// import ScreenHeader from '~/components/ScreenHeader';
 import MessageList from './MessageList'
 import MessageInputBox from './MessageInputBox'
 import { useMutation, useQuery, useSubscription } from 'urql';
@@ -25,7 +25,8 @@ import { UserContext } from '../../contexts/UserContext';
 import InsertChatMessage from '../../mutations/InsertChatMessage';
 import SubscribeChatMessages from '../../subscriptions/SubscribeChatMessages';
 import Avatar from '../../components/Avatar';
-import Plus from '~/assets/images/sm-plus.svg'
+import useMediaUpload from '../../hooks/useMediaUpload';
+// import Plus from '~/assets/images/sm-plus.svg'
 
 const testingData = [
     // {photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), online: true},
@@ -53,10 +54,11 @@ const ChatScreen = ({ navigation, route }) => {
 
     const { loop_uuid, conversation_uuid } = route.params;
     const [channel, setChannel] = useState({})
-    const [limit, setLimit] = useState(10)
+    // const [limit, setLimit] = useState(10)
     const [chatMessages, setChatMessages] = useState([])
-    const [isDoubleConfirmConnectionModalActive, setIsDoubleConfirmConnectionModalActive] = useState(false)
+    // const [isDoubleConfirmConnectionModalActive, setIsDoubleConfirmConnectionModalActive] = useState(false)
     const { user } = useContext(UserContext);
+    const { handleUpload } = useMediaUpload();
 
     const [getLoopResult, refreshLoopResult] = useQuery({
         query: GetLoopByUuid,
@@ -91,15 +93,27 @@ const ChatScreen = ({ navigation, route }) => {
 
     // const goToNewMessage = () => navigation.navigate('NewConversation')
 
-    const handleNewMessage = message => {
-        if (!message || message.trim().length === 0) { return }
+    const handleSubmitMessage = async ({text, media}) => {
+        if ((!text || text.trim().length === 0) && (!media || !media.uri)) { return }
         if (!channel || !channel.uuid) { return }
+        const uploadedAsset = media && media.uri ? await handleUpload({ asset: media }) : null
+        // console.log('Uploaded', uploadedAsset)
         const variables = { 
             loop_uuid: channel.__typename === 'loop' ? channel.uuid : null,
             conversation_uuid: channel.__typename === 'loop' ? null : channel.uuid,
-            text: message,
-            // media:  { data: {  original_url ... }} // see insertContent on CreateContentContext.js
+            text,
+            media: uploadedAsset && uploadedAsset.url
+                ? { 
+                    data: {  
+                        original_url: uploadedAsset.url,
+                        original_width: media.width,
+                        original_height: media.height,
+                        type: uploadedAsset.type,
+                    }
+                } 
+                : null // see insertContent on CreateContentContext.js
         }
+        // console.log('VARIABLES', variables)
         insertMessage(variables).then(result => {
             if (result.error) { 
                 console.error('MESSAGE INSERT ISSUE', result.error) 
@@ -115,7 +129,7 @@ const ChatScreen = ({ navigation, route }) => {
             console.error('GET MESSAGES ERROR', getConversationResult?.error, getLoopResult?.error)
         }
         if (getConversationResult.fetching || getLoopResult.fetching) { return }
-        console.log("CHANNEL UPUDATED")
+        // console.log("CHANNEL UPUDATED")
         if (getConversationResult.data) {
             // console.log('CONVO DATA', getConversationResult.data.conversation_by_pk)
             setChannel(getConversationResult.data.conversation_by_pk)
@@ -126,14 +140,9 @@ const ChatScreen = ({ navigation, route }) => {
         }
     }, [getConversationResult.data, getConversationResult.error,getLoopResult.data, getLoopResult.error]);
 
-    // const handleRefresh = () => {
-    //     const old = limit
-    //     setLimit(Number(old + 10))
+    // const handleDeleteLoop = () => {
+    //     alert('DELETE!!!!!')
     // }
-      
-    const handleDeleteLoop = () => {
-        alert('DELETE!!!!!')
-    }
     const getHeading = () => {
         if (channel && channel.__typename === 'loop') {
             return <Text>{`#${channel.name}`}</Text>
@@ -183,7 +192,7 @@ const ChatScreen = ({ navigation, route }) => {
     }
     return (
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
-            <DoubleConfirmModal
+            {/* <DoubleConfirmModal
                 heading={`Are you sure?`}
                 subHeading="This loop will be closed and all Messages will be deleted."
                 submitLabel="Yes, close the loop"
@@ -191,7 +200,7 @@ const ChatScreen = ({ navigation, route }) => {
                 isVisible={isDoubleConfirmConnectionModalActive}
                 onSubmit={handleDeleteLoop}
                 onCancel={() => setIsDoubleConfirmConnectionModalActive(false)}
-            />
+            /> */}
             <View style={headerStyles.container}>
                 <View style={headerStyles.header}>
                     <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.navigate('Messaging')}>
@@ -202,7 +211,7 @@ const ChatScreen = ({ navigation, route }) => {
                         />
                     </TouchableOpacity>
                     {getHeading()}
-                    {channel && channel.owner_uuid && user && channel.owner_uuid === user.uuid ?
+                    {/* {channel && channel.owner_uuid && user && channel.owner_uuid === user.uuid ?
                     <TouchableOpacity style={headerStyles.rightButton} onPress={() => setIsDoubleConfirmConnectionModalActive(true)}>
                         <CloseIcon
                             width={22}
@@ -210,7 +219,8 @@ const ChatScreen = ({ navigation, route }) => {
                             fill="black"
                         />
                     </TouchableOpacity> 
-                    : <View style={{width: 22}}></View>}                    
+                    : <View style={{width: 22}}></View>}                     */}
+                    <View style={{width: 22}}></View>
                 </View>
             </View>
             <MessageList
@@ -222,7 +232,7 @@ const ChatScreen = ({ navigation, route }) => {
             <View style={styles.bottom}>
                 <MessageInputBox
                     userData={channel.__typename === 'loop' ? channel.loop_users || [] : channel.conversation_users || []}
-                    handleNewMessage={handleNewMessage}
+                    handleSubmitMessage={handleSubmitMessage}
                 />
             </View>
         </KeyboardAvoidingView>
@@ -234,6 +244,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 24,
         backgroundColor: '#fff',
+        flexDirection: 'column',
         justifyContent: 'space-between'
     },
     bottom: {

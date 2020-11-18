@@ -9,8 +9,11 @@ function useMediaUpload() {
   const [isFetching, setIsFetching] = useState(false);
 
   async function handleUpload({ asset }) {
+    if (!asset) { return }
     const type = (
-      (asset.mediaType === 'photo' ? 'image/' : 'video/') +
+
+      ((asset.type && asset.type === 'image') || (asset.mediaType && asset.mediaType === 'photo')
+        ? 'image/' : 'video/' ) +
       (asset.filename || asset.uri).split('.').pop().toLowerCase()
     );
 

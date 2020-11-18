@@ -18,6 +18,11 @@ subscription SubscribeChatMessages($loop_uuid: uuid, $conversation_uuid: uuid) {
         photo
       }
     }
+    media {
+      original_url
+      type
+      uuid
+    }
   }
 }
 `;

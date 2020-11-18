@@ -10,10 +10,10 @@ import {
     Text,
     Keyboard,
     Image,
-    RefreshControl
+    // RefreshControl
 } from 'react-native'
 import { UserContext } from '../../contexts/UserContext';
-import { formatDateTimeAgo } from '@shared/utils/formatDate';
+// import { formatDateTimeAgo } from '@shared/utils/formatDate';
 import {
     formatDate,
     formatTime,
@@ -67,8 +67,22 @@ const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
                             //     style={[styles.avatar, message.online ? styles.online : null]}
                             // />
                         ) : null}
-                        <View style={[styles.messageBox, message.sender.uuid === user.uuid ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
-                            <Text style={message.sender.uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
+                        <View>
+                            {message.text ? <View style={[styles.messageBox, message.sender.uuid === user.uuid ? {backgroundColor: '#f4f4f4'} : {backgroundColor: '#6ac2bd'}]}>
+                                <Text style={message.sender.uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
+                            </View> : <></>}
+                            {message.media && message.media.original_url ? 
+                                <Image 
+                                    style={{
+                                        width: 240, 
+                                        height: 240, 
+                                        resizeMode: 'contain', 
+                                        backgroundColor: message.sender.uuid === user.uuid ? '#f4f4f4' : '#6ac2bd',
+                                        borderRadius: 8,
+                                    }} 
+                                    source={{uri: message.media.original_url}}
+                                />
+                            : <></>}
                         </View>
                     </View>
                 </View>
