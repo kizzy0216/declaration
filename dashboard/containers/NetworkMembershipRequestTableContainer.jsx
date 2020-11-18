@@ -106,8 +106,9 @@ function NetworkMembershipRequestTableContainer({
           onClose={() => setIsInsertModalActive(false)}
         >
           <DoubleConfirmModal
-            heading={
-              `Are you sure you want to accept this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
+            heading="Accept member request"
+            description={
+              `Are you sure you want to accept this membership request from\n ${selectedItem.user.name || selectedItem.user.email}?`
             }
             submitLabel="Yes, accept"
             isFetching={insertMemberResult.fetching}
@@ -122,8 +123,9 @@ function NetworkMembershipRequestTableContainer({
           onClose={() => setIsDeleteModalActive(false)}
         >
           <DoubleConfirmModal
-            heading={
-              `Are you sure you want to decline this membership request from ${selectedItem.user.name || selectedItem.user.email}?`
+            heading="Decline member request"
+            description={
+              `Are you sure you want to decline the request from\n ${selectedItem.user.name || selectedItem.user.email} to join your private network?`
             }
             submitLabel="Yes, decline"
             isFetching={deleteRequestResult.fetching}
@@ -138,7 +140,8 @@ function NetworkMembershipRequestTableContainer({
           onClose={() => setIsInsertAllModalActive(false)}
         >
         <DoubleConfirmModal
-          heading={
+          heading="Accept all member requests"
+          description={
             `Are you sure you want to accept all membership requests?`
           }
           submitLabel="Yes, accept all"

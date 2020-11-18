@@ -42,7 +42,7 @@ function ViewSwitcherHeader({
           </span>
 
           <h1>
-            {active.name}
+            {active.name && (active.name.length > 12 ? active.name.substring(0, 12) + '...' : active.name)}
           </h1>
         </span>
 

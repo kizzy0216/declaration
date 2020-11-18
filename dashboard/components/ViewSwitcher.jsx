@@ -71,6 +71,10 @@ function ViewSwitcher() {
     setIsActive(!isActive);
   }
 
+  const onClose = () => {
+    setIsActive(false);
+  }
+
   const items = [
     user.isSuperAdmin && {
       id: SUPER_ADMIN_VIEW_CONTEXT,
@@ -88,16 +92,29 @@ function ViewSwitcher() {
       />
 
       {isActive &&
-        <ViewSwitcherPopover
-          active={active}
-          items={items}
-          onToggle={handleToggle}
-        />
+        <>
+          <div className="overlay" onClick={onClose} />
+          <ViewSwitcherPopover
+            active={active}
+            items={items}
+            onToggle={handleToggle}
+          />
+        </>
       }
 
       <style jsx>{`
         .view-switcher {
           position: relative;
+        }
+
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 3;
         }
       `}</style>
     </div>

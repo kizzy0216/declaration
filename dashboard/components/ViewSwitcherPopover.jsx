@@ -138,7 +138,7 @@ function ViewSwitcherPopover({
       <style jsx>{`
         .view-switcher-popover {
           padding-top: 22px;
-          padding-right: 15px;
+          padding-right: 20px;
           padding-bottom: 15px;
           padding-left: 20px;
           border-radius: var(--border-radius);
@@ -148,6 +148,7 @@ function ViewSwitcherPopover({
           top: 0;
           left: -15px;
           width: calc(100% + 30px);
+          z-index: 4;
         }
 
         .heading {
