@@ -29,7 +29,8 @@ function ContentTemplateScrollView({
             key={index}
             style={[
               styles.cardWrapper,
-              index === 0 && styles.cardWrapperFirst
+              index === 0 && styles.cardWrapperFirst,
+              index === (templates.length - 1) && styles.cardWrapperLast
             ]}
           >
             <ContentTemplateCard
@@ -67,6 +68,9 @@ const styles = StyleSheet.create({
   cardWrapperFirst: {
     marginLeft: 30,
   },
+  cardWrapperLast: {
+    marginRight: 30,
+  }
 });
 
 export default ContentTemplateScrollView;

@@ -39,9 +39,9 @@ function ProfileScreen({ navigation }) {
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0)
   const profileTabItems = React.useMemo(() => [
-      { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK}/> },
-      { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK}/> },
-      { id: 'Likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK}/> },
+      { id: 'about', title: 'About', icon: <PersonIcon width={24} height={24} viewBox="0 0 24 24" fill={BLACK} style={{marginTop: 2}} /> },
+      { id: 'posts', title: 'Posts', icon: <PostsIcon width={24} height={24} viewBox="0 0 20 22" fill={BLACK} style={{marginTop: 4}} /> },
+      { id: 'Likes', title: 'Likes', icon: <HeartOutlineIcon width={24} height={24} viewBox="0 0 23 24" fill={BLACK} style={{marginTop: 4.6, marginLeft: -2}} /> },
   ], []);
   const {
     user: authenticatedUser,
@@ -126,7 +126,7 @@ function ProfileScreen({ navigation }) {
             />
           </View>
           <View style={{marginVertical: 30}}>
-            <ProfileTabBar 
+            <ProfileTabBar
               tabList={profileTabItems}
               activeIndex={activeIndex}
               onChangeIndex={setActiveIndex}
@@ -190,7 +190,7 @@ function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 100,
-    
+
   },
   nameWrapper: {
     marginBottom: 10,

@@ -22,7 +22,7 @@ function ContentCard({
         source={{uri: content.screenshot}}
         resizeMode={'cover'}
         style={{
-          borderRadius: 17,
+          borderRadius: 25,
           width: '100%',
           height: '100%'
         }}
@@ -37,7 +37,7 @@ function ContentCard({
         isMuted={true}
         isLooping={true}
         style={{
-          borderRadius: 17,
+          borderRadius: 25,
           width: '100%',
           height: '100%',
         }}
@@ -48,7 +48,7 @@ function ContentCard({
         source={{uri: content.uri}}
         resizeMode={'cover'}
         style={{
-          borderRadius: 17,
+          borderRadius: 25,
           width: '100%',
           height: '100%'
         }}
@@ -61,7 +61,7 @@ function ContentCard({
         >
         {content.heading}
       </Paragraph>
-    </View> 
+    </View>
   }, [content])
 
   return (
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   memberContainer: {
-    borderRadius: 17,
-    aspectRatio: 1/1.5,
+    borderRadius: 25,
+    aspectRatio: 1/1.6,
     width: '100%',
     // borderColor: 'blue',
-    // borderWidth: 1
+    // borderWidth: 1,
     backgroundColor: '#FFF',
     shadowColor: "#000",
     shadowOffset: {

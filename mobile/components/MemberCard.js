@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   memberContainer: {
-    borderRadius: 17,
+    borderRadius: 30,
     position: 'relative',
     flexDirection: 'column',
     justifyContent: 'flex-end',
