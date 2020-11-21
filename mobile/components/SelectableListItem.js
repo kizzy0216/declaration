@@ -53,8 +53,8 @@ const SelectableListItem = ({
               >
                 <View style={styles.iconWrapper}>
                   <CheckmarkIcon
-                    width={16}
-                    height={16}
+                    width={25}
+                    height={25}
                     fill="white"
                   />
                 </View>
@@ -69,8 +69,8 @@ const SelectableListItem = ({
 
 const styles = StyleSheet.create({
   selectableListItem: {
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   container: {
     flexDirection: 'row',
@@ -85,15 +85,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#ccc'
   },
   actionSelected: {
     backgroundColor: BLUE,
+    borderWidth: 0
   },
   iconWrapper: {
     padding: 4,
   },
   imageWrapper: {
-    paddingRight: 10,
+    paddingRight: 20,
+    justifyContent: 'center'
   },
   headings: {
     flex: 1,

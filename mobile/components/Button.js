@@ -67,7 +67,7 @@ function Button({
           ) : (
             <Text
               style={[
-                styles.label, 
+                styles.label,
                 styles[`${theme}Label`],
                 styles[`${size}Label`],
                 labelStyle,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '500',
   },
   hasIconLabel: {
     justifyContent: 'flex-start',

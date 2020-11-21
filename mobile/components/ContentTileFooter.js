@@ -65,32 +65,41 @@ function ContentTileFooter({
           creator={creator}
           meta={meta}
           controls={controls}
+          onMenuPress={onMenuPress}
           onCreatorPress={onCreatorPress}
           onHashtagPress={onHashtagPress}
         />
       </Animated.View>
 
-      <ContentTileActions
-        controls={controls}
-        // starAnimation={starAnimation}
-        isStarred={isStarred}
-        onStarPress={onStarPress}
-        onStarPan={onStarPan}
-        onStarPanActive={onStarPanActive}
-        onStarPanEnd={onStarPanEnd}
-        onCommentPress={onCommentPress}
-        onSharePress={onSharePress}
-        onMenuPress={onMenuPress}
-        onVideoMuteToggle={onVideoMuteToggle}
-        onFullscreenToggle={onFullscreenToggle}
-      />
+      <View style={{flex: 1}}>
+        <ContentTileActions
+          controls={controls}
+          // starAnimation={starAnimation}
+          isStarred={isStarred}
+          onStarPress={onStarPress}
+          onStarPan={onStarPan}
+          onStarPanActive={onStarPanActive}
+          onStarPanEnd={onStarPanEnd}
+          onCommentPress={onCommentPress}
+          onSharePress={onSharePress}
+          onMenuPress={onMenuPress}
+          onVideoMuteToggle={onVideoMuteToggle}
+          onFullscreenToggle={onFullscreenToggle}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: 15
+  },
   bylineWrapper: {
-    width: '100%',
+    flex: 5,
   },
   hidden: {
     opacity: 0,

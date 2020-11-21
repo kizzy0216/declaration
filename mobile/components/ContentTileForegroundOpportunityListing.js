@@ -64,6 +64,7 @@ function ContentTileForegroundOpportunityListing({
             styles.heading,
             styles[theme],
           ]}
+          numberOfLines={2}
         >
           {heading}
         </Text>
@@ -73,6 +74,7 @@ function ContentTileForegroundOpportunityListing({
             styles.subHeading,
             styles[theme],
           ]}
+          numberOfLines={2}
         >
           {subHeading}
         </Text>
@@ -89,6 +91,7 @@ function ContentTileForegroundOpportunityListing({
                   styles.criterion,
                   styles[theme],
                 ]}
+                numberOfLines={1}
               >
                 <CheckmarkIcon
                   fill={theme === 'light' ? 'white' : 'black'}
@@ -119,9 +122,6 @@ function ContentTileForegroundOpportunityListing({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingRight: 80,
-  },
   company: {
     flexDirection: 'row',
     alignItems: 'center',

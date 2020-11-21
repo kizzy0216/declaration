@@ -105,9 +105,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   medium: {
-    width: 48,
-    height: 48,
-    borderRadius: 30,
+    width: 55,
+    height: 55,
+    borderRadius: 55,
   },
   large: {
     width: 144,
@@ -135,9 +135,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   mediumImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 30,
+    width: 55,
+    height: 55,
+    borderRadius: 55,
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   largeImage: {
     width: 144,

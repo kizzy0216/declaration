@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
+import ThreeDotsIcon from '@shared/components/icons/ThreeDotsIcon';
 
 const { REST_BASE_URL } = Constants.manifest.extra;
 
@@ -21,6 +22,7 @@ function ContentTileByline({
   controls,
   onCreatorPress = () => {},
   onHashtagPress = () => {},
+  onMenuPress = () => {},
 }) {
   const hasDescription = !!(meta && meta.description);
   const theme = (
@@ -62,14 +64,44 @@ function ContentTileByline({
                 color: (theme === 'light' ? '#FFFFFF' : '#000000'),
               }}
             >
-              {creator.name}
+              {creator.name.length > 15 ? creator.name.substring(0, 15) + '...' : creator.name}
             </Text>
           </TouchableOpacity>
         }
+        <View style={styles.actionBox}>
+          <TouchableOpacity>
+            <Text
+              style={{
+                ...styles.followButton,
+                color: (theme === 'light' ? '#fff' : '#222')
+              }}
+            >
+              Connect
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 20}}
+            onPress={() => onMenuPress()}
+          >
+            <ThreeDotsIcon fill={theme === 'light' ? '#fff' : '#222'} />
+          </TouchableOpacity>
+        </View>
       </View>
       {hasDescription &&
         <View style={styles.descriptionContainer}>
-          <ScrollView
+          <View>
+            <Text
+              style={[
+                styles.description,
+                styles[theme],
+              ]}
+              numberOfLines={3}
+              ellipsizeMode="end"
+            >
+              {meta.description}
+            </Text>
+          </View>
+          {/* <ScrollView
             style={styles.descriptionScrollView}
             horizontal={true}
             pointerEvents="box-none"
@@ -105,7 +137,7 @@ function ContentTileByline({
                 }
               </Fragment>
             ))}
-          </ScrollView>
+          </ScrollView> */}
         </View>
       }
     </>
@@ -114,14 +146,16 @@ function ContentTileByline({
 
 const styles = StyleSheet.create({
   byline: {
-    paddingLeft: 25,
-    paddingRight: 30,
+    paddingLeft: 30,
+    paddingRight: 40,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   creator: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 3,
+    paddingLeft: 0,
   },
   creatorName: {
     fontSize: 14,
@@ -139,9 +173,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    lineHeight: 14,
-    paddingTop: 10,
-    paddingBottom: 10,
+    lineHeight: 16,
+    paddingTop: 5,
   },
   hashtag: {
   },
@@ -154,6 +187,17 @@ const styles = StyleSheet.create({
   dark: {
     color: 'black',
   },
+
+  actionBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5
+  },
+  followButton: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    opacity: 0.5
+  }
 });
 
 export default ContentTileByline;

@@ -33,7 +33,7 @@ function ContentTileForeground({
   return (
     <SafeAreaView pointerEvents="box-none">
       <View
-        style={styles.foreground}
+        style={{...styles.foreground, paddingRight: 90}}
         pointerEvents="box-none"
       >
         {(heading || poll) && !availabilityListing && !opportunityListing &&
@@ -48,6 +48,8 @@ function ContentTileForeground({
                 style={[
                   styles.heading,
                 ]}
+                numberOfLines={15}
+                ellipsizeMode="tail"
               >
                 {heading}
               </Text>
