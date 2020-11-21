@@ -1675,6 +1675,24 @@
       check: {}
 - table:
     schema: public
+    name: conversation_user_typing_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - last_typed_at
+      - conversation_uuid
+      - user_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - conversation_uuid
+      - user_uuid
+      - last_typed_at
+      filter: {}
+- table:
+    schema: public
     name: hashtag
   array_relationships:
   - name: content_meta_hashtags
@@ -1932,6 +1950,24 @@
       filter: {}
   - role: user
     permission:
+      filter: {}
+- table:
+    schema: public
+    name: loop_user_typing_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - loop_uuid
+      - user_uuid
+      - last_typed_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
       filter: {}
 - table:
     schema: public
@@ -2865,6 +2901,17 @@
 - table:
     schema: public
     name: online_users_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - uuid
+      filter: {}
 - table:
     schema: public
     name: opportunity_listing_criteria
@@ -3164,21 +3211,24 @@
   - role: super_admin
     permission:
       columns:
-      - is_verified
-      - id
-      - email
-      - name
       - created_at
+      - email
+      - id
+      - is_verified
+      - last_seen_at
+      - name
       - updated_at
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
-      - created_at
-      - email
+      - is_verified
       - id
+      - email
       - name
+      - created_at
+      - last_seen_at
       - updated_at
       - uuid
       filter: {}
@@ -3191,6 +3241,7 @@
       - email
       - name
       - created_at
+      - last_seen_at
       - updated_at
       - uuid
       filter: {}
@@ -3199,6 +3250,8 @@
     permission:
       columns:
       - email
+      - is_verified
+      - last_seen_at
       - name
       filter:
         uuid:

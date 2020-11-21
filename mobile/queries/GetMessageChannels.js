@@ -36,6 +36,10 @@ const GetMessageChannels = `
             }
           }
         }
+        chat_messages(order_by: {created_at: desc}, limit: 1) {
+          text
+          media_uuid
+        }
       }
   }
 `;

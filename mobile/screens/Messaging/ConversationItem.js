@@ -71,7 +71,7 @@ const ConversationItem = ({
             </View>
             <PanGestureHandler failOffsetY={[-5, 5]} activeOffsetX={[-5, 5]} {...gestureHandler}>
                 <Animated.View style={{ height, transform: [{ translateX }] }}>
-                    <ConversationItemLayout {...{ conversation }} />
+                    <ConversationItemLayout conversation={conversation} />
                 </Animated.View>
             </PanGestureHandler>
         </Animated.View>

@@ -7,29 +7,32 @@ import React, {
 import { useQuery, useSubscription } from 'urql';
 import { resetSubscriptionClient } from '../utils/api';
 
-// import GetUser from '~/queries/GetUser';
 import GetMessageChannels from '../queries/GetMessageChannels';
 import { UserContext } from './UserContext';
 import { NetworkContext } from './NetworkContext';
-// import mapUser from '@shared/mappings/mapUser';
-// import mapNetwork from '@shared/mappings/mapNetwork';
-// import {
-//   saveJWT,
-//   hydrateJWT,
-//   saveUser,
-//   loadUser,
-// } from '~/utils/api';
 
 export const MessageContext = createContext({
   loops: [],
   conversations: [],
+  isFetchingItems: false,
+  onlineUsers: [],
   refresh: () => {},
 });
+
+const OnlineSubscription = `
+subscription OnlineSubscription {
+  online_users_view {
+    uuid
+  }
+}
+`
 
 export const MessageContextProvider = ({ children }) => {
   const [loops, setLoops] = useState([]);
   const [conversations, setConversations] = useState([]);
   const { user, hasSettled } = useContext(UserContext);
+  
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const { activeNetwork } = useContext(NetworkContext);
 
   const [getChannelsResult, refreshChannelResult] = useQuery({
@@ -48,7 +51,7 @@ export const MessageContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (getChannelsResult.error) {
-      // console.error('CHANNEL RESULTS ERROR', getChannelsResult.error)
+      console.error('CHANNEL RESULTS ERROR', getChannelsResult.error)
     }
     if (getChannelsResult.data) {
       // console.log('CHANNEL DATA', getChannelsResult.data)
@@ -56,6 +59,14 @@ export const MessageContextProvider = ({ children }) => {
       setConversations(getChannelsResult.data.conversation)
     }
   }, [getChannelsResult.data, getChannelsResult.error]);
+
+  useSubscription({
+    query: OnlineSubscription,
+    pause: !user || !user.uuid
+  }, (_, result) => {
+      // console.log('Online users result for', user.name, new Date(), result.online_users_view.map(x => x.uuid))
+      setOnlineUsers(result.online_users_view.map(x => x.uuid))
+  })
 
   function refreshChannels() {
     // console.log('REFRESH DATA', new Date(), getChannelsResult)
@@ -68,6 +79,7 @@ export const MessageContextProvider = ({ children }) => {
         loops,
         conversations,
         isFetchingItems: getChannelsResult.fetching,
+        onlineUsers,
         refresh: refreshChannels,
       }}
     >

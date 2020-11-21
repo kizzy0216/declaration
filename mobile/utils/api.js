@@ -94,7 +94,6 @@ export const fetchREST = (url, options) => {
   const headers = {
     'Content-Type': 'application/json',
   };
-
   if (inMemoryJWT) {
     headers['Authorization'] = `Bearer ${inMemoryJWT}`;
   }

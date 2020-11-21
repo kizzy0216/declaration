@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 // import {
 //   View,
 //   Text,
 // } from 'react-native';
+import { AppState } from 'react-native';
 import { TransitionPresets } from '@react-navigation/stack';
 
 import CreateNavigator from '~/navigation/CreateNavigator';
@@ -49,15 +50,53 @@ import { NetworkContextProvider } from '~/contexts/NetworkContext';
 import { ContentTilePagerContextProvider } from '~/contexts/ContentTilePagerContext';
 import { CreateContentContextProvider } from '~/contexts/CreateContentContext';
 import { MessageContextProvider } from '~/contexts/MessageContext';
+import { UserContext } from '../contexts/UserContext';
+import { useMutation } from 'urql';
 const Stack = createStackNavigator();
 
-function RootNavigator({ navigation }) {
-  // const {
-  //   user,
-  //   hasProfile,
-  //   hasNetworks,
-  // } = useContext(UserContext);
+const SetOnlineStatus = `
+  mutation SetOnlineStatus($uuid: uuid!, $last_seen_at: timestamptz = "now()") {
+    update_user_by_pk(pk_columns: {uuid: $uuid}, _set: {last_seen_at: $last_seen_at}) {
+      uuid
+    }
+  }
+`
 
+function RootNavigator({ navigation }) {
+  const appState = useRef(AppState.currentState);
+  const {user} = useContext(UserContext);
+  const [_, updateStatus] = useMutation(SetOnlineStatus);
+  
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('state', () => {
+  //     updateStatus({uuid: user.uuid})
+  //   });
+
+  useEffect(() => {
+    AppState.addEventListener("change", _handleAppStateChange);
+    // console.log('ADD TIMER')
+    const statusTimer = window.setInterval( () => {
+      updateStatus({uuid: user.uuid})
+    }, 60000)
+    return () => {
+      AppState.removeEventListener("change", _handleAppStateChange);
+      clearInterval(statusTimer);
+    };
+  }, []);
+
+  const _handleAppStateChange = (nextAppState) => {
+    if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+      updateStatus({uuid: user.uuid})
+    } else {
+      updateStatus({
+        uuid: user.uuid,
+        last_seen_at: new Date(new Date().setDate(new Date().getDate()-1)) // yesterday
+      })
+    }
+    appState.current = nextAppState;
+    // console.log("AppState", appState.current);
+  };
+  
   return (
   <NetworkContextProvider>
     <MessageContextProvider>

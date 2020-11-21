@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   BLUE,
   GRAY,
+  GREEN,
 } from '~/constants';
 
 function Avatar({
@@ -19,6 +20,7 @@ function Avatar({
   size = 'medium', // small, medium, large
   avatarStyle,
   isTouchable = false,
+  showBorder = false,
   onPress = () => {},
 }) {
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -46,6 +48,7 @@ function Avatar({
         styles[theme],
         styles[size],
         hasLoaded && styles.imageLoaded,
+        showBorder && !hasImage && styles.activeBorder,
         avatarStyle || {}
       ]}
     >
@@ -58,7 +61,8 @@ function Avatar({
           style={[
             styles.image,
             styles[`${size}Image`],
-            hasLoaded && styles.imageImageLoaded
+            hasLoaded && styles.imageImageLoaded,
+            showBorder && styles.activeBorder,
           ]}
           source={{
             uri: imageSrc,
@@ -91,10 +95,14 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   primary: {
-    backgroundColor: BLUE,
+    backgroundColor: GRAY,
   },
   secondary: {
     backgroundColor: GRAY,
+  },
+  activeBorder: {
+    borderWidth: 2,
+    borderColor: GREEN
   },
   imageLoaded: {
     backgroundColor: 'white',

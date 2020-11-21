@@ -1,6 +1,7 @@
 import React, {
     useState,
-    useEffect
+    useEffect,
+    useContext
 } from 'react'
 import {
     View,
@@ -20,12 +21,15 @@ import Avatar from '~/components/Avatar';
 import CloseIcon from '@shared/components/icons/CloseIcon';
 import FileAttach from '~/assets/images/file-attach.svg'
 import Plus from '~/assets/images/sm-plus.svg'
+import { MessageContext } from '../../contexts/MessageContext';
 
 const MessageInputBox = ({
     userData,
+    handleTypingEvent,
     handleSubmitMessage
 }) => {
 
+    const { onlineUsers } = useContext(MessageContext);
     
     const [keyboardOpened, setKeyboardOpened] = useState(false)
     const [newText, setNewText] = useState('')
@@ -38,15 +42,18 @@ const MessageInputBox = ({
         setNewText('')
         setNewMedia(null)
     }
-
-    useEffect(() => {
-        Keyboard.addListener('keyboardWillShow', () => setKeyboardOpened(true))
-        Keyboard.addListener('keyboardWillHide', () => setKeyboardOpened(false))
-        return () => {
-            Keyboard.removeListener('keyboardWillShow')
-            Keyboard.removeListener('keyboardWillHide')
-        }
-    }, [])
+    const changeText = (text) => {
+        setNewText(text)
+        handleTypingEvent()
+    }
+    // useEffect(() => {
+    //     Keyboard.addListener('keyboardWillShow', () => setKeyboardOpened(true))
+    //     Keyboard.addListener('keyboardWillHide', () => setKeyboardOpened(false))
+    //     return () => {
+    //         Keyboard.removeListener('keyboardWillShow')
+    //         Keyboard.removeListener('keyboardWillHide')
+    //     }
+    // }, [])
 
     async function handlePhotoSelection() {
         if (IS_IOS) {
@@ -108,7 +115,9 @@ const MessageInputBox = ({
                         placeholder="Message..."
                         style={styles.textInput}
                         value={newText}
-                        onChangeText={text => setNewText(text)}
+                        onFocus={() => setKeyboardOpened(true)}
+                        onBlur={() => setKeyboardOpened(false)}
+                        onChangeText={changeText}
                         onSubmitEditing={submitMessage} // { setNewText(e.nativeEvent.text); 
                         />
                 }
@@ -129,6 +138,7 @@ const MessageInputBox = ({
                         {userData && (userData.length <= 2 && userData.map((item, idx) => (
                             <Avatar
                                 key={idx}
+                                showBorder={onlineUsers.includes(item.user.uuid)}
                                 name={item.user.name}
                                 avatarStyle={styles.avatar}
                                 size="small"
@@ -143,6 +153,7 @@ const MessageInputBox = ({
                             <>
                                 {userData.length > 0 ? <Avatar
                                     avatarStyle={[styles.avatar, {marginLeft: 0}]}
+                                    showBorder={onlineUsers.includes(userData[0].user.uuid)}
                                     key={0}
                                     size="small"
                                     name={userData[0].user.name}

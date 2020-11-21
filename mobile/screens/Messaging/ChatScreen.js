@@ -26,30 +26,40 @@ import InsertChatMessage from '../../mutations/InsertChatMessage';
 import SubscribeChatMessages from '../../subscriptions/SubscribeChatMessages';
 import Avatar from '../../components/Avatar';
 import useMediaUpload from '../../hooks/useMediaUpload';
+import { MessageContext } from '../../contexts/MessageContext';
 // import Plus from '~/assets/images/sm-plus.svg'
 
-const testingData = [
-    // {photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), online: true},
-    // {photoUrl: require('~/assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), online: false},
-    // {photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), online: false},
-    // {photoUrl: require('~/assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), online: false}
-]
+const updateConversationUserTyping = `
+mutation UpdateConversationUserTyping($conversation_uuid: uuid, $user_uuid: uuid, $last_typed_at: timestamptz = "now()") {
+    update_conversation_user(
+        where: {
+            user_uuid: {_eq: $user_uuid}, 
+            conversation_uuid: {_eq: $conversation_uuid}
+        }, 
+        _set: {
+            last_typed_at: $last_typed_at
+        }
+    ) {
+      affected_rows
+    }
+}  
+`
 
-const testingMessages = [
-    // {content: 'How has your work been coming along?', time: 'Yesterday 10:53', from: '1'},
-    // {content: 'Just keep at it?', time: 'Yesterday 10:54', from: '1'},
-    // {content: `Thanks, I really appreciate your support. It's helped!`, time: 'Yesterday 10:56', from: '2'},
-    // {content: `Anytime. I'll check in tomorrow.`, time: 'Yesterday 10:56', from: '1'},
-    // {content: `Send me your work when you have a chance. I'm free today.`, time: 'Today 10:56', from: '1'},
-    // {content: `Ok!, I'll send it soon.`, time: 'Today 10:56', from: '2'},
-    // {content: 'How has your work been coming along?', time: 'Yesterday 10:53', from: '1'},
-    // {content: 'Just keep at it?', time: 'Yesterday 10:54', from: '1'},
-    // {content: `Thanks, I really appreciate your support. It's helped!`, time: 'Yesterday 10:56', from: '2'},
-    // {content: `Anytime. I'll check in tomorrow.`, time: 'Yesterday 10:56', from: '1'},
-    // {content: `Send me your work when you have a chance. I'm free today.`, time: 'Today 10:56', from: '1'},
-    // {content: `Ok!, I'll send it soon.`, time: 'Today 10:56', from: '2'},
-]
-
+const updateLoopUserTyping = `
+mutation UpdateLoopUserTyping($loop_uuid: uuid, $user_uuid: uuid, $last_typed_at: timestamptz = "now()") {
+    update_loop_user(
+        where: {
+            user_uuid: {_eq: $user_uuid}, 
+            loop_uuid: {_eq: $loop_uuid}
+        }, 
+        _set: {
+            last_typed_at: $last_typed_at
+        }
+    ) {
+      affected_rows
+    }
+}  
+`
 const ChatScreen = ({ navigation, route }) => {
 
     const { loop_uuid, conversation_uuid } = route.params;
@@ -58,6 +68,7 @@ const ChatScreen = ({ navigation, route }) => {
     const [chatMessages, setChatMessages] = useState([])
     // const [isDoubleConfirmConnectionModalActive, setIsDoubleConfirmConnectionModalActive] = useState(false)
     const { user } = useContext(UserContext);
+    const { onlineUsers, refresh: refreshChannels } = useContext(MessageContext);
     const { handleUpload } = useMediaUpload();
 
     const [getLoopResult, refreshLoopResult] = useQuery({
@@ -86,18 +97,36 @@ const ChatScreen = ({ navigation, route }) => {
         },
         pause: !conversation_uuid && !loop_uuid
     }, (_, result) => {
-        // console.log('Subscription result for', user.name, new Date())
+        // console.log(new Date(), 'Subscription result: ', result.chat_message)
         setChatMessages(result.chat_message)
+        refreshChannels()
     })
     const [_, insertMessage] = useMutation(InsertChatMessage);
-
+    const [___, updateLoopTyping] = useMutation(updateLoopUserTyping);
+    const [_____, updateConversationTyping] = useMutation(updateConversationUserTyping);
     // const goToNewMessage = () => navigation.navigate('NewConversation')
 
     const handleSubmitMessage = async ({text, media}) => {
         if ((!text || text.trim().length === 0) && (!media || !media.uri)) { return }
         if (!channel || !channel.uuid) { return }
+        const newMessage = {
+            sender: {
+                name: user.name,
+                user_profile: {
+                    photo: user.profile.photo
+                }
+            },
+            text,
+            media: media && media.uri ? {
+                localSource: media.uri
+            } : null
+        }
+        setChatMessages(old => [...old, newMessage])
+        _sendMessageToServer({text, media})
+    }
+
+    const _sendMessageToServer = async ({text, media}) => {
         const uploadedAsset = media && media.uri ? await handleUpload({ asset: media }) : null
-        // console.log('Uploaded', uploadedAsset)
         const variables = { 
             loop_uuid: channel.__typename === 'loop' ? channel.uuid : null,
             conversation_uuid: channel.__typename === 'loop' ? null : channel.uuid,
@@ -111,19 +140,29 @@ const ChatScreen = ({ navigation, route }) => {
                         type: uploadedAsset.type,
                     }
                 } 
-                : null // see insertContent on CreateContentContext.js
+                : null 
         }
-        // console.log('VARIABLES', variables)
+        handleTypingEvent(new Date(new Date().setDate(new Date().getDate()-1)))
         insertMessage(variables).then(result => {
             if (result.error) { 
                 console.error('MESSAGE INSERT ISSUE', result.error) 
             }
-            //  else {
-            //     console.log('SUCCESS', result.data)
-            // }
         })
     }
+    const handleTypingEvent = (time) => {
+        const variables = {
+            user_uuid: user.uuid
+        }
+        if (time) {
+            variables.last_typed_at = time
+        }
+        if (channel.__typename === 'loop') {
+            updateLoopTyping({...variables, loop_uuid: channel.uuid})
+        } else {
+            updateConversationTyping({...variables, conversation_uuid: channel.uuid})
+        }
 
+    }
     useEffect(() => {
         if (getConversationResult.error || getLoopResult.error) {
             console.error('GET MESSAGES ERROR', getConversationResult?.error, getLoopResult?.error)
@@ -153,6 +192,7 @@ const ChatScreen = ({ navigation, route }) => {
                 {peeps && (peeps.length <= 2 && peeps.map((item, idx) => (
                     <Avatar
                         key={idx}
+                        showBorder={onlineUsers.includes(item.user.uuid)}
                         name={item.user.name}
                         avatarStyle={styles.avatar}
                         size="medium"
@@ -166,6 +206,7 @@ const ChatScreen = ({ navigation, route }) => {
                 )) ||  (
                     <>
                         <Avatar
+                            showBorder={onlineUsers.includes(peeps[0].user.uuid)}
                             avatarStyle={[styles.avatar, {marginLeft: 0}]}
                             key={0}
                             size="medium"
@@ -173,15 +214,16 @@ const ChatScreen = ({ navigation, route }) => {
                             imageSrc={peeps[0].user.user_profile.photo}
                         />
                         <Avatar
-                            avatarStyle={[styles.avatar]}
-                            key={0}
+                            showBorder={onlineUsers.includes(peeps[1].user.uuid)}
+                            avatarStyle={[styles.avatar, {zIndex: -1}]}
+                            key={1}
                             size="medium"
-                            name={peeps[0].user.name}
-                            imageSrc={peeps[0].user.user_profile.photo}
+                            name={peeps[1].user.name}
+                            imageSrc={peeps[1].user.user_profile.photo}
                         />
-                        <View style={[styles.avatar, styles.extraUsersNum, {zIndex: -1}]}>
+                        <View style={[styles.avatar, styles.extraUsersNum, {zIndex: -3}]}>
                             <Text style={styles.extraUsersNumText}>
-                                {userData.length - 1}
+                                {peeps.length - 1}
                             </Text>
                         </View>
                     </>
@@ -224,15 +266,16 @@ const ChatScreen = ({ navigation, route }) => {
                 </View>
             </View>
             <MessageList
-                chatMessages={chatMessages || []}
-                // isFetching={getConversationResult.fetching || getLoopResult.fetching}
-                // handleRefresh={() => handleRefresh()}
+                chatMessages={chatMessages}
+                channel_uuid={channel.uuid}
+                isLoop={Boolean(channel && channel.__typename === 'loop')} 
             />
 
             <View style={styles.bottom}>
                 <MessageInputBox
                     userData={channel.__typename === 'loop' ? channel.loop_users || [] : channel.conversation_users || []}
                     handleSubmitMessage={handleSubmitMessage}
+                    handleTypingEvent={() => handleTypingEvent()}
                 />
             </View>
         </KeyboardAvoidingView>
@@ -251,9 +294,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     avatar: {
-        // width: 30,
-        // height: 30,
-        // borderRadius: 30,
+        width: 48,
+        height: 48,
+        borderRadius: 24,
         marginLeft: -8
     },
     extraUsersNum: {
