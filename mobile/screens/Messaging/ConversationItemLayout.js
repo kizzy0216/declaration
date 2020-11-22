@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -11,12 +11,18 @@ import Avatar from '~/components/Avatar';
 import NewMsgAlert from '~/assets/images/red-dot.svg'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { MessageContext } from '../../contexts/MessageContext';
 
 const ConversationItemLayout = ({ conversation }) => {
     const navigation = useNavigation()
+    const { onlineUsers } = useContext(MessageContext);
     const firstUser = conversation.conversation_users && conversation.conversation_users.length > 0 ?
                 conversation.conversation_users[0] : {}
-    const lastMsg = 'Hey-diddily-ho, Neighboreenos!'
+    const lastMsg = conversation.chat_messages.length === 0 ? '' : (
+        conversation.chat_messages[0].text ? conversation.chat_messages[0].text : (
+            conversation.chat_messages[0].media_uuid ? 'Attachment: 1 image' : ''
+        )
+    )
     return (
         <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { conversation_uuid: conversation.uuid })}>
         <View style={styles.item}>
@@ -26,6 +32,7 @@ const ConversationItemLayout = ({ conversation }) => {
                     style={contact.onLine ? styles.avatarOnline : styles.avatar}
                 /> */}
                 <Avatar
+                    showBorder={onlineUsers.includes(firstUser.user_uuid)}
                     imageSrc={firstUser.user.user_profile.photo}
                     name={firstUser.user.name}
                 />
@@ -38,8 +45,8 @@ const ConversationItemLayout = ({ conversation }) => {
             </View>
 
             <View style={styles.timeAlertContainer}>
-                {conversation.readMsg ? null : <NewMsgAlert />}
-                <Text style={styles.lastMsg}>{conversation.msgTime || ''}</Text>
+                {/* {conversation.readMsg ? null : <NewMsgAlert />}
+                <Text style={styles.lastMsg}>{conversation.msgTime || ''}</Text> */}
             </View>
         </View>
         </TouchableOpacity>

@@ -2,7 +2,6 @@ import React, {
   useState,
   useEffect,
   useContext,
-  useCallback,
 } from 'react'
 import {
   StyleSheet,
@@ -21,35 +20,14 @@ import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 
 import LoopItem from './LoopItem'
 import ConversationItem from './ConversationItem'
-
 import ScreenHeader from '~/components/ScreenHeader';
 import PlusIcon from '~/assets/images/plus.svg'
 import LoopBack from '~/assets/images/loop-back.svg'
 import Chat from '~/assets/images/chat.svg'
 
-
-// import {
-//   useFonts,
-//   Roboto_500Medium,
-//   Roboto_400Regular
-// } from '@expo-google-fonts/roboto'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MessageContext } from '../../contexts/MessageContext';
-import ConversationsContainer from './ConversationsContainer';
-import { useFocusEffect } from '@react-navigation/native';
 
-// const testingDataLoops = [
-//   {id: '1', title: 'sds_announcements', hasNewMsg: false},
-//   {id: '2', title: 'sds_events', hasNewMsg: true},
-//   {id: '3', title: 'sds_thepowerofwe', hasNewMsg: false},
-//   {id: '4', title: 'sds_thepowerofwe2', hasNewMsg: false},
-// ]
-// const testingDataDM = [
-//   {id: '1', firstName: 'Susan', lastName: 'Mitchell', lastMsg: 'Yes, I think so.', msgTime: 'Fri', onLine: false, readMsg: true, photoUrl: require('~/assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg')},
-//   {id: '2', firstName: 'Amber', lastName: 'Alexander', lastMsg: 'This is great. I would love to do that.', msgTime: '11:19', onLine: false, readMsg: false, photoUrl: require('~/assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg')},
-//   {id: '3', firstName: 'Hope', lastName: 'Morison', lastMsg: 'How is it going?', msgTime: 'Wed', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg')},
-//   {id: '4', firstName: 'Susan', lastName: 'Mitchell', lastMsg: `What's up?`, msgTime: '11:19', onLine: true, readMsg: true, photoUrl: require('~/assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg')},
-// ]
 
 function MessagingHomeScreen({ navigation }) {
     const [loops, setLoops] = useState([])
@@ -61,6 +39,11 @@ function MessagingHomeScreen({ navigation }) {
         setFilterValue('')
         refresh()
     }, [navigation]);
+    
+    // useEffect(() => {
+    //     setFilterValue('')
+    //     refresh()
+    // }, [navigation]);
 
     useEffect(() => {
         setLoops(loopData),
@@ -73,8 +56,8 @@ function MessagingHomeScreen({ navigation }) {
 
     const removeConversation = id => {
         setConversations(conversations.filter(item => item.uuid !== id))
-            // mutation for DB
-            // refresh real data on success
+        // TODO: mutation for DB
+        // TODO: refresh real data on success
     }
 
     const filterChannels = value => {
@@ -104,7 +87,7 @@ function MessagingHomeScreen({ navigation }) {
             <ScreenHeader
                 heading="Messages"
                 leftElement={
-                    <BorderlessButton onPress={() => navigation.goBack()}>
+                    <BorderlessButton onPress={() => navigation.navigate('Feed')}>
                         <ArrowLeftIcon
                             width={22}
                             height={22}
@@ -116,11 +99,11 @@ function MessagingHomeScreen({ navigation }) {
             />
             <ScrollView 
                 style={styles.root}
-                contentContainerStyle={{paddingBottom: 30}}
+                contentContainerStyle={{paddingBottom: 80}}
                 refreshControl={
                     <RefreshControl
                       refreshing={isFetchingItems}
-                      onRefresh={refresh}
+                      onRefresh={() => refresh()}
                     />
                 }
             >
@@ -195,10 +178,15 @@ function MessagingHomeScreen({ navigation }) {
                     <View style={conversationStyles.content}>
                         {(conversations && conversations.length !== 0) ? 
                             (
-                                <ConversationsContainer
-                                    conversations={conversations}
-                                    removeConversation={removeConversation}
-                                />
+                                <View style={styles.fullWidthContainer}>
+                                    {conversations.map((conversation, idx) => (
+                                        <ConversationItem
+                                            key={idx}
+                                            conversation={conversation}
+                                            deleteItem={removeConversation}
+                                        />
+                                    ))}
+                                </View>
                             ) : (
                             <>
                                 <Chat style={conversationStyles.chatSvg} />

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import NewMsgAlert from '~/assets/images/red-dot.svg'
+// import NewMsgAlert from '~/assets/images/red-dot.svg'
 
 const LoopItem = ({loop}) => {
     const navigation = useNavigation()
@@ -16,7 +16,7 @@ const LoopItem = ({loop}) => {
         <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { loop_uuid: loop.uuid })}>
             <View style={styles.item}>
                 <Text style={styles.title}># {loop.name}</Text>
-                {loop.hasNewMsg ? <NewMsgAlert /> : null}
+                {/* {loop.hasNewMsg ? <NewMsgAlert /> : null} */}
             </View>
         </TouchableOpacity>
     )

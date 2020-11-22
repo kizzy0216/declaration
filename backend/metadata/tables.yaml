@@ -1675,6 +1675,24 @@
       check: {}
 - table:
     schema: public
+    name: conversation_user_typing_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - last_typed_at
+      - conversation_uuid
+      - user_uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - conversation_uuid
+      - user_uuid
+      - last_typed_at
+      filter: {}
+- table:
+    schema: public
     name: hashtag
   array_relationships:
   - name: content_meta_hashtags
@@ -1935,6 +1953,24 @@
       filter: {}
 - table:
     schema: public
+    name: loop_user_typing_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - loop_uuid
+      - user_uuid
+      - last_typed_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - last_typed_at
+      - loop_uuid
+      - user_uuid
+      filter: {}
+- table:
+    schema: public
     name: media
   object_relationships:
   - name: content
@@ -1966,7 +2002,9 @@
       - alt
       - created_at
       - id
+      - original_height
       - original_url
+      - original_width
       - type
       - updated_at
       - uploader_uuid
@@ -1980,20 +2018,28 @@
       set:
         uploader_uuid: x-hasura-User-Id
       columns:
+      - original_height
+      - original_width
+      - id
       - alt
       - original_url
       - type
+      - created_at
+      - updated_at
       - uploader_uuid
+      - uuid
       backend_only: false
   select_permissions:
   - role: super_admin
     permission:
       columns:
-      - alt
-      - created_at
+      - original_height
+      - original_width
       - id
+      - alt
       - original_url
       - type
+      - created_at
       - updated_at
       - uploader_uuid
       - uuid
@@ -2001,6 +2047,8 @@
   - role: user
     permission:
       columns:
+      - original_height
+      - original_width
       - id
       - alt
       - original_url
@@ -2014,11 +2062,13 @@
   - role: super_admin
     permission:
       columns:
-      - alt
-      - created_at
+      - original_height
+      - original_width
       - id
+      - alt
       - original_url
       - type
+      - created_at
       - updated_at
       - uploader_uuid
       - uuid
@@ -2027,13 +2077,22 @@
   - role: user
     permission:
       columns:
+      - original_height
+      - original_width
+      - id
       - alt
       - original_url
       - type
+      - created_at
+      - updated_at
+      - uploader_uuid
+      - uuid
       filter:
         uploader_uuid:
           _eq: X-Hasura-User-Id
       check: null
+      set:
+        uploader_uuid: x-hasura-User-Id
   delete_permissions:
   - role: super_admin
     permission:
@@ -2842,6 +2901,17 @@
 - table:
     schema: public
     name: online_users_view
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - uuid
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - uuid
+      filter: {}
 - table:
     schema: public
     name: opportunity_listing_criteria
@@ -3141,21 +3211,24 @@
   - role: super_admin
     permission:
       columns:
-      - is_verified
-      - id
-      - email
-      - name
       - created_at
+      - email
+      - id
+      - is_verified
+      - last_seen_at
+      - name
       - updated_at
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
-      - created_at
-      - email
+      - is_verified
       - id
+      - email
       - name
+      - created_at
+      - last_seen_at
       - updated_at
       - uuid
       filter: {}
@@ -3168,6 +3241,7 @@
       - email
       - name
       - created_at
+      - last_seen_at
       - updated_at
       - uuid
       filter: {}
@@ -3176,6 +3250,8 @@
     permission:
       columns:
       - email
+      - is_verified
+      - last_seen_at
       - name
       filter:
         uuid:

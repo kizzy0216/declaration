@@ -1,23 +1,19 @@
-import React from 'react'
-import {
-    View,
-    Image,
-    Text,
-    StyleSheet
-} from 'react-native'
+import React, { useContext } from 'react'
+import { View,Text,StyleSheet } from 'react-native'
 
 import Avatar from '~/components/Avatar';
 
 import CheckOff from '~/assets/images/check_off.svg'
 import CheckOn from '~/assets/images/check_on.svg'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { MessageContext } from '../../contexts/MessageContext';
 
 const ContactItem = ({
     contact,
     selectItem,
     selected
 }) => {
-    // console.log('CONTACT', contact)
+    const { onlineUsers } = useContext(MessageContext);
     return (
         <TouchableWithoutFeedback onPress={() =>  selectItem(contact.uuid)}>
         <View style={styles.contactItem}>
@@ -27,6 +23,7 @@ const ContactItem = ({
                     style={contact.onLine ? styles.avatarOnline : styles.avatar}
                 /> */}
                 <Avatar
+                    showBorder={onlineUsers.includes(contact.uuid)}
                     imageSrc={contact.profile.photo}
                     name={contact.name}
                 />

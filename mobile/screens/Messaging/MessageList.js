@@ -1,7 +1,8 @@
 import React, {
     useRef,
     useEffect,
-    useContext
+    useContext,
+    useState
 } from 'react'
 import {
     ScrollView,
@@ -10,24 +11,29 @@ import {
     Text,
     Keyboard,
     Image,
-    RefreshControl
+    // RefreshControl
 } from 'react-native'
 import { UserContext } from '../../contexts/UserContext';
-import { formatDateTimeAgo } from '@shared/utils/formatDate';
+// import { formatDateTimeAgo } from '@shared/utils/formatDate';
 import {
     formatDate,
     formatTime,
   } from '@shared/utils/formatDate';
 import Avatar from '../../components/Avatar';
+import { MessageContext } from '../../contexts/MessageContext';
+import TypingIndicator from './TypingIndicator';
 
-const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
+const MessageList = ({chatMessages, isLoop, channel_uuid}) => {
 
     const { user } = useContext(UserContext);
-
+    const { onlineUsers } = useContext(MessageContext);
     const scrollViewRef = useRef()
 
     const goToBottomList = () => {
-        scrollViewRef.current.scrollToEnd({ animated: false })
+        try {
+            scrollViewRef.current.scrollToEnd({ animated: false })
+        } catch {
+        }
     }
 
     useEffect(() => {
@@ -53,27 +59,42 @@ const MessageList = ({chatMessages, isFetching, handleRefresh}) => {
             {chatMessages && chatMessages.map((message, idx) => {
                 return (
                 <View key={idx} style={{paddingVertical: 5}}>
-                    <Text style={{textAlign: 'center', fontSize: 10, color: '#ccc'}}>{`${formatDate(message.created_at)} ${formatTime(message.created_at)}`}</Text>
-                    <View style={[styles.messageContainer, message.sender.uuid === user.uuid ? {alignSelf: 'flex-end'} : {alignSelf: 'flex-start'}]}>
-                        {message.sender.uuid !== user.uuid ? (
+                    <Text style={{textAlign: 'center', fontSize: 10, color: '#ccc'}}>{message.created_at ? `${formatDate(message.created_at)} ${formatTime(message.created_at)}` : 'Sending ...'}</Text>
+                    <View style={[styles.messageContainer, message.sender.uuid && message.sender.uuid !== user.uuid ? {alignSelf: 'flex-start'} : {alignSelf: 'flex-end'} ]}>
+                        {message.sender.uuid && message.sender.uuid !== user.uuid ? (
                             <Avatar
                                 imageSrc={message.sender.user_profile.photo}
+                                showBorder={onlineUsers.includes(message.sender.uuid)}
                                 size="small"
                                 name={message.sender.name}
                                 avatarStyle={{marginRight: 20}}
                             />
-                            // <Image
-                            //     source={message.photoUrl}
-                            //     style={[styles.avatar, message.online ? styles.online : null]}
-                            // />
                         ) : null}
-                        <View style={[styles.messageBox, message.sender.uuid === user.uuid ? {backgroundColor: '#f4f4f4', alignSelf: 'flex-end'} : {backgroundColor: '#6ac2bd', alignSelf: 'flex-start'}]}>
-                            <Text style={message.sender.uuid === user.uuid ? styles.myMessageText : styles.messageText}>{message.text}</Text>
+                        <View>
+                            {message.text ? <View style={[styles.messageBox, message.sender.uuid && message.sender.uuid !== user.uuid ? {backgroundColor: '#6ac2bd'} : {backgroundColor: '#f4f4f4'}]}>
+                                <Text style={message.sender.uuid && message.sender.uuid !== user.uuid ? styles.messageText : styles.myMessageText}>{message.text}</Text>
+                            </View> : <></>}
+                            {message.media && (message.media.localSource || message.media.original_url) ? 
+                                <Image 
+                                    style={{
+                                        width: 240, 
+                                        height: 240, 
+                                        resizeMode: 'contain', 
+                                        backgroundColor: message.sender.uuid && message.sender.uuid !== user.uuid ? '#6ac2bd' : '#f4f4f4',
+                                        borderRadius: 8,
+                                    }} 
+                                    source={{uri: message.media.localSource || message.media.original_url}}
+                                />
+                            : <></>}
                         </View>
                     </View>
                 </View>
                 )
             })}
+            <TypingIndicator
+                channel_uuid={channel_uuid}
+                isLoop={isLoop}
+            />
         </ScrollView>
     )
     

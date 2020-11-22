@@ -1,68 +1,135 @@
 import React, {
     useState,
-    useEffect
+    useEffect,
+    useContext
 } from 'react'
 import {
     View,
     StyleSheet,
     TextInput,
-    Image,
     Text,
-    Keyboard
+    Keyboard,
+    Image
 } from 'react-native'
 
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import { IS_IOS } from '~/constants';
+import { BorderlessButton, TouchableOpacity } from 'react-native-gesture-handler';
+
 import Avatar from '~/components/Avatar';
+import CloseIcon from '@shared/components/icons/CloseIcon';
 import FileAttach from '~/assets/images/file-attach.svg'
 import Plus from '~/assets/images/sm-plus.svg'
+import { MessageContext } from '../../contexts/MessageContext';
 
 const MessageInputBox = ({
     userData,
-    handleNewMessage
+    handleTypingEvent,
+    handleSubmitMessage
 }) => {
 
+    const { onlineUsers } = useContext(MessageContext);
+    
     const [keyboardOpened, setKeyboardOpened] = useState(false)
-    const [newMessage, setNewMessage] = useState('')
+    const [newText, setNewText] = useState('')
+    const [newMedia, setNewMedia] = useState()
 
-    const sendMessage = () => {
-        if (!!newMessage)  {
-            handleNewMessage(newMessage)
+    const submitMessage = () => {
+        if (!!newText || !!newMedia)  {
+            handleSubmitMessage({text: newText, media: newMedia})
         }
-        setNewMessage('')
+        setNewText('')
+        setNewMedia(null)
     }
+    const changeText = (text) => {
+        setNewText(text)
+        handleTypingEvent()
+    }
+    // useEffect(() => {
+    //     Keyboard.addListener('keyboardWillShow', () => setKeyboardOpened(true))
+    //     Keyboard.addListener('keyboardWillHide', () => setKeyboardOpened(false))
+    //     return () => {
+    //         Keyboard.removeListener('keyboardWillShow')
+    //         Keyboard.removeListener('keyboardWillHide')
+    //     }
+    // }, [])
 
-    useEffect(() => {
-        Keyboard.addListener('keyboardWillShow', () => setKeyboardOpened(true))
-        Keyboard.addListener('keyboardWillHide', () => setKeyboardOpened(false))
-        return () => {
-            Keyboard.removeListener('keyboardWillShow')
-            Keyboard.removeListener('keyboardWillHide')
+    async function handlePhotoSelection() {
+        if (IS_IOS) {
+          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to select a photo.');
+            return;
+          }
         }
-    }, [])
+    
+        try {
+          const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.25
+          });
+    
+          if (!result.cancelled) {
+                // console.log('photo Result', result)
+                setNewMedia(result)
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
     return (
-        <View style={styles.root}>
+        <View style={[styles.root, {minHeight: newMedia ? 170 : 115}]}>
             {keyboardOpened ? (
                 <View style={styles.helper}>
                     <Text style={styles.helperText1}>{`${userData.length} member${userData.length === 1 ? '' : 's'}`}</Text>
                     <Text style={styles.helperText2}> will be notified</Text>
                 </View>
-            ) : null}
+            ) : <></>}
 
-            <TextInput
-                placeholder="Message..."
-                style={styles.textInput}
-                value={newMessage}
-                onChangeText={text => setNewMessage(text)}
-                onSubmitEditing={e => { setNewMessage(e.nativeEvent.text); sendMessage() }}
-            />
+            <View style={{flexDirection: 'row'}}>
+                {newMedia 
+                ?   <View style={{position: 'relative'}}>
+                        <BorderlessButton style={styles.removeImageButton} onPress={() => setNewMedia(null)}>
+                            <CloseIcon
+                            width={12}
+                            height={12}
+                            fill="#FFF"
+                            />
+                        </BorderlessButton>
+                        <Image 
+                            style={{
+                                width: 80, 
+                                height: 80, 
+                                resizeMode: 'contain', 
+                                borderRadius: 17,
+                                marginTop: 4
+                            }} 
+                            source={{uri: newMedia.uri}}
+                        />
+                    </View>
+                :   <TextInput
+                        placeholder="Message..."
+                        style={styles.textInput}
+                        value={newText}
+                        onFocus={() => setKeyboardOpened(true)}
+                        onBlur={() => setKeyboardOpened(false)}
+                        onChangeText={changeText}
+                        onSubmitEditing={submitMessage} // { setNewText(e.nativeEvent.text); 
+                        />
+                }
+
+            </View>
             <View style={styles.actionBox}>
-                <TouchableOpacity onPress={() => alert('Select image')}>
+                <TouchableOpacity onPress={() => handlePhotoSelection()}>
                     <FileAttach />
                 </TouchableOpacity>
-                {keyboardOpened ? (
+                {keyboardOpened || newMedia ? (
                     <View style={styles.sendBtnBox}>
-                        <TouchableOpacity onPress={sendMessage}>
+                        <TouchableOpacity onPress={submitMessage}>
                             <Text style={styles.sendBtnText}>Send</Text>
                         </TouchableOpacity>
                     </View>
@@ -71,6 +138,7 @@ const MessageInputBox = ({
                         {userData && (userData.length <= 2 && userData.map((item, idx) => (
                             <Avatar
                                 key={idx}
+                                showBorder={onlineUsers.includes(item.user.uuid)}
                                 name={item.user.name}
                                 avatarStyle={styles.avatar}
                                 size="small"
@@ -85,6 +153,7 @@ const MessageInputBox = ({
                             <>
                                 {userData.length > 0 ? <Avatar
                                     avatarStyle={[styles.avatar, {marginLeft: 0}]}
+                                    showBorder={onlineUsers.includes(userData[0].user.uuid)}
                                     key={0}
                                     size="small"
                                     name={userData[0].user.name}
@@ -111,11 +180,12 @@ const MessageInputBox = ({
 
 const styles = StyleSheet.create({
     root: {
-        height: 115,
+        minHeight: 115,
         borderTopColor: '#ccc',
         borderTopWidth: 1,
         backgroundColor: '#fff',
         paddingHorizontal: 15,
+        flexDirection: 'column'
     },
     helper: {
         flexDirection: 'row',
@@ -136,6 +206,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto_500Medium',
         fontSize: 14,
         color: '#222'
+    },
+    removeImageButton: {
+        position: 'absolute', 
+        right: 4, 
+        top: 8,
+        padding: 2,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        zIndex: 3
     },
     actionBox: {
         marginTop: 15,
