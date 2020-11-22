@@ -45,6 +45,7 @@ import PostsIcon from '@shared/components/icons/PostsIcon';
 import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
+import NewCommentIcon from '@shared/components/icons/NewCommentIcon'
 
 function MemberScreen({ navigation, route }) {
   const { uuid } = route.params;
@@ -61,15 +62,15 @@ function MemberScreen({ navigation, route }) {
   ], []);
 
   const [
-    isDoubleConfirmConnectionModalActive, 
+    isDoubleConfirmConnectionModalActive,
     setIsDoubleConfirmConnectionModalActive,
   ] = useState(false);
   const [
-    isDoubleConfirmDisconnectionModalActive, 
+    isDoubleConfirmDisconnectionModalActive,
     setIsDoubleConfirmDisconnectionModalActive,
   ] = useState(false);
   const [
-    isChoiceModalActive, 
+    isChoiceModalActive,
     setIsChoiceModalActive,
   ] = useState(false);
   const {
@@ -212,6 +213,21 @@ function MemberScreen({ navigation, route }) {
         />
       ),
       onPress: () => setIsDoubleConfirmDisconnectionModalActive(true),
+    }),
+    // Direct Message Button (DM)
+    (
+      relationship &&
+      (
+        (relationship.from.type === CONNECTED_NETWORK_USER_RELATIONSHIP_TYPE) ||
+        (relationship.to.type === CONNECTED_NETWORK_USER_RELATIONSHIP_TYPE)
+      )
+    ) && ({
+      icon: (
+        <NewCommentIcon
+          fill="#000"
+        />
+      ),
+      onPress: () => {}, // Fuction to go to the DM screen
     }),
     (
       relationship &&
