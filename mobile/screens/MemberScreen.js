@@ -46,6 +46,8 @@ import PostsEmptyIcon from '@shared/components/icons/PostsEmptyIcon';
 import HeartOutlineIcon from '@shared/components/icons/HeartOutlineIcon';
 import HeartEmptyIcon from '@shared/components/icons/HeartEmptyIcon';
 import NewCommentIcon from '@shared/components/icons/NewCommentIcon'
+import { MessageContext } from '../contexts/MessageContext';
+import InsertConversation from '../mutations/InsertConversation'
 
 function MemberScreen({ navigation, route }) {
   const { uuid } = route.params;
@@ -78,6 +80,9 @@ function MemberScreen({ navigation, route }) {
     isAuthenticated,
   } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
+  const { conversations } = useContext(MessageContext);
+
+  const [_, insertConversation] = useMutation(InsertConversation);
 
   const [
     insertRelationshipResult,
@@ -128,7 +133,7 @@ function MemberScreen({ navigation, route }) {
       from_user_uuid: authenticatedUser.uuid,
       to_user_uuid: user.uuid,
       network_uuid: activeNetwork.uuid,
-      type: PENDING_NETWORK_USER_RELATIONSHIP_TYPE,
+      type: CONNECTED_NETWORK_USER_RELATIONSHIP_TYPE, // TODO: BACK TO PENDING WHEN INVITE IS REQUIRED; there was also a permission check on DB
     }).then(() => {
       setIsDoubleConfirmConnectionModalActive(false);
       getRelationship({ requestPolicy: 'network-only' });
@@ -165,6 +170,25 @@ function MemberScreen({ navigation, route }) {
     });
   }
 
+  function handleMessageClick () {
+    const existingConvo = uuid && conversations ? conversations.find(x => x.conversation_users.length === 1 && x.conversation_users[0].user_uuid === uuid) : null
+    if (existingConvo) {
+      navigation.navigate('ChatScreen', { conversation_uuid: existingConvo.uuid, goBack: true })
+    }
+    else {
+      const variables = { 
+          network_uuid: activeNetwork.uuid,  
+          user_data: [{ user_uuid: uuid}, {user_uuid: authenticatedUser.uuid}],
+      }
+      insertConversation(variables).then(result => {
+          if (result.error) { 
+              console.error('CONVO INSERT ISSUE', result.error) 
+          } else {
+              navigation.navigate('ChatScreen', { conversation_uuid: result.data.insert_conversation_one.uuid, goBack: true })
+          }
+      })
+    }
+  }
   if (!getUserResult.fetching && getUserResult.data) {
     user = mapUser(getUserResult.data.user_by_pk);
   }
@@ -177,7 +201,7 @@ function MemberScreen({ navigation, route }) {
         .user
     );
   }
-
+  
   const actions = [
     (
       !relationship ||
@@ -196,7 +220,7 @@ function MemberScreen({ navigation, route }) {
       style: {
         backgroundColor: BLUE,
       },
-      onPress: () => setIsDoubleConfirmConnectionModalActive(true),
+      onPress: () => handleRequestConnection(),
     }),
     (
       relationship &&
@@ -227,7 +251,7 @@ function MemberScreen({ navigation, route }) {
           fill="#000"
         />
       ),
-      onPress: () => {}, // Fuction to go to the DM screen
+      onPress: () => handleMessageClick(), 
     }),
     (
       relationship &&
