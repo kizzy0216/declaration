@@ -13,7 +13,7 @@ import {
   FlatList,
 } from 'react-native';
 import { setStatusBarStyle } from 'expo-status-bar';
-
+import { compareDesc } from 'date-fns';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import ContentCommentModalContainer from '~/containers/ContentCommentModalContainer';
@@ -86,8 +86,12 @@ function ContentTilePager({filters}) {
 
   const keyExtractor = useCallback(({ uuid }) => uuid, []);
 
-  const onRefresh = useCallback(getItems, []);
+  const onRefresh = useCallback(() => 
+    getItems({ requestPolicy: 'network-only' })
+  , []);
 
+  const sortItemsByCreatedAt = (a, b) => compareDesc(new Date(a.createdAt), new Date(b.createdAt));
+  
   const data = useMemo(() => {
     const itemList = itemUuids.map((uuid) => items[uuid]);
     if (filters) {
@@ -120,7 +124,7 @@ function ContentTilePager({filters}) {
         ref={flatListRef}
         showPageIndicator={false}
         style={styles.flatList}
-        data={data}
+        data={data.sort(sortItemsByCreatedAt)}
         getItemLayout={getItemLayout}
         initialScrollIndex={0}
         renderItem={renderItem}

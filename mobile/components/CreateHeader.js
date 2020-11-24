@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Button from '~/components/Button';
 import ScreenHeader from '~/components/ScreenHeader';
 import ArrowLeftIcon from '@shared/components/icons/ArrowLeftIcon';
 import { GRAY } from '~/constants';
+import { CreateContentContext } from '~/contexts/CreateContentContext';
 
 function CreateHeader ({
   heading,
@@ -17,6 +18,11 @@ function CreateHeader ({
   onCancelOrBack = () => {},
   onNextOrPost = () => {},
 }) {
+  const { clearSelections } = useContext(CreateContentContext );
+  const handleBackPress = () => {
+    clearSelections()
+    onCancelOrBack()
+  }
   return (
     <ScreenHeader
       leftElement={(
@@ -24,7 +30,7 @@ function CreateHeader ({
           <Button
             theme="transparent"
             size="small"
-            onPress={onCancelOrBack}
+            onPress={handleBackPress}
             label="Cancel"
             labelWrapperStyle={{ paddingLeft: 0 }}
             labelStyle={{
@@ -32,7 +38,7 @@ function CreateHeader ({
             }}
           />
         ) : canBack ? (
-          <TouchableOpacity onPress={onCancelOrBack}>
+          <TouchableOpacity onPress={handleBackPress}>
             <ArrowLeftIcon
               width={22}
               height={22}
