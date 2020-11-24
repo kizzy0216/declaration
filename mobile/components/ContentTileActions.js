@@ -259,7 +259,7 @@ function ContentTileActions({
               </TouchableOpacity>
             </>
           }
-          <TouchableOpacity
+          {controls.hasVideo || controls.hasImage ? <TouchableOpacity
               style={styles.action}
               onPress={() => onFullscreenToggle(!controls.isFullscreen)}
             >
@@ -280,6 +280,8 @@ function ContentTileActions({
                 )
               }
             </TouchableOpacity>
+            : <View style={[styles.action, {width: 30, height: 30}]}></View>
+          }
         </Animated.View>
       </Animated.View>
 
