@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/react-native";
 
 import {
   saveJWT,
-  saveUser,
+  saveUserId,
 } from '~/utils/api';
 
 class ErrorBoundary extends React.Component {
@@ -34,7 +34,7 @@ class ErrorBoundary extends React.Component {
     // alert(error.message)
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
     if (process.env.NODE_ENV !== 'development') {
-      saveUser(null);
+      saveUserId(null);
       saveJWT(null);
     }
     // }
