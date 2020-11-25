@@ -66,7 +66,7 @@ function RootNavigator({ navigation }) {
   const appState = useRef(AppState.currentState);
   const {user} = useContext(UserContext);
   const [_, updateStatus] = useMutation(SetOnlineStatus);
-  
+
   // useEffect(() => {
   //   const unsubscribe = navigation.addListener('state', () => {
   //     updateStatus({uuid: user.uuid})
@@ -96,7 +96,7 @@ function RootNavigator({ navigation }) {
     appState.current = nextAppState;
     // console.log("AppState", appState.current);
   };
-  
+
   return (
   <NetworkContextProvider>
     <MessageContextProvider>
@@ -213,10 +213,16 @@ function RootNavigator({ navigation }) {
           <Stack.Screen
             name="NewConversation"
             component={NewConversationScreen}
+            options={{
+              ...TransitionPresets.ModalSlideFromBottomIOS,
+            }}
           />
           <Stack.Screen
             name="NewLoop"
             component={NewLoopScreen}
+            options={{
+              ...TransitionPresets.ModalSlideFromBottomIOS,
+            }}
           />
           <Stack.Screen
             name="ChatScreen"
