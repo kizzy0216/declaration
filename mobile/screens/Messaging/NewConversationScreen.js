@@ -7,6 +7,7 @@ import {
     TextInput,
     KeyboardAvoidingView
 } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useMutation } from 'urql'
@@ -35,13 +36,13 @@ const NewConversationScreen = ({navigation}) => {
     }
 
     const handleSubmit = () => {
-        const variables = { 
-            network_uuid: activeNetwork.uuid,  
+        const variables = {
+            network_uuid: activeNetwork.uuid,
             user_data: [...selectedIds.map(x => ({ user_uuid: x})), {user_uuid: user.uuid}],
         }
         insertConversation(variables).then(result => {
-            if (result.error) { 
-                console.error('CONVO INSERT ISSUE', result.error) 
+            if (result.error) {
+                console.error('CONVO INSERT ISSUE', result.error)
             } else {
                 setSelectedIds([])
                 navigation.navigate('ChatScreen', { conversation_uuid: result.data.insert_conversation_one.uuid })
@@ -65,10 +66,12 @@ const NewConversationScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <ContactSelector
-                selectContact={selectContact}
-                selectedIds={selectedIds}
-            />
+            <ScrollView style={contactListStyles.container}>
+                <ContactSelector
+                    selectContact={selectContact}
+                    selectedIds={selectedIds}
+                />
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }
@@ -152,6 +155,7 @@ const headerStyles = StyleSheet.create({
 const contactListStyles = StyleSheet.create({
     container: {
         width: wp('100%'),
+        paddingHorizontal: 30,
         flex: 1,
         paddingBottom: 20
     },

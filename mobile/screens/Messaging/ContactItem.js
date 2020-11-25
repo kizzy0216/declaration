@@ -70,7 +70,9 @@ const styles = StyleSheet.create({
         borderWidth: 2
     },
     textContainer: {
-        marginLeft: 10
+        marginLeft: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     name: {
         fontFamily: 'Roboto_400Regular',
