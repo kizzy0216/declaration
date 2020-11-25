@@ -34,18 +34,24 @@ export const saveJWT = (jwt) => {
 // or some kind of SecureStore + FileSystem
 // (github.com/neverdull-agency/expo-unlimited-secure-store)
 // method to securely and reliably store strings larger than 2048.
-export const saveUser = (user) => {
-  return SecureStore.setItemAsync('user', JSON.stringify(user))
+export const saveUserId = (uuid) => {
+  return SecureStore.setItemAsync('user', uuid)  // JSON.stringify(user))
 };
 
-export const loadUser = async () => {
-  let user;
+export const loadUserId = async () => {
+  let data;
   try {
-    user = await SecureStore.getItemAsync('user');
+    data = await SecureStore.getItemAsync('user');
+    if (data && data.length > 100) {
+      const userObj = JSON.parse(data)
+      if (userObj && userObj.uuid) {
+        return Promise.resolve(userObj.uuid)
+      }
+    }
   } catch {
-    console.error('Failed to get user from local storage');
+    console.error('Failed to get user id from local storage');
   }
-  return Promise.resolve(JSON.parse(user));
+  return Promise.resolve(data); // JSON.parse(user));
 }
 
 const wsClient = new SubscriptionClient(

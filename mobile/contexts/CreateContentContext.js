@@ -79,6 +79,15 @@ export const CreateContentContextProvider = ({ children }) => {
   const [media, setMedia] = useState(initialState().media);
   const [poll, setPoll] = useState(initialState().poll);
 
+  const clearSelections = () => {
+    setType(initialState().type)
+    setHeading(initialState().heading);
+    setSubHeading(initialState().subHeading);
+    setBody(initialState().body);
+    setMeta(initialState().meta);
+    setMedia(initialState().media);
+    setPoll(initialState().poll);
+  }
   const [
     opportunityListing,
     setOpportunityListing,
@@ -218,6 +227,7 @@ export const CreateContentContextProvider = ({ children }) => {
         setAvailabilityListing,
         updateScreenshot,
         create,
+        clearSelections,
         isCreating: (
           insertContentResult.fetching ||
           insertPollResult.fetching ||

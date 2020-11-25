@@ -325,9 +325,7 @@ Vercel settings page for the declaration-backend project.
 To deploy, simply run `vercel` in the `./backend/` directory. An immutable
 deployment will be created. The immutable deployment can then be aliased to the
 intended URL. The immutable deployment can then be aliased to the intended URL
-(e.g. `vercel alias
-https://declaration-backend-nickdandakis.declaration.vercel.app
-https://stage.api.declaration.net`).
+(e.g. `vercel alias https://declaration-backend-gainsboroughtech.declaration.vercel.app stage.api.declaration.net`).
 
 To deploy to production, simply run `vercel --prod`.
 
@@ -355,9 +353,7 @@ Vercel settings page for the declaration-dashboard project.
 
 To deploy, simply run `vercel` in the `./dashboard/` directory. An immutable
 deployment will be created. The immutable deployment can then be aliased to the
-intended URL (e.g. `vercel alias
-https://declaration-dashboard-nickdandakis.declaration.vercel.app
-https://stage.dashboard.declaration.net`).
+intended URL (e.g. `vercel alias https://declaration-dashboard-gainsboroughtech.declaration.vercel.app stage.dashboard.declaration.net`).
 
 To deploy to production, simply run `vercel --prod`.
 

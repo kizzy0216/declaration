@@ -62,7 +62,7 @@ mutation UpdateLoopUserTyping($loop_uuid: uuid, $user_uuid: uuid, $last_typed_at
 `
 const ChatScreen = ({ navigation, route }) => {
 
-    const { loop_uuid, conversation_uuid } = route.params;
+    const { loop_uuid, conversation_uuid, goBack } = route.params;
     const [channel, setChannel] = useState({})
     // const [limit, setLimit] = useState(10)
     const [chatMessages, setChatMessages] = useState([])
@@ -245,7 +245,7 @@ const ChatScreen = ({ navigation, route }) => {
             /> */}
             <View style={headerStyles.container}>
                 <View style={headerStyles.header}>
-                    <TouchableOpacity style={headerStyles.leftButton} onPress={() => navigation.navigate('Messaging')}>
+                    <TouchableOpacity style={headerStyles.leftButton} onPress={() => goBack ? navigation.goBack() : navigation.navigate('Messaging')}>
                         <ArrowLeftIcon
                             width={22}
                             height={22}

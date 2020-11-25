@@ -29,13 +29,19 @@ import KeyboardSpacer from '~/components/KeyboardSpacer'
 import Button from '~/components/Button';
 import InsertContentComment from '~/mutations/InsertContentComment';
 
+import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import {
   WINDOW_WIDTH,
   WINDOW_HEIGHT,
   FEEDBACK_PAUSED_VIDEO,
   FEEDBACK_PLAYED_VIDEO,
 } from '~/constants';
-import { getStarAmount } from '~/utils/star';
+// import { getStarAmount } from '~/utils/star';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const LIGHT_FILL = '#fff';
+// const DARK_FILL = 'rgba(0,0,0, 0.6)';
+const DARK_FILL = '#222';
 
 function ContentTile({
   uuid,
@@ -228,6 +234,9 @@ function ContentTile({
     //   }).start();
     // }, 500);
   }, [isStarred]);
+  const theme = (
+    (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
+  );
 
   return (
     <ViewShot ref={viewPanel} options={{ format: 'png', quality: 0.8 }}>
@@ -364,6 +373,18 @@ function ContentTile({
           </Animated.View>
         ) : null}
       </View>
+      {isFullscreen ?
+        <View style={{position: 'absolute', bottom: 50, right: 34}}>
+          <TouchableOpacity
+            onPress={() => setIsFullscreen(false)}>
+            <NormalScreenIcon
+              width={30}
+              height={30}
+              fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
+            />
+          </TouchableOpacity>
+        </View>
+      : <></> }
     </View>
     </ViewShot>
   );

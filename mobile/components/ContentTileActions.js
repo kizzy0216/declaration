@@ -264,17 +264,19 @@ function ContentTileActions({
               </TouchableOpacity>
             </>
           }
-          <TouchableOpacity
+          {controls.hasVideo || controls.hasImage ? 
+            <TouchableOpacity
               style={styles.action}
               onPress={() => onFullscreenToggle(!controls.isFullscreen)}
             >
               {controls.isFullscreen
-                ? (
-                  <NormalScreenIcon
-                    width={30}
-                    height={30}
-                    fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                  />
+                ? ( 
+                  <></>
+                  // <NormalScreenIcon
+                  //   width={30}
+                  //   height={30}
+                  //   fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
+                  // />
                 ) : (
                   // <NewFullScreenIcon />
                   <FullscreenIcon
@@ -285,9 +287,10 @@ function ContentTileActions({
                 )
               }
             </TouchableOpacity>
+            : <View style={[styles.action, {width: 30, height: 30}]}></View>
+          }
         </Animated.View>
       </Animated.View>
-
     </View>
   );
 }

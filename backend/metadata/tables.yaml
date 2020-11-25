@@ -2751,20 +2751,7 @@
       backend_only: false
   - role: user
     permission:
-      check:
-        _and:
-        - network:
-            network_users:
-              user_uuid:
-                _eq: X-Hasura-User-Id
-        - _and:
-          - from_user_uuid:
-              _eq: X-Hasura-User-Id
-          - type:
-              _in:
-              - PENDING
-              - BLOCKED
-              - MUTED
+      check: {}
       columns:
       - from_user_uuid
       - network_uuid

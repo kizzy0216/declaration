@@ -80,7 +80,7 @@ function ContentTileByline({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{marginLeft: 20}}
+            style={{marginLeft: 10, paddingHorizontal: 10, paddingVertical: 10}}
             onPress={() => onMenuPress()}
           >
             <ThreeDotsIcon fill={theme === 'light' ? '#fff' : '#222'} />

@@ -11,8 +11,8 @@ import mapNetwork from '@shared/mappings/mapNetwork';
 import {
   saveJWT,
   hydrateJWT,
-  saveUser,
-  loadUser,
+  saveUserId,
+  loadUserId,
 } from '~/utils/api';
 
 export const UserContext = createContext({
@@ -24,6 +24,7 @@ export const UserContext = createContext({
 });
 
 export const UserContextProvider = ({ children }) => {
+  const [uuid, setUuid] = useState();
   const [user, setUser] = useState({});
   const [hasFetched, setHasFetched] = useState(false);
   const [hasHydratedJWT, setHasHydratedJWT] = useState(false);
@@ -31,9 +32,9 @@ export const UserContextProvider = ({ children }) => {
   const [getUserResult, getUser] = useQuery({
     query: GetUser,
     variables: {
-      uuid: user.uuid,
+      uuid: uuid,
     },
-    pause: !user.uuid,
+    pause: !uuid,
   });
   const {
     fetching: isFetching,
@@ -45,9 +46,9 @@ export const UserContextProvider = ({ children }) => {
       setHasHydratedJWT(true);
     });
 
-    loadUser().then((user) => {
-      setUser(user || {});
-      setHasLoadedUser(true);
+    loadUserId().then(uuid => {
+      setUuid(uuid);
+      // setHasLoadedUser(true);
     });
   }, []);
 
@@ -62,22 +63,15 @@ export const UserContextProvider = ({ children }) => {
       const mappedUser = mapUser(getUserResult.data.user_by_pk);
 
       setUser(mappedUser);
-      saveUser(mappedUser);
+      setHasLoadedUser(true);
       setHasFetched(true);
     }
   }, [getUserResult.data]);
 
-  // when user.uuid changes, refetch
-  useEffect(() => {
-    if (user.uuid) {
-      getUser({ requestPolicy: 'network-only' });
-    }
-  }, [user.uuid]);
-
   function logOut() {
     setHasFetched(false);
     setUser({});
-    saveUser(null);
+    saveUserId(null);
     saveJWT(null);
   }
 
@@ -86,7 +80,7 @@ export const UserContextProvider = ({ children }) => {
     user,
   }) {
     setUser(user);
-    saveUser(user);
+    saveUserId(user.uuid);
     saveJWT(jwt);
   }
 
