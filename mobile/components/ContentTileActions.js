@@ -15,6 +15,7 @@ import NewFullScreenIcon from '@shared/components/icons/NewFullscreenIcon';
 import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import AudioIcon from '@shared/components/icons/AudioIcon';
 import NoAudioIcon from '@shared/components/icons/NoAudioIcon';
+import LottieView from 'lottie-react-native';
 
 import { GREEN } from '~/constants';
 // import withBadge from '../components/withBadge'
@@ -137,7 +138,8 @@ function ContentTileActions({
           <View style={[styles.action, styles.starAction]}>
             {isStarred ? (
               <>
-                <NewGreenHeartIcon />
+                {/* <NewGreenHeartIcon /> */}
+                <LottieView style={{width: 240, height: 240, position: 'absolute', top: -43}} source={require('../assets/animation/heart.json')} autoPlay loop={false}/>
                 <Text
                   style={{
                     ...styles.count,
@@ -240,7 +242,7 @@ function ContentTileActions({
             ...styles.container,
           }}
         >
-          {controls.hasVideo &&
+          {/* {controls.hasVideo &&
             <>
               <TouchableOpacity
                 style={styles.action}
@@ -263,20 +265,18 @@ function ContentTileActions({
                 }
               </TouchableOpacity>
             </>
-          }
-          {controls.hasVideo || controls.hasImage ? 
+          } */}
             <TouchableOpacity
               style={styles.action}
               onPress={() => onFullscreenToggle(!controls.isFullscreen)}
             >
               {controls.isFullscreen
-                ? ( 
-                  <></>
-                  // <NormalScreenIcon
-                  //   width={30}
-                  //   height={30}
-                  //   fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-                  // />
+                ? (
+                  <NormalScreenIcon
+                    width={30}
+                    height={30}
+                    fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
+                  />
                 ) : (
                   // <NewFullScreenIcon />
                   <FullscreenIcon
@@ -287,8 +287,6 @@ function ContentTileActions({
                 )
               }
             </TouchableOpacity>
-            : <View style={[styles.action, {width: 30, height: 30}]}></View>
-          }
         </Animated.View>
       </Animated.View>
     </View>

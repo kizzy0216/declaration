@@ -26,10 +26,8 @@ import ContentTileFooter from '~/components/ContentTileFooter';
 import ContentTileFeedback from '~/components/ContentTileFeedback';
 
 import KeyboardSpacer from '~/components/KeyboardSpacer'
-import Button from '~/components/Button';
 import InsertContentComment from '~/mutations/InsertContentComment';
 
-import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import {
   WINDOW_WIDTH,
   WINDOW_HEIGHT,
@@ -37,7 +35,6 @@ import {
   FEEDBACK_PLAYED_VIDEO,
 } from '~/constants';
 // import { getStarAmount } from '~/utils/star';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LIGHT_FILL = '#fff';
 // const DARK_FILL = 'rgba(0,0,0, 0.6)';
@@ -359,7 +356,8 @@ function ContentTile({
                 style={{
                   fontSize: 14,
                   fontWeight: '400',
-                  color: '#fff'
+                  color: '#fff',
+                  width: '80%'
                 }}
               />
               <TouchableOpacity
@@ -373,18 +371,6 @@ function ContentTile({
           </Animated.View>
         ) : null}
       </View>
-      {isFullscreen ?
-        <View style={{position: 'absolute', bottom: 50, right: 34}}>
-          <TouchableOpacity
-            onPress={() => setIsFullscreen(false)}>
-            <NormalScreenIcon
-              width={30}
-              height={30}
-              fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-            />
-          </TouchableOpacity>
-        </View>
-      : <></> }
     </View>
     </ViewShot>
   );
@@ -441,12 +427,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    minHeight: 40
   },
   replyButtonWrapper: {
     marginHorizontal: 10,
   },
   replyButtonLabel: {
-    color: '#fff',
+    color: '#49d6cf',
     fontSize: 14,
     fontWeight: '500',
     marginVertical: 3
