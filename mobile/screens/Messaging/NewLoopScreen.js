@@ -69,8 +69,8 @@ const NewLoopScreen = ({navigation}) => {
         })
     }
     return (
-        // <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
-        <View style={styles.root}>
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
+        {/* <View style={styles.root}> */}
                 {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
 
             <View style={headerStyles.container}>
@@ -83,35 +83,38 @@ const NewLoopScreen = ({navigation}) => {
                         <Text style={headerStyles.rightButtonText}>Share</Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView>
-                    <View style={headerStyles.searchBoxContainer}>
-                        <Text style={headerStyles.searchHeading}>Make Public</Text>
-                        <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
-                            <Text>Anyone can join this loop</Text>
-                            <View>
-                                {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
+                <View style={{height: '100%'}}>
+                    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+                        <View style={headerStyles.searchBoxContainer}>
+                            <Text style={headerStyles.searchHeading}>Make Public</Text>
+                            <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
+                                <Text>Anyone can join this loop</Text>
+                                <View>
+                                    {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={headerStyles.searchBoxContainer}>
-                        <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
-                        <TextInput
-                            placeholder="Name this loop"
-                            placeholderTextColor="#979797"
-                            style={headerStyles.searchBox}
-                            autoCapitalize="none"
-                            value={name}
-                            onChangeText={text => setName(text.toLowerCase().replace(' ', '_').replace('.', '-'))}
+                        <View style={headerStyles.searchBoxContainer}>
+                            <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
+                            <TextInput
+                                placeholder="Name this loop"
+                                placeholderTextColor="#979797"
+                                style={headerStyles.searchBox}
+                                autoCapitalize="none"
+                                value={name}
+                                onChangeText={text => setName(text.toLowerCase().replace(' ', '_').replace('.', '-'))}
+                            />
+                        </View>
+                        <ContactSelector
+                            selectContact={selectContact}
+                            selectedIds={selectedIds}
                         />
-                    </View>
-                    <ContactSelector
-                        selectContact={selectContact}
-                        selectedIds={selectedIds}
-                    />
-                    <KeyboardSpacer />
-                </ScrollView>
+                        <KeyboardSpacer />
+                    </ScrollView>
+                </View>
             </View>
-        </View>
+        {/* </View> */}
+        </KeyboardAvoidingView>
     )
 }
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View,Text,StyleSheet } from 'react-native'
+import { View,Text,StyleSheet, BackHandler } from 'react-native'
 
 import Avatar from '~/components/Avatar';
 
@@ -26,6 +26,16 @@ const ContactItem = ({
                     showBorder={onlineUsers.includes(contact.uuid)}
                     imageSrc={contact.profile.photo}
                     name={contact.name}
+                    initialsStyle={{
+                        fontSize: 18
+                    }}
+                    avatarStyle={{
+                        width: 50,
+                        height: 50,
+                        borderColor: '#999',
+                        borderWidth: 2,
+                        backgroundColor: '#d8d8d8'
+                    }}
                 />
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{contact.name}</Text>

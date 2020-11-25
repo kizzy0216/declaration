@@ -23,7 +23,7 @@ import ConversationItem from './ConversationItem'
 import ScreenHeader from '~/components/ScreenHeader';
 import PlusIcon from '~/assets/images/plus.svg'
 import LoopBack from '~/assets/images/loop-back.svg'
-import Chat from '~/assets/images/chat.svg'
+import Chat from '~/assets/images/chat_light.svg'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MessageContext } from '../../contexts/MessageContext';
@@ -338,7 +338,7 @@ const conversationStyles = StyleSheet.create({
     intro: {
         fontFamily: 'Roboto_500Medium',
         fontSize: 16,
-        color: '#222',
+        color: '#999',
         textAlign: 'center'
     },
 })
