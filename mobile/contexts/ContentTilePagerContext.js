@@ -10,8 +10,7 @@ import { useQuery, useMutation } from 'urql';
 
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
-import GetNetworkContentNewer from '~/queries/GetNetworkContentNewer';
-import GetNetworkContentOlder from '~/queries/GetNetworkContentOlder';
+import GetNetworkContent from '~/queries/GetNetworkContent';
 import DeleteContent from '~/mutations/DeleteContent';
 import mapContent from '@shared/mappings/mapContent';
 
@@ -41,7 +40,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   const [items, setItems] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   // const [firstItemCreatedAt, setFirstItemCreatedAt] = useState(null);
-  const [lastItemCreatedAt, setLastItemCreatedAt] = useState(null);
+  // const [lastItemCreatedAt, setLastItemCreatedAt] = useState(null);
   // previously lifted the whole flatListRef up, but calling flatListRef
   // methods from here didn't work. So, we're creating a proxy object for
   // flatListRef methods here and actually calling FlatList methods in
@@ -53,15 +52,14 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   const { user: authenticatedUser } = useContext(UserContext);
   const { activeNetwork } = useContext(NetworkContext);
   const [
-    getContentOlderResult,
-    getContentOlder,
+    getContentResult,
+    getContent,
   ] = useQuery({
-    query: GetNetworkContentOlder,
+    query: GetNetworkContent,
     variables: {
       network_uuid: activeNetwork.uuid,
       viewer_uuid: authenticatedUser.uuid,
       limit: LIMIT,
-      created_at_before: lastItemCreatedAt,
     },
     pause: !activeNetwork || !authenticatedUser,
   });
@@ -83,11 +81,11 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   ] = useMutation(DeleteContent);
 
   // const isFetchingNewerItems = false; // getContentNewerResult.fetching;
-  const isFetchingOlderItems = getContentOlderResult.fetching;
+  const isFetchingOlderItems = getContentResult.fetching;
 
   useEffect(() => {
-    if (getContentOlderResult.data && getContentOlderResult.data.content) {
-      const mappedContent = getContentOlderResult
+    if (getContentResult.data && getContentResult.data.content) {
+      const mappedContent = getContentResult
         .data
         .content
         .map(mapContent);
@@ -108,7 +106,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
       ]);
     }
     setIsFetching(false)
-  }, [getContentOlderResult.data]);
+  }, [getContentResult.data]);
   // useEffect(() => {
   //   if (getContentNewerResult.data && getContentNewerResult.data.content) {
   //     const mappedContent = getContentNewerResult
@@ -133,20 +131,20 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   //   }
   // }, [getContentNewerResult.data]);
 
-  useEffect(() => {
-    const lastItemUuid = itemUuids[itemUuids.length - 1];
-    const lastItem = lastItemUuid && items[lastItemUuid];
+  // useEffect(() => {
+  //   const lastItemUuid = itemUuids[itemUuids.length - 1];
+  //   const lastItem = lastItemUuid && items[lastItemUuid];
 
-    if (!lastItem) {
-      return;
-    }
+  //   if (!lastItem) {
+  //     return;
+  //   }
 
-    if (itemUuids.length - activeIndex <= FETCH_LIMIT) {
-      if (lastItemCreatedAt !== lastItem.createdAtTimestampTz) {
-        setLastItemCreatedAt(lastItem.createdAtTimestampTz);
-      }
-    }
-  }, [activeIndex]);
+  //   if (itemUuids.length - activeIndex <= FETCH_LIMIT) {
+  //     if (lastItemCreatedAt !== lastItem.createdAtTimestampTz) {
+  //       setLastItemCreatedAt(lastItem.createdAtTimestampTz);
+  //     }
+  //   }
+  // }, [activeIndex]);
 
   function setFlatListMethods(methods) {
     flatListMethodsRef.current = methods;
@@ -168,7 +166,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
 
   const getItems = () => {
     setIsFetching(true)
-    getContentOlder({
+    getContent({
       requestPolicy: 'network-only'
     });
   }
