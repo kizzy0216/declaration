@@ -591,6 +591,7 @@
       - updated_at
       - uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -607,6 +608,7 @@
       - network_uuid
       - uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
@@ -1473,6 +1475,7 @@
       - astronomer_uuid
       - content_uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -1480,6 +1483,7 @@
       - astronomer_uuid
       - content_uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
