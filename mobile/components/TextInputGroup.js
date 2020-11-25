@@ -6,11 +6,13 @@ import {
 } from 'react-native';
 
 import TextInput from '~/components/TextInput';
-import { LIGHT_GRAY } from '~/constants';
+import { LIGHT_GRAY, RED } from '~/constants';
 
 function TextInputGroup({
   label = '',
   options = [],
+  maxLength = "40",
+  error = '',
   renderPreInput = () => null,
   renderLabel = () => '',
   renderPlaceholder = (option, index) => `Enter option ${index + 1}`,
@@ -47,10 +49,17 @@ function TextInputGroup({
                     ))
                   )
                 }
+                maxLength={maxLength}
               />
             </View>
           </View>
         ))}
+
+        {error.length > 0 &&
+          <Text style={styles.error}>
+            {error}
+          </Text>
+        }
       </View>
     </View>
   );
@@ -83,6 +92,11 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexGrow: 1,
+  },
+  error: {
+    color: RED,
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

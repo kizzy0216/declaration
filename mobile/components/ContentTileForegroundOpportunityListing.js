@@ -74,7 +74,7 @@ function ContentTileForegroundOpportunityListing({
             styles.subHeading,
             styles[theme],
           ]}
-          numberOfLines={2}
+          numberOfLines={1}
         >
           {subHeading}
         </Text>

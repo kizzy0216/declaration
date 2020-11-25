@@ -45,6 +45,18 @@ function NetworkSwitcherModal({
             <Avatar
               name={item.label}
               imageSrc={item.imageSrc}
+              avatarStyle={{
+                width: 60,
+                height: 60,
+              }}
+              imageStyle={{
+                width: 60,
+                height: 60,
+                borderRadius: 60
+              }}
+              initialsStyle={{
+                fontSize: 30
+              }}
             />
           ),
           onSelect: item.onPress,

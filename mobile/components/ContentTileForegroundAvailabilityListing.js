@@ -48,7 +48,7 @@ function ContentTileForegroundAvailabilityListing({
             styles.heading,
             styles[theme],
           ]}
-          numberOfLines={2}
+          numberOfLines={3}
         >
           {heading}
         </Text>
@@ -65,7 +65,7 @@ function ContentTileForegroundAvailabilityListing({
             styles.body,
             styles[theme],
           ]}
-          numberOfLines={4}
+          numberOfLines={3}
         >
           {body}
         </Text>
@@ -89,7 +89,7 @@ function ContentTileForegroundAvailabilityListing({
                   styles.credential,
                   styles[theme],
                 ]}
-                numberOfLines={2}
+                numberOfLines={1}
               >
                 {'\u2022 '}
                 {credential.text}

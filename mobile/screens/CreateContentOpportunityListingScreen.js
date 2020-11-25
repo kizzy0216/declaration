@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -82,6 +82,34 @@ function CreateContentOpportunityListingScreen({ navigation }) {
     callToActionHrefError.length > 0
   );
 
+  const [showHeadingError, setShowHeadingError] = useState(false)
+  const [showSubheadingError, setShowSubheadingError] = useState(false)
+  const [showHighlightsError, setShowHighlightsError] = useState(false)
+
+  const headingCheck = text => {
+    if (text.length === 0 || text.length === 12) {
+      setShowHeadingError(true)
+    } else {
+      setShowHeadingError(false)
+    }
+  }
+
+  const subheadingCheck = text => {
+    if (text.length === 0 || text.length === 28) {
+      setShowSubheadingError(true)
+    } else {
+      setShowSubheadingError(false)
+    }
+  }
+
+  const highlightsCheck = credentials => {
+    if (credentials.filter(credential => credential.length === 0).length !== 0) {
+      setShowHighlightsError(true)
+    } else {
+      setShowHighlightsError(false)
+    }
+  }
+
   return (
     <SafeAreaView
       style={{flex: 1}}
@@ -110,7 +138,12 @@ function CreateContentOpportunityListingScreen({ navigation }) {
               label="Add a short headline"
               placeholder="We are hiring"
               value={heading}
-              onChange={setHeading}
+              onChange={text => {
+                setHeading(text)
+                headingCheck(text)
+              }}
+              maxLength={12}
+              error={showHeadingError ? 'It should be less than 12 letters.' : ''}
             />
           </View>
 
@@ -119,7 +152,12 @@ function CreateContentOpportunityListingScreen({ navigation }) {
               label="Name the position title"
               placeholder="Senior Graphic Designer"
               value={subHeading}
-              onChange={setSubHeading}
+              onChange={text => {
+                setSubHeading(text)
+                subheadingCheck(text)
+              }}
+              maxLength={28}
+              error={showSubheadingError ? 'It should be less than 28 letters.' : ''}
             />
           </View>
 
@@ -137,7 +175,12 @@ function CreateContentOpportunityListingScreen({ navigation }) {
                 </View>
               )}
               renderPlaceholder={(option, index) => `Enter criteria ${index + 1}`}
-              onChange={criteria => setOpportunityListing({ ...opportunityListing, criteria })}
+              onChange={criteria => {
+                setOpportunityListing({ ...opportunityListing, criteria })
+                highlightsCheck(criteria)
+              }}
+              maxLength={35}
+              error={showHighlightsError ? 'Each criteria should be less than 35 letters.' : ''}
             />
           </View>
 

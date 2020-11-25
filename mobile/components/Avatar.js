@@ -19,6 +19,8 @@ function Avatar({
   theme = 'primary', // primary, secondary
   size = 'medium', // small, medium, large
   avatarStyle,
+  imageStyle,
+  initialsStyle,
   isTouchable = false,
   showBorder = false,
   onPress = () => {},
@@ -53,7 +55,7 @@ function Avatar({
       ]}
     >
       <View style={hasLoaded && styles.initialsImageLoaded}>
-        <Text style={styles.initials}>{initials}</Text>
+        <Text style={[styles.initials, initialsStyle || {}]}>{initials}</Text>
       </View>
 
       {hasImage &&
@@ -63,6 +65,7 @@ function Avatar({
             styles[`${size}Image`],
             hasLoaded && styles.imageImageLoaded,
             showBorder && styles.activeBorder,
+            imageStyle || {}
           ]}
           source={{
             uri: imageSrc,

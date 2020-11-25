@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -68,6 +68,34 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
     callToActionHrefError.length > 0
   );
 
+  const [showHeadingError, setShowHeadingError] = useState(false)
+  const [showBodyError, setShowBodyError] = useState(false)
+  const [showHighlightsError, setShowHighlightsError] = useState(false)
+
+  const headingCheck = text => {
+    if (text.length === 0 || text.length === 65) {
+      setShowHeadingError(true)
+    } else {
+      setShowHeadingError(false)
+    }
+  }
+
+  const bodyCheck = text => {
+    if (text.length === 0 || text.length === 110) {
+      setShowBodyError(true)
+    } else {
+      setShowBodyError(false)
+    }
+  }
+
+  const highlightsCheck = credentials => {
+    if (credentials.filter(credential => credential.length === 0).length !== 0) {
+      setShowHighlightsError(true)
+    } else {
+      setShowHighlightsError(false)
+    }
+  }
+
   return (
     <SafeAreaView
       style={{flex: 1}}
@@ -96,10 +124,15 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
               label="Add a headline"
               placeholder="I'm available for and looking for an opportunity as an interior designer."
               value={heading}
-              onChange={setHeading}
+              onChange={(text) => {
+                setHeading(text)
+                headingCheck(text)
+              }}
               multiline={true}
               minHeight={50}
               maxHeight={50}
+              maxLength={65}
+              error={showHeadingError ? 'A headline should be less than 65 letters.' : ''}
             />
           </View>
 
@@ -108,10 +141,15 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
               label="Add body copy"
               placeholder="I’ve created, managed, and implemented every step of client projects - sourcing products and materials."
               value={body}
-              onChange={setBody}
+              onChange={text => {
+                setBody(text)
+                bodyCheck(text)
+              }}
               multiline={true}
               minHeight={100}
               maxHeight={100}
+              maxLength={110}
+              error={showBodyError ? 'The body should be less than 110 letters.' : ''}
             />
           </View>
 
@@ -125,7 +163,12 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
                 </View>
               )}
               renderPlaceholder={(option, index) => `Enter highlight ${index + 1}`}
-              onChange={credentials => setAvailabilityListing({ ...availabilityListing, credentials })}
+              maxLength="40"
+              onChange={credentials => {
+                setAvailabilityListing({ ...availabilityListing, credentials })
+                highlightsCheck(credentials)
+              }}
+              error={showHighlightsError ? 'Each text should be less than 40 letters.' : ''}
             />
           </View>
 
