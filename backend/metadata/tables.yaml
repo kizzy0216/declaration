@@ -978,11 +978,13 @@
   - role: super_admin
     permission:
       columns:
+      - content_uuid
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
+      - content_uuid
       - uuid
       filter: {}
   update_permissions:
@@ -2885,6 +2887,19 @@
         table:
           schema: public
           name: network_user_relationship
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
 - table:
     schema: public
     name: online_users_view
@@ -3482,6 +3497,19 @@
         table:
           schema: public
           name: network_user
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - comment
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
 - table:
     schema: public
     name: verification_code

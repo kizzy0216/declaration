@@ -166,12 +166,12 @@ export const ContentTilePagerContextProvider = ({ children }) => {
     }
   }, [flatListMethodsRef.current]);
 
-  const getItems = useCallback(() => {
+  const getItems = () => {
     setIsFetching(true)
     getContentOlder({
       requestPolicy: 'network-only'
     });
-  }, []);
+  }
 
   function deleteItem({ uuid }) {
     deleteContent({

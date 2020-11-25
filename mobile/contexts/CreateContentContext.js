@@ -78,6 +78,8 @@ export const CreateContentContextProvider = ({ children }) => {
   const [meta, setMeta] = useState(initialState().meta);
   const [media, setMedia] = useState(initialState().media);
   const [poll, setPoll] = useState(initialState().poll);
+  const [opportunityListing,setOpportunityListing] = useState(initialState().opportunityListing);
+  const [availabilityListing,setAvailabilityListing] = useState(initialState().availabilityListing);
 
   const clearSelections = () => {
     setType(initialState().type)
@@ -87,15 +89,9 @@ export const CreateContentContextProvider = ({ children }) => {
     setMeta(initialState().meta);
     setMedia(initialState().media);
     setPoll(initialState().poll);
+    setOpportunityListing(initialState().opportunityListing);
+    setAvailabilityListing(initialState().availabilityListing);
   }
-  const [
-    opportunityListing,
-    setOpportunityListing,
-  ] = useState(initialState().opportunityListing);
-  const [
-    availabilityListing,
-    setAvailabilityListing,
-  ] = useState(initialState().availabilityListing);
 
   const [
     insertContentResult,

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from 'urql';
-import { useFocusEffect } from '@react-navigation/native';
 import GetNetworkUsers from '~/queries/GetNetworkUsers';
 // import ScreenHeader from '~/components/ScreenHeader';
 import { NetworkContext } from '~/contexts/NetworkContext';
@@ -49,10 +48,10 @@ function SearchScreen({ navigation }) {
     pause: !activeNetwork.uuid,
   });
   
-  useFocusEffect(useCallback(() => {
+  useEffect(() => {
     getItems();
     getUsers();
-  }, []));
+  }, []);
 
   const {
     data: usersData,

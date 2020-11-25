@@ -96,7 +96,10 @@ const handlers = {
         })
         .toPromise();
 
-      return response.status(202).json({ message: 'Verification email sent' });
+      return response.status(202).json({ 
+        message: 'Verification email sent',
+        data: request.body.special_little_request ? redirectUrl.href : ''  //just for postman requests so i can avoid going to the database every time
+      });
     }
 
     // match email and code

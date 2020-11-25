@@ -23,6 +23,7 @@ function Button({
   isFetching,
   isDisabled,
   onPress = () => {},
+  onLongPress = () => {}
 }) {
   const spinnerFill = (
     theme === 'transparent' || theme === 'tertiary'
@@ -91,6 +92,7 @@ function Button({
     return (
       <BorderlessButton
         onPress={onPress}
+        onLongPress={onLongPress}
         disabled={isDisabled}
         containerStyle={{
           overflow: 'visible',
@@ -104,6 +106,7 @@ function Button({
   return (
     <TouchableOpacity
       onPress={onPress}
+      onLongPress={onLongPress}
       containerStyle={{
         overflow: 'visible',
       }}

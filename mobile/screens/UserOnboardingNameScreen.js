@@ -56,6 +56,7 @@ function UserOnboardingNameScreen({ navigation }) {
         <OnboardingHeader
           activePageIndex={0}
           countPages={COUNT_USER_ONBOARDING_REQUIRED_PAGES}
+          navigation={navigation}
         />
         <View style={styles.container}>
           <DisplayHeading style={styles.heading}>

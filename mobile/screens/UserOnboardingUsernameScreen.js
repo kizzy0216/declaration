@@ -26,7 +26,7 @@ import UserProfileUsernameInputContainer from '~/containers/UserProfileUsernameI
 
 function UserOnboardingUsernameScreen({ navigation }) {
   const { user } = useContext(UserContext);
-  const [username, setUsername] = useState(user.profile.username || '');
+  const [username, setUsername] = useState(user && user.profile ? user.profile.username || '' : '');
   const [isDisabled, setIsDisabled] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [
@@ -45,6 +45,7 @@ function UserOnboardingUsernameScreen({ navigation }) {
   }
 
   const handleSubmit = () => {
+    if (!user || !user.profile)  { return }
     if (user.profile.username === username) {
       return navigation.navigate('UserOnboardingDateOfBirth');
     }

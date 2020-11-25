@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'urql';
 import { LinearGradient } from 'expo-linear-gradient';
 import { setStatusBarStyle } from 'expo-status-bar';
-import { useFocusEffect } from '@react-navigation/native';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 
 import KenBurnsImage from '~/components/KenBurnsImage';
 import { UserContext } from '~/contexts/UserContext';
@@ -23,11 +23,12 @@ import DisplayHeading from '~/components/DisplayHeading';
 import Button from '~/components/Button';
 import InsertUserProfile from '~/mutations/InsertUserProfile';
 
-function UserOnboardingUsernameScreen({ navigation }) {
+function UserOnboardingWelcomeScreen({ navigation }) {
   const [hasSettled, setHasSettled] = useState(false);
   const {
     user,
     refresh: refreshUser,
+    logOut,
     hasProfile,
   } = useContext(UserContext);
   const [
@@ -45,7 +46,8 @@ function UserOnboardingUsernameScreen({ navigation }) {
   // ensure User has profile in database
   // TODO should probably move to some kind of webhook
   useEffect(() => {
-    if (!user.profile.uuid && user.uuid) {
+    if (!user) { return }
+    if (user.uuid && !user.profile.uuid) {
       insertProfile({
         user_uuid: user.uuid,
       }).then(() => {
@@ -93,9 +95,10 @@ function UserOnboardingUsernameScreen({ navigation }) {
         <View style={styles.footer}>
           <Button
             label="Register"
-            isDisabled={(!hasSettled && insertProfile.fetching) || !user.profile.uuid}
+            isDisabled={(!hasSettled && insertProfile.fetching) || (user && user.profile && !user.profile.uuid)}
             isFetching={insertProfile.fetching}
             onPress={() => navigation.navigate('UserOnboardingName')}
+            onLongPress={() => {logOut(); navigation.dispatch(StackActions.replace('Authentication'))}}
           />
         </View>
       </SafeAreaView>
@@ -159,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserOnboardingUsernameScreen;
+export default UserOnboardingWelcomeScreen;

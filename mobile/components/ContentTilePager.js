@@ -76,7 +76,7 @@ function ContentTilePager({filters}) {
     setActiveIndex(viewableIndex);
     setIsMenuModalActive(false);
     setIsCommentModalActive(false);
-  }, []);
+  }, [data]);
 
   const getItemLayout = useCallback((_, index) => ({
     length: WINDOW_HEIGHT,
@@ -84,12 +84,10 @@ function ContentTilePager({filters}) {
     index,
   }), [WINDOW_HEIGHT]);
 
-  const keyExtractor = useCallback(({ uuid }) => uuid, []);
+  const keyExtractor = useCallback(({ uuid }) => uuid, [data]);
 
-  const onRefresh = useCallback(() => 
-    getItems({ requestPolicy: 'network-only' })
-  , []);
-
+  const onRefresh = () => getItems({ requestPolicy: 'network-only' })
+  
   const sortItemsByCreatedAt = (a, b) => compareDesc(new Date(a.createdAt), new Date(b.createdAt));
   
   const data = useMemo(() => {

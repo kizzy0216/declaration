@@ -47,8 +47,13 @@ export const UserContextProvider = ({ children }) => {
     });
 
     loadUserId().then(uuid => {
-      setUuid(uuid);
-      // setHasLoadedUser(true);
+      if (uuid) {
+        setUuid(uuid);
+      } else {
+        // ugly way to tell the app that the uuid is not found
+        // this will flip hasSettled to true, which is the context gets loaded
+        setHasLoadedUser(true); 
+      }
     });
   }, []);
 
@@ -71,7 +76,8 @@ export const UserContextProvider = ({ children }) => {
   function logOut() {
     setHasFetched(false);
     setUser({});
-    saveUserId(null);
+    saveUserId();
+    setUuid(null);
     saveJWT(null);
   }
 
@@ -81,6 +87,7 @@ export const UserContextProvider = ({ children }) => {
   }) {
     setUser(user);
     saveUserId(user.uuid);
+    setUuid(user.uuid)
     saveJWT(jwt);
   }
 
@@ -114,7 +121,7 @@ export const UserContextProvider = ({ children }) => {
         user,
         hasSettled,
         hasFetched,
-        isAuthenticated: !!user.uuid,
+        isAuthenticated: uuid,
         isFetching,
         hasProfile,
         hasNetworks,

@@ -34,7 +34,7 @@ class ErrorBoundary extends React.Component {
     // alert(error.message)
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
     if (process.env.NODE_ENV !== 'development') {
-      saveUserId(null);
+      saveUserId();
       saveJWT(null);
     }
     // }
