@@ -31,7 +31,9 @@ function FeedScreen({ navigation }) {
       </SafeAreaView>
 
       <View style={styles.pagerWrapper}>
-        <ContentTilePager />
+        <ContentTilePager
+          hasBlackCommentBox={false}
+        />
       </View>
     </View>
   );

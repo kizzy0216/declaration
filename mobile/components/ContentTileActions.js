@@ -6,6 +6,7 @@ import NewHeartIcon from '@shared/components/icons/NewHeartIcon';
 import NewGreenHeartIcon from '@shared/components/icons/NewGreenHeartIcon';
 import CommentIcon from '@shared/components/icons/CommentIcon';
 import NewCommentIcon from '@shared/components/icons/NewCommentIcon';
+import NewGreenCommentIcon from '@shared/components/icons/NewGreenCommentIcon';
 import NewMessagesIcon from '@shared/components/icons/NewMessagesIcon';
 import ShareIcon from '@shared/components/icons/ShareIcon';
 import KebabIcon from '@shared/components/icons/KebabIcon';
@@ -29,6 +30,7 @@ const DARK_FILL = '#222';
 function ContentTileActions({
   controls = {},
   isStarred,
+  isCommented,
   onStarPress = () => {},
   onCommentPress = () => {},
   onMenuPress = () => {},
@@ -105,7 +107,7 @@ function ContentTileActions({
 
   useEffect(() => {
     Animated.timing(hideLeftAnimation, {
-      toValue: (isLeftHidden ? 1 : 0),
+      toValue: (isLeftHidden ? 0 : 0),
       duration: 200,
       useNativeDriver: true,
     }).start();
@@ -175,9 +177,12 @@ function ContentTileActions({
           style={styles.action}
           onPress={() => onCommentPress()}
         >
-          <NewCommentIcon
-            fill={theme === 'light' ? '#fff' : '#222'}
-          />
+          {isCommented ?
+            <NewGreenCommentIcon /> :
+            <NewCommentIcon
+              fill={theme === 'light' ? '#fff' : '#222'}
+            />
+          }
           <Text
             style={{
               ...styles.count,

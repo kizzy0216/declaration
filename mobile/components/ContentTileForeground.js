@@ -49,7 +49,6 @@ function ContentTileForeground({
                   styles.heading,
                 ]}
                 numberOfLines={15}
-                ellipsizeMode="tail"
               >
                 {heading}
               </Text>
