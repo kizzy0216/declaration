@@ -57,7 +57,7 @@ const ContactSelector = ({selectContact, selectedIds}) => {
         try {
             if (value !== '') {
                 const lowerValue = value.toLowerCase()
-                const newList = dataList.filter(item => 
+                const newList = dataList.filter(item =>
                     item.name.toLowerCase().includes(lowerValue) ||
                     (item.profile.workTitle && item.profile.workTitle.toLowerCase().includes(lowerValue))
                 )
@@ -86,7 +86,7 @@ const ContactSelector = ({selectContact, selectedIds}) => {
                         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                             <Text style={styles.searchHeading}>Nobody here</Text>
                         </View>
-                    ) : <ScrollView showsVerticalScrollIndicator={false} style={contactListStyles.list}>
+                    ) : <View>
                         {userList.map((contact, idx) => (
                             <ContactItem
                                 key={idx}
@@ -95,7 +95,7 @@ const ContactSelector = ({selectContact, selectedIds}) => {
                                 selected={selectedIds.includes(contact.uuid)}
                             />
                             ))}
-                    </ScrollView>
+                    </View>
                     }
                 </View>
             </View>
@@ -105,8 +105,8 @@ const ContactSelector = ({selectContact, selectedIds}) => {
 
 const styles = StyleSheet.create({
     root: {
-        width: wp('100%'),
-        paddingHorizontal: 30,
+        // width: wp('100%'),
+        // paddingHorizontal: 30,
         backgroundColor: '#fff',
         flex: 1
     },
@@ -135,12 +135,5 @@ const contactListStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    listContainer: {
-        marginBottom: 100
-        // marginBottom: 80
-    },
-    list: {
-        // marginBottom: 80
-    }
 })
 export default ContactSelector

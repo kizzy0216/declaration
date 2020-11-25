@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
     borderWidth: 2,
     borderColor: 'white',
-    borderRadius: 30,
+    borderRadius: 22,
     overflow: 'hidden',
   },
 });

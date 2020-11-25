@@ -39,7 +39,7 @@ function MessagingHomeScreen({ navigation }) {
         setFilterValue('')
         refresh()
     }, [navigation]);
-    
+
     // useEffect(() => {
     //     setFilterValue('')
     //     refresh()
@@ -67,7 +67,7 @@ function MessagingHomeScreen({ navigation }) {
                 const filteredLoops = loopData.filter(item => item.name.toLowerCase().includes(lowerValue))
                 setLoops(filteredLoops)
                 const filteredConversations = conversationData.filter(item => {
-                    return item.conversation_users.some(x => 
+                    return item.conversation_users.some(x =>
                         x.user && x.user.name && x.user.name.toLowerCase().includes(lowerValue))
                 })
                 setConversations(filteredConversations)
@@ -97,7 +97,7 @@ function MessagingHomeScreen({ navigation }) {
                 }
                 rightElement={<></>}
             />
-            <ScrollView 
+            <ScrollView
                 style={styles.root}
                 contentContainerStyle={{paddingBottom: 80}}
                 refreshControl={
@@ -137,7 +137,7 @@ function MessagingHomeScreen({ navigation }) {
                         </View>
 
                         <View style={loopsStyles.content}>
-                            {(loops && loops.length !== 0) ? 
+                            {(loops && loops.length !== 0) ?
                                 (
                                     <View style={styles.fullWidthContainer}>
                                         {loops.map((loop, idx) => (
@@ -161,40 +161,42 @@ function MessagingHomeScreen({ navigation }) {
                 </View>
 
                 <View style={conversationStyles.container}>
-                    <View style={conversationStyles.header}>
-                        <Text style={conversationStyles.title}>Direct messages</Text>
-                        <TouchableOpacity
-                            style={styles.plusButton}
-                            onPress={() => navigation.navigate('NewConversation')}
-                            >
-                                <PlusIcon
-                                    width={14}
-                                    height={14}
-                                    fill={'#000000'}
-                                />
-                        </TouchableOpacity>
-                    </View>
+                    <View style={conversationStyles.conversations}>
+                        <View style={conversationStyles.header}>
+                            <Text style={conversationStyles.title}>Direct messages</Text>
+                            <TouchableOpacity
+                                style={styles.plusButton}
+                                onPress={() => navigation.navigate('NewConversation')}
+                                >
+                                    <PlusIcon
+                                        width={14}
+                                        height={14}
+                                        fill={'#000000'}
+                                    />
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={conversationStyles.content}>
-                        {(conversations && conversations.length !== 0) ? 
-                            (
-                                <View style={styles.fullWidthContainer}>
-                                    {conversations.map((conversation, idx) => (
-                                        <ConversationItem
-                                            key={idx}
-                                            conversation={conversation}
-                                            deleteItem={removeConversation}
-                                        />
-                                    ))}
-                                </View>
-                            ) : (
-                            <>
-                                <Chat style={conversationStyles.chatSvg} />
-                                <Text style={conversationStyles.intro}>
-                                    Connect and engage directly with members anywhere in the world about the things you care about the most.
-                                </Text>
-                            </>
-                        )}
+                        <View style={conversationStyles.content}>
+                            {(conversations && conversations.length !== 0) ?
+                                (
+                                    <View style={styles.fullWidthContainer}>
+                                        {conversations.map((conversation, idx) => (
+                                            <ConversationItem
+                                                key={idx}
+                                                conversation={conversation}
+                                                deleteItem={removeConversation}
+                                            />
+                                        ))}
+                                    </View>
+                                ) : (
+                                <>
+                                    <Chat style={conversationStyles.chatSvg} />
+                                    <Text style={conversationStyles.intro}>
+                                        Connect and engage directly with members anywhere in the world about the things you care about the most.
+                                    </Text>
+                                </>
+                            )}
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -208,7 +210,8 @@ const styles = StyleSheet.create({
         width: wp('100%'),
     },
     root: {
-        backgroundColor: '#6ac2bd',
+        // backgroundColor: '#6ac2bd',
+        backgroundColor: '#fff',
         height: '100%'
     },
     plusButton: {
@@ -305,6 +308,9 @@ const loopsStyles = StyleSheet.create({
 
 const conversationStyles = StyleSheet.create({
     container: {
+        backgroundColor: '#6ac2bd'
+    },
+    conversations: {
         height: '100%',
         backgroundColor: '#fdfdfd',
         borderTopLeftRadius: 40,

@@ -96,7 +96,6 @@ function ContentTileByline({
                 styles[theme],
               ]}
               numberOfLines={3}
-              ellipsizeMode="tail"
             >
               {meta.description}
             </Text>

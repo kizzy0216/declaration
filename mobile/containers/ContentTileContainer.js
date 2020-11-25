@@ -16,6 +16,7 @@ import ContentTile from '~/components/ContentTile';
 function ContentTileContainer({
   uuid: contentUuid,
   poll,
+  hasBlackCommentBox,
   starsByAstronomerUuid = {},
   ...props
 }) {
@@ -84,6 +85,7 @@ function ContentTileContainer({
         onStar={handleStar}
         onUnStar={handleUnStar}
         onCreatorPress={handleCreatorPress}
+        hasBlackCommentBox={hasBlackCommentBox}
         {...props}
       />
   );

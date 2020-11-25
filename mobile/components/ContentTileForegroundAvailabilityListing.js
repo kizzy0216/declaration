@@ -49,7 +49,6 @@ function ContentTileForegroundAvailabilityListing({
             styles[theme],
           ]}
           numberOfLines={2}
-          ellipsizeMode="tail"
         >
           {heading}
         </Text>
@@ -67,7 +66,6 @@ function ContentTileForegroundAvailabilityListing({
             styles[theme],
           ]}
           numberOfLines={4}
-          ellipsizeMode="tail"
         >
           {body}
         </Text>
@@ -92,7 +90,6 @@ function ContentTileForegroundAvailabilityListing({
                   styles[theme],
                 ]}
                 numberOfLines={2}
-                ellipsizeMode="tail"
               >
                 {'\u2022 '}
                 {credential.text}

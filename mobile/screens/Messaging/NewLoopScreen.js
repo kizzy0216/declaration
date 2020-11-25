@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Text,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native'
 
 // import {
@@ -24,16 +25,7 @@ import InsertLoop from '../../mutations/InsertLoop'
 import { UserContext } from '../../contexts/UserContext'
 import { NetworkContext } from '../../contexts/NetworkContext'
 import isValidLoopName from '@shared/utils/isValidLoopName';
-
-// const testingData = []
-//     {id: '1', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: true},
-//     {id: '2', firstName: 'Ryan', lastName: 'Edmonson', position: 'Interaction Designer', photoUrl: require('../../assets/images/avatar/azamat-zhanisov-a5sRFieA3BY-unsplash.jpg'), onLine: false},
-//     {id: '3', firstName: 'Amber', lastName: 'Alexander', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: false},
-//     {id: '4', firstName: 'Daniel', lastName: 'Raddson', position: 'Brand Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
-//     {id: '5', firstName: 'Susan', lastName: 'Mitchell', position: 'Founder and CEO', photoUrl: require('../../assets/images/avatar/daniil-lobachev-jn-nsWeYOrY-unsplash.jpg'), onLine: false},
-//     {id: '6', firstName: 'Susan', lastName: 'Mitchell', position: 'Project Manager', photoUrl: require('../../assets/images/avatar/alexandru-zdrobau--djRG1vB1pw-unsplash.jpg'), onLine: false},
-//     {id: '7', firstName: 'Susan', lastName: 'Mitchell', position: 'Marketing Director', photoUrl: require('../../assets/images/avatar/carlos-vaz-KP4bxnxAilU-unsplash.jpg'), onLine: true},
-// ]
+import KeyboardSpacer from '../../components/KeyboardSpacer';
 
 const NewLoopScreen = ({navigation}) => {
     const { user } = useContext(UserContext);
@@ -55,19 +47,19 @@ const NewLoopScreen = ({navigation}) => {
     const handleSubmit = () => {
         const loopName = name.trim().replace(' ', '_').replace('.', '-')
         const validation = isValidLoopName(loopName)
-        if (!validation.isValid) { 
+        if (!validation.isValid) {
             alert(validation.error)
-            return 
+            return
         }
-        const variables = { 
-            name: loopName, 
-            network_uuid: activeNetwork.uuid,  
+        const variables = {
+            name: loopName,
+            network_uuid: activeNetwork.uuid,
             user_data: [...selectedIds.map(x => ({ user_uuid: x})), {user_uuid: user.uuid}],
             is_private: !loopPublic
         }
         insertLoop(variables).then(result => {
-            if (result.error) { 
-                console.error('LOOP INSERT ISSUE', result.error) 
+            if (result.error) {
+                console.error('LOOP INSERT ISSUE', result.error)
             } else {
                 setSelectedIds([])
                 setName('')
@@ -77,7 +69,8 @@ const NewLoopScreen = ({navigation}) => {
         })
     }
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
+        // <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.root}>
+        <View style={styles.root}>
                 {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
 
             <View style={headerStyles.container}>
@@ -90,32 +83,35 @@ const NewLoopScreen = ({navigation}) => {
                         <Text style={headerStyles.rightButtonText}>Share</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={headerStyles.searchBoxContainer}>
-                    <Text style={headerStyles.searchHeading}>Make Public</Text>
-                    <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
-                        <Text>Anyone can join this loop</Text>
-                        <View>
-                            {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
+                <ScrollView>
+                    <View style={headerStyles.searchBoxContainer}>
+                        <Text style={headerStyles.searchHeading}>Make Public</Text>
+                        <View style={[headerStyles.searchBox, headerStyles.publicBox]}>
+                            <Text>Anyone can join this loop</Text>
+                            <View>
+                                {loopPublic ? <ToggleSwitchOn onPress={() => setLoopPublic(false)} /> : <ToggleSwitchOff onPress={() => setLoopPublic(true)} />}
+                            </View>
                         </View>
                     </View>
-                </View>
-                <View style={headerStyles.searchBoxContainer}>
-                    <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
-                    <TextInput
-                        placeholder="Name this loop"
-                        placeholderTextColor="#979797"
-                        style={headerStyles.searchBox}
-                        autoCapitalize="none"
-                        value={name}
-                        onChangeText={text => setName(text.toLowerCase().replace(' ', '_').replace('.', '-'))}
+                    <View style={headerStyles.searchBoxContainer}>
+                        <Text style={headerStyles.searchHeading}>Name (lowercase, no spaces or periods)</Text>
+                        <TextInput
+                            placeholder="Name this loop"
+                            placeholderTextColor="#979797"
+                            style={headerStyles.searchBox}
+                            autoCapitalize="none"
+                            value={name}
+                            onChangeText={text => setName(text.toLowerCase().replace(' ', '_').replace('.', '-'))}
+                        />
+                    </View>
+                    <ContactSelector
+                        selectContact={selectContact}
+                        selectedIds={selectedIds}
                     />
-                </View>
+                    <KeyboardSpacer />
+                </ScrollView>
             </View>
-            <ContactSelector 
-                selectContact={selectContact} 
-                selectedIds={selectedIds} 
-            />
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 

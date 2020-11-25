@@ -23,7 +23,10 @@ import {
   WINDOW_HEIGHT,
 } from '~/constants';
 
-function ContentTilePager({filters}) {
+function ContentTilePager({
+  filters,
+  hasBlackCommentBox = true
+}) {
   const flatListRef = useRef();
   const [isMenuModalActive, setIsMenuModalActive] = useState(false);
   const [isCommentModalActive, setIsCommentModalActive] = useState(false);
@@ -54,6 +57,7 @@ function ContentTilePager({filters}) {
 
   const renderItem = useCallback(({ item, index }) => (
     <ContentTileContainer
+      hasBlackCommentBox={hasBlackCommentBox}
       {...item}
       key={item.uuid}
       index={index}

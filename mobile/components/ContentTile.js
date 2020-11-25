@@ -9,7 +9,12 @@ import {
   Animated,
   View,
   StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Text
 } from 'react-native';
+import { useQuery, useMutation } from 'urql';
+
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import ViewShot from 'react-native-view-shot';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
@@ -19,6 +24,11 @@ import ContentTileForeground from '~/components/ContentTileForeground';
 import ContentTileBackground from '~/components/ContentTileBackground';
 import ContentTileFooter from '~/components/ContentTileFooter';
 import ContentTileFeedback from '~/components/ContentTileFeedback';
+
+import KeyboardSpacer from '~/components/KeyboardSpacer'
+import Button from '~/components/Button';
+import InsertContentComment from '~/mutations/InsertContentComment';
+
 import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import {
   WINDOW_WIDTH,
@@ -49,6 +59,7 @@ function ContentTile({
   creator,
   meta,
   isStarred,
+  hasBlackCommentBox,
   onMenuRequest = () => {},
   onShareRequest = () => {},
   onCommentRequest = () => {},
@@ -70,6 +81,33 @@ function ContentTile({
   const [feedbackType, setFeedbackType] = useState('');
   const [isVideoMuted, setIsVideoMuted] = useState(true);
 
+  // blackCommentBox part
+  const {
+    itemUuids: contentItemUuids,
+    // items: contentItems,
+    activeIndex: activeContentIndex,
+  } = useContext(ContentTilePagerContext);
+  const [comment, setComment] = useState('')
+  const [activeCommentId, setActiveCommmentId] = useState(null);
+  const contentUuid = contentItemUuids[activeContentIndex];
+  const [insertCommentResult, insertComment] = useMutation(InsertContentComment);
+
+  function handleSubmit() {
+    insertComment({
+      text: comment,
+      content_uuid: contentUuid,
+      parent_comment_uuid: activeCommentId,
+      ancestors: activeCommentId ? ([
+        { ancestor_uuid: activeCommentId },
+        ...activeComment.ancestors.map(({ uuid }) => ({
+          ancestor_uuid: uuid,
+        })),
+      ]) : [],
+    });
+
+    setComment('')
+  }
+
   const controls = {
     hasImage: (
       media &&
@@ -86,7 +124,7 @@ function ContentTile({
       media &&
       media.uri && (
         media.uri.includes('.mp4') ||
-        media.uri.includes('.mov') 
+        media.uri.includes('.mov')
       )
     ),
     isVideoPlaying,
@@ -199,7 +237,7 @@ function ContentTile({
   const theme = (
     (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
   );
-  
+
   return (
     <ViewShot ref={viewPanel} options={{ format: 'png', quality: 0.8 }}>
     <View style={styles.contentTile}>
@@ -299,8 +337,43 @@ function ContentTile({
             onFullscreenToggle={setIsFullscreen}
           />
         </Animated.View>
+
+        {hasBlackCommentBox ? (
+          <Animated.View
+            style={{
+              ...styles.commentBox,
+              opacity: fullscreenAnimation.interpolate({
+                inputRange: [0, 0.5],
+                outputRange: [1, 0],
+              }),
+            }}
+            pointerEvents="box-none"
+          >
+            <View style={styles.commentBoxContainer}>
+              <TextInput
+                placeholder="Add comment..."
+                placeholderTextColor="#999"
+                multiline
+                value={comment}
+                onChangeText={text => setComment(text)}
+                style={{
+                  fontSize: 14,
+                  fontWeight: '400',
+                  color: '#fff'
+                }}
+              />
+              <TouchableOpacity
+                style={styles.replyButtonWrapper}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.replyButtonLabel}>Reply</Text>
+              </TouchableOpacity>
+            </View>
+            <KeyboardSpacer />
+          </Animated.View>
+        ) : null}
       </View>
-      {isFullscreen ? 
+      {isFullscreen ?
         <View style={{position: 'absolute', bottom: 50, right: 34}}>
           <TouchableOpacity
             onPress={() => setIsFullscreen(false)}>
@@ -308,7 +381,7 @@ function ContentTile({
               width={30}
               height={30}
               fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-            /> 
+            />
           </TouchableOpacity>
         </View>
       : <></> }
@@ -353,6 +426,31 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 4,
   },
+  commentBox: {
+    minHeight: 90,
+    backgroundColor: '#222',
+    zIndex: 5,
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    borderTopEndRadius: 30,
+    borderTopStartRadius: 30,
+    padding: 20
+  },
+  commentBoxContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  replyButtonWrapper: {
+    marginHorizontal: 10,
+  },
+  replyButtonLabel: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+    marginVertical: 3
+  }
 });
 
 export default ContentTile;
