@@ -105,20 +105,30 @@ export const ContentTilePagerContextProvider = ({ children }) => {
         .content
         .map(mapContent);
 
-      setItems({
+      const newItems = {
         ...items,
         ...mappedContent.reduce((accumulator, content) => {
           accumulator[content.uuid] = content;
           return accumulator;
         }, {}),
-      });
+      }
 
-      setItemUuids([
+      const newUuids = [
         ...new Set([
           ...itemUuids,
           ...mappedContent.map(({ uuid }) => uuid),
         ]),
-      ]);
+      ]
+
+      setItems(newItems);
+      setItemUuids(newUuids);
+      
+      const currentUuid = newUuids[activeIndex];
+      // console.log('INDEX', activeIndex, items)
+      if (currentUuid) {
+        const i = newItems[currentUuid]
+        if (i) { setActiveItem(i) }
+      }
     }
     setIsFetching(false)
   }, [getContentResult.data]);

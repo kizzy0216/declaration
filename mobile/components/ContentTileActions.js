@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useContext } from 'react';
+import React, { useRef, useEffect, useMemo, useContext, useState } from 'react';
 import { Animated, View, StyleSheet, Text } from 'react-native';
 import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handler';
 import HeartIcon from '@shared/components/icons/HeartIcon';
@@ -44,7 +44,10 @@ function ContentTileActions({
   const theme = (
     (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
   );
+  
+  useEffect(() => {
 
+  },[activeItem, activeItem.uuid])
   useEffect(() => {
     Animated.timing(hideLeftAnimation, {
       toValue: (isLeftHidden ? 0 : 0),
