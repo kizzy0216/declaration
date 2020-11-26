@@ -163,7 +163,7 @@ function CreateContentAvailabilityListingScreen({ navigation }) {
                 </View>
               )}
               renderPlaceholder={(option, index) => `Enter highlight ${index + 1}`}
-              maxLength="40"
+              maxLength={40}
               onChange={credentials => {
                 setAvailabilityListing({ ...availabilityListing, credentials })
                 highlightsCheck(credentials)

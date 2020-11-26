@@ -27,7 +27,8 @@ const ContactItem = ({
                     imageSrc={contact.profile.photo}
                     name={contact.name}
                     initialsStyle={{
-                        fontSize: 18
+                        fontSize: 18,
+                        fontWeight: '400'
                     }}
                     avatarStyle={{
                         width: 50,
