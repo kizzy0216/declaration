@@ -10,7 +10,6 @@ import {
   View,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
   Text
 } from 'react-native';
 import { useQuery, useMutation } from 'urql';
