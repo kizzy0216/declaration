@@ -14,12 +14,7 @@ import NewFullScreenIcon from '@shared/components/icons/NewFullscreenIcon';
 import NormalScreenIcon from '@shared/components/icons/NormalScreenIcon';
 import AudioIcon from '@shared/components/icons/AudioIcon';
 import NoAudioIcon from '@shared/components/icons/NoAudioIcon';
-
-import { GREEN } from '~/constants';
-// import withBadge from '../components/withBadge'
-// import { useSubscription } from 'urql';
-// import subscribeCommentCount from '../queries/subscribeCommentCount';
-// import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
+import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 
 // const LIGHT_FILL = 'rgba(255,255,255, 0.8)';
 const LIGHT_FILL = '#fff';
@@ -35,65 +30,10 @@ function ContentTileActions({
   onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
-//   const subscribeCommentCount = `
-//   subscription MyQuery($contentUUID: uuid) {
-//     content(where: {uuid: {_eq: $contentUUID}}) {
-//       content_comments_aggregate {
-//         aggregate {
-//           count
-//         }
-//       }
-//     }
-//   }
-// `;
-  // const {
-  //   itemUuids: contentItemUuids,
-  //   activeIndex: activeContentIndex,
-  // } = useContext(ContentTilePagerContext);
-  // const contentUuid = contentItemUuids[activeContentIndex];
 
-  // const [ commentCountResult ] =  useSubscription({ query: subscribeCommentCount,
-  //     variables: {
-  //       content_uuid: contentUuid
-  //     }
-  // })
+  const { activeItem } = useContext(ContentTilePagerContext);
 
-  // const [ subResult ] =
-  // useSubscription({
-  //   query: subscribeCommentCount,
-  //   variables: {
-  //     contentUUID: contentUuid
-  //   }
-  // }, (initValue, result) => {
-  //     console.log('New', new Date())
-  //     console.log('FIRST PARAM', initValue)
-  //     console.log('NEW RESULT', result)
-  //   }
-  // )
-  // if (subResult && subResult.error) {
-  //   console.log('SUB ERROR', new Date(), subResult.error.message)
-  // }
-  // if (subResult && subResult.fetching) {
-  //   console.log('FETCHIING', new Date())
-  // }
-  // if (subResult && subResult.data) {
-  //   console.log('DATA!!!!', new Date(), subResult.data)
-  // }
-    // (_, result) => {
-    //   console.log('NEW RESULT', new Date(), result)
-    // })
-
-
-  // React.useEffect(() => {
-  //   if (commentCountResult) {
-  //     console.log('RESULT', new Date(), commentCountResult)
-  //   }
-  // }, [commentCountResult]);
-  // const panRef = useRef();
-  // const [isPanning, setIsPanning] = useState(false);
-  // const featureStarAnimation = useRef(new Animated.Value(0)).current;
   const hideLeftAnimation = useRef(new Animated.Value(0)).current;
-  // const { focus } = useContext(ContentTilePagerContext);
 
   const isLeftHidden = (
     controls.isFullscreen
@@ -111,7 +51,6 @@ function ContentTileActions({
     }).start();
   }, [isLeftHidden]);
 
-  // const BadgedIcon = withBadge(3)(CommentIcon)
   return (
     <View
       style={styles.actions}
@@ -133,42 +72,15 @@ function ContentTileActions({
           maxDurationMs={200}
         >
           <View style={[styles.action, styles.starAction]}>
-            {isStarred ? (
-              <>
-                <NewGreenHeartIcon />
-                <Text
-                  style={{
-                    ...styles.count,
-                    color: (theme === 'light' ? '#fff' : '#222')
-                  }}
-                >
-                  24
-                </Text>
-              </>
-            ) : (
-              <>
-                <NewHeartIcon
-                  fill={theme === 'light' ? '#fff' : '#222'}
-                />
-                <Text
-                  style={{
-                    ...styles.count,
-                    color: (theme === 'light' ? '#fff' : '#222')
-                  }}
-                >
-                  24
-                </Text>
-              </>
-            )}
-            {/* <HeartIcon
-              width={36}
-              height={36}
-              fill={(
-                isStarred
-                  ? GREEN
-                  : (theme === 'light' ? LIGHT_FILL : DARK_FILL)
-              )}
-            /> */}
+            {isStarred ? <NewGreenHeartIcon /> : <NewHeartIcon fill={theme === 'light' ? '#fff' : '#222'} />}
+            <Text
+              style={{
+                ...styles.count,
+                color: (theme === 'light' ? '#fff' : '#222')
+              }}
+            >
+              {activeItem?.content_stars_aggregate?.aggregate ? activeItem?.content_stars_aggregate?.aggregate.count : ''  }
+            </Text>
           </View>
         </TapGestureHandler>
         <TouchableOpacity
@@ -184,13 +96,8 @@ function ContentTileActions({
               color: theme === 'light' ? '#fff' : '#222'
             }}
           >
-            15
+            {activeItem?.content_comments_aggregate?.aggregate ? activeItem?.content_comments_aggregate?.aggregate.count : ''  }
           </Text>
-          {/* <CommentIcon
-            width={24}
-            height={24}
-            fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-          /> */}
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -211,23 +118,7 @@ function ContentTileActions({
           >
             4
           </Text>
-          {/* <ShareIcon
-            width={24}
-            height={24}
-            fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-          /> */}
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={styles.action}
-          onPress={() => onMenuPress()}
-        >
-          <KebabIcon
-            width={24}
-            height={24}
-            fill={theme === 'light' ? LIGHT_FILL : DARK_FILL}
-          />
-        </TouchableOpacity> */}
-
 
         <Animated.View
           style={{

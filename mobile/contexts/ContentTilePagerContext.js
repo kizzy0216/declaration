@@ -18,6 +18,7 @@ export const ContentTilePagerContext = createContext({
   itemUuids: [],
   items: {},
   activeIndex: 0,
+  activeItem: {},
   shouldReRender: 0,
   isFetching: false,
   isFetchingOlderItems: false,
@@ -39,6 +40,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   const [itemUuids, setItemUuids] = useState([]);
   const [items, setItems] = useState({});
   const [isFetching, setIsFetching] = useState(false);
+  const [activeItem, setActiveItem] = useState({})
   // const [firstItemCreatedAt, setFirstItemCreatedAt] = useState(null);
   // const [lastItemCreatedAt, setLastItemCreatedAt] = useState(null);
   // previously lifted the whole flatListRef up, but calling flatListRef
@@ -83,6 +85,19 @@ export const ContentTilePagerContextProvider = ({ children }) => {
   // const isFetchingNewerItems = false; // getContentNewerResult.fetching;
   const isFetchingOlderItems = getContentResult.fetching;
 
+  useEffect(() => {
+    try {
+      const contentUuid = itemUuids[activeIndex];
+      
+      // console.log('INDEX', activeIndex, items)
+      if (contentUuid) {
+        const i = items[contentUuid]
+        if (i) { setActiveItem(i) }
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [itemUuids, activeIndex])
   useEffect(() => {
     if (getContentResult.data && getContentResult.data.content) {
       const mappedContent = getContentResult
@@ -197,6 +212,7 @@ export const ContentTilePagerContextProvider = ({ children }) => {
         itemUuids,
         items,
         activeIndex,
+        activeItem,
         shouldReRender,
         isFetching,
         isFetchingOlderItems,
