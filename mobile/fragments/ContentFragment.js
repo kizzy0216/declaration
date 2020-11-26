@@ -99,6 +99,16 @@ const ContentFragment = `
       uuid
       description
     }
+    content_comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    content_stars_aggregate {
+      aggregate {
+        count
+      }
+    }
     content_stars(
       where: {astronomer_uuid: {_eq: $viewer_uuid}}
     ) {

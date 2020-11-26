@@ -16,7 +16,6 @@ function UserResolutionScreen ({ navigation, route }) {
     if (isFetching) {
       return;
     }
-
     if (!isAuthenticated) {
       return navigation.dispatch(
         StackActions.replace('Authentication', {

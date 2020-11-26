@@ -35,7 +35,7 @@ export const saveJWT = (jwt) => {
 // (github.com/neverdull-agency/expo-unlimited-secure-store)
 // method to securely and reliably store strings larger than 2048.
 export const saveUserId = (uuid) => {
-  return SecureStore.setItemAsync('user', uuid)  // JSON.stringify(user))
+  return SecureStore.setItemAsync('user', uuid || '')  // JSON.stringify(user))
 };
 
 export const loadUserId = async () => {

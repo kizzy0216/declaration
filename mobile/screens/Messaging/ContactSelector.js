@@ -7,7 +7,6 @@ import {
     View,
 } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useFocusEffect } from '@react-navigation/native';
 import { useQuery } from 'urql';
 import { NetworkContext } from '~/contexts/NetworkContext';
 import { UserContext } from '~/contexts/UserContext';
@@ -35,9 +34,9 @@ const ContactSelector = ({selectContact, selectedIds}) => {
       pause: !activeNetwork.uuid,
     });
 
-    useFocusEffect(useCallback(() => {
+    useEffect(() => {
         getUsers({requestPolicy: 'network-only'});
-    }, []));
+    }, []);
 
     useEffect(() => {
         if (getUsersResult.error) {

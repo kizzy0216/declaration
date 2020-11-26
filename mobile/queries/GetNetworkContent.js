@@ -1,18 +1,16 @@
 import ContentFragment from '~/fragments/ContentFragment';
 
-const GetNetworkContentOlder = `
+const GetNetworkContent = `
   ${ContentFragment}
-  query GetNetworkContentOlder(
+  query GetNetworkContent(
     $network_uuid: uuid,
     $viewer_uuid: uuid,
-    $limit: Int = 20,
-    $created_at_before: timestamptz
+    $limit: Int = 20
   ) {
     content(
       limit: $limit,
       where: {
-        network_uuid: {_eq: $network_uuid},
-        created_at: {_lt: $created_at_before}
+        network_uuid: {_eq: $network_uuid}
       },
       order_by: {created_at: desc}
     ) {
@@ -21,4 +19,4 @@ const GetNetworkContentOlder = `
   }
 `;
 
-export default GetNetworkContentOlder;
+export default GetNetworkContent;

@@ -266,7 +266,7 @@ const ChatScreen = ({ navigation, route }) => {
                 </View>
             </View>
             <MessageList
-                chatMessages={chatMessages}
+                chatMessages={chatMessages || []}
                 channel_uuid={channel.uuid}
                 isLoop={Boolean(channel && channel.__typename === 'loop')} 
             />

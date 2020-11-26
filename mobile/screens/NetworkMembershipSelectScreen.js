@@ -52,7 +52,9 @@ function NetworkMembershipSelectScreen({ navigation, route }) {
   function handleLogOut() {
     logOut()
     navigation.dispatch(
-      StackActions.replace('Authentication')
+      StackActions.replace('Authentication', {
+        screen: 'UserResolution',
+      })
     );
   }
 

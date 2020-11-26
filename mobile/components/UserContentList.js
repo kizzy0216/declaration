@@ -1,10 +1,9 @@
-import React, { useMemo, useState, useContext, useCallback } from 'react';
+import React, { useMemo, useState, useContext, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import ContentCard from '~/components/ContentCard';
 
@@ -16,9 +15,9 @@ function UserContentList({user, astronomer, emptyComponent}) {
   const [contentList, setContentList] = useState();
   const { getItems, itemUuids: postIds, items: posts } = useContext(ContentTilePagerContext);
   
-  useFocusEffect(useCallback(() => {
+  useEffect(() => {
     getItems();
-  }, []));
+  }, []);
 
   const mappedPosts = useMemo(() => {
     return postIds.map((uuid) => posts[uuid]);

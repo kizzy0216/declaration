@@ -591,6 +591,7 @@
       - updated_at
       - uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -607,6 +608,7 @@
       - network_uuid
       - uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
@@ -978,11 +980,13 @@
   - role: super_admin
     permission:
       columns:
+      - content_uuid
       - uuid
       filter: {}
   - role: user
     permission:
       columns:
+      - content_uuid
       - uuid
       filter: {}
   update_permissions:
@@ -1471,6 +1475,7 @@
       - astronomer_uuid
       - content_uuid
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -1478,6 +1483,7 @@
       - astronomer_uuid
       - content_uuid
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: super_admin
     permission:
@@ -2885,6 +2891,19 @@
         table:
           schema: public
           name: network_user_relationship
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
 - table:
     schema: public
     name: online_users_view
@@ -3482,6 +3501,19 @@
         table:
           schema: public
           name: network_user
+  select_permissions:
+  - role: super_admin
+    permission:
+      columns:
+      - text
+      - comment
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - comment
+      - text
+      filter: {}
 - table:
     schema: public
     name: verification_code
