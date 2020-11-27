@@ -33,10 +33,10 @@ class ErrorBoundary extends React.Component {
     Sentry.captureException(error);
     // alert(error.message)
     // Clear stored User and JWT as it can be throwing an error due to it being corrupt
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
       saveUserId();
       saveJWT(null);
-    }
+    // }
     // }
   }
 
