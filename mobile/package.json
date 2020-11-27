@@ -1,6 +1,6 @@
 {
   "name": "declaration-mobile",
-  "version": "0.3.8",
+  "version": "0.3.14",
   "main": "node_modules/expo/AppEntry.js",
   "description": "Declaration Mobile app",
   "scripts": {

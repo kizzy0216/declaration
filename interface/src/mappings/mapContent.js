@@ -81,6 +81,8 @@ const mapContent = ({
   content_partial = {},
   content_stars = [],
   created_at,
+  content_stars_aggregate,
+  content_comments_aggregate,
 }) => ({
   uuid,
   heading,
@@ -100,6 +102,8 @@ const mapContent = ({
   }, {}),
   createdAt: created_at && mapDateTime(created_at),
   createdAtTimestampTz: created_at,
+  likes: content_stars_aggregate.aggregate.count,
+  comments: content_comments_aggregate.aggregate.count,
 });
 
 export default mapContent;

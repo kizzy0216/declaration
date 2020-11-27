@@ -18,6 +18,8 @@ function ContentTileFooter({
   creator,
   meta,
   controls = {},
+  likes,
+  comments,
   // starAnimation,
   isStarred = false,
   isCommented = false,
@@ -75,6 +77,8 @@ function ContentTileFooter({
       <View style={{flex: 1}}>
         <ContentTileActions
           controls={controls}
+          likes={likes}
+          comments={comments}
           // starAnimation={starAnimation}
           isStarred={isStarred}
           isCommented={isCommented}

@@ -68,7 +68,7 @@ const MessageList = ({chatMessages, isLoop, channel_uuid}) => {
             style={{flex: 1, paddingHorizontal: 30}}
             contentContainerStyle={{paddingBottom: 30}}
             onContentSizeChange={goToBottomList}
-            onScrollEndDrag={() => Keyboard.dismiss()}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             // refreshControl={
             //     <RefreshControl
             //       refreshing={isFetching}
