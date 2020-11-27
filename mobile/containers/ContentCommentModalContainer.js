@@ -44,7 +44,9 @@ const ContentCommentModalContainer = ({
     itemUuids: contentItemUuids,
     items: contentItems,
     activeIndex: activeContentIndex,
+    getItems,
   } = useContext(ContentTilePagerContext);
+  
   const contentUuid = contentItemUuids[activeContentIndex];
   const content = (
     contentUuid ? contentItems[contentUuid] : null
@@ -123,6 +125,7 @@ const ContentCommentModalContainer = ({
         })),
       ]) : [],
     }).then(() => {
+      getItems()
       getComments({
         requestPolicy: 'cache-and-network',
       });

@@ -26,14 +26,14 @@ function ContentTileActions({
   controls = {},
   isStarred,
   isCommented,
+  likes,
+  comments,
   onStarPress = () => {},
   onCommentPress = () => {},
   onMenuPress = () => {},
   onVideoMuteToggle = () => {},
   onFullscreenToggle = () => {},
 }) {
-
-  const { activeItem } = useContext(ContentTilePagerContext);
 
   const hideLeftAnimation = useRef(new Animated.Value(0)).current;
 
@@ -45,9 +45,6 @@ function ContentTileActions({
     (controls.hasImage || controls.hasVideo) ? 'light' : 'dark'
   );
   
-  useEffect(() => {
-
-  },[activeItem, activeItem.uuid])
   useEffect(() => {
     Animated.timing(hideLeftAnimation, {
       toValue: (isLeftHidden ? 0 : 0),
@@ -84,7 +81,7 @@ function ContentTileActions({
                 color: (theme === 'light' ? '#fff' : '#222')
               }}
             >
-              {activeItem?.content_stars_aggregate?.aggregate ? activeItem?.content_stars_aggregate?.aggregate.count : ''  }
+              {likes || ''}
             </Text>
           </View>
         </TapGestureHandler>
@@ -104,7 +101,7 @@ function ContentTileActions({
               color: theme === 'light' ? '#fff' : '#222'
             }}
           >
-            {activeItem?.content_comments_aggregate?.aggregate ? activeItem?.content_comments_aggregate?.aggregate.count : ''  }
+            {comments || ''}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity

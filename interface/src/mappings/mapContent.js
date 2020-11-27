@@ -102,8 +102,8 @@ const mapContent = ({
   }, {}),
   createdAt: created_at && mapDateTime(created_at),
   createdAtTimestampTz: created_at,
-  content_stars_aggregate,
-  content_comments_aggregate,
+  likes: content_stars_aggregate.aggregate.count,
+  comments: content_comments_aggregate.aggregate.count,
 });
 
 export default mapContent;

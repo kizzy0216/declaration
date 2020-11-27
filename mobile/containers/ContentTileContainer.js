@@ -13,6 +13,7 @@ import InsertContentPollVote from '~/mutations/InsertContentPollVote';
 import DeleteContentStar from '~/mutations/DeleteContentStar';
 import ContentTile from '~/components/ContentTile';
 
+
 function ContentTileContainer({
   uuid: contentUuid,
   poll,
@@ -22,7 +23,7 @@ function ContentTileContainer({
 }) {
   const navigation = useNavigation();
   const { user: authenticatedUser } = useContext(UserContext);
-  const { reRender } = useContext(ContentTilePagerContext);
+  const { getItems } = useContext(ContentTilePagerContext);
   const [
     insertPollVoteResult,
     insertPollVote,
@@ -56,6 +57,8 @@ function ContentTileContainer({
     insertStar({
       amount,
       content_uuid: contentUuid,
+    }).then(() => {
+      getItems()
     });
   }, [insertStar]);
 
@@ -65,6 +68,8 @@ function ContentTileContainer({
     deleteStar({
       content_uuid: contentUuid,
       astronomer_uuid: authenticatedUser.uuid,
+    }).then(() => {
+      getItems()
     });
   }, [deleteStar]);
 

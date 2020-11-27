@@ -57,6 +57,8 @@ function ContentTile({
   opportunityListing,
   creator,
   meta,
+  likes,
+  comments,
   isStarred,
   hasBlackCommentBox,
   onMenuRequest = () => {},
@@ -195,20 +197,6 @@ function ContentTile({
     setIsVideoPlaying(!isVideoPlaying);
   }, [isVideoPlaying]);
 
-  // const handleStarPanActive = useCallback(({ x: x1, y: y1 }) => {
-  // }, []);
-
-  // const handleStarPanEnd = useCallback(({ x: x2, y: y2 }) => {
-  //   const amount = getStarAmount({ value: x2 });
-  //   onStar({ amount });
-
-  //   Animated.timing(starAnimation.x, {
-  //     toValue: 0,
-  //     duration: 200,
-  //     useNativeDriver: false,
-  //   }).start();
-  // }, [onStar]);
-
   const handleHashtagPress = useCallback(() => {
   }, []);
 
@@ -322,6 +310,8 @@ function ContentTile({
           <ContentTileFooter
             creator={creator}
             meta={meta}
+            likes={likes}
+            comments={comments}
             controls={controls}
             // starAnimation={starAnimation}
             isStarred={isStarred}
