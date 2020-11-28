@@ -12,10 +12,11 @@ import {
   TextInput,
   Text
 } from 'react-native';
-import { useQuery, useMutation } from 'urql';
+import { useMutation } from 'urql';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import ViewShot from 'react-native-view-shot';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { InterfaceContext } from '~/contexts/InterfaceContext';
 import { ContentTilePagerContext } from '~/contexts/ContentTilePagerContext';
 import { CreateContentContext } from '~/contexts/CreateContentContext';
