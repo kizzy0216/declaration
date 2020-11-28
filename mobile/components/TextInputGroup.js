@@ -11,7 +11,7 @@ import { LIGHT_GRAY, RED } from '~/constants';
 function TextInputGroup({
   label = '',
   options = [],
-  maxLength = "40",
+  maxLength = 40,
   error = '',
   renderPreInput = () => null,
   renderLabel = () => '',
