@@ -73,8 +73,8 @@ const MessageInputBox = ({
           });
     
           if (!result.cancelled) {
-                // console.log('photo Result', result)
-                setNewMedia(result)
+            // console.log('photo Result', result)
+            setNewMedia(result)
           }
         } catch (error) {
           console.error(error);

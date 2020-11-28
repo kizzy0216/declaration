@@ -136,8 +136,8 @@ export const CreateContentContextProvider = ({ children }) => {
       const uploadedAsset = await handleUpload({ asset: media.localAsset });
       mediaParams.media = {
         data: {
-          original_width: uploadedAsset.width,
-          original_height: uploadedAsset.height,
+          original_width: media.localAsset.width,
+          original_height: media.localAsset.height,
           original_url: uploadedAsset.url,
           type: uploadedAsset.type,
         },
